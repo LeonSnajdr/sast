@@ -30,9 +30,25 @@ function DrawProjectMenu($project) {
             )
 
             if ($CompileSolution) {
-                Write-Host "Compiling solution..."
-                dotnet build "$ReposPath\asimov\Sources" | Out-Null
+                $stopwatch = [system.diagnostics.stopwatch]::StartNew()
+                $compilation = Start-Process -FilePath "dotnet" -WorkingDirectory "$ReposPath\asimov\Sources" -ArgumentList "build" -WindowStyle Hidden
+                for ($i = 0; $i -lt 16; $i++) {
+                    $percent = [Math]::Round(($i / 16) * 100, 0)
+                    Write-Progress -Activity "Compiling solution..." -Status "($percent% Compiled)" -PercentComplete $percent
+                    Timeout /T 1 | Out-Null
+                }
+
+                Write-Host $compilation
+
+                if (!($compilation.HasExited)) {
+                    Write-Host "Waiting for completion the compilation was incorrectly estimated..."
+                    $compilation.WaitForExit()
+                }
+                # dotnet build "$ReposPath\asimov\Sources" | Out-Null
+                Write-Host $stopwatch.Elapsed.TotalMilliseconds
             }
+
+            # TODO: Close old Asimov window
 
             foreach ($service in $menuReturn) {
 
@@ -40,10 +56,10 @@ function DrawProjectMenu($project) {
 
                 $status = "Starting $service..."
                 if ($CompileProject) {
-                    $status = "Compiling & Starting $service..."
+                    $status = "($percent%) Compiling & Starting $service..."
                 }
 
-                Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete  $percent
+                Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete $percent
 
                 if ($service -eq 'AgentChat') {
                     wt -w Asimov nt -p "Windows PowerShell" --title "$service" -d "$ReposPath\asimov\Sources\App.$service" cmd /k "yarn install && yarn serve" 
@@ -61,6 +77,8 @@ function DrawProjectMenu($project) {
                     Timeout /T 2 | Out-Null
                 }
             }
+
+            Read-Host "Press [ENTER] to get back to the main menu"
 
             MainMenu
         }
