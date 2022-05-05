@@ -2,7 +2,7 @@
 ReposPath=C:/Repos
 
 [Compile solution]
-CompileSolution=False
+CompileSolution=true
 
 [Compile project]
-CompileProject=True
+CompileProject=false

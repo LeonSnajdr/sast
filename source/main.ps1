@@ -62,6 +62,7 @@ function DrawProjectMenu($project) {
                 }
             }
 
+            Read-Host "Press [ENTER] to get back to the main menu"
             MainMenu
         }
 
