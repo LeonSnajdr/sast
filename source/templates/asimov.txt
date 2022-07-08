@@ -1,0 +1,11 @@
+[Name of the Project]
+projectName=Asimov
+
+[Path of the project folder]
+projectPath=asimov\Sources
+
+[Services to start]
+services=App.AgentChat, Asimov.Admin, Asimov.Bot, Asimov.Dispatcher, Asimov.SocketServer, Asimov.TaskScheduler
+
+[App projects]
+apps=App.AgentChat
