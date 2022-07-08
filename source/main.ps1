@@ -31,21 +31,27 @@ function DrawProjectMenu($project) {
 
             if ($CompileSolution) {
                 $stopwatch = [system.diagnostics.stopwatch]::StartNew()
-                $compilation = Start-Process -FilePath "dotnet" -WorkingDirectory "$ReposPath\asimov\Sources" -ArgumentList "build" -WindowStyle Hidden
+                $compilation = Start-Process -FilePath "dotnet" -WorkingDirectory "$ReposPath\asimov\Sources" -ArgumentList "build" -WindowStyle Hidden -PassThru
                 for ($i = 0; $i -lt 16; $i++) {
                     $percent = [Math]::Round(($i / 16) * 100, 0)
                     Write-Progress -Activity "Compiling solution..." -Status "($percent% Compiled)" -PercentComplete $percent
                     Timeout /T 1 | Out-Null
+                    if ($compilation.HasExited) {
+                        Write-Progress -Activity "Compiling solution..." -Status "($percent% Compiled)" -PercentComplete 100
+                        break
+                    }
                 }
 
-                Write-Host $compilation
+                Clear-Host
 
-                if (!($compilation.HasExited)) {
-                    Write-Host "Waiting for completion the compilation was incorrectly estimated..."
+                if (!$compilation.HasExited) {
+                    Write-Host "Waiting for compelation, it was incorrectly estimated..."
                     $compilation.WaitForExit()
                 }
-                # dotnet build "$ReposPath\asimov\Sources" | Out-Null
-                Write-Host $stopwatch.Elapsed.TotalMilliseconds
+
+                $compileTime = $stopwatch.Elapsed.TotalMilliseconds
+                Write-Host "Compiled solution in $compileTime ms"
+
             }
 
             # TODO: Close old Asimov window
