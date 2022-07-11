@@ -1,8 +1,5 @@
-[Path of the repos folder]
-ReposPath=C:/Repos
+reposPath=C:/Repos
 
-[Compile solution]
-CompileSolution=true
+compileSolution=true
 
-[Compile project]
-CompileProject=false
+compileProject=false

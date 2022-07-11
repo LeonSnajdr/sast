@@ -1,0 +1,7 @@
+projectNames=Asimov: futo
+
+projectPaths=asimov\Sources: futo\Sources
+
+servicesForProject=App.AgentChat, Asimov.Admin, Asimov.Bot, Asimov.Dispatcher, Asimov.SocketServer, Asimov.TaskScheduler: Futo.Gateway, Futo.ActiveDirectory, Futo.RsaPin, Futo.Storage, Futo.Ticket, Futo.WifiLoginData
+
+appsForProject=App.AgentChat
