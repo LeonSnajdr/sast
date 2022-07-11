@@ -12,6 +12,18 @@ $ReposPath = $h.Get_Item("ReposPath")
 $CompileSolution = [System.Convert]::ToBoolean($h.Get_Item("CompileSolution"))
 $CompileProject = [System.Convert]::ToBoolean($h.Get_Item("CompileProject"))
 
+function PrintLogo {
+    Clear-Host
+    Write-Host "   _____                  _____ __             __ "
+    Write-Host "  / ___/____ _____ ___   / ___// /_____ ______/ /_"
+    Write-Host "  \__ \/ __ '/ __ '__ \  \__ \/ __/ __ '/ ___/ __/"
+    Write-Host " ___/ / /_/ / / / / / / ___/ / /_/ /_/ / /  / /_  "
+    Write-Host "/____/\__,_/_/ /_/ /_(_)____/\__/\__,_/_/   \__/  "
+    Write-Host "                                                  "
+    Write-Host "(c)lsnajdr"
+    Write-Host ""
+}
+
 function MainMenu {
     $projectName = Write-Menu -Title "Sam.Start (c)lsnajdr" -Entries @(
         'Asimov'
@@ -61,7 +73,7 @@ function DrawProjectMenu($project) {
 
 function StartProject ($projectName, $projectPath, $services, $apps) {
 
-    Clear-Host
+    PrintLogo
     Write-Host $projectPath
 
     if ($CompileSolution) {
@@ -97,15 +109,24 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
         }
     }
 }
-
 function StartWithFile($filePath) {
     Get-Content $filePath | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
-    $projectName = $h.Get_Item("projectName")
-    $projectPath = $h.Get_Item("projectPath")
-    $services = $h.Get_Item("services") -split ', '
-    $apps = $h.Get_Item("apps") -split ', '
+    $projectNames = $h.Get_Item("projectNames") -split ": "
+    $projectPaths = $h.Get_Item("projectPaths") -split ": "
+    $servicesForProject = $h.Get_Item("servicesForProject") -split ': '
+    $appsForProject = $h.Get_Item("appsForProject") -split ': '
+    
+    for ($i = 0; $i -lt $projectNames.Count; $i++) {
+        $projectName = $projectNames[$i]
+        $projectPath = $projectPaths[$i]
+        $services = $servicesForProject[$i] -split ', '
+        $apps = $appsForProject[$i] -split ', '
 
-    StartProject $ProjectName $projectPath $services $apps
+
+        StartProject $ProjectName $projectPath $services $apps
+    }
+
+    Write-Host "All projects and servies successfully started, I wish a pleasant work"
 }
 
 if ([string]::IsNullOrWhiteSpace($filePath)) {

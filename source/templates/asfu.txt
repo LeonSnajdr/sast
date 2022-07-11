@@ -1,0 +1,11 @@
+[Name of the windows]
+projectNames=Asimov: futo
+
+[Path of the project folder]
+projectPaths=asimov\Sources: futo\Sources
+
+[Services to start]
+servicesForProject=App.AgentChat, Asimov.Admin, Asimov.Bot, Asimov.Dispatcher, Asimov.SocketServer, Asimov.TaskScheduler: Futo.Gateway, Futo.ActiveDirectory, Futo.RsaPin, Futo.Storage, Futo.Ticket, Futo.WifiLoginData
+
+[App projects]
+appsForProject=App.AgentChat
