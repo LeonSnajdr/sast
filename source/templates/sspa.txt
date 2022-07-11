@@ -1,11 +1,7 @@
-[Name of the windows]
 projectNames=SelfServicePortal
 
-[Path of the project folder]
 projectPaths=selfservicePortal\Sources
 
-[Services to start]
 servicesForProject=App.Admin, Web.Admin
 
-[App projects]
 appsForProject=App.Admin

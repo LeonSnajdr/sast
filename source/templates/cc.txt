@@ -1,11 +1,7 @@
-[Name of the windows]
 projectNames=ControlCenter: ControlCenter
 
-[Path of the project folder]
 projectPaths=metis\sources: metis\sources\ControlCenter.Api
 
-[Services to start]
 servicesForProject=ControlCenter.App: ControlCenter.Api
 
-[App projects]
 appsForProject=ControlCenter.App
