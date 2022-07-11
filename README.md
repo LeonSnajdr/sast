@@ -6,7 +6,7 @@ Start projects with a selection or with start templates, which you can also crea
 
 ## Grant permission
 
-You have to give permissions to main.ps1 and Write-Menu.ps1 to disable annoying security warnings
+You have to give permissions to sast.ps1 and Write-Menu.ps1 to disable annoying security warnings
 
 ## Configure the script
 
@@ -33,7 +33,7 @@ Start your projects with the comandline and use templates
 
 ## Usage
 
-.\main.ps1
+.\sast.ps1
 
 | Parameter | Description                        |
 | --------- | ---------------------------------- |
