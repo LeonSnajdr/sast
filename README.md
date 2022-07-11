@@ -4,7 +4,11 @@ Start projects with a selection or with start templates, which you can also crea
 
 # Configuration
 
-Configure the script
+## Grant permission
+
+You have to give permissions to main.ps1 and Write-Menu.ps1 to disable annoying security warnings
+
+## Configure the script
 
 | Option            | Description                                                                                  |
 | ----------------- | -------------------------------------------------------------------------------------------- |
