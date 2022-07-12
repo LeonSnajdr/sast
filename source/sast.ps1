@@ -1,13 +1,15 @@
 Param(
     [parameter(Mandatory = $false)]
+    [alias("t")]
+    [string] $template,
+    [parameter(Mandatory = $false)]
     [alias("f")]
-    [string] $filePath
+    [string] $file
 )
 
-# Include
-. .\libs\QuietusPlus-WriteMenu\Write-Menu.ps1
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
-Get-Content "./config.txt" | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
+Get-Content "$scriptPath\config.txt" | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
 $reposPath = $h.Get_Item("reposPath")
 $compileSolution = [System.Convert]::ToBoolean($h.Get_Item("compileSolution"))
 $compileProject = [System.Convert]::ToBoolean($h.Get_Item("compileProject"))
@@ -24,52 +26,6 @@ function PrintLogo {
     Write-Host ""
 }
 
-function MainMenu {
-    $projectName = Write-Menu -Title "Sam.Start (c)lsnajdr" -Entries @(
-        'Asimov'
-        'SelfServicePortal'
-        'Metis'
-        'Configuration'
-    )
-
-    DrawProjectMenu $projectName
-}
-
-function DrawProjectMenu($project) {
-
-    switch ($project) {
-        "Asimov" { 
-            $services = Write-Menu -Title "($reposPath/$project) [INSERT] Select everything [SPACE] Select / Deselect [ENTER] Start selected projects" -MultiSelect -Entries @(
-                'App.AgentChat'
-                'Asimov.Admin'
-                'Asimov.Bot'
-                'Asimov.Dispatcher'
-                'Asimov.SocketServer'
-                'Asimov.TaskScheduler'
-            )
-
-            StartProject 'Asimov' 'asimov\Sources' $services @('App.AgentChat')
-
-            Read-Host "Press [ENTER] to get back to the main menu"
-        }
-
-        "Configuration" {
-            Write-Host "Configuration"
-            Write-Host "Repos path: $reposPath"
-            Write-Host "compileSolution: $compileSolution"
-            Write-Host "compileProject: $compileProject"
-            Read-Host "Press [ENTER] to get back to the main menu"
-            MainMenu
-        }
-
-        Default {
-            Write-Host "No matching project selected"
-            Read-Host "Press [ENTER] to get back to the main menu"
-            MainMenu
-        }
-    }
-    
-}
 
 function StartProject ($projectName, $projectPath, $services, $apps) {
 
@@ -110,6 +66,7 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
     }
 }
 function StartWithFile($filePath) {
+
     Get-Content $filePath | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
     $projectNames = $h.Get_Item("projectNames") -split ": "
     $projectPaths = $h.Get_Item("projectPaths") -split ": "
@@ -129,9 +86,22 @@ function StartWithFile($filePath) {
     Write-Host "All projects and servies successfully started, I wish a pleasant work"
 }
 
-if ([string]::IsNullOrWhiteSpace($filePath)) {
-    MainMenu
+
+if (-not [string]::IsNullOrWhiteSpace($template)) {
+
+    if ([System.IO.File]::Exists("$scriptPath\templates\default\$template.txt")) {
+        StartWithFile "$scriptPath\templates\default\$template.txt"
+    }
+    elseif ([System.IO.File]::Exists("$scriptPath\templates\own\$template.txt")) {
+        StartWithFile "$scriptPath\templates\default\$template.txt"
+    }
+    else {
+        Write-Error "This template does not exist!"
+    }
+}
+elseif (-not [string]::IsNullOrWhiteSpace($file)) {
+    StartWithFile $file
 }
 else {
-    StartWithFile $filePath
+    Write-Error "Please select a start template"
 }
