@@ -6,7 +6,7 @@ Start projects with a selection or with start templates, which you can also crea
 
 ## Grant permission
 
-You have to give permissions to sast.ps1 and Write-Menu.ps1 to disable annoying security warnings
+You have to give permissions to sast.ps1 to disable annoying security warnings
 
 ## Setup
 
