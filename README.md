@@ -30,7 +30,7 @@ Start your projects with the comandline and use templates
 | --------- | ---------------------------------- |
 | `-f`      | Path of template you want to start |
 
-The first parameter after the script is interpreted as a template, so -f is not necessarily expected. The templates in the default and own folder are recognised. (ex.) `sast cc` starts the ControlCenter
+The first parameter after the script is interpreted as a template, so -f is not necessarily expected. The templates in the default and own folders are recognised. (ex.) `sast cc` starts the ControlCenter
 
 # Templates
 
