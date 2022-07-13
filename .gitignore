@@ -1,3 +1,5 @@
+source/templates/own/*
+
 source/config.txt
 
 ## Ignore Visual Studio temporary files, build results, and
