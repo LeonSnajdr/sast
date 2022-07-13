@@ -22,7 +22,7 @@ function PrintLogo {
     Write-Host " ___/ / /_/ / / / / / / ___/ / /_/ /_/ / /  / /_  "
     Write-Host "/____/\__,_/_/ /_/ /_(_)____/\__/\__,_/_/   \__/  "
     Write-Host "                                                  "
-    Write-Host "(c)lsnajdr"
+    Write-Host "(c)lsnajdr v0.0.1"
     Write-Host ""
 }
 
