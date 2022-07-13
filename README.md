@@ -8,6 +8,10 @@ Start projects with a selection or with start templates, which you can also crea
 
 You have to give permissions to sast.ps1 and Write-Menu.ps1 to disable annoying security warnings
 
+## Setup
+
+You can execute the ./setup.ps1 to register the script globally, then it gets globally avaliable with `sast`
+
 ## Configure the script
 
 | Option            | Description                                                                                  |
@@ -16,28 +20,17 @@ You have to give permissions to sast.ps1 and Write-Menu.ps1 to disable annoying 
 | `compileSolution` | Determine if you want to compile the whole solution (recommended for multiple services)      |
 | `compileProject`  | Determine if you want to compile the individual services (not recommended for many services) |
 
-# UI
-
-Conveniently start your projects with a user interface
-
-## Usage
-
-- Select the script and run with powershell
-- Select the project you want to start
-- Select all services you want to start
-- Press enter to start them
-
 # Comandline
 
 Start your projects with the comandline and use templates
 
 ## Usage
 
-.\sast.ps1
-
 | Parameter | Description                        |
 | --------- | ---------------------------------- |
 | `-f`      | Path of template you want to start |
+
+The first parameter after the script is interpreted as a template, so -f is not necessarily expected. The templates in the default and own folder are recognised. (ex.) `sast cc` starts the ControlCenter
 
 # Templates
 

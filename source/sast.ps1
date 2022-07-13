@@ -46,7 +46,7 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
             $status = "Compiling & Starting $service..."
         }
 
-        Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete  $percent
+        Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete $percent
 
         if ($apps -contains $service) {
             wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" cmd /k "yarn install && yarn serve" 
@@ -88,7 +88,6 @@ function StartWithFile($filePath) {
 
 
 if (-not [string]::IsNullOrWhiteSpace($template)) {
-
     if ([System.IO.File]::Exists("$scriptPath\templates\default\$template.txt")) {
         StartWithFile "$scriptPath\templates\default\$template.txt"
     }
