@@ -1,4 +1,4 @@
-reposPath=C:/Repos
+reposPath=C:\Repos
 
 compileSolution=true
 

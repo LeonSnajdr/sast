@@ -88,10 +88,10 @@ function StartWithFile($filePath) {
 
 
 if (-not [string]::IsNullOrWhiteSpace($template)) {
-    if ([System.IO.File]::Exists("$scriptPath\templates\default\$template.txt")) {
-        StartWithFile "$scriptPath\templates\default\$template.txt"
+    if ([System.IO.File]::Exists("$scriptPath\templates\own\$template.txt")) {
+        StartWithFile "$scriptPath\templates\own\$template.txt"
     }
-    elseif ([System.IO.File]::Exists("$scriptPath\templates\own\$template.txt")) {
+    elseif ([System.IO.File]::Exists("$scriptPath\templates\default\$template.txt")) {
         StartWithFile "$scriptPath\templates\default\$template.txt"
     }
     else {
@@ -102,5 +102,13 @@ elseif (-not [string]::IsNullOrWhiteSpace($file)) {
     StartWithFile $file
 }
 else {
-    Write-Error "Please select a start template"
+    Write-Host "Please select a start template"
+    Write-Host "------<Default>------"
+    foreach ($dTemplate in Get-ChildItem "$scriptPath\templates\default") {
+        $dTemplate -replace ".txt", ""
+    }
+    Write-Host "------<Own>------"
+    foreach ($oTemplate in Get-ChildItem "$scriptPath\templates\own") {
+        $oTemplate -replace ".txt", ""
+    }
 }
