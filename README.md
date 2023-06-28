@@ -48,5 +48,5 @@ Create templates specific to your needs to start projects
 | -------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `projectNames`       | The names of the projects you want to start. If two projects should be started in one terminal, the same name must be used here, since this also becomes the id of the terminal. |
 | `projectPaths`       | Starting from the repos folder this is the path to the service folder                                                                                                            |
-| `servicesForProject` | These are all services that will be started                                                                                                                                      |
-| `appsForProject`     | These are the services that are started by yarn, in most cases the forntends                                                                                                     |
+| `servicesForProject` | These are all services that will be started (dotnet run)                                                                                                                         |
+| `appsForProject`     | These are all apps that will be started (yarn serve)                                                                                                                             |
