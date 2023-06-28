@@ -25,13 +25,13 @@ function PrintLogo {
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor DarkCyan
     Write-Host "Version     : v0.1.2"
-    Write-Host "Template    : $template"
 }
 
 
 function StartProject ($projectName, $projectPath, $services, $apps) {
 
     PrintLogo
+    Write-Host "Template    : $template"
     Write-Host "Working dir : $projectPath"
     Write-Host
 
@@ -113,24 +113,33 @@ elseif (-not [string]::IsNullOrWhiteSpace($file)) {
     StartWithFile $file
 }
 else {
-    Write-Host
-    Write-Host "Please select a start template"
-    Write-Host "------<Default>------"
-    foreach ($dTemplate in Get-ChildItem "$scriptPath\templates\default") {
-        $dTemplate -replace ".txt", ""
-    }
-    
-    Write-Host "------<Own>------"
+    $defaultTemplatePath = "$scriptPath\templates\default";
     $ownTemplatePath = "$scriptPath\templates\own";
 
+    PrintLogo
+    Write-Host
+    Write-Host "[$defaultTemplatePath]" -ForegroundColor DarkGray
+    Write-Host "------<Default>------"
+    foreach ($dTemplate in Get-ChildItem $defaultTemplatePath) {
+        Write-Host " - " -NoNewline
+        Write-Host ($dTemplate -replace ".txt", "")
+    }
+    Write-Host "--------------------"
+    
+    Write-Host
+    Write-Host "[$ownTemplatePath]" -ForegroundColor DarkGray
+    Write-Host "------<Own>------"
     if (Test-Path -Path $ownTemplatePath) {
         foreach ($oTemplate in Get-ChildItem $ownTemplatePath) {
-            $oTemplate -replace ".txt", ""
+            Write-Host " - " -NoNewline
+            Write-Host ($oTemplate -replace ".txt", "")
         }
     }
     else {
-        Write-Host "No own templates configured"
+        Write-Host " - " -NoNewline
+        Write-Host "No own templates configured" -ForegroundColor Red
     }
 
+    Write-Host "-----------------"
     Write-Host
 }
