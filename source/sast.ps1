@@ -31,8 +31,13 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
 
     PrintLogo
     Write-Host $projectPath
+    Write-Host
 
     foreach ($app in $apps) {
+        if ([string]::IsNullOrEmpty($app)) {
+            continue;
+        }
+
         Write-Host "Starting app $app"
 
         wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
@@ -57,9 +62,11 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
 
         wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "dotnet run --no-build"
 
+        Start-Sleep -Seconds 0.5
+
         if ($services.IndexOf($service) -eq 0 -and !$compileProject) {
             # Wait two seconds before opening the next projects to open in same terminal window 
-            Timeout /T 2 | Out-Null
+            Start-Sleep -Seconds 1.5
         }
     }
 }
@@ -81,7 +88,9 @@ function StartWithFile($filePath) {
         StartProject $projectName $projectPath $services $apps
     }
 
+    Write-Host
     Write-Host "All projects and servies successfully started, I wish a pleasant work"
+    Write-Host
 }
 
 
