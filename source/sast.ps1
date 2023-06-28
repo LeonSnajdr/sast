@@ -15,22 +15,24 @@ $compileSolution = [System.Convert]::ToBoolean($h.Get_Item("compileSolution"))
 $compileProject = [System.Convert]::ToBoolean($h.Get_Item("compileProject"))
 
 function PrintLogo {
-    Clear-Host
-    Write-Host "   _____                  _____ __             __ "
+    Clear-Host 
+    Write-Host "   _____                  _____ __             __ " 
     Write-Host "  / ___/____ _____ ___   / ___// /_____ ______/ /_"
     Write-Host "  \__ \/ __ '/ __ '__ \  \__ \/ __/ __ '/ ___/ __/"
     Write-Host " ___/ / /_/ / / / / / / ___/ / /_/ /_/ / /  / /_  "
     Write-Host "/____/\__,_/_/ /_/ /_(_)____/\__/\__,_/_/   \__/  "
     Write-Host "                                                  "
-    Write-Host "(c)lsnajdr v0.0.1"
-    Write-Host ""
+    Write-Host "Author      : " -NoNewline
+    Write-Host "Leon Snajdr" -ForegroundColor DarkCyan
+    Write-Host "Version     : v0.1.2"
+    Write-Host "Template    : $template"
 }
 
 
 function StartProject ($projectName, $projectPath, $services, $apps) {
 
     PrintLogo
-    Write-Host $projectPath
+    Write-Host "Working dir : $projectPath"
     Write-Host
 
     foreach ($app in $apps) {
@@ -38,13 +40,13 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
             continue;
         }
 
-        Write-Host "Starting app $app"
+        Write-Host "Starting app $app" -ForegroundColor DarkGray
 
         wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
     }
 
     if ($compileSolution) {
-        Write-Host "Compiling solution..."
+        Write-Host "Compiling solution..." -ForegroundColor DarkGray
         dotnet build "$reposPath\$projectPath" | Out-Null
     }
 
@@ -54,7 +56,7 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
             $status = "Compiling & Starting $service..."
         }
 
-        Write-Host $status
+        Write-Host $status -ForegroundColor DarkGray
 
         if ($compileProject) {
             dotnet build "$reposPath\$projectPath\$service" | Out-Null
@@ -89,7 +91,7 @@ function StartWithFile($filePath) {
     }
 
     Write-Host
-    Write-Host "All projects and servies successfully started, I wish a pleasant work"
+    Write-Host "All projects and services started successfully, I wish a pleasant work" -ForegroundColor DarkGreen
     Write-Host
 }
 
