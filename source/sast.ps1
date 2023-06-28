@@ -49,14 +49,14 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
         Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete $percent
 
         if ($apps -contains $service) {
-            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" cmd /k "yarn install && yarn serve" 
+            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "(yarn install) -and (yarn serve)" 
         }
         else {
             if ($compileProject) {
                 dotnet build "$reposPath\$projectPath\$service" | Out-Null
             }
 
-            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" cmd /k "dotnet run"
+            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "dotnet run --no-build"
         }
 
         if ($services.IndexOf($service) -eq 0 -and !$compileProject) {
@@ -80,7 +80,7 @@ function StartWithFile($filePath) {
         $apps = $appsForProject[$i] -split ', '
 
 
-        StartProject $ProjectName $projectPath $services $apps
+        StartProject $projectName $projectPath $services $apps
     }
 
     Write-Host "All projects and servies successfully started, I wish a pleasant work"
@@ -102,13 +102,24 @@ elseif (-not [string]::IsNullOrWhiteSpace($file)) {
     StartWithFile $file
 }
 else {
+    Write-Host
     Write-Host "Please select a start template"
     Write-Host "------<Default>------"
     foreach ($dTemplate in Get-ChildItem "$scriptPath\templates\default") {
         $dTemplate -replace ".txt", ""
     }
+    
     Write-Host "------<Own>------"
-    foreach ($oTemplate in Get-ChildItem "$scriptPath\templates\own") {
-        $oTemplate -replace ".txt", ""
+    $ownTemplatePath = "$scriptPath\templates\own";
+
+    if (Test-Path -Path $ownTemplatePath) {
+        foreach ($oTemplate in Get-ChildItem $ownTemplatePath) {
+            $oTemplate -replace ".txt", ""
+        }
     }
+    else {
+        Write-Host "No own templates configured"
+    }
+
+    Write-Host
 }
