@@ -43,6 +43,8 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
         Write-Host "Starting app $app" -ForegroundColor DarkGray
 
         wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
+        
+        Start-Sleep -Seconds 2
     }
 
     if ($compileSolution) {
