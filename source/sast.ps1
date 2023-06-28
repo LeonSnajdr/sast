@@ -37,6 +37,12 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
         dotnet build "$reposPath\$projectPath" | Out-Null
     }
 
+    foreach ($app in $apps) {
+        Write-Host "Starting app $app"
+
+        wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
+    }
+
     foreach ($service in $services) {
         $status = "Starting $service..."
         if ($compileProject) {
@@ -45,16 +51,11 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
 
         Write-Host $status
 
-        if ($apps -contains $service) {
-            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "yarn serve" 
+        if ($compileProject) {
+            dotnet build "$reposPath\$projectPath\$service" | Out-Null
         }
-        else {
-            if ($compileProject) {
-                dotnet build "$reposPath\$projectPath\$service" | Out-Null
-            }
 
-            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "dotnet run --no-build"
-        }
+        wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "dotnet run --no-build"
 
         if ($services.IndexOf($service) -eq 0 -and !$compileProject) {
             # Wait two seconds before opening the next projects to open in same terminal window 
