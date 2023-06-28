@@ -32,15 +32,15 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
     PrintLogo
     Write-Host $projectPath
 
-    if ($compileSolution) {
-        Write-Host "Compiling solution..."
-        dotnet build "$reposPath\$projectPath" | Out-Null
-    }
-
     foreach ($app in $apps) {
         Write-Host "Starting app $app"
 
         wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
+    }
+
+    if ($compileSolution) {
+        Write-Host "Compiling solution..."
+        dotnet build "$reposPath\$projectPath" | Out-Null
     }
 
     foreach ($service in $services) {
