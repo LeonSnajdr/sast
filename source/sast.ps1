@@ -38,18 +38,15 @@ function StartProject ($projectName, $projectPath, $services, $apps) {
     }
 
     foreach ($service in $services) {
-
-        $percent = [Math]::Round((($services.IndexOf($service)) / $services.Count) * 100, 0)
-
         $status = "Starting $service..."
         if ($compileProject) {
             $status = "Compiling & Starting $service..."
         }
 
-        Write-Progress -Activity "Starting selected Projects" -Status $status -PercentComplete $percent
+        Write-Host $status
 
         if ($apps -contains $service) {
-            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "(yarn install) -and (yarn serve)" 
+            wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "yarn serve" 
         }
         else {
             if ($compileProject) {
