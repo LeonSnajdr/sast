@@ -116,13 +116,22 @@ else {
     $defaultTemplatePath = "$scriptPath\templates\default";
     $ownTemplatePath = "$scriptPath\templates\own";
 
+    $defaultTemplates = Get-ChildItem $defaultTemplatePath;
+    $ownTemplates = Get-ChildItem $ownTemplatePath;
+
     PrintLogo
     Write-Host
     Write-Host "[$defaultTemplatePath]" -ForegroundColor DarkGray
     Write-Host "------<Default>------"
-    foreach ($dTemplate in Get-ChildItem $defaultTemplatePath) {
+    foreach ($dTemplate in $defaultTemplates) {
         Write-Host " - " -NoNewline
-        Write-Host ($dTemplate -replace ".txt", "")
+        Write-Host ($dTemplate -replace ".txt", "") -NoNewline
+
+        if ($ownTemplates -match $dTemplate) {
+            Write-Host " (overwritten)" -NoNewline -ForegroundColor Green
+        }
+
+        Write-Host
     }
     Write-Host "--------------------"
     
@@ -130,7 +139,7 @@ else {
     Write-Host "[$ownTemplatePath]" -ForegroundColor DarkGray
     Write-Host "------<Own>------"
     if (Test-Path -Path $ownTemplatePath) {
-        foreach ($oTemplate in Get-ChildItem $ownTemplatePath) {
+        foreach ($oTemplate in $ownTemplates) {
             Write-Host " - " -NoNewline
             Write-Host ($oTemplate -replace ".txt", "")
         }
