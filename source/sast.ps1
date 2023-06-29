@@ -23,7 +23,7 @@ function PrintLogo {
     Write-Host "/____/\__,_/_/ /_/ /_(_)____/\__/\__,_/_/   \__/  "
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
-    Write-Host "Leon Snajdr" -ForegroundColor DarkCyan
+    Write-Host "Leon Snajdr" -ForegroundColor Cyan
     Write-Host "Version     : v0.1.2"
 }
 
@@ -93,7 +93,7 @@ function StartWithFile($filePath) {
     }
 
     Write-Host
-    Write-Host "All projects and services started successfully, I wish a pleasant work" -ForegroundColor DarkGreen
+    Write-Host "All projects and services started successfully, I wish a pleasant work" -ForegroundColor Green
     Write-Host
 }
 
