@@ -117,7 +117,13 @@ else {
     $ownTemplatePath = "$scriptPath\templates\own";
 
     $defaultTemplates = Get-ChildItem $defaultTemplatePath;
-    $ownTemplates = Get-ChildItem $ownTemplatePath;
+
+    if (Test-Path -Path $ownTemplatePath) {
+        $ownTemplates = Get-ChildItem $ownTemplatePath;
+    }
+    else {
+        $ownTemplates = @();
+    }
 
     PrintLogo
     Write-Host
@@ -138,7 +144,7 @@ else {
     Write-Host
     Write-Host "[$ownTemplatePath]" -ForegroundColor DarkGray
     Write-Host "------<Own>------"
-    if (Test-Path -Path $ownTemplatePath) {
+    if ($ownTemplates.Count -ne 0) {
         foreach ($oTemplate in $ownTemplates) {
             Write-Host " - " -NoNewline
             Write-Host ($oTemplate -replace ".txt", "")
