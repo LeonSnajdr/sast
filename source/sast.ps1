@@ -1,18 +1,11 @@
 Param(
     [parameter(Mandatory = $false)]
     [alias("t")]
-    [string] $template,
-    [parameter(Mandatory = $false)]
-    [alias("f")]
-    [string] $file
+    [string] $template
 )
 
-$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
-Get-Content "$scriptPath\config.txt" | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
-$reposPath = $h.Get_Item("reposPath")
-$compileSolution = [System.Convert]::ToBoolean($h.Get_Item("compileSolution"))
-$compileProject = [System.Convert]::ToBoolean($h.Get_Item("compileProject"))
+$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
 function PrintLogo {
     Clear-Host 
@@ -24,93 +17,66 @@ function PrintLogo {
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor Cyan
-    Write-Host "Version     : v0.1.2"
+    Write-Host "Version     : v1.0.0"
 }
 
+function LoadTemplate($templatePath) {
 
-function StartProject ($projectName, $projectPath, $services, $apps) {
+    $template = GetReplacedTemplateJson $templatePath | ConvertFrom-Json
+    $tabsStarted = @{}
 
     PrintLogo
-    Write-Host "Template    : $template"
-    Write-Host "Working dir : $projectPath"
+    Write-Host "Template    :" $template.name
     Write-Host
 
-    foreach ($app in $apps) {
-        if ([string]::IsNullOrEmpty($app)) {
+    foreach ($task in $template.tasks) {
+        if ($task.terminalWindow) {
+            Write-Host "Opening Tab :" $task.tabTitle -ForegroundColor DarkGray
+            wt -w $task.terminalWindow nt -p "Windows PowerShell" --title $task.tabTitle -d $task.workingDirectory powershell -noExit $task.command
+
+            $tabsStarted[$task.terminalWindow] ++;
+            if ($tabsStarted[$task.terminalWindow] -eq 1) {
+                Start-Sleep -Seconds 1.5
+            }
+
+            Start-Sleep 0.5
             continue;
         }
-
-        Write-Host "Starting app $app" -ForegroundColor DarkGray
-
-        wt -w $projectName nt -p "Windows PowerShell" --title "$app" -d "$reposPath\$projectPath\$app" powershell -noExit "yarn serve" 
         
-        Start-Sleep -Seconds 2
+        Write-Host "Command     :" $task.command -ForegroundColor DarkGray
+        Invoke-Expression -Command $task.command > $null
     }
 
-    if ($compileSolution) {
-        Write-Host "Compiling solution..." -ForegroundColor DarkGray
-        dotnet build "$reposPath\$projectPath" | Out-Null
-    }
-
-    foreach ($service in $services) {
-        $status = "Starting $service..."
-        if ($compileProject) {
-            $status = "Compiling & Starting $service..."
-        }
-
-        Write-Host $status -ForegroundColor DarkGray
-
-        if ($compileProject) {
-            dotnet build "$reposPath\$projectPath\$service" | Out-Null
-        }
-
-        wt -w $projectName nt -p "Windows PowerShell" --title "$service" -d "$reposPath\$projectPath\$service" powershell -noExit "dotnet run --no-build"
-
-        Start-Sleep -Seconds 0.5
-
-        if ($services.IndexOf($service) -eq 0 -and !$compileProject) {
-            # Wait two seconds before opening the next projects to open in same terminal window 
-            Start-Sleep -Seconds 1.5
-        }
-    }
+    Write-Host
+    Write-Host "All tasks executed successfully, I wish a pleasant work" -ForegroundColor Green
+    Write-Host
 }
-function StartWithFile($filePath) {
 
-    Get-Content $filePath | foreach-object -begin { $h = @{} } -process { $k = [regex]::split($_, '='); if (($k[0].CompareTo("") -ne 0) -and ($k[0].StartsWith("[") -ne $True)) { $h.Add($k[0], $k[1]) } }
-    $projectNames = $h.Get_Item("projectNames") -split ": "
-    $projectPaths = $h.Get_Item("projectPaths") -split ": "
-    $servicesForProject = $h.Get_Item("servicesForProject") -split ': '
-    $appsForProject = $h.Get_Item("appsForProject") -split ': '
-    
-    for ($i = 0; $i -lt $projectNames.Count; $i++) {
-        $projectName = $projectNames[$i]
-        $projectPath = $projectPaths[$i]
-        $services = $servicesForProject[$i] -split ', '
-        $apps = $appsForProject[$i] -split ', '
+function GetReplacedTemplateJson($templatePath) {
+    $rawTemplate = Get-Content $templatePath
+    $placeholders = ($rawTemplate | ConvertFrom-Json).placeholders.psobject.Members | where-object membertype -like 'noteproperty'
 
-
-        StartProject $projectName $projectPath $services $apps
+    foreach ($placeholder in $placeholders) {
+        $key = $placeholder.name
+        $rawTemplate = $rawTemplate.Replace("{$key}", $placeholder.Value)
     }
 
-    Write-Host
-    Write-Host "All projects and services started successfully, I wish a pleasant work" -ForegroundColor Green
-    Write-Host
+    return $rawTemplate
 }
 
 
 if (-not [string]::IsNullOrWhiteSpace($template)) {
-    if ([System.IO.File]::Exists("$scriptPath\templates\own\$template.txt")) {
-        StartWithFile "$scriptPath\templates\own\$template.txt"
+    if ([System.IO.File]::Exists("$scriptPath\templates\own\$template.json")) {
+        LoadTemplate "$scriptPath\templates\own\$template.json"
     }
-    elseif ([System.IO.File]::Exists("$scriptPath\templates\default\$template.txt")) {
-        StartWithFile "$scriptPath\templates\default\$template.txt"
+    elseif ([System.IO.File]::Exists("$scriptPath\templates\default\$template.json")) {
+        LoadTemplate "$scriptPath\templates\default\$template.json"
     }
     else {
-        Write-Error "This template does not exist!"
+        Write-Host "The template " -NoNewline
+        Write-Host $template -ForegroundColor Red -NoNewline
+        Write-Host " does not exist" 
     }
-}
-elseif (-not [string]::IsNullOrWhiteSpace($file)) {
-    StartWithFile $file
 }
 else {
     $defaultTemplatePath = "$scriptPath\templates\default";
@@ -131,7 +97,7 @@ else {
     Write-Host "------<Default>------"
     foreach ($dTemplate in $defaultTemplates) {
         Write-Host " - " -NoNewline
-        Write-Host ($dTemplate -replace ".txt", "") -NoNewline
+        Write-Host ($dTemplate -replace ".json", "") -NoNewline
 
         if ($ownTemplates -match $dTemplate) {
             Write-Host " (overwritten)" -NoNewline -ForegroundColor Green
@@ -147,7 +113,7 @@ else {
     if ($ownTemplates.Count -ne 0) {
         foreach ($oTemplate in $ownTemplates) {
             Write-Host " - " -NoNewline
-            Write-Host ($oTemplate -replace ".txt", "")
+            Write-Host ($oTemplate -replace ".json", "")
         }
     }
     else {

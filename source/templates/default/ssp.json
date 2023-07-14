@@ -1,0 +1,36 @@
+{
+    "name": "ssp",
+    "placeholders": {
+        "sspWindowName": "SSP",
+        "sspPath": "C:/Repos/selfserviceportal/Sources"
+    },
+    "tasks": [
+        {
+            "command": "dotnet build {sspPath}"
+        },
+        {
+            "terminalWindow": "{sspWindowName}",
+            "tabTitle": "App.Admin",
+            "workingDirectory": "{sspPath}/App.Admin",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{sspWindowName}",
+            "tabTitle": "App",
+            "workingDirectory": "{sspPath}/App",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{sspWindowName}",
+            "tabTitle": "Web.Admin",
+            "workingDirectory": "{sspPath}/Web.Admin",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{sspWindowName}",
+            "tabTitle": "Web",
+            "workingDirectory": "{sspPath}/Web",
+            "command": "dotnet run --no-build"
+        }
+    ]
+}

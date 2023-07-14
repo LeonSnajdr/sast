@@ -1,7 +1,0 @@
-projectNames=ControlCenter
-
-projectPaths=metis\sources
-
-servicesForProject=ControlCenter.Api/ControlCenter.Api, ControlCenter.Api/ControlCenter.MetisEngine
-
-appsForProject=ControlCenter.App

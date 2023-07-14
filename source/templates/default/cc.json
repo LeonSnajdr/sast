@@ -1,0 +1,30 @@
+{
+    "name": "cc",
+    "placeholders": {
+        "terminalWindowName": "ControlCenter",
+        "metisPath": "C:/Repos/metis/sources"
+    },
+    "tasks": [
+        {
+            "command": "dotnet build {metisApiPath}"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "App",
+            "workingDirectory": "{metisPath}/ControlCenter.App",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "Api",
+            "workingDirectory": "{metisPath}/ControlCenter.Api/ControlCenter.Api",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "Engine",
+            "workingDirectory": "{metisPath}/ControlCenter.Api/ControlCenter.MetisEngine",
+            "command": "dotnet run"
+        }
+    ]
+}

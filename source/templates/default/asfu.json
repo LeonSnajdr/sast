@@ -1,0 +1,77 @@
+{
+    "name": "asfu",
+    "placeholders": {
+        "asimovWindowName": "Asimov",
+        "asimovPath": "C:/Repos/asimov/Sources",
+        "futoWindowName": "Futo",
+        "futoPath": "C:/Repos/futo/Sources"
+    },
+    "tasks": [
+        {
+            "command": "dotnet build {asimovPath}"
+        },
+        {
+            "command": "dotnet build {futoPath}"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "AgentChat",
+            "workingDirectory": "{asimovPath}/App.AgentChat",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Admin",
+            "workingDirectory": "{asimovPath}/Asimov.Admin",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Bot",
+            "workingDirectory": "{asimovPath}/Asimov.Bot",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Dispatcher",
+            "workingDirectory": "{asimovPath}/Asimov.Dispatcher",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "SocketServer",
+            "workingDirectory": "{asimovPath}/Asimov.SocketServer",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Gateway",
+            "workingDirectory": "{futoPath}/Futo.Gateway",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "ActiveDirectory",
+            "workingDirectory": "{futoPath}/Futo.ActiveDirectory",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Storage",
+            "workingDirectory": "{futoPath}/Futo.Storage",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Ticket",
+            "workingDirectory": "{futoPath}/Futo.Ticket",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "WifiLoginData",
+            "workingDirectory": "{futoPath}/Futo.WifiLoginData",
+            "command": "dotnet run --no-build"
+        }
+    ]
+}

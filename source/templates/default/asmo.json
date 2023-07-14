@@ -1,0 +1,42 @@
+{
+    "name": "asmo",
+    "placeholders": {
+        "asimovWindowName": "Asimov",
+        "asimovPath": "C:/Repos/asimov/Sources"
+    },
+    "tasks": [
+        {
+            "command": "dotnet build {asimovPath}"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "AgentChat",
+            "workingDirectory": "{asimovPath}/App.AgentChat",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Admin",
+            "workingDirectory": "{asimovPath}/Asimov.Admin",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Bot",
+            "workingDirectory": "{asimovPath}/Asimov.Bot",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "Dispatcher",
+            "workingDirectory": "{asimovPath}/Asimov.Dispatcher",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "SocketServer",
+            "workingDirectory": "{asimovPath}/Asimov.SocketServer",
+            "command": "dotnet run --no-build"
+        }
+    ]
+}
