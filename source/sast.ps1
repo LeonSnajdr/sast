@@ -20,7 +20,7 @@ function PrintLogo {
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor Cyan
-    Write-Host "Version     : v1.1.0"
+    Write-Host "Version     : v1.1.1"
 }
 
 function LoadTemplate($templatePath) {
@@ -33,12 +33,20 @@ function LoadTemplate($templatePath) {
     Write-Host
 
     foreach ($task in $template.tasks) {
-        if ($task.flag) {
+        if ($task.flags) {
             if ($null -eq $flags) {
                 continue;
             }
 
-            if ($flags.Contains($task.flag) -eq $false) {
+            $containsOne = $false
+            foreach ($flag in $task.flags) {
+                if ($flags.Contains($flag) -eq $true) {
+                    $containsOne = $true
+                    break;
+                }
+            }
+
+            if ($containsOne -eq $false) {
                 continue;
             }
         }
