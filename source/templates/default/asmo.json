@@ -2,41 +2,51 @@
     "name": "asmo",
     "placeholders": {
         "asimovWindowName": "Asimov",
-        "asimovPath": "C:/Repos/asimov/Sources"
+        "asimovPath": "C:/Repos/asimov"
     },
     "tasks": [
         {
-            "workingDirectory": "{asimovPath}",
+            "flags": ["c"],
+            "workingDirectory": "{#scriptPath}/scripts",
+            "command": "./Add-Branch.ps1 {asimovPath} master"
+        },
+        {
+            "flag": ["m", "c"],
+            "workingDirectory": "{asimovPath}/mongodb",
+            "command": "yarn install; yarn migrate-mongo up -f ./dev.ehis.js"
+        },
+        {
+            "workingDirectory": "{asimovPath}/Sources",
             "command": "dotnet build"
         },
         {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "AgentChat",
-            "workingDirectory": "{asimovPath}/App.AgentChat",
+            "workingDirectory": "{asimovPath}/Sources/App.AgentChat",
             "command": "yarn serve"
         },
         {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "Admin",
-            "workingDirectory": "{asimovPath}/Asimov.Admin",
+            "workingDirectory": "{asimovPath}/Sources/Asimov.Admin",
             "command": "dotnet run --no-build"
         },
         {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "Bot",
-            "workingDirectory": "{asimovPath}/Asimov.Bot",
+            "workingDirectory": "{asimovPath}/Sources/Asimov.Bot",
             "command": "dotnet run --no-build"
         },
         {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "Dispatcher",
-            "workingDirectory": "{asimovPath}/Asimov.Dispatcher",
+            "workingDirectory": "{asimovPath}/Sources/Asimov.Dispatcher",
             "command": "dotnet run --no-build"
         },
         {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "SocketServer",
-            "workingDirectory": "{asimovPath}/Asimov.SocketServer",
+            "workingDirectory": "{asimovPath}/Sources/Asimov.SocketServer",
             "command": "dotnet run --no-build"
         }
     ]
