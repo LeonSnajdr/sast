@@ -45,6 +45,8 @@ function LoadTemplate($templatePath) {
                 }
             }
 
+            Write-Host "Contains one: $containsOne"
+
             if ($containsOne -eq $false) {
                 continue;
             }
