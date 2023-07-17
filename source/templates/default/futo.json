@@ -6,7 +6,8 @@
     },
     "tasks": [
         {
-            "command": "dotnet build {futoPath}"
+            "workingDirectory": "{futoPath}",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{futoWindowName}",

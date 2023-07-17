@@ -6,7 +6,8 @@
     },
     "tasks": [
         {
-            "command": "dotnet build {asimovPath}"
+            "workingDirectory": "{asimovPath}",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{asimovWindowName}",

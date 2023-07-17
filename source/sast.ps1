@@ -1,9 +1,12 @@
 Param(
     [parameter(Mandatory = $false)]
     [alias("t")]
-    [string] $template
-)
+    [string] $template,
 
+    [parameter(Mandatory = $false, ValueFromRemainingArguments = $true)]
+    [alias("f")]
+    [string[]] $flags
+)
 
 $scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
 
@@ -17,7 +20,7 @@ function PrintLogo {
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor Cyan
-    Write-Host "Version     : v1.0.0"
+    Write-Host "Version     : v1.1.0"
 }
 
 function LoadTemplate($templatePath) {
@@ -30,6 +33,16 @@ function LoadTemplate($templatePath) {
     Write-Host
 
     foreach ($task in $template.tasks) {
+        if ($task.flag) {
+            if ($null -eq $flags) {
+                continue;
+            }
+
+            if ($flags.Contains($task.flag) -eq $false) {
+                continue;
+            }
+        }
+
         if ($task.terminalWindow) {
             Write-Host "Opening Tab :" $task.tabTitle -ForegroundColor DarkGray
             wt -w $task.terminalWindow nt -p "Windows PowerShell" --title $task.tabTitle -d $task.workingDirectory powershell -noExit $task.command
@@ -44,7 +57,10 @@ function LoadTemplate($templatePath) {
         }
         
         Write-Host "Command     :" $task.command -ForegroundColor DarkGray
+
+        Push-Location $task.workingDirectory
         Invoke-Expression -Command $task.command > $null
+        Pop-Location
     }
 
     Write-Host

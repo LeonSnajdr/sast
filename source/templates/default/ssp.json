@@ -6,7 +6,8 @@
     },
     "tasks": [
         {
-            "command": "dotnet build {sspPath}"
+            "workingDirectory": "{sspPath}",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{sspWindowName}",
