@@ -8,10 +8,9 @@ Param(
     [string[]] $flags
 )
 
-$scriptPath = split-path -parent $MyInvocation.MyCommand.Definition
+$scriptPath = (split-path -parent $MyInvocation.MyCommand.Definition).Replace("\", "/")
 
 function PrintLogo {
-    Clear-Host 
     Write-Host "   _____                  _____ __             __ " 
     Write-Host "  / ___/____ _____ ___   / ___// /_____ ______/ /_"
     Write-Host "  \__ \/ __ '/ __ '__ \  \__ \/ __/ __ '/ ___/ __/"
@@ -20,7 +19,7 @@ function PrintLogo {
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor Cyan
-    Write-Host "Version     : v1.1.1"
+    Write-Host "Version     : v1.1.2"
 }
 
 function LoadTemplate($templatePath) {
@@ -80,10 +79,14 @@ function GetReplacedTemplateJson($templatePath) {
     $rawTemplate = Get-Content $templatePath
     $placeholders = ($rawTemplate | ConvertFrom-Json).placeholders.psobject.Members | where-object membertype -like 'noteproperty'
 
+    # Placeholders defined by the user
     foreach ($placeholder in $placeholders) {
         $key = $placeholder.name
         $rawTemplate = $rawTemplate.Replace("{$key}", $placeholder.Value)
     }
+
+    # System placeholders
+    $rawTemplate = $rawTemplate.Replace("{#scriptPath}", $scriptPath)
 
     return $rawTemplate
 }

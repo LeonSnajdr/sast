@@ -6,7 +6,12 @@
     },
     "tasks": [
         {
-            "flag": "m",
+            "flags": ["c"],
+            "workingDirectory": "{#scriptPath}/scripts",
+            "command": "./Add-Branch.ps1 {metisPath} master"
+        },
+        {
+            "flag": ["m", "c"],
             "workingDirectory": "{metisPath}/mongodb/controlcenter",
             "command": "yarn install; yarn migrate-mongo up -f ./dev.sag.js"
         },
