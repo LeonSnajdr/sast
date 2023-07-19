@@ -11,6 +11,7 @@ Param(
 $scriptPath = (split-path -parent $MyInvocation.MyCommand.Definition).Replace("\", "/")
 
 function PrintLogo {
+    Clear-Host
     Write-Host "   _____                  _____ __             __ " 
     Write-Host "  / ___/____ _____ ___   / ___// /_____ ______/ /_"
     Write-Host "  \__ \/ __ '/ __ '__ \  \__ \/ __/ __ '/ ___/ __/"
@@ -19,7 +20,7 @@ function PrintLogo {
     Write-Host "                                                  "
     Write-Host "Author      : " -NoNewline
     Write-Host "Leon Snajdr" -ForegroundColor Cyan
-    Write-Host "Version     : v1.1.2"
+    Write-Host "Version     : v1.1.3"
 }
 
 function LoadTemplate($templatePath) {
@@ -44,8 +45,6 @@ function LoadTemplate($templatePath) {
                     break;
                 }
             }
-
-            Write-Host "Contains one: $containsOne"
 
             if ($containsOne -eq $false) {
                 continue;

@@ -11,7 +11,7 @@
             "command": "./Add-Branch.ps1 {metisPath} master"
         },
         {
-            "flags": ["m", "c"],
+            "flags": ["c", "m"],
             "workingDirectory": "{metisPath}/mongodb/controlcenter",
             "command": "yarn install; yarn migrate-mongo up -f ./dev.sag.js"
         },
