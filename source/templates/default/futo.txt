@@ -1,5 +1,0 @@
-projectNames=futo
-
-projectPaths=futo\Sources
-
-servicesForProject=Futo.Gateway, Futo.ActiveDirectory, Futo.Storage, Futo.Ticket, Futo.WifiLoginData

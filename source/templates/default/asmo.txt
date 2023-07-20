@@ -1,7 +1,0 @@
-projectNames=Asimov
-
-projectPaths=asimov\Sources
-
-servicesForProject=Asimov.Admin, Asimov.Bot, Asimov.Dispatcher, Asimov.SocketServer, Asimov.TaskScheduler
-
-appsForProject=App.AgentChat

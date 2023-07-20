@@ -1,0 +1,41 @@
+{
+    "name": "cc",
+    "placeholders": {
+        "terminalWindowName": "ControlCenter",
+        "metisPath": "C:/Repos/metis"
+    },
+    "tasks": [
+        {
+            "flags": ["c"],
+            "workingDirectory": "{#scriptPath}/scripts",
+            "command": "./Add-Branch.ps1 {metisPath} master"
+        },
+        {
+            "flags": ["c", "m"],
+            "workingDirectory": "{metisPath}/mongodb/controlcenter",
+            "command": "yarn install; yarn migrate-mongo up -f ./dev.sag.js"
+        },
+        {
+            "workingDirectory": "{metisPath}/sources",
+            "command": "dotnet build"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "App",
+            "workingDirectory": "{metisPath}/sources/ControlCenter.App",
+            "command": "yarn serve"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "Api",
+            "workingDirectory": "{metisPath}/sources/ControlCenter.Api/ControlCenter.Api",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{terminalWindowName}",
+            "tabTitle": "Engine",
+            "workingDirectory": "{metisPath}/sources/ControlCenter.Api/ControlCenter.MetisEngine",
+            "command": "dotnet run"
+        }
+    ]
+}

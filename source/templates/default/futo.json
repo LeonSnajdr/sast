@@ -1,0 +1,43 @@
+{
+    "name": "futo",
+    "placeholders": {
+        "futoWindowName": "Futo",
+        "futoPath": "C:/Repos/futo/Sources"
+    },
+    "tasks": [
+        {
+            "workingDirectory": "{futoPath}",
+            "command": "dotnet build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Gateway",
+            "workingDirectory": "{futoPath}/Futo.Gateway",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "ActiveDirectory",
+            "workingDirectory": "{futoPath}/Futo.ActiveDirectory",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Storage",
+            "workingDirectory": "{futoPath}/Futo.Storage",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "Ticket",
+            "workingDirectory": "{futoPath}/Futo.Ticket",
+            "command": "dotnet run --no-build"
+        },
+        {
+            "terminalWindow": "{futoWindowName}",
+            "tabTitle": "WifiLoginData",
+            "workingDirectory": "{futoPath}/Futo.WifiLoginData",
+            "command": "dotnet run --no-build"
+        }
+    ]
+}

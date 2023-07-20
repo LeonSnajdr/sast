@@ -1,7 +1,0 @@
-projectNames=SelfServicePortal
-
-projectPaths=selfservicePortal\Sources
-
-servicesForProject=Web.Admin
-
-appsForProject=App.Admin
