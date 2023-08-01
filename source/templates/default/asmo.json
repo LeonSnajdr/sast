@@ -16,14 +16,14 @@
             "command": "yarn install; yarn migrate-mongo up -f ./dev.ehis.js"
         },
         {
-            "workingDirectory": "{asimovPath}/Sources",
-            "command": "dotnet build"
-        },
-        {
             "terminalWindow": "{asimovWindowName}",
             "tabTitle": "AgentChat",
             "workingDirectory": "{asimovPath}/Sources/App.AgentChat",
             "command": "yarn serve"
+        },
+        {
+            "workingDirectory": "{asimovPath}/Sources",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{asimovWindowName}",

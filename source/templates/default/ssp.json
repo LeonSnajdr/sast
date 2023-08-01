@@ -1,13 +1,14 @@
 {
     "name": "ssp",
     "placeholders": {
-        "sspWindowName": "SSP",
+        "sspWindowName": "ssp",
         "sspPath": "C:/Repos/selfserviceportal/Sources"
     },
     "tasks": [
         {
-            "workingDirectory": "{sspPath}",
-            "command": "dotnet build"
+            "flags": ["m"],
+            "workingDirectory": "{sspPath}/mongodb",
+            "command": "yarn install; yarn migrate-mongo up -f ./dev.core.js"
         },
         {
             "terminalWindow": "{sspWindowName}",
@@ -19,7 +20,11 @@
             "terminalWindow": "{sspWindowName}",
             "tabTitle": "App",
             "workingDirectory": "{sspPath}/App",
-            "command": "yarn serve"
+            "command": "yarn dev"
+        },
+        {
+            "workingDirectory": "{sspPath}",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{sspWindowName}",

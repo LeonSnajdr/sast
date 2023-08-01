@@ -8,18 +8,18 @@
     },
     "tasks": [
         {
+            "terminalWindow": "{asimovWindowName}",
+            "tabTitle": "AgentChat",
+            "workingDirectory": "{asimovPath}/App.AgentChat",
+            "command": "yarn serve"
+        },
+        {
             "workingDirectory": "{asimovPath}",
             "command": "dotnet build"
         },
         {
             "workingDirectory": "{futoPath}",
             "command": "dotnet build"
-        },
-        {
-            "terminalWindow": "{asimovWindowName}",
-            "tabTitle": "AgentChat",
-            "workingDirectory": "{asimovPath}/App.AgentChat",
-            "command": "yarn serve"
         },
         {
             "terminalWindow": "{asimovWindowName}",

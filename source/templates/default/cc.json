@@ -16,14 +16,14 @@
             "command": "yarn install; yarn migrate-mongo up -f ./dev.sag.js"
         },
         {
-            "workingDirectory": "{metisPath}/sources",
-            "command": "dotnet build"
-        },
-        {
             "terminalWindow": "{terminalWindowName}",
             "tabTitle": "App",
             "workingDirectory": "{metisPath}/sources/ControlCenter.App",
             "command": "yarn serve"
+        },
+        {
+            "workingDirectory": "{metisPath}/sources",
+            "command": "dotnet build"
         },
         {
             "terminalWindow": "{terminalWindowName}",
