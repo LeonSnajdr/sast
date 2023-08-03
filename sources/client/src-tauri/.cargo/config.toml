@@ -1,0 +1,3 @@
+[alias]
+prisma = "run -p prisma-cli --"
+prisma-gen = "run -p prisma-cli -- generate --schema=./sast-api/prisma/schema.prisma"
