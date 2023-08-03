@@ -3,29 +3,20 @@
 
 declare global {
     interface Window {
-        __TAURI_INVOKE__(cmd: string, args?: Record<string, unknown>): Promise<any>;
+        __TAURI_INVOKE__<T>(cmd: string, args?: Record<string, unknown>): Promise<T>;
     }
 }
 
 // Function avoids 'window not defined' in SSR
 const invoke = () => window.__TAURI_INVOKE__;
 
-export async function greet(create: CreateProjectData): Promise<[string, undefined] | [undefined, null]> {
-try {
-    return [await invoke()("greet", { create }), undefined];
-} catch (e: any) {
-    if(e instanceof Error) throw e;
-    else return [undefined, e];
-}
+export function greet(create: CreateProjectData) {
+    return invoke()<string>("greet", { create })
 }
 
-export async function createProject(create: CreateProjectData): Promise<[null, undefined] | [undefined, null]> {
-try {
-    return [await invoke()("create_project", { create }), undefined];
-} catch (e: any) {
-    if(e instanceof Error) throw e;
-    else return [undefined, e];
-}
+export function createProject(createData: CreateProjectData) {
+    return invoke()<Project>("create_project", { createData })
 }
 
 export type CreateProjectData = { name: string }
+export type Project = { id: string; name: string; createdAt: string; updatedAt: string }

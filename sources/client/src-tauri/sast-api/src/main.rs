@@ -23,8 +23,8 @@ async fn greet(db: DbState<'_>, create: CreateProjectData) -> Result<String, Str
 
 #[tauri::command]
 #[specta::specta]
-async fn create_project(db: DbState<'_>, create: CreateProjectData) -> Result<project::Data, String> {
-  let data: project::Data = db.project().create(create.name,  vec![]).exec().await.unwrap();
+async fn create_project(db: DbState<'_>, create_data: CreateProjectData) -> Result<project::Data, ()> {
+  let data: project::Data = db.project().create(create_data.name,  vec![]).exec().await.unwrap();
 
   return Ok(data);
 }

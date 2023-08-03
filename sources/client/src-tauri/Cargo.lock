@@ -3959,7 +3959,7 @@ dependencies = [
  "serde",
  "serde-value",
  "serde_json",
- "specta 1.0.5",
+ "specta",
  "tempdir",
  "thiserror",
  "tokio",
@@ -3996,7 +3996,7 @@ dependencies = [
  "convert_case 0.6.0",
  "proc-macro2",
  "quote",
- "specta 1.0.5",
+ "specta",
  "syn 1.0.109",
 ]
 
@@ -4818,7 +4818,7 @@ dependencies = [
  "prisma-client-rust",
  "serde",
  "serde_json",
- "specta 2.0.0-rc.1",
+ "specta",
  "tauri",
  "tauri-build",
  "tauri-specta",
@@ -5324,26 +5324,10 @@ dependencies = [
  "paste",
  "serde",
  "serde_json",
- "specta-macros 1.0.5",
- "thiserror",
- "uuid",
-]
-
-[[package]]
-name = "specta"
-version = "2.0.0-rc.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "899e1de0122914c5573ca81ced566c5aaeebf2c363595ee3dfdaac58f33ea351"
-dependencies = [
- "document-features",
- "indoc 1.0.9",
- "once_cell",
- "paste",
- "serde",
- "serde_json",
- "specta-macros 2.0.0-rc.1",
+ "specta-macros",
  "tauri",
  "thiserror",
+ "uuid",
 ]
 
 [[package]]
@@ -5351,20 +5335,6 @@ name = "specta-macros"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4605306321c356e03873b8ee71d7592a5e7c508add325c3ed0677c16fdf1bcfb"
-dependencies = [
- "Inflector",
- "itertools",
- "proc-macro2",
- "quote",
- "syn 1.0.109",
- "termcolor",
-]
-
-[[package]]
-name = "specta-macros"
-version = "2.0.0-rc.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd0de71d47f9076754480433ca4fdcbde756312b56e7991ac17f2cb2435897ed"
 dependencies = [
  "Inflector",
  "itertools",
@@ -5869,13 +5839,14 @@ dependencies = [
 [[package]]
 name = "tauri-specta"
 version = "1.0.2"
-source = "git+https://github.com/oscartbeaumont/tauri-specta?branch=v2#b33bf3728b8986672e3915ea4703ee94b6d2f7cb"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "aa034c38b7bdfeccc606eca0b030a1e67a20b78e7642edef09816b7e1ff9a9de"
 dependencies = [
  "heck 0.4.1",
  "indoc 2.0.3",
  "serde",
  "serde_json",
- "specta 2.0.0-rc.1",
+ "specta",
  "tauri",
  "thiserror",
 ]
