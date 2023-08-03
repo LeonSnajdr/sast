@@ -25,5 +25,7 @@ async function click(): Promise<void> {
 
 async function create(): Promise<void> {
     createdProject.value = await commands.createProject({ name: "keckw" });
+
+    console.log(createdProject.value);
 }
 </script>

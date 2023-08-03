@@ -4,9 +4,8 @@ datasource db {
 }
 
 generator client {
-  provider    = "cargo prisma"
-  output      = "../src/prisma.rs"
-  module_path = "crate::prisma"
+  provider = "cargo prisma"
+  output   = "../src/prisma.rs"
 }
 
 model Project {

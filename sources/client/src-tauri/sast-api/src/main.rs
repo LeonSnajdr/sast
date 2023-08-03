@@ -41,8 +41,11 @@ async fn main() {
   #[cfg(debug_assertions)]
   ts::export(collect_types![greet, create_project], "../src/bindings.ts").unwrap();
 
+  #[cfg(debug_assertions)]
+  db._db_push().await.unwrap();
+
   tauri::Builder::default()
-      .invoke_handler(tauri::generate_handler![greet])
+      .invoke_handler(tauri::generate_handler![greet, create_project])
       .manage(Arc::new(db))
       .run(tauri::generate_context!())
       .expect("error while running tauri application");
