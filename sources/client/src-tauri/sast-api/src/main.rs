@@ -38,7 +38,7 @@ async fn main() {
   let db = PrismaClient::_builder().build().await.unwrap();
 
   #[cfg(debug_assertions)]
-  ts::export(collect_types![get_projects, create_project], "../src/bindings.ts").unwrap();
+  ts::export(collect_types![get_projects, create_project], "../../src/bindings.ts").unwrap();
 
   #[cfg(debug_assertions)]
   db._db_push().await.unwrap();

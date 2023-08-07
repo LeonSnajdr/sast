@@ -11,12 +11,12 @@ declare global {
 const invoke = () => window.__TAURI_INVOKE__;
 
 export function getProjects() {
-    return invoke()<Project[]>("get_projects");
+    return invoke()<Project[]>("get_projects")
 }
 
 export function createProject(createData: CreateProjectData) {
-    return invoke()<Project>("create_project", { createData });
+    return invoke()<Project>("create_project", { createData })
 }
 
-export type CreateProjectData = { name: string };
-export type Project = { id: string; name: string; createdAt: string; updatedAt: string };
+export type CreateProjectData = { name: string }
+export type Project = { id: string; name: string; createdAt: string; updatedAt: string }
