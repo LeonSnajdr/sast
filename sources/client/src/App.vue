@@ -1,31 +1,45 @@
 <template>
-    <div class="card flex justify-content-center">
-        <Button label="Check" icon="pi pi-check" @click="click" />
+    <Toast></Toast>
+    <div class="card flex justify-content-center" v-if="projects">
+        <Button label="Check" icon="pi pi-check" />
+        <InputText type="text" v-model="newProjectName" />
         <Button label="Create" @click="create" />
-        <h2>{{ result }}</h2>
-        <div v-if="createdProject">
-            <h3>{{ createdProject.id }}</h3>
-            <h3>{{ createdProject.name }}</h3>
-            <h3>{{ createdProject.createdAt }}</h3>
+        <div v-for="project in projects" :key="project.id">
+            <h3>- {{ project.name }}</h3>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import Button from "primevue/button";
+import InputText from "primevue/inputtext";
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
 import * as commands from "./bindings";
-import { ref } from "vue";
+import { onBeforeMount, ref } from "vue";
 
-const result = ref<string>();
-const createdProject = ref<commands.Project>();
+const toast = useToast();
 
-async function click(): Promise<void> {
-    result.value = await commands.greet({ name: "Keck" });
+const newProjectName = ref<string>("");
+const projects = ref<commands.Project[]>();
+
+onBeforeMount(async () => {
+    await loadProjects();
+});
+
+async function loadProjects() {
+    projects.value = await commands.getProjects();
 }
 
 async function create(): Promise<void> {
-    createdProject.value = await commands.createProject({ name: "keckw" });
+    if (newProjectName.value == null) {
+        return;
+    }
+    console.log("create", newProjectName.value);
 
-    console.log(createdProject.value);
+    await commands.createProject({ name: newProjectName.value });
+    await loadProjects();
+
+    toast.add({ severity: "success", summary: "Success", detail: "Created project successfully", life: 3000 });
 }
 </script>
