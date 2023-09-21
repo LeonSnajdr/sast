@@ -3,35 +3,18 @@
 
 #[allow(warnings, unused)]
 mod prisma;
+mod contracts;
+mod services;
 
 use prisma::*;
-use prisma_client_rust::QueryError;
 use serde::Deserialize;
 use specta::{collect_types, Type};
 use std::sync::Arc;
 use tauri::State;
 use tauri_specta::ts;
+use services::project_service::{get_projects, create_project};
 
 type DbState<'a> = State<'a, Arc<PrismaClient>>;
-
-#[tauri::command]
-#[specta::specta]
-async fn get_projects(db: DbState<'_>) -> Result<Vec<project::Data>, QueryError> {
-  db.project().find_many(vec![]).exec().await
-}
-
-#[tauri::command]
-#[specta::specta]
-async fn create_project(db: DbState<'_>, create_data: CreateProjectData) -> Result<project::Data, ()> {
-  let data: project::Data = db.project().create(create_data.name,  vec![]).exec().await.unwrap();
-
-  return Ok(data);
-}
-
-#[derive(Deserialize, Type)]
-struct CreateProjectData {
-  name: String,
-}
 
 #[tokio::main]
 async fn main() {
