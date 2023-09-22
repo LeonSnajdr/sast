@@ -19,7 +19,7 @@ export function createProject(createContract: CreateProjectContract) {
 }
 
 export function deleteProject(projectId: string) {
-    return invoke()<null>("delete_project", { projectId })
+    return invoke()<Project>("delete_project", { projectId })
 }
 
 export type CreateProjectContract = { name: string }

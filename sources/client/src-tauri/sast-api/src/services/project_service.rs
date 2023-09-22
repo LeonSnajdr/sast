@@ -11,11 +11,9 @@ pub async fn get_projects(db: DbState<'_>) -> Result<Vec<project::Data>, QueryEr
 }
 
 pub async fn create_project(db: DbState<'_>, create_contract: CreateProjectContract) -> Result<project::Data, QueryError> {
-    let data = db.project().create(create_contract.name,  vec![]).exec().await;
-
-    return data;
+    return db.project().create(create_contract.name, vec![]).exec().await;
 }
 
-pub async fn delete_project(db: DbState<'_>, project_id: String) {
-    db.project().delete(project::id::equals(project_id)).exec().await.expect("Deleting project faild");
+pub async fn delete_project(db: DbState<'_>, project_id: String) -> Result<project::Data, QueryError> {
+    return db.project().delete(project::id::equals(project_id)).exec().await;
 }
