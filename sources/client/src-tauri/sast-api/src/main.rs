@@ -13,20 +13,21 @@ use std::sync::Arc;
 use tauri_specta::ts;
 
 use crate::prisma::*;
-use crate::commands::project_commands::{get_projects, create_project, delete_project};
+use crate::commands::project_commands::{get_projects, create_project, update_project, delete_project};
+use crate::commands::placeholder_commands::create_placeholder;
 
 #[tokio::main]
 async fn main() {
   let db = PrismaClient::_builder().build().await.unwrap();
 
   #[cfg(debug_assertions)]
-  ts::export(collect_types![get_projects, create_project, delete_project], "../../src/bindings.ts").unwrap();
+  ts::export(collect_types![get_projects, create_project, update_project, delete_project, create_placeholder], "../../src/bindings.ts").unwrap();
 
   #[cfg(debug_assertions)]
   db._db_push().await.unwrap();
 
   tauri::Builder::default()
-      .invoke_handler(tauri::generate_handler![get_projects, create_project, delete_project])
+      .invoke_handler(tauri::generate_handler![get_projects, create_project, update_project, delete_project, create_placeholder])
       .manage(Arc::new(db))
       .run(tauri::generate_context!())
       .expect("error while running tauri application");

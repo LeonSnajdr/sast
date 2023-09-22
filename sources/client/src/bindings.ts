@@ -18,9 +18,20 @@ export function createProject(createContract: CreateProjectContract) {
     return invoke()<Project>("create_project", { createContract })
 }
 
+export function updateProject(updateContract: UpdateProjectContract) {
+    return invoke()<Project>("update_project", { updateContract })
+}
+
 export function deleteProject(projectId: string) {
     return invoke()<Project>("delete_project", { projectId })
 }
 
+export function createPlaceholder(createContract: CreatePlaceholderContract) {
+    return invoke()<Placeholder>("create_placeholder", { createContract })
+}
+
 export type CreateProjectContract = { name: string }
+export type UpdateProjectContract = { id: string; name: string }
+export type CreatePlaceholderContract = { name: string; variety: string; project_id: string }
 export type Project = { id: string; name: string; createdAt: string; updatedAt: string }
+export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; projectId: string }

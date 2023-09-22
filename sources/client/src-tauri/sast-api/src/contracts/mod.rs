@@ -1,2 +1,2 @@
-
-pub mod create_project_contract;
+pub mod project_contracts;
+pub mod placeholder_contracts;

@@ -9,8 +9,19 @@ generator client {
 }
 
 model Project {
-  id        String   @id @default(uuid())
+  id           String        @id @default(uuid())
+  name         String
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  Placeholders Placeholder[]
+}
+
+model Placeholder {
+  id        String  @id @default(uuid())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  variety   String
+  value     String?
+  values    String?
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
 }
