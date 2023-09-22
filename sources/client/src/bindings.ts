@@ -14,8 +14,12 @@ export function getProjects() {
     return invoke()<Project[]>("get_projects")
 }
 
-export function createProject(createData: CreateProjectContract) {
-    return invoke()<Project>("create_project", { createData })
+export function createProject(createContract: CreateProjectContract) {
+    return invoke()<Project>("create_project", { createContract })
+}
+
+export function deleteProject(projectId: string) {
+    return invoke()<null>("delete_project", { projectId })
 }
 
 export type CreateProjectContract = { name: string }

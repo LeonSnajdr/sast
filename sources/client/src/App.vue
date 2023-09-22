@@ -6,6 +6,7 @@
         <Button label="Create" @click="create" />
         <div v-for="project in projects" :key="project.id">
             <h3>- {{ project.name }}</h3>
+            <Button label="Del" @click="deleteProject(project.id)" />
         </div>
     </div>
 </template>
@@ -41,5 +42,12 @@ async function create(): Promise<void> {
     await loadProjects();
 
     toast.add({ severity: "success", summary: "Success", detail: "Created project successfully", life: 3000 });
+}
+
+async function deleteProject(projectId: string): Promise<void> {
+    await commands.deleteProject(projectId);
+    await loadProjects();
+
+    toast.add({ severity: "success", summary: "Success", detail: "Deleted project successfully", life: 3000 });
 }
 </script>
