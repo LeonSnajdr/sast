@@ -5,16 +5,15 @@
 mod prisma;
 mod contracts;
 mod services;
+mod commands;
+mod utils;
 
-use prisma::*;
-use serde::Deserialize;
-use specta::{collect_types, Type};
+use specta::{collect_types};
 use std::sync::Arc;
-use tauri::State;
 use tauri_specta::ts;
-use services::project_service::{get_projects, create_project};
 
-type DbState<'a> = State<'a, Arc<PrismaClient>>;
+use crate::prisma::*;
+use crate::commands::project_commands::{get_projects, create_project};
 
 #[tokio::main]
 async fn main() {

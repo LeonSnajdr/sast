@@ -18,5 +18,5 @@ export function createProject(createData: CreateProjectContract) {
     return invoke()<Project>("create_project", { createData })
 }
 
-export type Project = { id: string; name: string; createdAt: string; updatedAt: string }
 export type CreateProjectContract = { name: string }
+export type Project = { id: string; name: string; createdAt: string; updatedAt: string }

@@ -1,7 +1,10 @@
 use tauri;
 use specta;
 
+use prisma_client_rust::QueryError;
+
 use crate::prisma::project;
+use crate::utils::db_utils::DbState;
 use crate::contracts::create_project_contract::CreateProjectContract;
 
 #[tauri::command]
