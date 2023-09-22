@@ -5,10 +5,12 @@ use crate::utils::db_utils::DbState;
 use crate::contracts::project_contracts::{CreateProjectContract, UpdateProjectContract};
 
 pub async fn get_projects(db: DbState<'_>) -> Result<Vec<project::Data>, QueryError> {
-    let projects = db.project()
+    let projects = db
+        .project()
         .find_many(vec![])
-        .with(project::placeholders::fetch(vec![]))
-        .exec().await;
+        .select(project::select!({ placeholders }))
+        .exec()
+        .await;
 
     return projects;
 }
