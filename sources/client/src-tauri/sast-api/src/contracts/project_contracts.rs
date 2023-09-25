@@ -3,7 +3,9 @@ use specta::Type;
 
 use crate::prisma::project;
 
-project::include!(full_project { placeholders });
+project::include!(full_project_contract { placeholders });
+
+project::select!(list_project_contract { id name });
 
 #[derive(Deserialize, Type)]
 pub struct CreateProjectContract {

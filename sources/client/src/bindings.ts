@@ -10,8 +10,12 @@ declare global {
 // Function avoids 'window not defined' in SSR
 const invoke = () => window.__TAURI_INVOKE__;
 
-export function getProjects() {
-    return invoke()<FullProject[]>("get_projects")
+export function getFullProjects() {
+    return invoke()<FullProjectContract[]>("get_full_projects")
+}
+
+export function getListProjects() {
+    return invoke()<ListProjectContract[]>("get_list_projects")
 }
 
 export function createProject(createContract: CreateProjectContract) {
@@ -31,8 +35,9 @@ export function createPlaceholder(createContract: CreatePlaceholderContract) {
 }
 
 export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; project_id: string }
-export type UpdateProjectContract = { id: string; name: string }
+export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
+export type ListProjectContract = { id: string; name: string }
+export type UpdateProjectContract = { id: string; name: string }
 export type CreatePlaceholderContract = { name: string; variety: string; project_id: string }
 export type CreateProjectContract = { name: string }
-export type FullProject = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
