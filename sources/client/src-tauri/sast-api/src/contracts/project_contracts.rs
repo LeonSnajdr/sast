@@ -3,7 +3,7 @@ use specta::Type;
 
 use crate::prisma::project;
 
-project::include!(project_with_placeholders { placeholders });
+project::include!(full_project { placeholders });
 
 #[derive(Deserialize, Type)]
 pub struct CreateProjectContract {

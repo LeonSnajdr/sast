@@ -3,7 +3,7 @@ use specta;
 use tauri;
 
 use crate::contracts::project_contracts::{
-    project_with_placeholders, CreateProjectContract, UpdateProjectContract,
+    full_project, CreateProjectContract, UpdateProjectContract,
 };
 use crate::prisma::project;
 use crate::services::project_service;
@@ -11,9 +11,7 @@ use crate::utils::db_utils::DbState;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_projects(
-    db: DbState<'_>,
-) -> Result<Vec<project_with_placeholders::Data>, QueryError> {
+pub async fn get_projects(db: DbState<'_>) -> Result<Vec<full_project::Data>, QueryError> {
     return project_service::get_projects(db).await;
 }
 

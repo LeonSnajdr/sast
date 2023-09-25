@@ -11,7 +11,7 @@ declare global {
 const invoke = () => window.__TAURI_INVOKE__;
 
 export function getProjects() {
-    return invoke()<ProjectWithPlaceholders[]>("get_projects")
+    return invoke()<FullProject[]>("get_projects")
 }
 
 export function createProject(createContract: CreateProjectContract) {
@@ -32,7 +32,7 @@ export function createPlaceholder(createContract: CreatePlaceholderContract) {
 
 export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; project_id: string }
 export type UpdateProjectContract = { id: string; name: string }
-export type ProjectWithPlaceholders = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
 export type CreatePlaceholderContract = { name: string; variety: string; project_id: string }
 export type CreateProjectContract = { name: string }
+export type FullProject = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
