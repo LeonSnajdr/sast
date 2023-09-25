@@ -5,6 +5,7 @@ mod commands;
 mod contracts;
 #[allow(warnings, unused)]
 mod prisma;
+mod repositories;
 mod services;
 mod utils;
 

@@ -4,32 +4,53 @@ use crate::contracts::project_contracts::{
     project_with_placeholders, CreateProjectContract, UpdateProjectContract,
 };
 use crate::prisma::project;
-use crate::repositories::project_repository;
 use crate::utils::db_utils::DbState;
 
 pub async fn get_projects(
     db: DbState<'_>,
 ) -> Result<Vec<project_with_placeholders::Data>, QueryError> {
-    return project_repository::get_projects(db).await;
+    let projects = db
+        .project()
+        .find_many(vec![])
+        .include(project_with_placeholders::include())
+        .exec()
+        .await;
+
+    return projects;
 }
 
 pub async fn create_project(
     db: DbState<'_>,
     create_contract: CreateProjectContract,
 ) -> Result<project::Data, QueryError> {
-    return project_repository::create_project(db, create_contract).await;
+    return db
+        .project()
+        .create(create_contract.name, vec![])
+        .exec()
+        .await;
 }
 
 pub async fn update_project(
     db: DbState<'_>,
     update_contract: UpdateProjectContract,
 ) -> Result<project::Data, QueryError> {
-    return project_repository::update_project(db, update_contract).await;
+    return db
+        .project()
+        .update(
+            project::id::equals(update_contract.id),
+            vec![project::name::set(update_contract.name)],
+        )
+        .exec()
+        .await;
 }
 
 pub async fn delete_project(
     db: DbState<'_>,
     project_id: String,
 ) -> Result<project::Data, QueryError> {
-    return project_repository::delete_project(db, project_id).await;
+    return db
+        .project()
+        .delete(project::id::equals(project_id))
+        .exec()
+        .await;
 }
