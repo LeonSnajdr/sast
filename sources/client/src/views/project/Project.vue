@@ -1,8 +1,9 @@
 <template>
-    <h2>project</h2>
     <ProjectList />
+    <ProjectDetail />
 </template>
 
 <script setup lang="ts">
 import ProjectList from "./ProjectList.vue";
+import ProjectDetail from "./ProjectDetail.vue";
 </script>

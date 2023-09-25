@@ -15,7 +15,7 @@ use tauri_specta::ts;
 
 use crate::commands::placeholder_commands::create_placeholder;
 use crate::commands::project_commands::{
-    create_project, delete_project, get_full_projects, get_list_projects, update_project,
+    create_project, delete_project, get_full_project, get_list_projects, update_project,
 };
 use crate::prisma::*;
 
@@ -26,7 +26,7 @@ async fn main() {
     #[cfg(debug_assertions)]
     ts::export(
         collect_types![
-            get_full_projects,
+            get_full_project,
             get_list_projects,
             create_project,
             update_project,
@@ -42,7 +42,7 @@ async fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            get_full_projects,
+            get_full_project,
             get_list_projects,
             create_project,
             update_project,
