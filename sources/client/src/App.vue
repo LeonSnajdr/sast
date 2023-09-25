@@ -1,6 +1,6 @@
 <template>
     <Toast></Toast>
-    <div class="card flex justify-content-center" v-if="projects">
+    <div class="card flex justify-content-center">
         <Button @click="loadProjects">Refresh</Button>
         <br />
         <hr />
@@ -9,11 +9,11 @@
         <br />
         <hr />
         <div v-for="project in projects" :key="project.id">
-            <InputText v-model="newPlaceholderName"></InputText>
+            <InputText v-model="project.name"></InputText>
             <Button label="Create Placehlder" @click="createPlaceholderForProject(project)"></Button>
             <Button label="Rename" @click="renameProject(project)" />
             <Button label="Del" @click="deleteProject(project)" />
-            <InputText></InputText>
+            <InputText v-model="newPlaceholderName"></InputText>
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@ const toast = useToast();
 
 const newProjectName = ref<string>("");
 const newPlaceholderName = ref<string>("");
-const projects = ref<commands.Project[]>();
+const projects = ref<commands.Project[]>([]);
 
 onBeforeMount(async () => {
     await loadProjects();
