@@ -1,7 +1,7 @@
 <template>
     <h1>Project detail</h1>
     <InputText v-model="command"></InputText>
-    <Button @click="executeCommand"></Button>
+    <Button @click="executeCommand">{{ $t("test.test") }}</Button>
 </template>
 
 <script setup lang="ts">
