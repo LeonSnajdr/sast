@@ -9,6 +9,8 @@ use crate::utils::db_utils::DbState;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_placeholder(db: DbState<'_>, create_contract: CreatePlaceholderContract) -> Result<placeholder::Data, QueryError> {
+pub async fn create_placeholder(
+    db: DbState<'_>, create_contract: CreatePlaceholderContract,
+) -> Result<placeholder::Data, QueryError> {
     return placeholder_service::create_placeholder(db, create_contract).await;
 }

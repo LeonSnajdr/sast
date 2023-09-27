@@ -34,6 +34,10 @@ export function createPlaceholder(createContract: CreatePlaceholderContract) {
     return invoke()<Placeholder>("create_placeholder", { createContract })
 }
 
+export function runCommand(command: string) {
+    return invoke()<string>("run_command", { command })
+}
+
 export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; project_id: string }
 export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }

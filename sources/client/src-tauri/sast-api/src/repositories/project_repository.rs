@@ -6,7 +6,9 @@ use crate::contracts::project_contracts::{
 use crate::prisma::project;
 use crate::utils::db_utils::DbState;
 
-pub async fn get_list_projects(db: DbState<'_>) -> Result<Vec<list_project_contract::Data>, QueryError> {
+pub async fn get_list_projects(
+    db: DbState<'_>,
+) -> Result<Vec<list_project_contract::Data>, QueryError> {
     let projects = db
         .project()
         .find_many(vec![])
@@ -17,7 +19,9 @@ pub async fn get_list_projects(db: DbState<'_>) -> Result<Vec<list_project_contr
     return projects;
 }
 
-pub async fn get_full_project(db: DbState<'_>, project_id: String) -> Result<Option<full_project_contract::Data>, QueryError> {
+pub async fn get_full_project(
+    db: DbState<'_>, project_id: String,
+) -> Result<Option<full_project_contract::Data>, QueryError> {
     let project = db
         .project()
         .find_first(vec![project::id::equals(project_id)])
@@ -28,7 +32,9 @@ pub async fn get_full_project(db: DbState<'_>, project_id: String) -> Result<Opt
     return project;
 }
 
-pub async fn create_project(db: DbState<'_>, create_contract: CreateProjectContract) -> Result<project::Data, QueryError> {
+pub async fn create_project(
+    db: DbState<'_>, create_contract: CreateProjectContract,
+) -> Result<project::Data, QueryError> {
     return db
         .project()
         .create(create_contract.name, vec![])
@@ -36,7 +42,9 @@ pub async fn create_project(db: DbState<'_>, create_contract: CreateProjectContr
         .await;
 }
 
-pub async fn update_project(db: DbState<'_>, update_contract: UpdateProjectContract) -> Result<project::Data, QueryError> {
+pub async fn update_project(
+    db: DbState<'_>, update_contract: UpdateProjectContract,
+) -> Result<project::Data, QueryError> {
     return db
         .project()
         .update(
@@ -47,7 +55,9 @@ pub async fn update_project(db: DbState<'_>, update_contract: UpdateProjectContr
         .await;
 }
 
-pub async fn delete_project(db: DbState<'_>, project_id: String) -> Result<project::Data, QueryError> {
+pub async fn delete_project(
+    db: DbState<'_>, project_id: String,
+) -> Result<project::Data, QueryError> {
     return db
         .project()
         .delete(project::id::equals(project_id))
