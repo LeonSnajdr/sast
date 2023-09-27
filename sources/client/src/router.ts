@@ -6,9 +6,12 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: "/",
+            path: "/:projectId?",
             name: "project",
-            component: Project
+            component: Project,
+            props: (route) => ({
+                projectId: route.params.projectId
+            })
         },
         {
             path: "/settings",

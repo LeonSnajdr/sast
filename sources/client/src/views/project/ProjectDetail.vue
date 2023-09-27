@@ -1,16 +1,16 @@
 <template>
     <h1>Project detail</h1>
     <InputText v-model="command"></InputText>
-    <Button @click="executeCommand">{{ $t("test.test") }}</Button>
+    <Btn @click="executeCommand">{{ $t("test.test") }}</Btn>
+    <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
 </template>
 
 <script setup lang="ts">
-import InputText from "primevue/inputtext";
-import Button from "primevue/button";
-
 import { ref } from "vue";
-
 import * as commands from "@/bindings";
+import { useProjectStore } from "@/stores/projectStore";
+
+const projectStore = useProjectStore();
 
 const command = ref("");
 

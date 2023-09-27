@@ -6,6 +6,7 @@ import { useToast } from "primevue/usetoast";
 export const useProjectStore = defineStore("sast-project", () => {
     const toast = useToast();
 
+    const projectId = ref<string>();
     const listProjects = ref<ListProjectContract[]>([]);
 
     const loadListProjects = async () => {
@@ -17,5 +18,5 @@ export const useProjectStore = defineStore("sast-project", () => {
         }
     };
 
-    return { listProjects, loadListProjects };
+    return { projectId, listProjects, loadListProjects };
 });

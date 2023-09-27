@@ -1,7 +1,6 @@
 <template>
-    <h2>Projectlist</h2>
     <div v-for="listProject in projectStore.listProjects" :key="listProject.id">
-        <p>{{ listProject.name }}</p>
+        <RouterLink :to="{ name: 'project', params: { projectId: listProject.id } }">{{ listProject.name }}</RouterLink>
     </div>
 </template>
 
