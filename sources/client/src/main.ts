@@ -1,5 +1,6 @@
 import "primevue/resources/themes/md-light-indigo/theme.css";
 import "primevue/resources/primevue.css";
+import "primeflex/primeflex.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
