@@ -46,14 +46,19 @@ export function startTaskSet(taskSetId: string) {
     return invoke()<string>("start_task_set", { taskSetId })
 }
 
+export function createTask(createContract: CreateTaskContract) {
+    return invoke()<Task>("create_task", { createContract })
+}
+
 export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: TaskSet[] }
 export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; project_id: string }
 export type TaskSet = { id: string; name: string; project_id: string }
 export type ListProjectContract = { id: string; name: string }
+export type Task = { id: string; variety: string; command: string | null; delay: number | null; task_set_id: string }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
 export type UpdateProjectContract = { id: string; name: string }
 export type CreateTaskSetContract = { project_id: string; name: string }
 export type CreatePlaceholderContract = { name: string; variety: string; project_id: string }
-export type Task = { id: string; type: string; command: string | null; delay: number | null; task_set_id: string }
+export type CreateTaskContract = { variety: string; command: string; task_set_id: string }
 export type CreateProjectContract = { name: string }
 export type FullSetContract = { id: string; name: string; project_id: string; project: { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }; tasks: Task[] }

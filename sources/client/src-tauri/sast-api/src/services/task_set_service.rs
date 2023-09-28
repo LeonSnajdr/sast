@@ -19,11 +19,20 @@ pub async fn get_full_task_set(
 }
 
 pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<String, ()> {
-    let task_set_to_start = task_set_repository::get_full_task_set(db, task_set_id)
-        .await
-        .unwrap();
+    let task_set_to_start: full_set_contract::Data =
+        task_set_repository::get_full_task_set(db, task_set_id)
+            .await
+            .unwrap()
+            .unwrap();
 
-    println!("Executed");
+    println!("Executed {}", task_set_to_start.project.id);
+
+    for task in task_set_to_start.tasks {
+        let command: String = task.command.unwrap();
+
+        println!("Command: {}", command);
+        execute_command(command);
+    }
 
     Ok("Keckw".to_string())
 }

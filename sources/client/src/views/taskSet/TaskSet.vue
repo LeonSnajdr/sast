@@ -15,7 +15,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import type { FullSetContract } from "@/bindings";
+import type { FullSetContract, CreateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { useToast } from "primevue/usetoast";
 
@@ -45,6 +45,19 @@ const loadTaskSet = async () => {
 };
 
 const createCommand = async () => {
-    //
+    try {
+        const createContract: CreateTaskContract = {
+            command: createTaskInput.value,
+            task_set_id: props.taskSetId,
+            variety: "Command"
+        };
+
+        const createdTask = await commands.createTask(createContract);
+
+        taskSet.value?.tasks.push(createdTask);
+    } catch (error) {
+        console.error("Creating task failed", error);
+        toast.add({ severity: "error", summary: "Error", detail: "Loading taskset failed", life: 3000 });
+    }
 };
 </script>
