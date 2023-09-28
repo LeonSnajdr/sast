@@ -13,6 +13,7 @@ import i18n from "./i18n";
 
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
+import Dropdown from "primevue/dropdown";
 
 const app = createApp(App);
 
@@ -24,5 +25,6 @@ app.use(toastService);
 
 app.component("InputText", InputText);
 app.component("Btn", Button);
+app.component("Dropdown", Dropdown);
 
 app.mount("#app");
