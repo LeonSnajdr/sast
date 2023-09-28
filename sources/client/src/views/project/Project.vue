@@ -14,7 +14,7 @@ import ProjectList from "./ProjectList.vue";
 import ProjectDetail from "./projectDetail/ProjectDetail.vue";
 import { ref, watch } from "vue";
 import type { FullProjectContract } from "@/bindings";
-import { getFullProject } from "@/bindings";
+import * as commands from "@/bindings";
 import { useToast } from "primevue/usetoast";
 
 const props = defineProps<{
@@ -32,7 +32,7 @@ const loadProject = async () => {
             return;
         }
 
-        const fullProject = await getFullProject(props.projectId);
+        const fullProject = await commands.getFullProject(props.projectId);
         project.value = fullProject ?? undefined;
     } catch (error) {
         console.error("Loading project failed", error);

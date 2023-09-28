@@ -3,7 +3,7 @@
 
     <div v-for="taskSet in project.task_sets" :key="taskSet.id">
         <Btn icon="pi pi-check" @click="startTaskSet(taskSet.id)" />
-        <span> {{ taskSet.name }}</span>
+        <RouterLink :to="{ name: 'taskSet', params: { projectId: project.id, taskSetId: taskSet.id } }">{{ taskSet.name }}</RouterLink>
     </div>
 
     <div>
