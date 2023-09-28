@@ -4,9 +4,13 @@
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
+    "types": ["@vue-macros/define-models/macros-global"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
+  },
+  "vueCompilerOptions": {
+    "plugins": ["@vue-macros/volar/define-models"]
   }
 }

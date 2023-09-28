@@ -13,26 +13,38 @@
 <script setup lang="ts">
 import type { CreatePlaceholderContract, FullProjectContract } from "@/bindings";
 import { createPlaceholder } from "@/bindings";
-import { useProjectStore } from "@/stores/projectStore";
+import { useToast } from "primevue/usetoast";
 import { ref } from "vue";
 
-const props = defineProps<{
+const { project } = defineModels<{
     project: FullProjectContract;
 }>();
+
+const toast = useToast();
 
 const newPlaceholderName = ref("");
 const newPlaceholderVariety = ref("");
 
 const createNewPlaceholder = async () => {
     const createContract: CreatePlaceholderContract = {
-        project_id: props.project.id,
+        project_id: project.value.id,
         name: newPlaceholderName.value,
         variety: newPlaceholderVariety.value
     };
 
-    await createPlaceholder(createContract);
+    try {
+        const newContract = await createPlaceholder(createContract);
 
-    // props.project.placeholders.push(newContract);
+        project.value.placeholders.push(newContract);
+
+        toast.add({ severity: "success", detail: "Placeholder created", group: "br", life: 3000 });
+    } catch (error) {
+        console.error("Creating placeholder failed", error);
+        toast.add({ severity: "error", detail: "Placeholder creation failed", group: "br", life: 3000 });
+    } finally {
+        newPlaceholderName.value = "";
+        newPlaceholderVariety.value = "";
+    }
 };
 
 enum PlaceholderVariety {

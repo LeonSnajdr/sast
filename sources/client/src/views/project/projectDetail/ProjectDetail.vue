@@ -1,14 +1,14 @@
 <template>
-    <div v-if="projectStore.project">
-        <h1>{{ projectStore.project.name }}</h1>
-        <Placeholders :placeholders="projectStore.project.placeholders" />
-        <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
-    </div>
+    <h1>{{ project.name }}</h1>
+    <Placeholders v-model:project="project" />
+    <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
 </template>
 
 <script setup lang="ts">
-import { useProjectStore } from "@/stores/projectStore";
 import Placeholders from "./Placeholders.vue";
+import type { FullProjectContract } from "@/bindings";
 
-const projectStore = useProjectStore();
+const { project } = defineModels<{
+    project: FullProjectContract;
+}>();
 </script>
