@@ -37,7 +37,7 @@ model TaskSet {
 
 model Task {
     id          String  @id @default(uuid())
-    type        String // Command, Delay
+    variety     String // Command, Delay
     command     String?
     delay       Int?
     task_set    TaskSet @relation(fields: [task_set_id], references: [id])
