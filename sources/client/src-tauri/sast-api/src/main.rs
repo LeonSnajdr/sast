@@ -17,7 +17,7 @@ use crate::commands::placeholder_commands::create_placeholder;
 use crate::commands::project_commands::{
     create_project, delete_project, get_full_project, get_list_projects, update_project,
 };
-use crate::commands::task_commands::run_command;
+use crate::commands::task_set_commands::{create_task_set, start_task_set};
 use crate::prisma::*;
 
 #[tokio::main]
@@ -33,7 +33,8 @@ async fn main() {
             update_project,
             delete_project,
             create_placeholder,
-            run_command
+            create_task_set,
+            start_task_set
         ],
         "../../src/bindings.ts",
     )
@@ -50,7 +51,8 @@ async fn main() {
             update_project,
             delete_project,
             create_placeholder,
-            run_command
+            create_task_set,
+            start_task_set
         ])
         .manage(Arc::new(db))
         .run(tauri::generate_context!())

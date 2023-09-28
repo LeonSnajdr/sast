@@ -4,9 +4,9 @@
     </template>
 
     <div>
-        <InputText v-model="newPlaceholderName" :placeholder="$t('placeholders.new')" size="small"></InputText>
-        <Dropdown v-model="newPlaceholderVariety" :options="Object.values(PlaceholderVariety)" size="small" />
-        <Btn @click="createNewPlaceholder" :label="$t('placeholders.new.button')"></Btn>
+        <InputText v-model="addPlaceholderName" :placeholder="$t('projectDetailPlaceholders.new.input')" size="small"></InputText>
+        <Dropdown v-model="addPlaceholderVariety" :options="Object.values(PlaceholderVariety)" size="small" />
+        <Btn @click="addPlaceholder" :label="$t('placeholders.new.button')"></Btn>
     </div>
 </template>
 
@@ -22,14 +22,14 @@ const { project } = defineModels<{
 
 const toast = useToast();
 
-const newPlaceholderName = ref("");
-const newPlaceholderVariety = ref("");
+const addPlaceholderName = ref("");
+const addPlaceholderVariety = ref("");
 
-const createNewPlaceholder = async () => {
+const addPlaceholder = async () => {
     const createContract: CreatePlaceholderContract = {
         project_id: project.value.id,
-        name: newPlaceholderName.value,
-        variety: newPlaceholderVariety.value
+        name: addPlaceholderName.value,
+        variety: addPlaceholderVariety.value
     };
 
     try {
@@ -42,8 +42,8 @@ const createNewPlaceholder = async () => {
         console.error("Creating placeholder failed", error);
         toast.add({ severity: "error", detail: "Placeholder creation failed", group: "br", life: 3000 });
     } finally {
-        newPlaceholderName.value = "";
-        newPlaceholderVariety.value = "";
+        addPlaceholderName.value = "";
+        addPlaceholderVariety.value = "";
     }
 };
 

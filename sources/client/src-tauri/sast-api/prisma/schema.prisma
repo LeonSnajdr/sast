@@ -14,14 +14,30 @@ model Project {
     created_at   DateTime      @default(now())
     updated_at   DateTime      @updatedAt
     placeholders Placeholder[]
+    task_sets    TaskSet[]
 }
 
 model Placeholder {
     id         String  @id @default(uuid())
     name       String
-    variety    String
+    variety    String // Input, Select
     value      String?
     values     String?
     project    Project @relation(fields: [project_id], references: [id])
     project_id String
+}
+
+model TaskSet {
+    id         String  @id @default(uuid())
+    name       String
+    tasks      Task[]
+    project    Project @relation(fields: [project_id], references: [id])
+    project_id String
+}
+
+model Task {
+    id          String  @id @default(uuid())
+    type        String // Command, Delay
+    task_set    TaskSet @relation(fields: [task_set_id], references: [id])
+    task_set_id String
 }

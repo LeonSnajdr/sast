@@ -34,14 +34,20 @@ export function createPlaceholder(createContract: CreatePlaceholderContract) {
     return invoke()<Placeholder>("create_placeholder", { createContract })
 }
 
-export function runCommand(command: string) {
-    return invoke()<string>("run_command", { command })
+export function createTaskSet(createContract: CreateTaskSetContract) {
+    return invoke()<TaskSet>("create_task_set", { createContract })
 }
 
+export function startTaskSet(taskSetId: string) {
+    return invoke()<string>("start_task_set", { taskSetId })
+}
+
+export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: TaskSet[] }
 export type Placeholder = { id: string; name: string; variety: string; value: string | null; values: string | null; project_id: string }
-export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[] }
-export type Project = { id: string; name: string; created_at: string; updated_at: string }
+export type TaskSet = { id: string; name: string; project_id: string }
 export type ListProjectContract = { id: string; name: string }
+export type Project = { id: string; name: string; created_at: string; updated_at: string }
 export type UpdateProjectContract = { id: string; name: string }
+export type CreateTaskSetContract = { project_id: string; name: string }
 export type CreatePlaceholderContract = { name: string; variety: string; project_id: string }
 export type CreateProjectContract = { name: string }
