@@ -12,6 +12,7 @@ import router from "./router";
 import i18n from "./i18n";
 
 import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 
@@ -24,6 +25,7 @@ app.use(primeVue);
 app.use(toastService);
 
 app.component("InputText", InputText);
+app.component("InputNumber", InputNumber);
 app.component("Btn", Button);
 app.component("Dropdown", Dropdown);
 

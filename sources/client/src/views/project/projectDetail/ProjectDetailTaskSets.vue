@@ -2,8 +2,7 @@
     <h2>Task sets</h2>
 
     <div v-for="taskSet in project.task_sets" :key="taskSet.id">
-        <Btn icon="pi pi-check" @click="startTaskSet(taskSet.id)" />
-        <RouterLink :to="{ name: 'taskSet', params: { projectId: project.id, taskSetId: taskSet.id } }">{{ taskSet.name }}</RouterLink>
+        <ProjectDetailTaskSet :taskSet="taskSet" />
     </div>
 
     <div>
@@ -17,6 +16,7 @@ import type { FullProjectContract, CreateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { useToast } from "primevue/usetoast";
 import { ref } from "vue";
+import ProjectDetailTaskSet from "./ProjectDetailTaskSet.vue";
 
 const { project } = defineModels<{
     project: FullProjectContract;
@@ -43,15 +43,6 @@ const createTaskSet = async () => {
         toast.add({ severity: "error", detail: "Placeholder creation failed", group: "br", life: 3000 });
     } finally {
         craeteTaskSetName.value = "";
-    }
-};
-
-const startTaskSet = async (taskSetId: string) => {
-    try {
-        commands.startTaskSet(taskSetId);
-    } catch (error) {
-        console.error(error);
-        toast.add({ severity: "error", detail: "Taskset start failed", group: "br", life: 3000 });
     }
 };
 </script>

@@ -33,11 +33,10 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
 
         println!("Command: {}", command);
 
-        let delay = u64::try_from(task.delay).unwrap();
-
-        thread::sleep(time::Duration::from_millis(delay));
-
         execute_command(command);
+
+        let delay = u64::try_from(task.delay).unwrap();
+        thread::sleep(time::Duration::from_millis(delay));
     }
 
     Ok("Keckw".to_string())

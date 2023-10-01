@@ -5,9 +5,11 @@
 
         <template v-for="task in taskSet.tasks" :key="task.id">
             <InputText v-model="task.command" />
+            <InputNumber v-model="task.delay"></InputNumber>
         </template>
         <div>
-            <InputText v-model="createTaskInput" placeholder="Command"></InputText>
+            <InputText v-model="taskCommand" placeholder="Command"></InputText>
+            <InputNumber v-model="taskDelay" placeholder="Command"></InputNumber>
             <Btn @click="createCommand">Create command</Btn>
         </div>
     </div>
@@ -28,7 +30,8 @@ const toast = useToast();
 
 const taskSet = ref<FullSetContract>();
 
-const createTaskInput = ref("");
+const taskCommand = ref("");
+const taskDelay = ref(0);
 
 onBeforeMount(() => {
     loadTaskSet();
@@ -47,7 +50,8 @@ const loadTaskSet = async () => {
 const createCommand = async () => {
     try {
         const createContract: CreateTaskContract = {
-            command: createTaskInput.value,
+            command: taskCommand.value,
+            delay: taskDelay.value,
             task_set_id: props.taskSetId,
             variety: "Command"
         };
