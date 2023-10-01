@@ -11,8 +11,10 @@ pub async fn create_task(
         .task()
         .create(
             create_contract.variety,
+            create_contract.command,
+            create_contract.delay,
             task_set::id::equals(create_contract.task_set_id),
-            vec![task::command::set(Some(create_contract.command))],
+            vec![],
         )
         .exec()
         .await;

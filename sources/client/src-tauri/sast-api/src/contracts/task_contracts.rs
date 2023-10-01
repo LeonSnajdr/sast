@@ -5,5 +5,6 @@ use specta::Type;
 pub struct CreateTaskContract {
     pub variety: String,
     pub command: String,
+    pub delay: i32,
     pub task_set_id: String,
 }

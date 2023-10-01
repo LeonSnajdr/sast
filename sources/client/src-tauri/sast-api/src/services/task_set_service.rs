@@ -1,5 +1,6 @@
 use prisma_client_rust::QueryError;
 use run_script::ScriptOptions;
+use std::{thread, time};
 
 use crate::contracts::task_set_contracts::{full_set_contract, CreateTaskSetContract};
 use crate::prisma::task_set;
@@ -28,9 +29,14 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
     println!("Executed {}", task_set_to_start.project.id);
 
     for task in task_set_to_start.tasks {
-        let command: String = task.command.unwrap();
+        let command: String = task.command;
 
         println!("Command: {}", command);
+
+        let delay = u64::try_from(task.delay).unwrap();
+
+        thread::sleep(time::Duration::from_millis(delay));
+
         execute_command(command);
     }
 
