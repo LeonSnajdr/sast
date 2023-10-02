@@ -5,11 +5,13 @@
 
         <template v-for="task in taskSet.tasks" :key="task.id">
             <InputText v-model="task.command" />
+            <InputText v-model="task.working_directory" />
             <InputNumber v-model="task.delay"></InputNumber>
         </template>
         <div>
             <InputText v-model="taskCommand" placeholder="Command"></InputText>
-            <InputNumber v-model="taskDelay" placeholder="Command"></InputNumber>
+            <InputText v-model="taskWorkingDirectory" placeholder="Workig dir"></InputText>
+            <InputNumber v-model="taskDelay" placeholder="Delay"></InputNumber>
             <Btn @click="createCommand">Create command</Btn>
         </div>
     </div>
@@ -31,6 +33,7 @@ const toast = useToast();
 const taskSet = ref<FullSetContract>();
 
 const taskCommand = ref("");
+const taskWorkingDirectory = ref("");
 const taskDelay = ref(0);
 
 onBeforeMount(() => {
@@ -51,6 +54,7 @@ const createCommand = async () => {
     try {
         const createContract: CreateTaskContract = {
             command: taskCommand.value,
+            working_directory: taskWorkingDirectory.value,
             delay: taskDelay.value,
             task_set_id: props.taskSetId,
             variety: "Command"

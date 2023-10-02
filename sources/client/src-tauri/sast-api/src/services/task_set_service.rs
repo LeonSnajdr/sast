@@ -30,10 +30,11 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
 
     for task in task_set_to_start.tasks {
         let command: String = task.command;
+        let keck: String = task.working_directory;
 
         println!("Command: {}", command);
 
-        execute_command(command);
+        execute_command(keck, command);
 
         let delay = u64::try_from(task.delay).unwrap();
         thread::sleep(time::Duration::from_millis(delay));
@@ -42,13 +43,16 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
     Ok("Keckw".to_string())
 }
 
-fn execute_command(command: String) -> String {
-    let options = ScriptOptions::new();
+fn execute_command(working_directory: String, command: String) {
+    let mut options = ScriptOptions::new();
+
+    options.working_directory = Some(std::path::PathBuf::from(working_directory));
+
     let args = vec![];
 
     let denoted_command = format!(r#"{}"#, command);
 
     let (_, output, _) = run_script::run(&denoted_command, &args, &options).unwrap();
 
-    return output;
+    println!("Output: {}", output);
 }

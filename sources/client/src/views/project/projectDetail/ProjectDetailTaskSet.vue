@@ -1,5 +1,5 @@
 <template>
-    <Btn :label="loading ? 'loading' : 'run'" @click="startTaskSet()" />
+    <Btn label="run" :loading="loading" icon="pi pi-search" @click="startTaskSet()" />
     <RouterLink :to="{ name: 'taskSet', params: { projectId: taskSet.project_id, taskSetId: taskSet.id } }">{{ taskSet.name }}</RouterLink>
 </template>
 
