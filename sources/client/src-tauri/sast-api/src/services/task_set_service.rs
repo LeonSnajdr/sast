@@ -30,21 +30,23 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
 
     for task in task_set_to_start.tasks {
         let mut command: String = task.command;
+        let mut working_directory: String = task.working_directory;
 
         for placeholder in task_set_to_start.project.placeholders.iter() {
-            let placeholder_value = placeholder.value.as_str();
-
             command = command.replace(
                 format!("<?sast {} ?>", placeholder.name).as_str(),
-                placeholder_value,
-            )
-        }
+                placeholder.value.as_str(),
+            );
 
-        let keck: String = task.working_directory;
+            working_directory = working_directory.replace(
+                format!("<?sast {} ?>", placeholder.name).as_str(),
+                placeholder.value.as_str(),
+            );
+        }
 
         println!("Command: {}", command);
 
-        execute_command(keck, command);
+        execute_command(working_directory, command);
 
         let delay = u64::try_from(task.delay).unwrap();
         thread::sleep(time::Duration::from_millis(delay));
