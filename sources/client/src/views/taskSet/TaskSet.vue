@@ -3,10 +3,8 @@
     <div v-if="taskSet">
         <h1>{{ taskSet.name }}</h1>
 
-        <template v-for="task in taskSet.tasks" :key="task.id">
-            <InputText v-model="task.command" />
-            <InputText v-model="task.working_directory" />
-            <InputNumber v-model="task.delay"></InputNumber>
+        <template v-for="(task, index) in taskSet.tasks" :key="task.id">
+            <Task v-model:task="taskSet.tasks[index]" @deleted="taskSet.tasks.splice(index, 1)" />
         </template>
         <div>
             <InputText v-model="taskCommand" placeholder="Command"></InputText>
@@ -22,6 +20,7 @@ import { onBeforeMount, ref } from "vue";
 import type { FullSetContract, CreateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { useToast } from "primevue/usetoast";
+import Task from "./Task.vue";
 
 const props = defineProps<{
     projectId: string;
@@ -56,8 +55,7 @@ const createCommand = async () => {
             command: taskCommand.value,
             working_directory: taskWorkingDirectory.value,
             delay: taskDelay.value,
-            task_set_id: props.taskSetId,
-            variety: "Command"
+            task_set_id: props.taskSetId
         };
 
         const createdTask = await commands.createTask(createContract);

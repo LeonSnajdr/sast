@@ -38,6 +38,10 @@ export function updatePlaceholder(updateContract: UpdatePlaceholderContract) {
     return invoke()<Placeholder>("update_placeholder", { updateContract })
 }
 
+export function deletePlaceholder(placeholderId: string) {
+    return invoke()<Placeholder>("delete_placeholder", { placeholderId })
+}
+
 export function createTaskSet(createContract: CreateTaskSetContract) {
     return invoke()<TaskSet>("create_task_set", { createContract })
 }
@@ -54,7 +58,16 @@ export function createTask(createContract: CreateTaskContract) {
     return invoke()<Task>("create_task", { createContract })
 }
 
+export function updateTask(updateContract: UpdateTaskContract) {
+    return invoke()<Task>("update_task", { updateContract })
+}
+
+export function deleteTask(taskId: string) {
+    return invoke()<Task>("delete_task", { taskId })
+}
+
 export type TaskSet = { id: string; name: string; project_id: string }
+export type UpdateTaskContract = { id: string; command: string; working_directory: string; delay: number }
 export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: TaskSet[] }
 export type ListProjectContract = { id: string; name: string }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
@@ -62,7 +75,7 @@ export type Placeholder = { id: string; name: string; value: string; project_id:
 export type UpdateProjectContract = { id: string; name: string }
 export type CreateTaskSetContract = { project_id: string; name: string }
 export type CreatePlaceholderContract = { name: string; value: string; project_id: string }
-export type CreateTaskContract = { variety: string; command: string; working_directory: string; delay: number; task_set_id: string }
+export type CreateTaskContract = { command: string; working_directory: string; delay: number; task_set_id: string }
 export type CreateProjectContract = { name: string }
 export type UpdatePlaceholderContract = { id: string; value: string }
 export type Task = { id: string; command: string; working_directory: string; delay: number; task_set_id: string }

@@ -1,6 +1,6 @@
 use prisma_client_rust::QueryError;
 
-use crate::contracts::task_contracts::CreateTaskContract;
+use crate::contracts::task_contracts::{CreateTaskContract, UpdateTaskContract};
 use crate::prisma::{task, task_set};
 use crate::utils::db_utils::DbState;
 
@@ -18,4 +18,25 @@ pub async fn create_task(
         )
         .exec()
         .await;
+}
+
+pub async fn update_task(
+    db: DbState<'_>, update_contract: UpdateTaskContract,
+) -> Result<task::Data, QueryError> {
+    return db
+        .task()
+        .update(
+            task::id::equals(update_contract.id),
+            vec![
+                task::command::set(update_contract.command),
+                task::working_directory::set(update_contract.working_directory),
+                task::delay::set(update_contract.delay),
+            ],
+        )
+        .exec()
+        .await;
+}
+
+pub async fn delete_task(db: DbState<'_>, task_id: String) -> Result<task::Data, QueryError> {
+    return db.task().delete(task::id::equals(task_id)).exec().await;
 }

@@ -33,3 +33,13 @@ pub async fn update_placeholder(
         .exec()
         .await;
 }
+
+pub async fn delete_placeholder(
+    db: DbState<'_>, placeholder_id: String,
+) -> Result<placeholder::Data, QueryError> {
+    return db
+        .placeholder()
+        .delete(placeholder::id::equals(placeholder_id))
+        .exec()
+        .await;
+}

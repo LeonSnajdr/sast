@@ -24,3 +24,11 @@ pub async fn update_placeholder(
 ) -> Result<placeholder::Data, QueryError> {
     return placeholder_service::update_placeholder(db, update_contract).await;
 }
+
+#[tauri::command]
+#[specta::specta]
+pub async fn delete_placeholder(
+    db: DbState<'_>, placeholder_id: String,
+) -> Result<placeholder::Data, QueryError> {
+    return placeholder_service::delete_placeholder(db, placeholder_id).await;
+}

@@ -18,3 +18,9 @@ pub async fn update_placeholder(
 ) -> Result<placeholder::Data, QueryError> {
     return placeholder_repository::update_placeholder(db, update_contract).await;
 }
+
+pub async fn delete_placeholder(
+    db: DbState<'_>, placeholder_id: String,
+) -> Result<placeholder::Data, QueryError> {
+    return placeholder_repository::delete_placeholder(db, placeholder_id).await;
+}
