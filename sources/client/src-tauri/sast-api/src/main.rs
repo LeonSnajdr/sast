@@ -13,7 +13,7 @@ use specta::collect_types;
 use std::sync::Arc;
 use tauri_specta::ts;
 
-use crate::commands::placeholder_commands::create_placeholder;
+use crate::commands::placeholder_commands::{create_placeholder, update_placeholder};
 use crate::commands::project_commands::{
     create_project, delete_project, get_full_project, get_list_projects, update_project,
 };
@@ -34,6 +34,7 @@ async fn main() {
             update_project,
             delete_project,
             create_placeholder,
+            update_placeholder,
             create_task_set,
             get_full_task_set,
             start_task_set,
@@ -54,6 +55,7 @@ async fn main() {
             update_project,
             delete_project,
             create_placeholder,
+            update_placeholder,
             create_task_set,
             get_full_task_set,
             start_task_set,

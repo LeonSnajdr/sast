@@ -29,7 +29,17 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
     println!("Executed {}", task_set_to_start.project.id);
 
     for task in task_set_to_start.tasks {
-        let command: String = task.command;
+        let mut command: String = task.command;
+
+        for placeholder in task_set_to_start.project.placeholders.iter() {
+            let placeholder_value = placeholder.value.as_str();
+
+            command = command.replace(
+                format!("<?sast {} ?>", placeholder.name).as_str(),
+                placeholder_value,
+            )
+        }
+
         let keck: String = task.working_directory;
 
         println!("Command: {}", command);

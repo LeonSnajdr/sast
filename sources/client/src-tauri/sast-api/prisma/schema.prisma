@@ -20,9 +20,7 @@ model Project {
 model Placeholder {
     id         String  @id @default(uuid())
     name       String
-    variety    String // Input, Select
-    value      String?
-    values     String?
+    value      String
     project    Project @relation(fields: [project_id], references: [id])
     project_id String
 }
@@ -37,7 +35,6 @@ model TaskSet {
 
 model Task {
     id                String  @id @default(uuid())
-    variety           String // Command, Delay
     command           String
     working_directory String
     delay             Int
