@@ -13,8 +13,23 @@ import InputText from "primevue/inputtext";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
+import Card from "primevue/card";
 
-const DesignSystem = {};
+const DesignSystem = {
+    card: {
+        root: {
+            class: ["p-4 bg-surface shadow-md rounded-md shadow-primary-lighten-3 "]
+        },
+        title: "text-2xl"
+    },
+    inputtext: {
+        root: () => ({
+            class: [
+                "p-1 text-primary border-primary-lighten-2 border rounded hover:border-primary focus:border-primary focus:outline-none focus:outline-offset-0"
+            ]
+        })
+    }
+};
 
 const app = createApp(App);
 
@@ -28,5 +43,6 @@ app.component("InputText", InputText);
 app.component("InputNumber", InputNumber);
 app.component("Btn", Button);
 app.component("Dropdown", Dropdown);
+app.component("Card", Card);
 
 app.mount("#app");

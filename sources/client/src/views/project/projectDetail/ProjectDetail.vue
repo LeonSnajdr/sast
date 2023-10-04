@@ -1,8 +1,12 @@
 <template>
-    <h1 class="bg-red-700">{{ project.name }}</h1>
-    <ProjectDetailPlaceholders v-model:project="project" />
-    <ProjectDetailTaskSets v-model:project="project" />
-    <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
+    <Card>
+        <template #content>
+            <h1>{{ project.name }}</h1>
+            <ProjectDetailPlaceholders v-model:project="project" />
+            <ProjectDetailTaskSets v-model:project="project" />
+            <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
+        </template>
+    </Card>
 </template>
 
 <script setup lang="ts">

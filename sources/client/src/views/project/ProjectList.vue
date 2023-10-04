@@ -1,9 +1,22 @@
 <template>
-    <div v-for="listProject in listProjects" :key="listProject.id">
-        <RouterLink :to="{ name: 'project', params: { projectId: listProject.id } }">{{ listProject.name }}</RouterLink>
-    </div>
-    <InputText v-model="addProjectName" size="small" />
-    <Btn @click="addProject" label="crate" />
+    <Card>
+        <template #title>
+            <h1>Sast</h1>
+        </template>
+        <template #content>
+            <div v-for="listProject in listProjects" :key="listProject.id">
+                <RouterLink :to="{ name: 'project', params: { projectId: listProject.id } }" class="bg-primary text-surface rounded-sm">{{
+                    listProject.name
+                }}</RouterLink>
+            </div>
+        </template>
+        <template #footer>
+            <div class="flex">
+                <InputText v-model="addProjectName" class="w-11" />
+                <Btn @click="addProject" label="crate" />
+            </div>
+        </template>
+    </Card>
 </template>
 
 <script setup lang="ts">

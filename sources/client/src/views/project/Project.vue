@@ -1,11 +1,7 @@
 <template>
-    <div class="grid">
-        <div class="col-3">
-            <ProjectList />
-        </div>
-        <div class="col-9">
-            <ProjectDetail v-if="project" v-model:project="project" />
-        </div>
+    <div class="grid grid-cols-7 gap-4 bg-">
+        <ProjectList class="col-span-2" />
+        <ProjectDetail v-if="project" v-model:project="project" class="col-span-5" />
     </div>
 </template>
 
