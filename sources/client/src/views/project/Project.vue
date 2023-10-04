@@ -1,5 +1,5 @@
 <template>
-    <div class="grid grid-cols-7 gap-4 bg-">
+    <div class="grid grid-cols-7 gap-4">
         <ProjectList class="col-span-2" />
         <ProjectDetail v-if="project" v-model:project="project" class="col-span-5" />
     </div>

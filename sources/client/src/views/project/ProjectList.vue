@@ -5,15 +5,13 @@
         </template>
         <template #content>
             <div v-for="listProject in listProjects" :key="listProject.id">
-                <RouterLink :to="{ name: 'project', params: { projectId: listProject.id } }" class="bg-primary text-surface rounded-sm">{{
-                    listProject.name
-                }}</RouterLink>
+                <Btn :label="listProject.name" @click="switchProject(listProject)" class="w-full mb-1" />
             </div>
         </template>
         <template #footer>
             <div class="flex">
                 <InputText v-model="addProjectName" class="w-11" />
-                <Btn @click="addProject" label="crate" />
+                <Btn @click="addProject">Moin</Btn>
             </div>
         </template>
     </Card>
@@ -24,8 +22,10 @@ import type { CreateProjectContract, ListProjectContract } from "@/bindings";
 import { createProject, getListProjects } from "@/bindings";
 import { useToast } from "primevue/usetoast";
 import { onBeforeMount, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const toast = useToast();
+const router = useRouter();
 
 const listProjects = ref<ListProjectContract[]>([]);
 const addProjectName = ref("");
@@ -56,5 +56,9 @@ const addProject = async () => {
         console.error("Project creation failed", error);
         toast.add({ severity: "error", summary: "Error", detail: "Creating project failed", life: 3000 });
     }
+};
+
+const switchProject = (listProject: ListProjectContract) => {
+    router.push({ name: "project", params: { projectId: listProject.id } });
 };
 </script>

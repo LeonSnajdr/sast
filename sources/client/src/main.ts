@@ -25,8 +25,13 @@ const DesignSystem = {
     inputtext: {
         root: () => ({
             class: [
-                "p-1 text-primary border-primary-lighten-2 border rounded hover:border-primary focus:border-primary focus:outline-none focus:outline-offset-0"
+                "p-1 text-primary border-primary-lighten-2 border rounded-md hover:border-primary focus:border-primary focus:outline-none focus:outline-offset-0"
             ]
+        })
+    },
+    button: {
+        root: (props, context) => ({
+            class: ["p-2 bg-primary rounded-md text-surface text-sm"]
         })
     }
 };
