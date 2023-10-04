@@ -1,6 +1,4 @@
-import "primevue/resources/themes/md-light-indigo/theme.css";
-import "primevue/resources/primevue.css";
-import "primeflex/primeflex.css";
+import "./style.css";
 
 import { createApp } from "vue";
 import { createPinia } from "pinia";
@@ -16,12 +14,14 @@ import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import Dropdown from "primevue/dropdown";
 
+const DesignSystem = {};
+
 const app = createApp(App);
 
 app.use(createPinia());
 app.use(router);
 app.use(i18n);
-app.use(primeVue);
+app.use(primeVue, { unstyled: true, pt: DesignSystem });
 app.use(toastService);
 
 app.component("InputText", InputText);

@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ project.name }}</h1>
+    <h1 class="bg-red-700">{{ project.name }}</h1>
     <ProjectDetailPlaceholders v-model:project="project" />
     <ProjectDetailTaskSets v-model:project="project" />
     <RouterLink :to="{ name: 'project' }">Close project</RouterLink>
