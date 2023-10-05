@@ -1,9 +1,15 @@
 <template>
     <v-navigation-drawer :rail="rail" @update:rail="(value) => (hover = !value)" width="200" permanent left floating expandOnHover>
-        <template #default> </template>
+        <template #default>
+            <div v-for="listProject in listProjects" :key="listProject.id" class="pa-2">
+                <v-btn @click="switchProject(listProject)" :variant="project && listProject.id == project.id ? 'flat' : 'text'" color="secondary" block>
+                    {{ listProject.name }}</v-btn
+                >
+            </div>
+        </template>
         <template #append v-if="expanded">
             <div class="d-flex pa-2">
-                <v-btn variant="flat" color="primary" width="80%" density="comfortable">
+                <v-btn color="primary" width="80%" density="comfortable">
                     <v-icon icon="mdi-plus"></v-icon>
                 </v-btn>
                 <v-spacer />
@@ -13,43 +19,27 @@
             </div>
         </template>
     </v-navigation-drawer>
-    <!--<Card>
-        <template #title>
-            <h1>Sast</h1>
-        </template>
-        <template #content>
-            <div v-for="listProject in listProjects" :key="listProject.id">
-                <Btn :label="listProject.name" @click="switchProject(listProject)" class="w-full mb-1" />
-            </div>
-        </template>
-        <template #footer>
-            <div class="flex">
-                <InputText v-model="addProjectName" class="w-11" />
-                <Btn @click="addProject">Moin</Btn>
-            </div>
-        </template>
-    </Card>-->
 </template>
 
 <script setup lang="ts">
-import type { CreateProjectContract, ListProjectContract } from "@/bindings";
-import { createProject, getListProjects } from "@/bindings";
+import type { ListProjectContract } from "@/bindings";
+import { getListProjects } from "@/bindings";
 import { useNotificationStore } from "@/stores/notificationStore";
+import { useProjectDetailStore } from "@/stores/projectDetailStore";
 import { useProjectListStore } from "@/stores/projectListStore";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, ref } from "vue";
-import { useRouter } from "vue-router";
 import { VNavigationDrawer } from "vuetify/components";
 
 const notify = useNotificationStore();
 const pageStore = useProjectListStore();
-const router = useRouter();
+const projectDetailStore = useProjectDetailStore();
 
 const { rail } = storeToRefs(pageStore);
+const { project } = storeToRefs(projectDetailStore);
 
 const hover = ref(false);
 const listProjects = ref<ListProjectContract[]>([]);
-const createProjectName = ref("");
 
 onBeforeMount(() => {
     loadListProjects();
@@ -64,7 +54,8 @@ const loadListProjects = async () => {
     }
 };
 
-const addProject = async () => {
+// TODO Remove or reuse
+/*const addProject = async () => {
     const createContract: CreateProjectContract = {
         name: createProjectName.value
     };
@@ -77,10 +68,10 @@ const addProject = async () => {
         console.error("Project creation failed", error);
         notify.error("TODO");
     }
-};
+};*/
 
-const switchProject = (listProject: ListProjectContract) => {
-    router.push({ name: "project", params: { projectId: listProject.id } });
+const switchProject = async (listProject: ListProjectContract) => {
+    await projectDetailStore.load(listProject.id);
 };
 
 const expanded = computed(() => {

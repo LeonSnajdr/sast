@@ -3,7 +3,7 @@
   "include": ["env.d.ts", "typings/**/*.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.json"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
-    "noImplicitAny": false,
+    "strictNullChecks": false,
     "composite": true,
     "types": ["@vue-macros/define-models/macros-global"],
     "baseUrl": ".",

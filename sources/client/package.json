@@ -30,6 +30,7 @@
     "@types/node": "^18.17.0",
     "@vitejs/plugin-vue": "^4.3.4",
     "@vue-macros/volar": "^0.14.3",
+    "@vue-macros/reactivity-transform": "^0.3.23",
     "@vue/eslint-config-prettier": "^8.0.0",
     "@vue/eslint-config-typescript": "^11.0.3",
     "@vue/tsconfig": "^0.4.0",

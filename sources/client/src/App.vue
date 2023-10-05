@@ -1,14 +1,17 @@
 <template>
-    <VApp>
-        <VMain class="h-screen text-body-2" :class="route.meta.layout">
+    <v-app>
+        <v-main class="h-screen text-body-2" :class="route.meta.layout">
             <RouterView />
-        </VMain>
-    </VApp>
+        </v-main>
+    </v-app>
+
+    <Notification />
 </template>
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import { VMain } from "vuetify/components";
+import Notification from "@/components/Notification.vue";
 
 const route = useRoute();
 </script>
