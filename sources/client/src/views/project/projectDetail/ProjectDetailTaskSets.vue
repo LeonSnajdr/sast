@@ -14,15 +14,15 @@
 <script setup lang="ts">
 import type { FullProjectContract, CreateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { useToast } from "primevue/usetoast";
 import { ref } from "vue";
 import ProjectDetailTaskSet from "./ProjectDetailTaskSet.vue";
+import { useNotificationStore } from "@/stores/notificationStore";
 
 const { project } = defineModels<{
     project: FullProjectContract;
 }>();
 
-const toast = useToast();
+const notify = useNotificationStore();
 
 const craeteTaskSetName = ref("");
 
@@ -37,10 +37,11 @@ const createTaskSet = async () => {
 
         project.value.task_sets.push(newContract);
 
-        toast.add({ severity: "success", detail: "TaskSet created", group: "br", life: 3000 });
+        notify.success("TODO");
     } catch (error) {
         console.error("Creating placeholder failed", error);
-        toast.add({ severity: "error", detail: "Placeholder creation failed", group: "br", life: 3000 });
+
+        notify.error("TODO");
     } finally {
         craeteTaskSetName.value = "";
     }

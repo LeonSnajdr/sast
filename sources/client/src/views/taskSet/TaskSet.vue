@@ -19,15 +19,15 @@
 import { onBeforeMount, ref } from "vue";
 import type { FullSetContract, CreateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { useToast } from "primevue/usetoast";
 import Task from "./Task.vue";
+import { useNotificationStore } from "@/stores/notificationStore";
 
 const props = defineProps<{
     projectId: string;
     taskSetId: string;
 }>();
 
-const toast = useToast();
+const notify = useNotificationStore();
 
 const taskSet = ref<FullSetContract>();
 
@@ -45,7 +45,7 @@ const loadTaskSet = async () => {
         taskSet.value = fullTaskSet ?? undefined;
     } catch (error) {
         console.error("Loading taskset failed", error);
-        toast.add({ severity: "error", summary: "Error", detail: "Loading taskset failed", life: 3000 });
+        notify.error("TOODO");
     }
 };
 
@@ -63,7 +63,7 @@ const createCommand = async () => {
         taskSet.value?.tasks.push(createdTask);
     } catch (error) {
         console.error("Creating task failed", error);
-        toast.add({ severity: "error", summary: "Error", detail: "Loading taskset failed", life: 3000 });
+        notify.error("TODO");
     }
 };
 </script>

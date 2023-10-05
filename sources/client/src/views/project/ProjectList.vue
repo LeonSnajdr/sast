@@ -1,5 +1,10 @@
 <template>
-    <Card>
+    <VNavigationDrawer>
+        <template #prepend>
+            <h2>Hallo</h2>
+        </template>
+    </VNavigationDrawer>
+    <!--<Card>
         <template #title>
             <h1>Sast</h1>
         </template>
@@ -14,17 +19,18 @@
                 <Btn @click="addProject">Moin</Btn>
             </div>
         </template>
-    </Card>
+    </Card>-->
 </template>
 
 <script setup lang="ts">
 import type { CreateProjectContract, ListProjectContract } from "@/bindings";
 import { createProject, getListProjects } from "@/bindings";
-import { useToast } from "primevue/usetoast";
+import { useNotificationStore } from "@/stores/notificationStore";
 import { onBeforeMount, ref } from "vue";
 import { useRouter } from "vue-router";
+import { VNavigationDrawer } from "vuetify/components";
 
-const toast = useToast();
+const notify = useNotificationStore();
 const router = useRouter();
 
 const listProjects = ref<ListProjectContract[]>([]);
@@ -39,7 +45,7 @@ const loadListProjects = async () => {
         listProjects.value = await getListProjects();
     } catch (error) {
         console.error("Loading list projects failed", error);
-        toast.add({ severity: "error", summary: "Error", detail: "Loading list projects failed", life: 3000 });
+        notify.error("TODO");
     }
 };
 
@@ -51,10 +57,10 @@ const addProject = async () => {
     try {
         await createProject(createContract);
         await loadListProjects();
-        toast.add({ severity: "success", summary: "Error", detail: "Successfully created project", life: 3000 });
+        notify.error("TODO");
     } catch (error) {
         console.error("Project creation failed", error);
-        toast.add({ severity: "error", summary: "Error", detail: "Creating project failed", life: 3000 });
+        notify.error("TODO");
     }
 };
 

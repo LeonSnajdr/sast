@@ -1,10 +1,11 @@
 <template>
-    <div class="font-nunito text-primary-lighten-1 box-border h-screen bg-background">
-        <Toast></Toast>
-        <router-view class="h-full p-4"></router-view>
-    </div>
+    <VApp>
+        <VMain class="h-screen text-body-2" scrollable>
+            <RouterView />
+        </VMain>
+    </VApp>
 </template>
 
 <script setup lang="ts">
-import Toast from "primevue/toast";
+import { VMain } from "vuetify/components";
 </script>

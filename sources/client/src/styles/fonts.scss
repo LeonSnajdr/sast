@@ -1,0 +1,61 @@
+/* nunito-300 - latin */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 300;
+  src:
+    local(""),
+    // Chrome 26+, Opera 23+, Firefox 39+,
+    url("@/assets/font/nunito-v25-latin-300.woff2") format("woff2"),
+    // Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+;
+    url("@/assets/font/nunito-v25-latin-300.woff") format("woff");
+}
+/* nunito-regular - latin */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  src:
+    local(""),
+    // Chrome 26+, Opera 23+, Firefox 39+
+    url("@/assets/font/nunito-v25-latin-regular.woff2") format("woff2"),
+    // Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+;
+    url("@/assets/font/nunito-v25-latin-regular.woff") format("woff");
+}
+/* nunito-700 - latin */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  src:
+    local(""),
+    // Chrome 26+, Opera 23+, Firefox 39+,
+    url("@/assets/font/nunito-v25-latin-700.woff2") format("woff2"),
+    // Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+;
+    url("@/assets/font/nunito-v25-latin-700.woff") format("woff");
+}
+@font-face {
+  font-family: "Montserrat Light";
+  src: url("@/assets/font/montserrat-v24-latin-300.eot");
+  src:
+    url("@/assets/font/montserrat-v24-latin-300.eot?#iefix") format("embedded-opentype"),
+    url("@/assets/font/montserrat-v24-latin-300.woff2") format("woff2"),
+    url("@/assets/font/montserrat-v24-latin-300.woff") format("woff"),
+    url("@/assets/font/montserrat-v24-latin-300.ttf") format("truetype"),
+    url("@/assets/font/montserrat-v24-latin-300.svg#muliextralight") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Montserrat Regular";
+  src: url("@/assets/font/montserrat-v24-latin-regular.eot");
+  src:
+    url("@/assets/font/montserrat-v24-latin-regular.eot?#iefix") format("embedded-opentype"),
+    url("@/assets/font/montserrat-v24-latin-regular.woff2") format("woff2"),
+    url("@/assets/font/montserrat-v24-latin-regular.woff") format("woff"),
+    url("@/assets/font/montserrat-v24-latin-regular.ttf") format("truetype"),
+    url("@/assets/font/montserrat-v24-latin-regular.svg#muliregular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}

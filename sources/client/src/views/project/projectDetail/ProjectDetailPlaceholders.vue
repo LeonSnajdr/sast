@@ -13,15 +13,15 @@
 <script setup lang="ts">
 import type { CreatePlaceholderContract, FullProjectContract } from "@/bindings";
 import { createPlaceholder } from "@/bindings";
-import { useToast } from "primevue/usetoast";
 import { ref } from "vue";
 import ProjectDetailPlaceholder from "./ProjectDetailPlaceholder.vue";
+import { useNotificationStore } from "@/stores/notificationStore";
 
 const { project } = defineModels<{
     project: FullProjectContract;
 }>();
 
-const toast = useToast();
+const notify = useNotificationStore();
 
 const addPlaceholderName = ref("");
 const addPlaceholderValue = ref("");
@@ -38,10 +38,10 @@ const addPlaceholder = async () => {
 
         project.value.placeholders.push(newContract);
 
-        toast.add({ severity: "success", detail: "Placeholder created", group: "br", life: 3000 });
+        notify.success("TODO");
     } catch (error) {
         console.error("Creating placeholder failed", error);
-        toast.add({ severity: "error", detail: "Placeholder creation failed", group: "br", life: 3000 });
+        notify.error("TODO");
     } finally {
         addPlaceholderName.value = "";
         addPlaceholderValue.value = "";

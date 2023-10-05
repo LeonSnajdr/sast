@@ -1,0 +1,9 @@
+@use "@/styles/settings";
+@import "fonts";
+@import "scroll";
+@import "links";
+
+html {
+  // Only show main scrollbar if the page is scrollable
+  overflow-y: auto !important;
+}

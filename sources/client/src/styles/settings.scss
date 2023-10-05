@@ -1,0 +1,38 @@
+@forward "vuetify/settings" with (
+  // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/styles/settings/_variables.scss
+  $grid-gutter: 16px,
+  $body-font-family: "Nunito",
+  $typography: (
+    "subtitle-2": (
+      text-transform: uppercase,
+      weight: bold
+    )
+  ),
+
+  // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VApp/_variables.scss
+  $application-background: rgb(var(--v-theme-background)) url("@/assets/Waben.svg") no-repeat bottom right,
+
+  // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VList/_variables.scss
+  $list-item-icon-margin-start: 8px,
+  $list-item-icon-margin-end: 8px,
+  $list-item-one-line-min-height: 38px,
+
+  // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VCard/_variables.scss
+  $card-title-font-size: 26px,
+  $card-title-padding: 12px 16px 20px,
+  $card-subtitle-opacity: 1,
+
+  //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VInput/_variables.scss
+  $input-density: ("default": -4, "comfortable": -5, "compact": -6),
+  $input-affix-margin-inside: 4px,
+
+  //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VTooltip/_variables.scss
+  $tooltip-transition-enter-duration: 50ms,
+  $tooltip-transition-leave-duration: 0ms,
+
+  //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VNavigationDrawer/_variables.scss
+  $navigation-drawer-transition-duration: 500ms,
+
+  //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VPagination/_variables.scss
+  $pagination-item-margin: 2px
+);
