@@ -11,6 +11,7 @@
             <div class="d-flex pa-2">
                 <v-btn color="primary" width="80%" density="comfortable">
                     <v-icon icon="mdi-plus"></v-icon>
+                    <ProjectCreateDialog />
                 </v-btn>
                 <v-spacer />
                 <v-btn variant="text" @click.prevent="rail = !rail" density="compact" icon>
@@ -23,36 +24,24 @@
 
 <script setup lang="ts">
 import type { ListProjectContract } from "@/bindings";
-import { getListProjects } from "@/bindings";
-import { useNotificationStore } from "@/stores/notificationStore";
-import { useProjectDetailStore } from "@/stores/projectDetailStore";
 import { useProjectListStore } from "@/stores/projectListStore";
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, ref } from "vue";
 import { VNavigationDrawer } from "vuetify/components";
+import ProjectCreateDialog from "./ProjectCreateDialog.vue";
+import { useProjectStore } from "@/stores/projectStore";
 
-const notify = useNotificationStore();
 const pageStore = useProjectListStore();
-const projectDetailStore = useProjectDetailStore();
+const projectStore = useProjectStore();
 
 const { rail } = storeToRefs(pageStore);
-const { project } = storeToRefs(projectDetailStore);
+const { listProjects, project } = storeToRefs(projectStore);
 
 const hover = ref(false);
-const listProjects = ref<ListProjectContract[]>([]);
 
 onBeforeMount(() => {
-    loadListProjects();
+    projectStore.loadListProjects();
 });
-
-const loadListProjects = async () => {
-    try {
-        listProjects.value = await getListProjects();
-    } catch (error) {
-        console.error("Loading list projects failed", error);
-        notify.error("TODO");
-    }
-};
 
 // TODO Remove or reuse
 /*const addProject = async () => {
@@ -71,7 +60,7 @@ const loadListProjects = async () => {
 };*/
 
 const switchProject = async (listProject: ListProjectContract) => {
-    await projectDetailStore.load(listProject.id);
+    await projectStore.loadProject(listProject.id);
 };
 
 const expanded = computed(() => {

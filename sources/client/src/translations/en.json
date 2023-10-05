@@ -1,4 +1,4 @@
 {
-  "placeholders.new": "Placeholder name",
-  "placeholders.new.button": "Create"
+  "projectStore.projectList.load.failed": "Error loading the project list",
+  "projectStore.project.load.failed": "Error loading the project"
 }

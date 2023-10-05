@@ -32,7 +32,7 @@ const loadProject = async () => {
         project.value = fullProject ?? undefined;
     } catch (error) {
         console.error("Loading project failed", error);
-        notify.error("TODO");
+        notify.error("projectDetail.load.project.failed");
     }
 };
 

@@ -1,4 +1,4 @@
 {
-  "projectDetailPlaceholders.new.input": "Platzhalter Name",
-  "projectDetailPlaceholders.new.button": "Erstellen"
+  "projectStore.projectList.load.failed": "Fehler beim Laden des Projektliste",
+  "projectStore.project.load.failed": "Fehler beim Laden des Projekts"
 }
