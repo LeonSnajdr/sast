@@ -1,5 +1,5 @@
 <template>
-    <VNavigationDrawer>
+    <VNavigationDrawer permanent left floating expandOnHover>
         <template #prepend>
             <h2>Hallo</h2>
         </template>

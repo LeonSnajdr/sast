@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h2>Hello3</h2>
         <ProjectList />
         <!--<ProjectDetail v-if="project" v-model:project="project" />-->
     </div>

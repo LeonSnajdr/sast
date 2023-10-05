@@ -12,7 +12,10 @@ const router = createRouter({
             component: Project,
             props: (route) => ({
                 projectId: route.params.projectId
-            })
+            }),
+            meta: {
+                layout: "nav-left"
+            }
         },
         {
             path: "/taskSet/:projectId/:taskSetId",
