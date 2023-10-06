@@ -23,16 +23,15 @@
 </template>
 
 <script setup lang="ts">
-import type { ListProjectContract } from "@/bindings";
-import { useProjectListStore } from "@/stores/projectListStore";
-import { storeToRefs } from "pinia";
-import { computed, onBeforeMount, ref } from "vue";
-import { VNavigationDrawer } from "vuetify/components";
 import ProjectCreateDialog from "./ProjectCreateDialog.vue";
+import { useProjectListStore } from "@/stores/projectListStore";
 import { useProjectStore } from "@/stores/projectStore";
+import type { ListProjectContract } from "@/bindings";
+import { useRouter } from "vue-router";
 
 const pageStore = useProjectListStore();
 const projectStore = useProjectStore();
+const router = useRouter();
 
 const { rail } = storeToRefs(pageStore);
 const { listProjects, project } = storeToRefs(projectStore);
@@ -60,7 +59,7 @@ onBeforeMount(() => {
 };*/
 
 const switchProject = async (listProject: ListProjectContract) => {
-    await projectStore.loadProject(listProject.id);
+    await router.push({ name: "project", params: { projectId: listProject.id } });
 };
 
 const expanded = computed(() => {

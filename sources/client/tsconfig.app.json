@@ -1,6 +1,7 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "typings/**/*.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.json"],
+  "include": ["typings/.d.ts", "typings/**/*.d.ts", "src/**/*", "src/**/*.vue", "src/**/*.json"],
+  "files": ["typings/auto-imports.d.ts"],
   "exclude": ["src/**/__tests__/*"],
   "compilerOptions": {
     "strictNullChecks": false,
