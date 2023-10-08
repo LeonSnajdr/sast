@@ -1,5 +1,9 @@
 <template>
-    <h1>{{ project.name }}</h1>
+    <v-card class="h-100">
+        <v-card-title>
+            {{ project.name }}
+        </v-card-title>
+    </v-card>
     <!--<Card>
         <template #content>
             
@@ -12,9 +16,6 @@
 
 <script setup lang="ts">
 import { useProjectStore } from "@/stores/projectStore";
-import ProjectDetailPlaceholders from "./ProjectDetailPlaceholders.vue";
-import ProjectDetailTaskSets from "./ProjectDetailTaskSets.vue";
-import { storeToRefs } from "pinia";
 
 const projectStore = useProjectStore();
 
