@@ -1,10 +1,6 @@
 <template>
-    <v-layout>
-        <v-main class="h-screen text-body-2">
-            <ProjectList />
-            <slot></slot>
-        </v-main>
-    </v-layout>
+    <ProjectList />
+    <slot></slot>
 </template>
 
 <script setup lang="ts">

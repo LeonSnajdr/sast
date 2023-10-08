@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import ProjectLayout from "./layouts/ProjectLayout.vue";
+import DefaultLayout from "./layouts/DefaultLayout.vue";
 import Home from "@/views/home/Home.vue";
 import Settings from "@/views/settings/Settings.vue";
 import Project from "@/views/project/Project.vue";
@@ -12,7 +14,7 @@ const router = createRouter({
             name: "home",
             component: Home,
             meta: {
-                layout: "Project"
+                layout: ProjectLayout
             }
         },
         {
@@ -23,7 +25,7 @@ const router = createRouter({
                 projectId: route.params.projectId
             }),
             meta: {
-                layout: "Project"
+                layout: ProjectLayout
             }
         },
         {
@@ -33,12 +35,18 @@ const router = createRouter({
             props: (route) => ({
                 projectId: route.params.projectId,
                 taskSetId: route.params.taskSetId
-            })
+            }),
+            meta: {
+                layout: DefaultLayout
+            }
         },
         {
             path: "/settings",
             name: "settings",
-            component: Settings
+            component: Settings,
+            meta: {
+                layout: DefaultLayout
+            }
         }
     ]
 });

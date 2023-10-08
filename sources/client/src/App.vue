@@ -1,11 +1,10 @@
 <template>
     <v-app>
-        <ProjectLayout v-if="route.meta.layout == 'Project'">
-            <RouterView />
-        </ProjectLayout>
-        <DefaultLayout v-else>
-            <RouterView />
-        </DefaultLayout>
+        <v-main class="h-screen text-body-2">
+            <component :is="route.meta.layout || 'div'">
+                <RouterView />
+            </component>
+        </v-main>
     </v-app>
 
     <Notification />
@@ -14,8 +13,6 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import Notification from "@/components/Notification.vue";
-import DefaultLayout from "@/layouts/DefaultLayout.vue";
-import ProjectLayout from "@/layouts/ProjectLayout.vue";
 
 const route = useRoute();
 </script>
