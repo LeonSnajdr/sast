@@ -112,7 +112,11 @@ export default createVuetify({
             class: "d-flex flex-column",
 
             VCardTitle: {
-                class: "text-medium-emphasis font-weight-light d-flex align-center"
+                class: "text-medium-emphasis font-weight-light d-flex align-center",
+
+                VIcon: {
+                    size: 20
+                }
             }
         },
         VNavigationDrawer: {

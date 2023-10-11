@@ -3,16 +3,15 @@
         <v-card-title>
             {{ $t("projectDetailPlaceholdersEdit.title") }}
             <v-spacer />
-            <v-btn @click="inEditMode = false">
-                <v-icon icon="mdi-close" />
-            </v-btn>
+            <v-icon @click="inEditMode = false" icon="mdi-close" />
         </v-card-title>
         <v-card-text>
             <div v-for="placeholder in project.placeholders" :key="placeholder.id" class="d-flex mb-4">
-                <v-text-field :label="placeholder.name" v-model="placeholder.value" @update:modelValue="placeholderChanged(placeholder)"></v-text-field>
-                <v-btn @click="deletePlaceholder(placeholder)" variant="plain">
-                    <v-icon icon="mdi-delete" />
-                </v-btn>
+                <v-text-field :label="placeholder.name" v-model="placeholder.value" @update:modelValue="placeholderChanged(placeholder)">
+                    <template #append>
+                        <v-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" size="small" />
+                    </template>
+                </v-text-field>
             </div>
 
             <v-form v-model="valid" class="d-flex">
@@ -29,12 +28,13 @@
                             v-model="placeholderValue"
                             :placeholder="$t('projectDetailPlaceholdersEdit.input.value')"
                             :rules="[required($t('projectDetailPlaceholdersEdit.input.value.required'))]"
-                        ></v-text-field>
+                        >
+                            <template #append>
+                                <v-icon @click="createPlaceholder" icon="mdi-plus" size="small" />
+                            </template>
+                        </v-text-field>
                     </v-col>
                 </v-row>
-                <v-btn @click="createPlaceholder" :disabled="!valid" variant="plain">
-                    <v-icon icon="mdi-plus" />
-                </v-btn>
             </v-form>
         </v-card-text>
     </v-card>
@@ -60,6 +60,8 @@ const placeholderName = ref("");
 const placeholderValue = ref("");
 
 const createPlaceholder = async () => {
+    if (!valid.value) return;
+
     loading.value = true;
 
     const createContract: CreatePlaceholderContract = {
