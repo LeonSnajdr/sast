@@ -2,6 +2,8 @@
     <v-card>
         <v-card-title>
             {{ $t("projectDetailTaskSets.title") }}
+            <v-spacer />
+            <v-icon icon="mdi-plus" />
         </v-card-title>
         <v-card-text>
             <v-list>

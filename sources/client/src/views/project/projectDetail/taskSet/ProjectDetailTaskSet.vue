@@ -1,12 +1,16 @@
 <template>
     <v-list-item class="pa-0 pb-2">
-        <template v-slot:prepend>
+        <template #prepend>
             <v-icon v-if="!executing" @click="startTaskSet" icon="mdi-play" color="success"></v-icon>
             <v-progress-circular style="margin-right: 9px" v-else indeterminate></v-progress-circular>
         </template>
 
         <v-list-item-title>{{ taskSet.name }}</v-list-item-title>
         <v-list-item-subtitle>TODO: Beschreibung hinzufügen</v-list-item-subtitle>
+
+        <template #append>
+            <v-icon icon="mdi-cog-outline" />
+        </template>
     </v-list-item>
 </template>
 
