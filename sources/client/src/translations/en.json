@@ -16,6 +16,9 @@
   "projectDetailPlaceholdersEdit.delete.error": "Placeholder could not be deleted",
   "projectDetailPlaceholdersEdit.create.success": "A placeholder was successfully created",
   "projectDetailPlaceholdersEdit.create.error": "The placeholder could not be created",
-  "projectDetailPlaceholdersEdit.input.name": "Placeholder name",
+  "projectDetailPlaceholdersEdit.input.name": "Name",
+  "projectDetailPlaceholdersEdit.input.name.required": "The placeholder name is required",
+  "projectDetailPlaceholdersEdit.input.value": "Value",
+  "projectDetailPlaceholdersEdit.input.value.required": "The value is required",
   "projectDetailTaskSets.title": "Task sets"
 }
