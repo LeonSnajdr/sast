@@ -4,7 +4,9 @@
             {{ $t("projectDetailPlaceholdersShow.title") }}
             <v-spacer />
 
-            <v-btn icon="mdi-pencil" size="small" @click="inEditMode = true" />
+            <v-btn @click="inEditMode = true" variant="plain">
+                <v-icon icon="mdi-pencil" />
+            </v-btn>
         </v-card-title>
         <v-card-text class="d-flex">
             <div v-for="placeholder in project.placeholders" :key="placeholder.id">
