@@ -105,6 +105,7 @@ export default createVuetify({
         },
         VChip: {
             color: "primary",
+            size: "small",
             variant: "elevated"
         },
         VCard: {

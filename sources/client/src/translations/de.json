@@ -7,5 +7,9 @@
   "projectCreateDialog.title": "Neues Projekt",
   "projectCreateDialog.input.name": "Projektname",
   "projectCreateDialog.create.success": "Das Projekt wurde erfolgreich erstellt",
-  "projectCreateDialog.create.error": "Das Projekt konnte nicht erstellt werden"
+  "projectCreateDialog.create.error": "Das Projekt konnte nicht erstellt werden",
+  "projectDetailPlaceholdersShow.title": "Platzhalter",
+  "projectDetailPlaceholdersEdit.title": "Platzhalter - Editieren",
+  "projectDetailPlaceholdersEdit.update.error": "Aktualisierung des Platzhalters fehlgeschlagen",
+  "projectDetailTaskSets.title": "Aufgaben-Sets"
 }

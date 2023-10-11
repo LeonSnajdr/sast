@@ -7,5 +7,9 @@
   "projectCreateDialog.title": "New projekt",
   "projectCreateDialog.input.name": "Project name",
   "projectCreateDialog.create.success": "The project was successfully created",
-  "projectCreateDialog.create.error": "The project could not be created"
+  "projectCreateDialog.create.error": "The project could not be created",
+  "projectDetailPlaceholdersShow.title": "Placeholder",
+  "projectDetailPlaceholdersEdit.title": "Placeholder - Edit",
+  "projectDetailPlaceholdersEdit.update.error": "Placeholder update failed",
+  "projectDetailTaskSets.title": "Task sets"
 }

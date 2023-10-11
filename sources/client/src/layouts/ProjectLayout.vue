@@ -1,6 +1,6 @@
 <template>
     <ProjectList />
-    <v-container class="h-100" fluid>
+    <v-container fluid>
         <slot></slot>
     </v-container>
 </template>

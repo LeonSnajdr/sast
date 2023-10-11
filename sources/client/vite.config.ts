@@ -22,7 +22,7 @@ export default defineConfig({
         }),
         autoImport({
             dts: "typings/auto-imports.d.ts",
-            imports: ["vue", "pinia"],
+            imports: ["vue", "pinia", "vue-router"],
             dirs: ["src/stores"]
         })
     ],

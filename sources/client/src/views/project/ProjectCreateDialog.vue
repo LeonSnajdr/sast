@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="dialog" activator="parent" width="auto">
         <v-card>
-            <v-card-text>{{ $t("projectCreateDialog.title") }}</v-card-text>
+            <v-card-title>{{ $t("projectCreateDialog.title") }}</v-card-title>
             <v-card-text>
                 <v-text-field v-model="projectName" :label="$t('projectCreateDialog.input.name')"></v-text-field>
             </v-card-text>

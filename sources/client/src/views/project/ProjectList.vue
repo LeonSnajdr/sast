@@ -25,7 +25,6 @@
 <script setup lang="ts">
 import type { ListProjectContract } from "@/bindings";
 import ProjectCreateDialog from "./ProjectCreateDialog.vue";
-import { useRouter } from "vue-router";
 
 const pageStore = useProjectListStore();
 const projectStore = useProjectStore();
@@ -39,22 +38,6 @@ const hover = ref(false);
 onBeforeMount(() => {
     projectStore.loadListProjects();
 });
-
-// TODO Remove or reuse
-/*const addProject = async () => {
-    const createContract: CreateProjectContract = {
-        name: createProjectName.value
-    };
-
-    try {
-        await createProject(createContract);
-        await loadListProjects();
-        notify.error("TODO");
-    } catch (error) {
-        console.error("Project creation failed", error);
-        notify.error("TODO");
-    }
-};*/
 
 const switchProject = async (listProject: ListProjectContract) => {
     await router.push({ name: "project", params: { projectId: listProject.id } });
