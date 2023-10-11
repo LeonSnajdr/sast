@@ -7,14 +7,16 @@
         </v-card-title>
         <v-card-text>
             <div v-for="placeholder in project.placeholders" :key="placeholder.id" class="d-flex mb-4">
-                <v-text-field :label="placeholder.name" v-model="placeholder.value" @update:modelValue="placeholderChanged(placeholder)">
-                    <template #append>
-                        <v-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" size="small" />
-                    </template>
-                </v-text-field>
+                <v-text-field
+                    :label="placeholder.name"
+                    v-model="placeholder.value"
+                    @update:modelValue="placeholderChanged(placeholder)"
+                    @click:append="deletePlaceholder(placeholder)"
+                    appendIcon="mdi-delete"
+                />
             </div>
 
-            <v-form v-model="valid" class="d-flex">
+            <v-form v-model="valid" ref="form" class="d-flex">
                 <v-row>
                     <v-col>
                         <v-text-field
@@ -28,11 +30,9 @@
                             v-model="placeholderValue"
                             :placeholder="$t('projectDetailPlaceholdersEdit.input.value')"
                             :rules="[required($t('projectDetailPlaceholdersEdit.input.value.required'))]"
-                        >
-                            <template #append>
-                                <v-icon @click="createPlaceholder" icon="mdi-plus" size="small" />
-                            </template>
-                        </v-text-field>
+                            @click:append="createPlaceholder"
+                            appendIcon="mdi-plus"
+                        />
                     </v-col>
                 </v-row>
             </v-form>
@@ -41,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+import { VForm } from "vuetify/components";
 import type { CreatePlaceholderContract, Placeholder, UpdatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required } from "@/rules";
@@ -54,6 +55,7 @@ const notify = useNotificationStore();
 const projectStore = useProjectStore();
 
 const { project } = storeToRefs(projectStore);
+const form = ref<VForm>();
 const loading = ref(false);
 const valid = ref(false);
 const placeholderName = ref("");
@@ -79,9 +81,7 @@ const createPlaceholder = async () => {
         console.error("Could not create placeholder", error);
         notify.error("projectDetailPlaceholdersEdit.create.error");
     } finally {
-        placeholderName.value = "";
-        placeholderValue.value = "";
-
+        form.value.reset();
         loading.value = false;
     }
 };

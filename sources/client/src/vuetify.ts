@@ -67,7 +67,11 @@ export default createVuetify({
         VTextField: {
             variant: "outlined",
             hideDetails: "auto",
-            persistentPlaceholder: true
+            persistentPlaceholder: true,
+
+            VIcon: {
+                size: 20
+            }
         },
         VSelect: {
             variant: "outlined",

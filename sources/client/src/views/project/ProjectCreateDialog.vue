@@ -1,6 +1,6 @@
 <template>
     <v-dialog v-model="dialog" activator="parent" width="500">
-        <v-form v-model="valid">
+        <v-form v-model="valid" ref="form">
             <v-card>
                 <v-card-title>{{ $t("projectCreateDialog.title") }}</v-card-title>
                 <v-card-text>
@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { VForm } from "vuetify/components";
 import type { CreateProjectContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required } from "@/rules";
@@ -28,6 +29,7 @@ import { required } from "@/rules";
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
 
+const form = ref<VForm>();
 const dialog = ref(false);
 const valid = ref(false);
 const projectName = ref("");
@@ -46,7 +48,7 @@ const create = async () => {
         console.error("Could not create project", error);
         notify.error("projectCreateDialog.create.error");
     } finally {
-        projectName.value = "";
+        form.value.reset();
         dialog.value = false;
     }
 };
