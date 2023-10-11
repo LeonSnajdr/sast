@@ -3,7 +3,7 @@
         <v-card-title>
             {{ $t("projectDetailPlaceholdersEdit.title") }}
             <v-spacer />
-            <v-btn @click="inEditMode = false" variant="plain">
+            <v-btn @click="inEditMode = false">
                 <v-icon icon="mdi-close" />
             </v-btn>
         </v-card-title>
