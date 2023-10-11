@@ -6,10 +6,16 @@
   "projectStore.project.load.failed": "Fehler beim Laden des Projekts",
   "projectCreateDialog.title": "Neues Projekt",
   "projectCreateDialog.input.name": "Projektname",
+  "projectCreateDialog.input.name.required": "Der Projektname ist erfordert",
   "projectCreateDialog.create.success": "Das Projekt wurde erfolgreich erstellt",
   "projectCreateDialog.create.error": "Das Projekt konnte nicht erstellt werden",
   "projectDetailPlaceholdersShow.title": "Platzhalter",
   "projectDetailPlaceholdersEdit.title": "Platzhalter - Editieren",
   "projectDetailPlaceholdersEdit.update.error": "Aktualisierung des Platzhalters fehlgeschlagen",
+  "projectDetailPlaceholdersEdit.delete.succes": "Platzhalters erfolgreich gelöscht",
+  "projectDetailPlaceholdersEdit.delete.error": "Platzhalters konnte nicht gelöscht werden",
+  "projectDetailPlaceholdersEdit.create.success": "Ein Platzhalter wurde erfolgreich erstellt",
+  "projectDetailPlaceholdersEdit.create.error": "Der Platzhalter konnte nicht erstellt werden",
+  "projectDetailPlaceholdersEdit.input.name": "Platzhaltername",
   "projectDetailTaskSets.title": "Aufgaben-Sets"
 }

@@ -6,10 +6,16 @@
   "projectStore.project.load.failed": "Error loading the project",
   "projectCreateDialog.title": "New projekt",
   "projectCreateDialog.input.name": "Project name",
+  "projectCreateDialog.input.name.required": "The project name is required",
   "projectCreateDialog.create.success": "The project was successfully created",
   "projectCreateDialog.create.error": "The project could not be created",
   "projectDetailPlaceholdersShow.title": "Placeholder",
   "projectDetailPlaceholdersEdit.title": "Placeholder - Edit",
   "projectDetailPlaceholdersEdit.update.error": "Placeholder update failed",
+  "projectDetailPlaceholdersEdit.delete.succes": "Placeholder successfully deleted",
+  "projectDetailPlaceholdersEdit.delete.error": "Placeholder could not be deleted",
+  "projectDetailPlaceholdersEdit.create.success": "A placeholder was successfully created",
+  "projectDetailPlaceholdersEdit.create.error": "The placeholder could not be created",
+  "projectDetailPlaceholdersEdit.input.name": "Placeholder name",
   "projectDetailTaskSets.title": "Task sets"
 }

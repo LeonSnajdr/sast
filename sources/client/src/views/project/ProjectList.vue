@@ -2,15 +2,15 @@
     <v-navigation-drawer :rail="rail" @update:rail="(value) => (hover = !value)" width="200" permanent left floating expandOnHover>
         <template #default>
             <div v-for="listProject in listProjects" :key="listProject.id" class="pa-2">
-                <v-btn @click="switchProject(listProject)" :variant="project && listProject.id == project.id ? 'flat' : 'text'" color="secondary" block>
-                    {{ listProject.name }}</v-btn
-                >
+                <v-btn @click="switchProject(listProject)" :variant="project && listProject.id == project.id ? 'flat' : 'text'" color="primary" block>
+                    {{ listProject.name }}
+                </v-btn>
             </div>
         </template>
         <template #append v-if="expanded">
             <div class="d-flex pa-2">
                 <v-btn color="primary" width="80%" density="comfortable">
-                    <v-icon icon="mdi-plus"></v-icon>
+                    <v-icon icon="mdi-plus" />
                     <ProjectCreateDialog />
                 </v-btn>
                 <v-spacer />
