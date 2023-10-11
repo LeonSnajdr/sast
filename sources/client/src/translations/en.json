@@ -9,7 +9,7 @@
   "projectCreateDialog.input.name.required": "The project name is required",
   "projectCreateDialog.create.success": "The project was successfully created",
   "projectCreateDialog.create.error": "The project could not be created",
-  "projectDetailPlaceholdersShow.title": "Placeholder",
+  "projectDetailPlaceholdersView.title": "Placeholder",
   "projectDetailPlaceholdersEdit.title": "Placeholder - Edit",
   "projectDetailPlaceholdersEdit.update.error": "Placeholder update failed",
   "projectDetailPlaceholdersEdit.delete.succes": "Placeholder successfully deleted",

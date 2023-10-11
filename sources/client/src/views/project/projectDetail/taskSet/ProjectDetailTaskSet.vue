@@ -9,7 +9,7 @@
         <v-list-item-subtitle>TODO: Beschreibung hinzufügen</v-list-item-subtitle>
 
         <template #append>
-            <v-icon icon="mdi-cog-outline" />
+            <v-icon icon="mdi-tune" />
         </template>
     </v-list-item>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <v-card>
         <v-card-title>
-            {{ $t("projectDetailPlaceholdersShow.title") }}
+            {{ $t("projectDetailPlaceholdersView.title") }}
             <v-spacer />
 
             <v-icon @click="inEditMode = true" icon="mdi-pencil" />
