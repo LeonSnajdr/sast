@@ -1,4 +1,11 @@
 {
+  "close": "Schließen",
+  "create": "Erstellen",
+  "save": "Speichern",
   "projectStore.projectList.load.failed": "Fehler beim Laden des Projektliste",
-  "projectStore.project.load.failed": "Fehler beim Laden des Projekts"
+  "projectStore.project.load.failed": "Fehler beim Laden des Projekts",
+  "projectCreateDialog.title": "Neues Projekt",
+  "projectCreateDialog.input.name": "Projektname",
+  "projectCreateDialog.create.success": "Das Projekt wurde erfolgreich erstellt",
+  "projectCreateDialog.create.error": "Das Projekt konnte nicht erstellt werden"
 }

@@ -23,10 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import ProjectCreateDialog from "./ProjectCreateDialog.vue";
-import { useProjectListStore } from "@/stores/projectListStore";
-import { useProjectStore } from "@/stores/projectStore";
 import type { ListProjectContract } from "@/bindings";
+import ProjectCreateDialog from "./ProjectCreateDialog.vue";
 import { useRouter } from "vue-router";
 
 const pageStore = useProjectListStore();

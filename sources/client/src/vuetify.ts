@@ -52,6 +52,9 @@ export default createVuetify({
         }
     },
     defaults: {
+        VBtn: {
+            variant: "flat"
+        },
         VSnackbar: {
             timeout: 5000,
             color: "info",
