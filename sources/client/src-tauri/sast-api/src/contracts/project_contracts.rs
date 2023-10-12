@@ -3,7 +3,7 @@ use specta::Type;
 
 use crate::prisma::project;
 
-project::include!(full_project_contract { placeholders task_sets });
+project::include!(full_project_contract { placeholders task_sets: include { tasks } });
 
 project::select!(list_project_contract { id name });
 

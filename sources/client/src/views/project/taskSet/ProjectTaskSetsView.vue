@@ -8,7 +8,7 @@
         <v-card-text>
             <v-list>
                 <template v-for="taskSet in project.task_sets" :key="taskSet.id">
-                    <ProjectDetailTaskSetView :taskSet="taskSet" />
+                    <ProjectTaskSetItem :taskSet="taskSet" />
                 </template>
             </v-list>
         </v-card-text>
@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import ProjectDetailTaskSetView from "./ProjectTaskSetView.vue";
+import ProjectTaskSetItem from "./ProjectTaskSetItem.vue";
 
 const projectStore = useProjectStore();
 
