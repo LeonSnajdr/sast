@@ -7,9 +7,7 @@
         </v-card-title>
         <v-card-text>
             <v-list>
-                <template v-for="taskSet in project.task_sets" :key="taskSet.id">
-                    <ProjectTaskSetListItem :taskSet="taskSet" />
-                </template>
+                <template v-for="taskSet in project.task_sets" :key="taskSet.id"> <ProjectTaskSetListItem :taskSet="taskSet" /></template>
             </v-list>
         </v-card-text>
     </v-card>

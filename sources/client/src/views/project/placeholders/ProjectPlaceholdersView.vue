@@ -7,9 +7,12 @@
             <v-icon @click="inEditMode = true" icon="mdi-pencil" />
         </v-card-title>
         <v-card-text class="d-flex">
-            <div v-for="placeholder in project.placeholders" :key="placeholder.id">
-                <v-chip class="mr-1">{{ placeholder.value }}</v-chip>
-            </div>
+            <v-chip-group>
+                <v-chip v-for="placeholder in project.placeholders" :key="placeholder.id">
+                    <strong>{{ placeholder.name }}</strong>
+                    <span>: {{ placeholder.value }}</span>
+                </v-chip>
+            </v-chip-group>
         </v-card-text>
     </v-card>
 </template>
