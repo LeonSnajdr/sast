@@ -1,9 +1,13 @@
 <template>
-    <ProjectDetail v-if="project" />
+    <template v-if="project">
+        <ProjectPlaceholders class="mb-4" />
+        <ProjectTaskSets />
+    </template>
 </template>
 
 <script setup lang="ts">
-import ProjectDetail from "./projectDetail/ProjectDetail.vue";
+import ProjectPlaceholders from "@/views/project/placeholders/ProjectPlaceholders.vue";
+import ProjectTaskSets from "@/views/project/taskSet/ProjectTaskSets.vue";
 
 const props = defineProps<{
     projectId: string;

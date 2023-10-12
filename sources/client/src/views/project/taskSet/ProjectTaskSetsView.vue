@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import ProjectDetailTaskSetView from "./ProjectDetailTaskSetView.vue";
+import ProjectDetailTaskSetView from "./ProjectTaskSetView.vue";
 
 const projectStore = useProjectStore();
 
