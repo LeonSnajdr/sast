@@ -7,7 +7,7 @@
 
 <script setup lang="ts">
 import ProjectPlaceholders from "@/views/project/placeholders/ProjectPlaceholders.vue";
-import ProjectTaskSets from "@/views/project/taskSet/ProjectTaskSets.vue";
+import ProjectTaskSets from "@/views/project/taskSets/ProjectTaskSets.vue";
 
 const props = defineProps<{
     projectId: string;

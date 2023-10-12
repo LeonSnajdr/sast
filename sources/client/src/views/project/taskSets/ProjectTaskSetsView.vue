@@ -1,14 +1,14 @@
 <template>
     <v-card>
         <v-card-title>
-            {{ $t("projectDetailTaskSetsView.title") }}
+            {{ $t("projectTaskSetsView.title") }}
             <v-spacer />
-            <v-icon icon="mdi-plus" />
+            <v-icon @click="inEditMode = true" icon="mdi-pencil" />
         </v-card-title>
         <v-card-text>
             <v-list>
                 <template v-for="taskSet in project.task_sets" :key="taskSet.id">
-                    <ProjectTaskSetItem :taskSet="taskSet" />
+                    <ProjectTaskSetListItem :taskSet="taskSet" />
                 </template>
             </v-list>
         </v-card-text>
@@ -16,7 +16,11 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetItem from "./ProjectTaskSetItem.vue";
+import ProjectTaskSetListItem from "./ProjectTaskSetListItem.vue";
+
+const { inEditMode } = defineModels<{
+    inEditMode: boolean;
+}>();
 
 const projectStore = useProjectStore();
 

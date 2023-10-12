@@ -1,7 +1,7 @@
 <template>
     <v-card :loading="loading">
         <v-card-title>
-            {{ $t("projectDetailPlaceholdersEdit.title") }}
+            {{ $t("projectPlaceholdersEdit.title") }}
             <v-spacer />
             <v-icon @click="inEditMode = false" icon="mdi-close" />
         </v-card-title>
@@ -21,15 +21,15 @@
                     <v-col>
                         <v-text-field
                             v-model="placeholderName"
-                            :placeholder="$t('projectDetailPlaceholdersEdit.input.name')"
-                            :rules="[required($t('projectDetailPlaceholdersEdit.input.name.required'))]"
+                            :placeholder="$t('projectPlaceholdersEdit.input.name')"
+                            :rules="[required($t('projectPlaceholdersEdit.input.name.required'))]"
                         ></v-text-field>
                     </v-col>
                     <v-col>
                         <v-text-field
                             v-model="placeholderValue"
-                            :placeholder="$t('projectDetailPlaceholdersEdit.input.value')"
-                            :rules="[required($t('projectDetailPlaceholdersEdit.input.value.required'))]"
+                            :placeholder="$t('projectPlaceholdersEdit.input.value')"
+                            :rules="[required($t('projectPlaceholdersEdit.input.value.required'))]"
                             @click:append="createPlaceholder"
                             appendIcon="mdi-plus"
                         />
@@ -76,10 +76,10 @@ const createPlaceholder = async () => {
         const createdPlaceholder = await commands.createPlaceholder(createContract);
         project.value.placeholders.push(createdPlaceholder);
 
-        notify.success("projectDetailPlaceholdersEdit.create.success");
+        notify.success("projectPlaceholdersEdit.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
-        notify.error("projectDetailPlaceholdersEdit.create.error");
+        notify.error("projectPlaceholdersEdit.create.error");
     } finally {
         form.value.reset();
         loading.value = false;
@@ -98,7 +98,7 @@ const placeholderChanged = async (placeholder: Placeholder) => {
         await commands.updatePlaceholder(updateContract);
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectDetailPlaceholdersEdit.update.error");
+        notify.error("projectPlaceholdersEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -110,10 +110,10 @@ const deletePlaceholder = async (placeholder: Placeholder) => {
         await commands.deletePlaceholder(placeholder.id);
         remove(project.value.placeholders, placeholder);
 
-        notify.success("projectDetailPlaceholdersEdit.delete.success");
+        notify.success("projectPlaceholdersEdit.delete.success");
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectDetailPlaceholdersEdit.delete.error");
+        notify.error("projectPlaceholdersEdit.delete.error");
     } finally {
         loading.value = false;
     }

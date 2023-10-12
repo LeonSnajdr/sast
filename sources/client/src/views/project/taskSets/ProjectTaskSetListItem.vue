@@ -7,10 +7,6 @@
 
         <v-list-item-title>{{ taskSet.name }}</v-list-item-title>
         <v-list-item-subtitle>TODO: Beschreibung hinzufügen </v-list-item-subtitle>
-
-        <template #append>
-            <v-icon icon="mdi-tune" />
-        </template>
     </v-list-item>
 </template>
 
@@ -33,7 +29,7 @@ const startTaskSet = async () => {
         await commands.startTaskSet(props.taskSet.id);
     } catch (error) {
         console.error("Error while executing taskset", error);
-        notify.error("projectDetailTaskSetView.execute.error");
+        notify.error("projectTaskSetListItem.execute.error");
     } finally {
         executing.value = false;
     }
