@@ -29,7 +29,7 @@ pub async fn get_full_project(
 #[specta::specta]
 pub async fn create_project(
     db: DbState<'_>, create_contract: CreateProjectContract,
-) -> Result<project::Data, QueryError> {
+) -> Result<list_project_contract::Data, QueryError> {
     return project_service::create_project(db, create_contract).await;
 }
 

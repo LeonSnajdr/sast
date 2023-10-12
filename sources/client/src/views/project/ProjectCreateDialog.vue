@@ -29,6 +29,7 @@ import { required } from "@/rules";
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
 
+const { listProjects } = storeToRefs(projectStore);
 const form = ref<VForm>();
 const dialog = ref(false);
 const valid = ref(false);
@@ -40,8 +41,8 @@ const create = async () => {
     };
 
     try {
-        await commands.createProject(createContract);
-        await projectStore.loadListProjects();
+        const createdProject = await commands.createProject(createContract);
+        listProjects.value.push(createdProject);
 
         notify.success("projectCreateDialog.create.success");
     } catch (error) {

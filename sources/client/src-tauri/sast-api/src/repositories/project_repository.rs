@@ -34,10 +34,11 @@ pub async fn get_full_project(
 
 pub async fn create_project(
     db: DbState<'_>, create_contract: CreateProjectContract,
-) -> Result<project::Data, QueryError> {
+) -> Result<list_project_contract::Data, QueryError> {
     return db
         .project()
         .create(create_contract.name, vec![])
+        .select(list_project_contract::select())
         .exec()
         .await;
 }

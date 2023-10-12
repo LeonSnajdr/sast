@@ -19,7 +19,7 @@ export function getListProjects() {
 }
 
 export function createProject(createContract: CreateProjectContract) {
-    return invoke()<Project>("create_project", { createContract })
+    return invoke()<ListProjectContract>("create_project", { createContract })
 }
 
 export function updateProject(updateContract: UpdateProjectContract) {
