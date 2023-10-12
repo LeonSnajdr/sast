@@ -20,6 +20,6 @@
   "projectDetailPlaceholdersEdit.input.name.required": "The placeholder name is required",
   "projectDetailPlaceholdersEdit.input.value": "Value",
   "projectDetailPlaceholdersEdit.input.value.required": "The value is required",
-  "projectDetailTaskSets.title": "Task sets",
-  "projectDetailTaskSet.execute.error": "An error occurred during the execution of the task set"
+  "projectDetailTaskSetsView.title": "Task sets",
+  "projectDetailTaskSetView.execute.error": "An error occurred during the execution of the task set"
 }

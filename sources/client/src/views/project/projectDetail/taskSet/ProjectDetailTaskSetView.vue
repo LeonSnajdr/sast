@@ -33,7 +33,7 @@ const startTaskSet = async () => {
         await commands.startTaskSet(props.taskSet.id);
     } catch (error) {
         console.error("Error while executing taskset", error);
-        notify.error("projectDetailTaskSet.execute.error");
+        notify.error("projectDetailTaskSetView.execute.error");
     } finally {
         executing.value = false;
     }

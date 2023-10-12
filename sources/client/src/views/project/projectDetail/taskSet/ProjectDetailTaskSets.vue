@@ -1,24 +1,11 @@
 <template>
-    <v-card>
-        <v-card-title>
-            {{ $t("projectDetailTaskSets.title") }}
-            <v-spacer />
-            <v-icon icon="mdi-plus" />
-        </v-card-title>
-        <v-card-text>
-            <v-list>
-                <template v-for="taskSet in project.task_sets" :key="taskSet.id">
-                    <ProjectDetailTaskSet :taskSet="taskSet" />
-                </template>
-            </v-list>
-        </v-card-text>
-    </v-card>
+    <ProjectDetailTaskSetEdit v-if="inEditMode" />
+    <ProjectDetailTaskSetsView v-else />
 </template>
 
 <script setup lang="ts">
-import ProjectDetailTaskSet from "./ProjectDetailTaskSet.vue";
+import ProjectDetailTaskSetsView from "./ProjectDetailTaskSetsView.vue";
+import ProjectDetailTaskSetEdit from "./ProjectDetailTaskSetEdit.vue";
 
-const projectStore = useProjectStore();
-
-const { project } = storeToRefs(projectStore);
+const inEditMode = ref(false);
 </script>

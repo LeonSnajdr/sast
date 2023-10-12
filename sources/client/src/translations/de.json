@@ -20,6 +20,6 @@
   "projectDetailPlaceholdersEdit.input.name.required": "Der Name ist erforderlich",
   "projectDetailPlaceholdersEdit.input.value": "Wert",
   "projectDetailPlaceholdersEdit.input.value.required": "Der Wert ist erforderlich",
-  "projectDetailTaskSets.title": "Aufgaben-Sets",
-  "projectDetailTaskSet.execute.error": "Während der Ausführung des Aufgaben-Sets ist ein Fehler aufgetreten"
+  "projectDetailTaskSetsView.title": "Aufgaben-Sets",
+  "projectDetailTaskSetView.execute.error": "Während der Ausführung des Aufgaben-Sets ist ein Fehler aufgetreten"
 }
