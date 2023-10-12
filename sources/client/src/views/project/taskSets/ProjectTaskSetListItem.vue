@@ -11,11 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import type { TaskSet } from "@/bindings";
+import type { FullTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 
 const props = defineProps<{
-    taskSet: TaskSet;
+    taskSet: FullTaskSetContract;
 }>();
 
 const notify = useNotificationStore();

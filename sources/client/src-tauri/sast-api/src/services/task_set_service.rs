@@ -2,26 +2,21 @@ use prisma_client_rust::QueryError;
 use run_script::ScriptOptions;
 use std::{thread, time};
 
-use crate::contracts::task_set_contracts::{full_task_set_contract, CreateTaskSetContract};
-use crate::prisma::task_set;
+use crate::contracts::task_set_contracts::{
+    full_task_set_contract, project_task_set_contract, CreateTaskSetContract,
+};
 use crate::repositories::task_set_repository;
 use crate::utils::db_utils::DbState;
 
 pub async fn create_task_set(
     db: DbState<'_>, create_contract: CreateTaskSetContract,
-) -> Result<task_set::Data, QueryError> {
+) -> Result<full_task_set_contract::Data, QueryError> {
     return task_set_repository::create_task_set(db, create_contract).await;
 }
 
-pub async fn get_full_task_set(
-    db: DbState<'_>, task_set_id: String,
-) -> Result<Option<full_task_set_contract::Data>, QueryError> {
-    return task_set_repository::get_full_task_set(db, task_set_id).await;
-}
-
 pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<String, ()> {
-    let task_set_to_start: full_task_set_contract::Data =
-        task_set_repository::get_full_task_set(db, task_set_id)
+    let task_set_to_start: project_task_set_contract::Data =
+        task_set_repository::get_project_task_set(db, task_set_id)
             .await
             .unwrap()
             .unwrap();

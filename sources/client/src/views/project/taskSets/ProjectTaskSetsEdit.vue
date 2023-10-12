@@ -70,7 +70,7 @@ const createTaskSet = async () => {
 
     try {
         const createdTaskSet = await commands.createTaskSet(createContract);
-        // project.value.task_sets.push(createdTaskSet);
+        project.value.task_sets.push(createdTaskSet);
 
         notify.success("projectTaskSetsEdit.create.success");
     } catch (error) {
