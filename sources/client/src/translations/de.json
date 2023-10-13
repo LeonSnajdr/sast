@@ -20,13 +20,13 @@
   "projectPlaceholdersEdit.input.name.required": "Der Name ist erforderlich",
   "projectPlaceholdersEdit.input.value": "Wert",
   "projectTaskSets.title": "Aufgabensätze",
-  "projectTaskSetListItemCreate.input.name": "Name",
-  "projectTaskSetListItemCreate.input.name.required": "Der Name ist erforderlich",
-  "projectTaskSetListItemCreate.input.description": "Beschreibung",
-  "projectTaskSetListItemCreate.create.success": "Der Aufgabensatz wurde erfolgreich erstellt",
-  "projectTaskSetListItemCreate.create.error": "Der Aufgabensatz konnte nicht erstellt werden",
-  "projectTaskSetListItemView.execute.error": "Während der Ausführung des Aufgaben-Sets ist ein Fehler aufgetreten",
-  "projectTaskSetListItemEdit.update.error": "Aktualisierung des Aufgabensatzes fehlgeschlagen",
-  "projectTaskSetListItemEdit.delete.success": "Aufgabensatz erfolgreich gelöscht",
-  "projectTaskSetListItemEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden"
+  "projectTaskSetCreate.input.name": "Name",
+  "projectTaskSetCreate.input.name.required": "Der Name ist erforderlich",
+  "projectTaskSetCreate.input.description": "Beschreibung",
+  "projectTaskSetCreate.create.success": "Der Aufgabensatz wurde erfolgreich erstellt",
+  "projectTaskSetCreate.create.error": "Der Aufgabensatz konnte nicht erstellt werden",
+  "projectTaskSetView.execute.error": "Während der Ausführung des Aufgaben-Sets ist ein Fehler aufgetreten",
+  "projectTaskSetEdit.update.error": "Aktualisierung des Aufgabensatzes fehlgeschlagen",
+  "projectTaskSetEdit.delete.success": "Aufgabensatz erfolgreich gelöscht",
+  "projectTaskSetEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden"
 }

@@ -1,5 +1,5 @@
 <template>
-    <v-list-item-single>
+    <v-row-single>
         <v-text-field v-model="taskSet.description" :loading="loading" @update:modelValue="taskSetChanged" label="taskSet.name">
             <template #append>
                 <div>
@@ -10,7 +10,7 @@
                 <v-icon @click="deleteTaskSet" icon="mdi-delete" color="error"> </v-icon>
             </template>
         </v-text-field>
-    </v-list-item-single>
+    </v-row-single>
 </template>
 
 <script setup lang="ts">
@@ -41,7 +41,7 @@ const taskSetChanged = async () => {
         await commands.updateTaskSet(updateContract);
     } catch (error) {
         console.error("The taskset could not be updated", error);
-        notify.error("projectTaskSetListItemEdit.update.error");
+        notify.error("projectTaskSetEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -52,11 +52,11 @@ const deleteTaskSet = async () => {
 
     try {
         await commands.deleteTaskSet(taskSet.value.id);
-        notify.success("projectTaskSetListItemEdit.delete.success");
+        notify.success("projectTaskSetEdit.delete.success");
         remove(project.value.task_sets, taskSet.value);
     } catch (error) {
         console.error("The taskset could not be deleted", error);
-        notify.error("projectTaskSetListItemEdit.delete.error");
+        notify.error("projectTaskSetEdit.delete.error");
     } finally {
         loading.value = false;
     }

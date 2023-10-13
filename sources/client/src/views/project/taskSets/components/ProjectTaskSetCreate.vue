@@ -1,25 +1,25 @@
 <template>
-    <v-list-item-single>
+    <v-row-single>
         <v-form v-model="valid" ref="form" class="d-flex">
             <v-row>
                 <v-col>
                     <v-text-field
                         v-model="taskSetName"
-                        :placeholder="$t('projectTaskSetListItemCreate.input.name')"
-                        :rules="[required($t('projectTaskSetListItemCreate.input.name.required'))]"
+                        :placeholder="$t('projectTaskSetCreate.input.name')"
+                        :rules="[required($t('projectTaskSetCreate.input.name.required'))]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
                     <v-text-field
                         v-model="taskSetDescription"
-                        :placeholder="$t('projectTaskSetListItemCreate.input.description')"
+                        :placeholder="$t('projectTaskSetCreate.input.description')"
                         @click:append="createTaskSet"
                         appendIcon="mdi-plus"
                     />
                 </v-col>
             </v-row>
         </v-form>
-    </v-list-item-single>
+    </v-row-single>
 </template>
 
 <script setup lang="ts">
@@ -54,10 +54,10 @@ const createTaskSet = async () => {
         const createdTaskSet = await commands.createTaskSet(createContract);
         project.value.task_sets.push(createdTaskSet);
 
-        notify.success("projectTaskSetListItemCreate.create.success");
+        notify.success("projectTaskSetCreate.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
-        notify.error("projectTaskSetListItemCreate.create.error");
+        notify.error("projectTaskSetCreate.create.error");
     } finally {
         form.value.reset();
         loading.value = false;
