@@ -1,5 +1,6 @@
 import { createApp } from "vue";
 import VRowSingle from "@/components/VRowSingle.vue";
+import VListItemSingle from "@/components/VListItemSingle.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -15,5 +16,6 @@ app.use(router);
 app.use(i18n);
 
 app.component("VRowSingle", VRowSingle);
+app.component("VListItemSingle", VListItemSingle);
 
 app.mount("#app");

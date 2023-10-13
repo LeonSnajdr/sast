@@ -1,27 +1,25 @@
 <template>
-    <v-list-item>
-        <v-list-item-title>
-            <v-form v-model="valid" ref="form" class="d-flex">
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            v-model="taskSetName"
-                            :placeholder="$t('projectTaskSets.input.name')"
-                            :rules="[required($t('projectTaskSets.input.name.required'))]"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                            v-model="taskSetDescription"
-                            :placeholder="$t('projectTaskSets.input.description')"
-                            @click:append="createTaskSet"
-                            appendIcon="mdi-plus"
-                        />
-                    </v-col>
-                </v-row>
-            </v-form>
-        </v-list-item-title>
-    </v-list-item>
+    <v-list-item-single>
+        <v-form v-model="valid" ref="form" class="d-flex">
+            <v-row>
+                <v-col>
+                    <v-text-field
+                        v-model="taskSetName"
+                        :placeholder="$t('projectTaskSets.input.name')"
+                        :rules="[required($t('projectTaskSets.input.name.required'))]"
+                    ></v-text-field>
+                </v-col>
+                <v-col>
+                    <v-text-field
+                        v-model="taskSetDescription"
+                        :placeholder="$t('projectTaskSets.input.description')"
+                        @click:append="createTaskSet"
+                        appendIcon="mdi-plus"
+                    />
+                </v-col>
+            </v-row>
+        </v-form>
+    </v-list-item-single>
 </template>
 
 <script setup lang="ts">
