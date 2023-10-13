@@ -20,10 +20,11 @@
   "projectPlaceholdersEdit.input.name.required": "The placeholder name is required",
   "projectPlaceholdersEdit.input.value": "Value",
   "projectTaskSets.title": "Task sets",
-  "projectTaskSets.input.name": "Name",
-  "projectTaskSets.input.name.required": "The placeholder name is required",
-  "projectTaskSets.input.description": "Description",
-  "projectTaskSets.create.success": "The task set was successfully created",
-  "projectTaskSets.create.error": "The task set could not be created",
-  "projectTaskSetListItem.execute.error": "An error occurred during the execution of the task set"
+  "projectTaskSetListItemCreate.input.name": "Name",
+  "projectTaskSetListItemCreate.input.name.required": "The placeholder name is required",
+  "projectTaskSetListItemCreate.input.description": "Description",
+  "projectTaskSetListItemCreate.create.success": "The task set was successfully created",
+  "projectTaskSetListItemCreate.create.error": "The task set could not be created",
+  "projectTaskSetListItemView.execute.error": "An error occurred during the execution of the task set",
+  "projectTaskSetListItemEdit.update.error": "Task set update failed"
 }

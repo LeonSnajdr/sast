@@ -5,14 +5,14 @@
                 <v-col>
                     <v-text-field
                         v-model="taskSetName"
-                        :placeholder="$t('projectTaskSets.input.name')"
-                        :rules="[required($t('projectTaskSets.input.name.required'))]"
+                        :placeholder="$t('projectTaskSetListItemCreate.input.name')"
+                        :rules="[required($t('projectTaskSetListItemCreate.input.name.required'))]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
                     <v-text-field
                         v-model="taskSetDescription"
-                        :placeholder="$t('projectTaskSets.input.description')"
+                        :placeholder="$t('projectTaskSetListItemCreate.input.description')"
                         @click:append="createTaskSet"
                         appendIcon="mdi-plus"
                     />
@@ -54,10 +54,10 @@ const createTaskSet = async () => {
         const createdTaskSet = await commands.createTaskSet(createContract);
         project.value.task_sets.push(createdTaskSet);
 
-        notify.success("projectTaskSets.create.success");
+        notify.success("projectTaskSetListItemCreate.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
-        notify.error("projectTaskSets.create.error");
+        notify.error("projectTaskSetListItemCreate.create.error");
     } finally {
         form.value.reset();
         loading.value = false;
