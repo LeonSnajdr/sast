@@ -46,6 +46,14 @@ export function createTaskSet(createContract: CreateTaskSetContract) {
     return invoke()<FullTaskSetContract>("create_task_set", { createContract })
 }
 
+export function updateTaskSet(updateContract: UpdateTaskSetContract) {
+    return invoke()<FullTaskSetContract>("update_task_set", { updateContract })
+}
+
+export function deleteTaskSet(taskSetId: string) {
+    return invoke()<FullTaskSetContract>("delete_task_set", { taskSetId })
+}
+
 export function startTaskSet(taskSetId: string) {
     return invoke()<string>("start_task_set", { taskSetId })
 }
@@ -62,16 +70,17 @@ export function deleteTask(taskId: string) {
     return invoke()<Task>("delete_task", { taskId })
 }
 
+export type Task = { id: string; command: string; working_directory: string; delay: number; task_set_id: string }
 export type UpdateTaskContract = { id: string; command: string; working_directory: string; delay: number }
-export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: { id: string; name: string; project_id: string; tasks: Task[] }[] }
+export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: { id: string; name: string; description: string; project_id: string; tasks: Task[] }[] }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
 export type ListProjectContract = { id: string; name: string }
 export type Placeholder = { id: string; name: string; value: string; project_id: string }
 export type UpdateProjectContract = { id: string; name: string }
+export type UpdateTaskSetContract = { id: string; description: string }
 export type CreatePlaceholderContract = { name: string; value: string; project_id: string }
 export type CreateTaskContract = { command: string; working_directory: string; delay: number; task_set_id: string }
-export type Task = { id: string; command: string; working_directory: string; delay: number; task_set_id: string }
-export type FullTaskSetContract = { id: string; name: string; project_id: string; tasks: Task[] }
+export type FullTaskSetContract = { id: string; name: string; description: string; project_id: string; tasks: Task[] }
 export type CreateProjectContract = { name: string }
 export type UpdatePlaceholderContract = { id: string; value: string }
-export type CreateTaskSetContract = { project_id: string; name: string }
+export type CreateTaskSetContract = { project_id: string; name: string; description: string }

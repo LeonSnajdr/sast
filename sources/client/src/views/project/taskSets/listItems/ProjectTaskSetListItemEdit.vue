@@ -1,6 +1,6 @@
 <template>
     <v-list-item-single>
-        <v-text-field :label="taskSet.name">
+        <v-text-field :label="taskSet.name" v-model="taskSet.description">
             <template #append>
                 <v-icon icon="mdi-tune" size="20"> </v-icon>
                 <ProjectTaskSetEditDialog v-model:taskSet="taskSet" />

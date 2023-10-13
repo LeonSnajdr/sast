@@ -20,7 +20,9 @@ use crate::commands::project_commands::{
     create_project, delete_project, get_full_project, get_list_projects, update_project,
 };
 use crate::commands::task_commands::{create_task, delete_task, update_task};
-use crate::commands::task_set_commands::{create_task_set, start_task_set};
+use crate::commands::task_set_commands::{
+    create_task_set, delete_task_set, start_task_set, update_task_set,
+};
 use crate::prisma::*;
 
 #[tokio::main]
@@ -39,6 +41,8 @@ async fn main() {
             update_placeholder,
             delete_placeholder,
             create_task_set,
+            update_task_set,
+            delete_task_set,
             start_task_set,
             create_task,
             update_task,
@@ -62,6 +66,8 @@ async fn main() {
             update_placeholder,
             delete_placeholder,
             create_task_set,
+            update_task_set,
+            delete_task_set,
             start_task_set,
             create_task,
             update_task,

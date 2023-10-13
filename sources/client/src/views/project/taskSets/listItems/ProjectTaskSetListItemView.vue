@@ -6,7 +6,7 @@
         </template>
 
         <v-list-item-title>{{ taskSet.name }}</v-list-item-title>
-        <v-list-item-subtitle>TODO: Beschreibung hinzufügen </v-list-item-subtitle>
+        <v-list-item-subtitle>{{ taskSet.description }}</v-list-item-subtitle>
     </v-list-item>
 </template>
 

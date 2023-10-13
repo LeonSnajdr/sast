@@ -26,11 +26,12 @@ model Placeholder {
 }
 
 model TaskSet {
-    id         String  @id @default(uuid())
-    name       String
-    tasks      Task[]
-    project    Project @relation(fields: [project_id], references: [id])
-    project_id String
+    id          String  @id @default(uuid())
+    name        String
+    description String
+    tasks       Task[]
+    project     Project @relation(fields: [project_id], references: [id])
+    project_id  String
 }
 
 model Task {

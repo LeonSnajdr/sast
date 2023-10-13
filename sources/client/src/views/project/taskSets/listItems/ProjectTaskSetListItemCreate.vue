@@ -46,6 +46,7 @@ const createTaskSet = async () => {
 
     const createContract: CreateTaskSetContract = {
         project_id: project.value.id,
+        description: taskSetDescription.value,
         name: taskSetName.value
     };
 
