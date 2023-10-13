@@ -1,20 +1,19 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="taskSet.description" :loading="loading" @update:modelValue="taskSetChanged" label="taskSet.name">
+        <v-text-field v-model="taskSet.description" :loading="loading" @update:modelValue="taskSetChanged" :label="taskSet.name">
             <template #append>
-                <div>
-                    <v-icon icon="mdi-tune"> </v-icon>
-                    <ProjectTaskSetEditDialog v-model:taskSet="taskSet" />
-                </div>
+                <v-btn-icon icon="mdi-tune">
+                    <ProjectTaskSetTasksEditDialog v-model:taskSet="taskSet" />
+                </v-btn-icon>
 
-                <v-icon @click="deleteTaskSet" icon="mdi-delete" color="error"> </v-icon>
+                <v-btn-icon icon="mdi-delete" color="error" />
             </template>
         </v-text-field>
     </v-row-single>
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetEditDialog from "../ProjectTaskSetEditDialog.vue";
+import ProjectTaskSetTasksEditDialog from "@/views/project/taskSets/tasks/ProjectTaskSetTasksEditDialog.vue";
 import type { FullTaskSetContract, UpdateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { remove } from "lodash";

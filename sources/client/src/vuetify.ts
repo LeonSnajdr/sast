@@ -68,11 +68,6 @@ export default createVuetify({
             variant: "outlined",
             hideDetails: "auto",
             persistentPlaceholder: true,
-
-            VIcon: {
-                class: "ml-2",
-                size: 20
-            }
         },
         VSelect: {
             variant: "outlined",

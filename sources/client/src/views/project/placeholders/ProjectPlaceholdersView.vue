@@ -4,7 +4,7 @@
             {{ $t("projectPlaceholdersView.title") }}
             <v-spacer />
 
-            <v-icon @click="inEditMode = true" icon="mdi-pencil" />
+            <v-btn-icon @click="inEditMode = true" icon="mdi-pencil" />
         </v-card-title>
         <v-card-text class="d-flex">
             <v-chip-group>
