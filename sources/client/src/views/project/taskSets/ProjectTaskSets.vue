@@ -3,77 +3,29 @@
         <v-card-title>
             {{ $t("projectTaskSets.title") }}
             <v-spacer />
-            <v-icon @click="inCreateMode = !inCreateMode" :icon="inCreateMode ? 'mdi-close' : 'mdi-plus'" />
+            <v-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
             <v-list>
                 <template v-for="(taskSet, index) in project.task_sets" :key="taskSet.id">
-                    <ProjectTaskSetListItem v-model:taskSet="project.task_sets[index]" />
+                    <ProjectTaskSetListItemEdit v-if="inEditMode" v-model:taskSet="project.task_sets[index]" />
+                    <ProjectTaskSetListItemView v-else v-model:taskSet="project.task_sets[index]" />
                 </template>
-            </v-list>
 
-            <v-form v-if="inCreateMode" v-model="valid" ref="form" class="d-flex">
-                <v-row>
-                    <v-col>
-                        <v-text-field
-                            v-model="taskSetName"
-                            :placeholder="$t('projectTaskSets.input.name')"
-                            :rules="[required($t('projectTaskSets.input.name.required'))]"
-                        ></v-text-field>
-                    </v-col>
-                    <v-col>
-                        <v-text-field
-                            v-model="taskSetDescription"
-                            :placeholder="$t('projectTaskSets.input.description')"
-                            @click:append="createTaskSet"
-                            appendIcon="mdi-plus"
-                        />
-                    </v-col>
-                </v-row>
-            </v-form>
+                <ProjectTaskSetListItemCreate v-if="inEditMode" />
+            </v-list>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup lang="ts">
-import { VForm } from "vuetify/components";
-import ProjectTaskSetListItem from "./ProjectTaskSetListItem.vue";
-import type { CreateTaskSetContract } from "@/bindings";
-import * as commands from "@/bindings";
-import { required } from "@/rules";
+import ProjectTaskSetListItemView from "@/views/project/taskSets/listItems/ProjectTaskSetListItemView.vue";
+import ProjectTaskSetListItemCreate from "@/views/project/taskSets/listItems/ProjectTaskSetListItemCreate.vue";
+import ProjectTaskSetListItemEdit from "@/views/project/taskSets/listItems/ProjectTaskSetListItemEdit.vue";
 
-const notify = useNotificationStore();
 const projectStore = useProjectStore();
 
 const { project } = storeToRefs(projectStore);
-const form = ref<VForm>();
-const inCreateMode = ref(false);
-const loading = ref(false);
-const valid = ref(false);
-const taskSetName = ref("");
-const taskSetDescription = ref("");
 
-const createTaskSet = async () => {
-    if (!valid.value) return;
-
-    loading.value = true;
-
-    const createContract: CreateTaskSetContract = {
-        project_id: project.value.id,
-        name: taskSetName.value
-    };
-
-    try {
-        const createdTaskSet = await commands.createTaskSet(createContract);
-        project.value.task_sets.push(createdTaskSet);
-
-        notify.success("projectTaskSets.create.success");
-    } catch (error) {
-        console.error("Could not create placeholder", error);
-        notify.error("projectTaskSets.create.error");
-    } finally {
-        form.value.reset();
-        loading.value = false;
-    }
-};
+const inEditMode = ref(false);
 </script>

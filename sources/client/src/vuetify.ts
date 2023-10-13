@@ -70,6 +70,7 @@ export default createVuetify({
             persistentPlaceholder: true,
 
             VIcon: {
+                class: "ml-2",
                 size: 20
             }
         },
