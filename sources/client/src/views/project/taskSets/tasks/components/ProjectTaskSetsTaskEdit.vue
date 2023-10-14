@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import type { Task } from "@/bindings";
+import type { Task, UpdateTaskContract, FullTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { remove } from "lodash";
 
@@ -30,9 +30,32 @@ const loading = ref(false);
 const inOptions = ref(false);
 
 const { task, taskSet } = defineModels<{
-    taskSet: commands.FullTaskSetContract;
+    taskSet: FullTaskSetContract;
     task: Task;
 }>();
+
+watch(task.value, () => taskChanged());
+
+const taskChanged = async () => {
+    console.log("changed");
+
+    loading.value = true;
+
+    const updateContract: UpdateTaskContract = {
+        id: task.value.id,
+        command: task.value.command,
+        working_directory: task.value.working_directory,
+        delay: Number(task.value.delay)
+    };
+
+    try {
+        await commands.updateTask(updateContract);
+    } catch (error) {
+        console.log("Faild updating task", error);
+    } finally {
+        loading.value = false;
+    }
+};
 
 const deleteTask = async () => {
     loading.value = true;
