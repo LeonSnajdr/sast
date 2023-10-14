@@ -6,7 +6,7 @@
                     <ProjectTaskSetTasksEditDialog v-model:taskSet="taskSet" />
                 </v-btn-icon>
 
-                <v-btn-icon icon="mdi-delete" color="error" />
+                <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
             </template>
         </v-text-field>
     </v-row-single>

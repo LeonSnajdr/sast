@@ -4,7 +4,6 @@ import DefaultLayout from "./layouts/DefaultLayout.vue";
 import Home from "@/views/home/Home.vue";
 import Settings from "@/views/settings/Settings.vue";
 import Project from "@/views/project/Project.vue";
-import TaskSet from "@/views/taskSet/TaskSet.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,18 +25,6 @@ const router = createRouter({
             }),
             meta: {
                 layout: ProjectLayout
-            }
-        },
-        {
-            path: "/taskSet/:projectId/:taskSetId",
-            name: "taskSet",
-            component: TaskSet,
-            props: (route) => ({
-                projectId: route.params.projectId,
-                taskSetId: route.params.taskSetId
-            }),
-            meta: {
-                layout: DefaultLayout
             }
         },
         {

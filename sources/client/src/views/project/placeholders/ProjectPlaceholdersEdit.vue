@@ -3,17 +3,15 @@
         <v-card-title>
             {{ $t("projectPlaceholdersEdit.title") }}
             <v-spacer />
-            <v-icon @click="inEditMode = false" icon="mdi-close" />
+            <v-btn-icon @click="inEditMode = false" icon="mdi-close" />
         </v-card-title>
         <v-card-text>
             <div v-for="placeholder in project.placeholders" :key="placeholder.id" class="d-flex mb-4">
-                <v-text-field
-                    :label="placeholder.name"
-                    v-model="placeholder.value"
-                    @update:modelValue="placeholderChanged(placeholder)"
-                    @click:append="deletePlaceholder(placeholder)"
-                    appendIcon="mdi-delete"
-                />
+                <v-text-field v-model="placeholder.value" :label="placeholder.name" @update:modelValue="placeholderChanged(placeholder)">
+                    <template #append>
+                        <v-btn-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" />
+                    </template>
+                </v-text-field>
             </div>
 
             <v-form v-model="valid" ref="form" class="d-flex">
@@ -30,9 +28,11 @@
                             v-model="placeholderValue"
                             :placeholder="$t('projectPlaceholdersEdit.input.value')"
                             :rules="[required($t('projectPlaceholdersEdit.input.value.required'))]"
-                            @click:append="createPlaceholder"
-                            appendIcon="mdi-plus"
-                        />
+                        >
+                            <template #append>
+                                <v-btn-icon @click="createPlaceholder" icon="mdi-plus" />
+                            </template>
+                        </v-text-field>
                     </v-col>
                 </v-row>
             </v-form>

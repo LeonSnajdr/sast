@@ -1,6 +1,6 @@
 import { createApp } from "vue";
 import VRowSingle from "@/components/VRowSingle.vue";
-import VButtonIcon from "@/components/VButtonIcon.vue";
+import VBtnIcon from "@/components/VBtnIcon.vue";
 
 import App from "./App.vue";
 import router from "./router";
@@ -16,6 +16,6 @@ app.use(router);
 app.use(i18n);
 
 app.component("VRowSingle", VRowSingle);
-app.component("VButtonIcon", VButtonIcon);
+app.component("VBtnIcon", VBtnIcon);
 
 app.mount("#app");

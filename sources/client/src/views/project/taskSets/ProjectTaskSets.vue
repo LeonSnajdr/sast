@@ -3,7 +3,7 @@
         <v-card-title>
             {{ $t("projectTaskSets.title") }}
             <v-spacer />
-            <v-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
+            <v-btn-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
             <template v-if="inEditMode">

@@ -10,12 +10,11 @@
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-text-field
-                        v-model="taskSetDescription"
-                        :placeholder="$t('projectTaskSetCreate.input.description')"
-                        @click:append="createTaskSet"
-                        appendIcon="mdi-plus"
-                    />
+                    <v-text-field v-model="taskSetDescription" :placeholder="$t('projectTaskSetCreate.input.description')">
+                        <template #append>
+                            <v-btn-icon @click="createTaskSet" icon="mdi-plus" />
+                        </template>
+                    </v-text-field>
                 </v-col>
             </v-row>
         </v-form>

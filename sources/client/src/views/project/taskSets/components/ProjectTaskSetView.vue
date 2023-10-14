@@ -1,8 +1,7 @@
 <template>
     <v-list-item>
         <template #prepend>
-            <v-icon v-if="!executing" @click="startTaskSet" icon="mdi-play" color="success"></v-icon>
-            <v-progress-circular style="margin-right: 9px" v-else indeterminate></v-progress-circular>
+            <v-btn-icon @click="startTaskSet" :loading="executing" icon="mdi-play" color="success" class="mr-2" />
         </template>
 
         <v-list-item-title>{{ taskSet.name }}</v-list-item-title>

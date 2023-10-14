@@ -52,6 +52,9 @@ export default createVuetify({
         }
     },
     defaults: {
+        VIcon: {
+            size: 18
+        },
         VBtn: {
             variant: "flat"
         },
@@ -67,7 +70,7 @@ export default createVuetify({
         VTextField: {
             variant: "outlined",
             hideDetails: "auto",
-            persistentPlaceholder: true,
+            persistentPlaceholder: true
         },
         VSelect: {
             variant: "outlined",
@@ -112,11 +115,7 @@ export default createVuetify({
             class: "d-flex flex-column",
 
             VCardTitle: {
-                class: "text-medium-emphasis font-weight-light d-flex align-center",
-
-                VIcon: {
-                    size: 20
-                }
+                class: "text-medium-emphasis font-weight-light d-flex align-center"
             }
         },
         VNavigationDrawer: {

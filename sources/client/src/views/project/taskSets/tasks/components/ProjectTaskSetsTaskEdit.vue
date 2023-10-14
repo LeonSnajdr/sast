@@ -1,12 +1,10 @@
 <template>
     <v-row-single v-if="!inOptions">
-        <v-text-field
-            v-model="task.command"
-            @click:append="inOptions = !inOptions"
-            :loading="loading"
-            prependInnerIcon="mdi-apple-keyboard-command"
-            appendIcon="mdi-cog"
-        />
+        <v-text-field v-model="task.command" :loading="loading" prependInnerIcon="mdi-apple-keyboard-command">
+            <template #append>
+                <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
+            </template>
+        </v-text-field>
     </v-row-single>
     <v-row v-else>
         <v-col cols="8">
@@ -15,8 +13,8 @@
         <v-col cols="4">
             <v-text-field v-model="task.delay" :loading="loading" type="number" prependInnerIcon="mdi-clock">
                 <template #append>
-                    <v-icon @click="deleteTask" icon="mdi-delete" color="error" />
-                    <v-icon @click="inOptions = !inOptions" icon="mdi-cog" />
+                    <v-btn-icon @click="deleteTask" icon="mdi-delete" />
+                    <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
                 </template>
             </v-text-field>
         </v-col>
