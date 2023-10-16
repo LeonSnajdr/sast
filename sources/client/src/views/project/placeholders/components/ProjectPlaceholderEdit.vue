@@ -1,5 +1,5 @@
 <template>
-    <v-row-single v-for="placeholder in project.placeholders" :key="placeholder">
+    <v-row-single>
         <v-text-field v-model="placeholder.value" :label="placeholder.name" @update:modelValue="placeholderChanged(placeholder)">
             <template #append>
                 <v-btn-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" />
@@ -12,6 +12,10 @@
 import type { Placeholder, UpdatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { remove } from "lodash";
+
+defineModels<{
+    placeholder: Placeholder;
+}>();
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
@@ -31,7 +35,7 @@ const placeholderChanged = async (placeholder: Placeholder) => {
         await commands.updatePlaceholder(updateContract);
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectPlaceholdersEdit.update.error");
+        notify.error("projectPlaceholderEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -43,10 +47,10 @@ const deletePlaceholder = async (placeholder: Placeholder) => {
         await commands.deletePlaceholder(placeholder.id);
         remove(project.value.placeholders, placeholder);
 
-        notify.success("projectPlaceholdersEdit.delete.success");
+        notify.success("projectPlaceholderEdit.delete.success");
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectPlaceholdersEdit.delete.error");
+        notify.error("projectPlaceholderEdit.delete.error");
     } finally {
         loading.value = false;
     }

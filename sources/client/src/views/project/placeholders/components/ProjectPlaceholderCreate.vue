@@ -5,16 +5,12 @@
                 <v-col>
                     <v-text-field
                         v-model="placeholderName"
-                        :placeholder="$t('projectPlaceholdersEdit.input.name')"
-                        :rules="[required($t('projectPlaceholdersEdit.input.name.required'))]"
+                        :placeholder="$t('projectPlaceholderCreate.input.name')"
+                        :rules="[required($t('projectPlaceholderCreate.input.name.required'))]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-text-field
-                        v-model="placeholderValue"
-                        :placeholder="$t('projectPlaceholdersEdit.input.value')"
-                        :rules="[required($t('projectPlaceholdersEdit.input.value.required'))]"
-                    >
+                    <v-text-field v-model="placeholderValue" :placeholder="$t('projectPlaceholderCreate.input.value')">
                         <template #append>
                             <v-btn-icon @click="createPlaceholder" icon="mdi-plus" />
                         </template>
@@ -27,13 +23,9 @@
 
 <script setup lang="ts">
 import { VForm } from "vuetify/components";
-import type { CreatePlaceholderContract, Placeholder } from "@/bindings";
+import type { CreatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required } from "@/rules";
-
-defineModels<{
-    placeholder: Placeholder;
-}>();
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
@@ -60,10 +52,10 @@ const createPlaceholder = async () => {
         const createdPlaceholder = await commands.createPlaceholder(createContract);
         project.value.placeholders.push(createdPlaceholder);
 
-        notify.success("projectPlaceholdersEdit.create.success");
+        notify.success("projectPlaceholderCreate.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
-        notify.error("projectPlaceholdersEdit.create.error");
+        notify.error("projectPlaceholderCreate.create.error");
     } finally {
         form.value.reset();
         loading.value = false;
