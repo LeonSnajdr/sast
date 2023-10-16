@@ -21,6 +21,7 @@ watch(
     () => props.projectId,
     async () => {
         projectStore.loadProject(props.projectId);
-    }
+    },
+    { immediate: true }
 );
 </script>

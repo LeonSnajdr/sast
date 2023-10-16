@@ -41,12 +41,12 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
 
         for placeholder in task_set_to_start.project.placeholders.iter() {
             command = command.replace(
-                format!("<?sast {} ?>", placeholder.name).as_str(),
+                format!("@{}", placeholder.name).as_str(),
                 placeholder.value.as_str(),
             );
 
             working_directory = working_directory.replace(
-                format!("<?sast {} ?>", placeholder.name).as_str(),
+                format!("@{}", placeholder.name).as_str(),
                 placeholder.value.as_str(),
             );
         }
