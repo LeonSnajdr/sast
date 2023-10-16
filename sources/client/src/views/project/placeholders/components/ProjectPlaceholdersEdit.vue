@@ -1,5 +1,5 @@
 <template>
-    <v-row-single>
+    <v-row-single v-for="placeholder in project.placeholders" :key="placeholder">
         <v-text-field v-model="placeholder.value" :label="placeholder.name" @update:modelValue="placeholderChanged(placeholder)">
             <template #append>
                 <v-btn-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" />
@@ -12,10 +12,6 @@
 import type { Placeholder, UpdatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { remove } from "lodash";
-
-defineModels<{
-    placeholder: Placeholder;
-}>();
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();

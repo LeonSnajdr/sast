@@ -3,32 +3,24 @@
         <v-card-title>
             {{ $t("projectPlaceholdersView.title") }}
             <v-spacer />
-
             <v-btn-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
             <template v-if="inEditMode">
-                <ProjectPlaceholderEdit
-                    v-for="(placeholder, index) in project.placeholders"
-                    :key="placeholder.id"
-                    v-model:placeholder="project.placeholders[index]"
-                />
+                <ProjectPlaceholdersEdit />
                 <ProjectPlaceholderCreate />
             </template>
             <v-chip-group v-else>
-                <ProjectPlaceholderView v-for="placeholder in project.placeholders" :key="placeholder.id" :placeholder="placeholder" />
+                <ProjectPlaceholdersView />
             </v-chip-group>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup lang="ts">
-import ProjectPlaceholderView from "@/views/project/placeholders/components/ProjectPlaceholderView.vue";
-import ProjectPlaceholderEdit from "@/views/project/placeholders/components/ProjectPlaceholderEdit.vue";
+import ProjectPlaceholdersView from "@/views/project/placeholders/components/ProjectPlaceholdersView.vue";
+import ProjectPlaceholdersEdit from "@/views/project/placeholders/components/ProjectPlaceholdersEdit.vue";
 import ProjectPlaceholderCreate from "@/views/project/placeholders/components/ProjectPlaceholderCreate.vue";
 
-const projectStore = useProjectStore();
-
-const { project } = storeToRefs(projectStore);
 const inEditMode = ref(false);
 </script>
