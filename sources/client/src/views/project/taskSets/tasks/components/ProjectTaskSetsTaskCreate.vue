@@ -34,6 +34,8 @@ const createTask = async () => {
     } catch (error) {
         console.error("Could not create task", error);
         notify.error("projectTaskSetTaskCreate.create.error");
+    } finally {
+        taskCommand.value = "";
     }
 };
 </script>
