@@ -55,6 +55,9 @@ async fn main() {
     #[cfg(debug_assertions)]
     db._db_push().await.unwrap();
 
+    #[cfg(not(debug_assertions))]
+    db._migrate_deploy().await.unwrap();
+
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
             get_full_project,
