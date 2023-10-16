@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" activator="parent" width="500">
+    <v-dialog v-model="dialog" activator="parent">
         <v-form v-model="valid" ref="form">
             <v-card>
                 <v-card-title>{{ $t("projectCreateDialog.title") }}</v-card-title>

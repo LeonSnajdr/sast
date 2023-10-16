@@ -21,8 +21,10 @@ model Placeholder {
     id         String  @id @default(uuid())
     name       String
     value      String
-    project    Project @relation(fields: [project_id], references: [id])
+    project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
     project_id String
+
+    @@unique([project_id, name])
 }
 
 model TaskSet {
@@ -30,8 +32,10 @@ model TaskSet {
     name        String
     description String
     tasks       Task[]
-    project     Project @relation(fields: [project_id], references: [id])
+    project     Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
     project_id  String
+
+    @@unique([project_id, name])
 }
 
 model Task {
@@ -39,6 +43,6 @@ model Task {
     command           String
     working_directory String
     delay             Int
-    task_set          TaskSet @relation(fields: [task_set_id], references: [id])
+    task_set          TaskSet @relation(fields: [task_set_id], references: [id], onDelete: Cascade)
     task_set_id       String
 }

@@ -7,13 +7,11 @@
                 </v-list-item>
             </v-list>
         </template>
-        <template #append v-if="expanded">
-            <div class="d-flex align-center pa-2">
-                <v-btn color="primary" width="80%" density="comfortable">
-                    <v-icon icon="mdi-plus" />
+        <template #append>
+            <div class="d-flex align-center">
+                <v-btn-icon icon="mdi-plus">
                     <ProjectCreateDialog />
-                </v-btn>
-                <v-spacer />
+                </v-btn-icon>
                 <v-btn-icon @click.prevent="rail = !rail" :icon="rail ? 'mdi-pin-outline' : 'mdi-pin-off-outline'" />
             </div>
         </template>
