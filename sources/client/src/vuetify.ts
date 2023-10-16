@@ -119,8 +119,14 @@ export default createVuetify({
             }
         },
         VNavigationDrawer: {
-            class: "elevation-1",
-            rounded: true
+            class: "elevation-1 px-3 py-2",
+            railWidth: "80",
+            rounded: true,
+
+            VListItem: {
+                rounded: true,
+                class: "px-3 my-1 pt-2"
+            }
         },
         VProgressCircular: {
             size: 20
