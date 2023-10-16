@@ -26,5 +26,10 @@
   "projectTaskSetCreate.create.success": "The task set was successfully created",
   "projectTaskSetCreate.create.error": "The task set could not be created",
   "projectTaskSetView.execute.error": "An error occurred during the execution of the task set",
-  "projectTaskSetEdit.update.error": "Task set update failed"
+  "projectTaskSetEdit.update.error": "Task set update failed",
+  "projectTaskSetTaskCreate.create.success": "Task successfully created",
+  "projectTaskSetTaskCreate.create.error": "Task could not be created",
+  "projectTaskSetTaskEdit.update.error": "Task update failed",
+  "projectTaskSetTaskEdit.delete.success": "Task successfully deleted",
+  "projectTaskSetTaskEdit.delete.error": "Task could not be deleted"
 }

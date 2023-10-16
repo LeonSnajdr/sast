@@ -34,11 +34,11 @@ const { task, taskSet } = defineModels<{
     task: Task;
 }>();
 
+const notify = useNotificationStore();
+
 watch(task.value, () => taskChanged());
 
 const taskChanged = async () => {
-    console.log("changed");
-
     loading.value = true;
 
     const updateContract: UpdateTaskContract = {
@@ -51,7 +51,8 @@ const taskChanged = async () => {
     try {
         await commands.updateTask(updateContract);
     } catch (error) {
-        console.log("Faild updating task", error);
+        console.log("Failed updating task", error);
+        notify.error("projectTaskSetTaskEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -63,8 +64,10 @@ const deleteTask = async () => {
     try {
         await commands.deleteTask(task.value.id);
         remove(taskSet.value.tasks, task.value);
+        notify.success("projectTaskSetTaskEdit.delete.success");
     } catch (error) {
         console.error("Could not delete task", error);
+        notify.error("projectTaskSetTaskEdit.delete.error");
     } finally {
         loading.value = false;
     }

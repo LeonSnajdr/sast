@@ -28,5 +28,10 @@
   "projectTaskSetView.execute.error": "Während der Ausführung des Aufgaben-Sets ist ein Fehler aufgetreten",
   "projectTaskSetEdit.update.error": "Aktualisierung des Aufgabensatzes fehlgeschlagen",
   "projectTaskSetEdit.delete.success": "Aufgabensatz erfolgreich gelöscht",
-  "projectTaskSetEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden"
+  "projectTaskSetEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden",
+  "projectTaskSetTaskCreate.create.success": "Aufgabe erfolgreich erstellt",
+  "projectTaskSetTaskCreate.create.error": "Aufgabe konnte nicht erstellt werden",
+  "projectTaskSetTaskEdit.update.error": "Aktualisierung der Aufgabe fehlgeschlagen",
+  "projectTaskSetTaskEdit.delete.success": "Aufgabe erfolgreich gelöscht",
+  "projectTaskSetTaskEdit.delete.error": "Aufgabe konnte nicht gelöscht werden"
 }

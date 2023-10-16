@@ -16,6 +16,7 @@ const { taskSet } = defineModels<{
     taskSet: FullTaskSetContract;
 }>();
 
+const notify = useNotificationStore();
 const taskCommand = ref("");
 
 const createTask = async () => {
@@ -29,8 +30,10 @@ const createTask = async () => {
     try {
         const createdTask = await commands.createTask(createTask);
         taskSet.value.tasks.push(createdTask);
+        notify.success("projectTaskSetTaskCreate.create.success");
     } catch (error) {
         console.error("Could not create task", error);
+        notify.error("projectTaskSetTaskCreate.create.error");
     }
 };
 </script>
