@@ -119,9 +119,13 @@ export default createVuetify({
             }
         },
         VNavigationDrawer: {
-            class: "elevation-1 px-3 py-2",
+            class: "elevation-1 pa-3",
             railWidth: "80",
             rounded: true,
+
+            VDivider: {
+                class: "my-2"
+            },
 
             VListItem: {
                 rounded: true,
