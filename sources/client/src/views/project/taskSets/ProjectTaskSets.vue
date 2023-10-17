@@ -10,9 +10,12 @@
                 <ProjectTaskSetEdit v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
                 <ProjectTaskSetCreate />
             </template>
-            <v-list v-else>
-                <ProjectTaskSetView v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
-            </v-list>
+            <template v-else>
+                <v-list v-if="project.task_sets.length > 0">
+                    <ProjectTaskSetView v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
+                </v-list>
+                <span v-else>{{ $t("projectTaskSets.noItems") }}</span>
+            </template>
         </v-card-text>
     </v-card>
 </template>

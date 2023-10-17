@@ -15,9 +15,12 @@
                 />
                 <ProjectPlaceholderCreate />
             </template>
-            <v-chip-group v-else>
-                <ProjectPlaceholderView v-for="placeholder in project.placeholders" :key="placeholder.id" :placeholder="placeholder" />
-            </v-chip-group>
+            <template v-else>
+                <v-chip-group v-if="project.placeholders.length > 0">
+                    <ProjectPlaceholderView v-for="placeholder in project.placeholders" :key="placeholder.id" :placeholder="placeholder" />
+                </v-chip-group>
+                <span v-else>{{ $t("projectPlaceholders.noItems") }}</span>
+            </template>
         </v-card-text>
     </v-card>
 </template>
