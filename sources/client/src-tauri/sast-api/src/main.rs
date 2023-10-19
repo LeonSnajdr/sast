@@ -9,6 +9,7 @@ mod repositories;
 mod services;
 mod utils;
 use std::sync::Arc;
+use std::{env, fs};
 
 use crate::commands::{placeholder_commands, project_commands, task_commands, task_set_commands};
 use crate::prisma::*;
@@ -24,7 +25,9 @@ macro_rules! tauri_handlers {
 
 #[tokio::main]
 async fn main() {
-    let db = PrismaClient::_builder().build().await.unwrap();
+    let db = prisma::new_client_with_url(get_database_url().as_str())
+        .await
+        .unwrap();
 
     #[cfg(debug_assertions)]
     db._db_push().await.unwrap();
@@ -53,4 +56,18 @@ async fn main() {
         .manage(Arc::new(db))
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+fn get_database_url() -> String {
+    let sast_path = format!("{}\\sast", env::var("APPDATA").expect("APPDATA not found"));
+
+    if !fs::metadata(&sast_path).is_ok() {
+        fs::create_dir_all(&sast_path).expect("Folder creation failed");
+    }
+
+    #[cfg(debug_assertions)]
+    return format!("file:{}\\dev.db", sast_path);
+
+    #[cfg(not(debug_assertions))]
+    return format!("file:{}\\prod.db", sast_path);
 }
