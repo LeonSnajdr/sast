@@ -1,7 +1,11 @@
 <template>
     <template v-if="project">
-        <ProjectPlaceholders class="mb-4" />
-        <ProjectTaskSets />
+        <v-row-single>
+            <ProjectPlaceholders />
+        </v-row-single>
+        <v-row-single>
+            <ProjectTaskSets />
+        </v-row-single>
     </template>
 </template>
 

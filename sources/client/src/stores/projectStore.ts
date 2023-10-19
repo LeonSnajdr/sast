@@ -2,7 +2,7 @@ import type { FullProjectContract, ListProjectContract } from "@/bindings";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import * as commands from "@/bindings";
-import { useNotificationStore } from "./notificationStore";
+import { useNotificationStore } from "./NotificationStore";
 
 export const useProjectStore = defineStore("project", () => {
     const notify = useNotificationStore();

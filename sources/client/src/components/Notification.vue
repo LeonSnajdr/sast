@@ -9,3 +9,4 @@ import { useNotificationStore } from "@/stores/notificationStore";
 
 const notify = useNotificationStore();
 </script>
+@/stores/NotificationStore
