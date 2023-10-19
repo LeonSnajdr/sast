@@ -6,7 +6,13 @@
                     <v-text-field
                         v-model="placeholderName"
                         :placeholder="$t('projectPlaceholderCreate.input.name')"
-                        :rules="[required($t('projectPlaceholderCreate.input.name.required'))]"
+                        :rules="[
+                            required($t('projectPlaceholderCreate.input.name.required')),
+                            unique(
+                                project.placeholders.map((p) => p.name),
+                                $t('projectPlaceholderCreate.input.name.notUnique')
+                            )
+                        ]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
@@ -25,7 +31,7 @@
 import { VForm } from "vuetify/components";
 import type { CreatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { required } from "@/rules";
+import { required, unique } from "@/rules";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();

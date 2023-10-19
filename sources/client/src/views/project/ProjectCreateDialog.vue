@@ -7,7 +7,13 @@
                     <v-text-field
                         v-model="projectName"
                         :label="$t('projectCreateDialog.input.name')"
-                        :rules="[required($t('projectCreateDialog.input.name.required'))]"
+                        :rules="[
+                            required($t('projectCreateDialog.input.name.required')),
+                            unique(
+                                listProjects.map((lp) => lp.name),
+                                $t('projectCreateDialog.input.name.notUnique')
+                            )
+                        ]"
                     ></v-text-field>
                 </v-card-text>
                 <v-card-actions>
@@ -21,10 +27,10 @@
 </template>
 
 <script setup lang="ts">
-import { VForm } from "vuetify/components";
 import type { CreateProjectContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { required } from "@/rules";
+import { required, unique } from "@/rules";
+import { VForm } from "vuetify/components";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
