@@ -25,6 +25,7 @@
   "projectTaskSets.noItems": "Keine Aufgabensätze vorhanden",
   "projectTaskSetCreate.input.name": "Name",
   "projectTaskSetCreate.input.name.required": "Der Name ist erforderlich",
+  "projectTaskSetCreate.input.name.notUnique": "Der Name ist nicht einzigartig",
   "projectTaskSetCreate.input.description": "Beschreibung",
   "projectTaskSetCreate.create.success": "Der Aufgabensatz wurde erfolgreich erstellt",
   "projectTaskSetCreate.create.error": "Der Aufgabensatz konnte nicht erstellt werden",

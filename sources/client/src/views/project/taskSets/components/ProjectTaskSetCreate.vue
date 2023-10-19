@@ -6,7 +6,13 @@
                     <v-text-field
                         v-model="taskSetName"
                         :placeholder="$t('projectTaskSetCreate.input.name')"
-                        :rules="[required($t('projectTaskSetCreate.input.name.required'))]"
+                        :rules="[
+                            required($t('projectTaskSetCreate.input.name.required')),
+                            unique(
+                                project.task_sets.map((ts) => ts.name),
+                                $t('projectTaskSetCreate.input.name.notUnique')
+                            )
+                        ]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
@@ -22,11 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import { VForm } from "vuetify/components";
 import type { CreateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
-
-import { required } from "@/rules";
+import { required, unique } from "@/rules";
+import { VForm } from "vuetify/components";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
