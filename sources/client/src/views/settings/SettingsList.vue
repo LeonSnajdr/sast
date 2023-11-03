@@ -1,19 +1,13 @@
 <template>
     <v-navigation-drawer width="200" permanent left floating>
         <template #prepend>
-            <div class="d-flex">
-                <v-btn-icon :to="{ name: 'settingsGeneral' }" icon="mdi-cog" />
-                <v-spacer />
-                <v-btn-icon icon="mdi-plus">
-                    <ProjectCreateDialog />
-                </v-btn-icon>
-            </div>
+            <v-btn-icon icon="mdi-home" :to="{ name: 'home' }" />
         </template>
         <template #default>
             <v-divider />
             <v-list v-if="listProjects.length > 0">
-                <v-list-item v-for="listProject in listProjects" :key="listProject.id" :to="{ name: 'project', params: { projectId: listProject.id } }" link>
-                    <v-list-item-title>{{ listProject.name }}</v-list-item-title>
+                <v-list-item v-for="settingTab in settingTabs" :key="settingTab.title" :to="{ name: settingTab.value }" link>
+                    <v-list-item-title>{{ settingTab.title }}</v-list-item-title>
                 </v-list-item>
             </v-list>
             <span v-else>{{ $t("projectList.noItems") }}</span>
@@ -22,11 +16,18 @@
 </template>
 
 <script setup lang="ts">
-import ProjectCreateDialog from "./ProjectCreateDialog.vue";
+import type { ListItem } from "vuetify/helpers";
 
 const projectStore = useProjectStore();
 
 const { listProjects } = storeToRefs(projectStore);
+
+const settingTabs: ListItem[] = [
+    {
+        title: "General",
+        value: "settingsGeneral"
+    }
+];
 
 onBeforeMount(() => {
     projectStore.loadListProjects();
@@ -36,6 +37,10 @@ onBeforeMount(() => {
 <style lang="scss" scoped>
 .v-list-item {
     &--active {
+        :deep(.v-icon) {
+            color: white;
+        }
+
         :deep(.v-list-item__content) {
             z-index: 1;
             color: white;

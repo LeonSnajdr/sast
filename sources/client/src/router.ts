@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ProjectLayout from "./layouts/ProjectLayout.vue";
-import DefaultLayout from "./layouts/DefaultLayout.vue";
+import SettingsLayout from "./layouts/SettingsLayout.vue";
 import Home from "@/views/home/Home.vue";
-import Settings from "@/views/settings/Settings.vue";
+import SettingsGeneral from "@/views/settings/SettingsGeneral.vue";
 import Project from "@/views/project/Project.vue";
 
 const router = createRouter({
@@ -28,11 +28,11 @@ const router = createRouter({
             }
         },
         {
-            path: "/settings",
-            name: "settings",
-            component: Settings,
+            path: "/settings/general",
+            name: "settingsGeneral",
+            component: SettingsGeneral,
             meta: {
-                layout: DefaultLayout
+                layout: SettingsLayout
             }
         }
     ]
