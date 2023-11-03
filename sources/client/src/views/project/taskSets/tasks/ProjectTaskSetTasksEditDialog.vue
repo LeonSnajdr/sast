@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetsTaskEdit from "@/views/project/taskSets/tasks/components/ProjectTaskSetsTaskEdit.vue";
-import ProjectTaskSetsTaskCreate from "@/views/project/taskSets/tasks/components/ProjectTaskSetsTaskCreate.vue";
+import ProjectTaskSetsTaskEdit from "@/views/project/taskSets/tasks/ProjectTaskSetsTaskEdit.vue";
+import ProjectTaskSetsTaskCreate from "@/views/project/taskSets/tasks/ProjectTaskSetsTaskCreate.vue";
 import type { FullTaskSetContract } from "@/bindings";
 
 const { taskSet } = defineModels<{
