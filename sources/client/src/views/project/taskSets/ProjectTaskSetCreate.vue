@@ -44,6 +44,8 @@ const taskSetName = ref("");
 const taskSetDescription = ref("");
 
 const createTaskSet = async () => {
+    await form.value.validate();
+
     if (!valid.value) return;
 
     loading.value = true;

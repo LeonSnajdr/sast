@@ -44,6 +44,8 @@ const placeholderName = ref("");
 const placeholderValue = ref("");
 
 const createPlaceholder = async () => {
+    await form.value.validate();
+
     if (!valid.value) return;
 
     loading.value = true;
