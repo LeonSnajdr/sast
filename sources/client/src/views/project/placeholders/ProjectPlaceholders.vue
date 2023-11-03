@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import ProjectPlaceholderView from "@/views/project/placeholders/components/ProjectPlaceholderView.vue";
-import ProjectPlaceholderEdit from "@/views/project/placeholders/components/ProjectPlaceholderEdit.vue";
-import ProjectPlaceholderCreate from "@/views/project/placeholders/components/ProjectPlaceholderCreate.vue";
+import ProjectPlaceholderView from "@/views/project/placeholders/ProjectPlaceholderView.vue";
+import ProjectPlaceholderEdit from "@/views/project/placeholders/ProjectPlaceholderEdit.vue";
+import ProjectPlaceholderCreate from "@/views/project/placeholders/ProjectPlaceholderCreate.vue";
 
 const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
