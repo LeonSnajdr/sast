@@ -21,9 +21,9 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetEdit from "@/views/project/taskSets/components/ProjectTaskSetEdit.vue";
-import ProjectTaskSetCreate from "@/views/project/taskSets/components/ProjectTaskSetCreate.vue";
-import ProjectTaskSetView from "@/views/project/taskSets/components/ProjectTaskSetView.vue";
+import ProjectTaskSetEdit from "@/views/project/taskSets/ProjectTaskSetEdit.vue";
+import ProjectTaskSetCreate from "@/views/project/taskSets/ProjectTaskSetCreate.vue";
+import ProjectTaskSetView from "@/views/project/taskSets/ProjectTaskSetView.vue";
 
 const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
