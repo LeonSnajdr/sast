@@ -2,6 +2,7 @@
   "close": "Schließen",
   "create": "Erstellen",
   "save": "Speichern",
+  "projectList.noItems": "Keine Projekte vorhanden",
   "projectStore.projectList.load.failed": "Fehler beim Laden des Projektliste",
   "projectStore.project.load.failed": "Fehler beim Laden des Projekts",
   "projectCreateDialog.title": "Neues Projekt",
