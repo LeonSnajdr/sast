@@ -3,10 +3,10 @@
         <v-card-title>
             {{ $t("projectTaskSets.title") }}
             <v-spacer />
-            <v-btn-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
+            <v-btn-icon @click="inTaskSetEdit = !inTaskSetEdit" :icon="inTaskSetEdit ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
-            <template v-if="inEditMode">
+            <template v-if="inTaskSetEdit">
                 <ProjectTaskSetEdit v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
                 <ProjectTaskSetCreate />
             </template>
@@ -25,9 +25,9 @@ import ProjectTaskSetEdit from "@/views/project/taskSets/components/ProjectTaskS
 import ProjectTaskSetCreate from "@/views/project/taskSets/components/ProjectTaskSetCreate.vue";
 import ProjectTaskSetView from "@/views/project/taskSets/components/ProjectTaskSetView.vue";
 
+const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
 
 const { project } = storeToRefs(projectStore);
-
-const inEditMode = ref(false);
+const { inTaskSetEdit } = storeToRefs(projectPageStore);
 </script>

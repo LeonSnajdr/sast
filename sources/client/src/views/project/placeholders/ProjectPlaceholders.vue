@@ -4,10 +4,10 @@
             {{ $t("projectPlaceholders.title") }}
             <v-spacer />
 
-            <v-btn-icon @click="inEditMode = !inEditMode" :icon="inEditMode ? 'mdi-close' : 'mdi-pencil'" />
+            <v-btn-icon @click="inPlaceholderEdit = !inPlaceholderEdit" :icon="inPlaceholderEdit ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
-            <template v-if="inEditMode">
+            <template v-if="inPlaceholderEdit">
                 <ProjectPlaceholderEdit
                     v-for="(placeholder, index) in project.placeholders"
                     :key="placeholder.id"
@@ -30,8 +30,9 @@ import ProjectPlaceholderView from "@/views/project/placeholders/components/Proj
 import ProjectPlaceholderEdit from "@/views/project/placeholders/components/ProjectPlaceholderEdit.vue";
 import ProjectPlaceholderCreate from "@/views/project/placeholders/components/ProjectPlaceholderCreate.vue";
 
+const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
 
 const { project } = storeToRefs(projectStore);
-const inEditMode = ref(false);
+const { inPlaceholderEdit } = storeToRefs(projectPageStore);
 </script>
