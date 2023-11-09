@@ -8,8 +8,8 @@ mod prisma;
 mod repositories;
 mod services;
 mod utils;
-use std::sync::Arc;
-use std::{env, fs};
+use std::{env, fs, path::PathBuf, sync::Arc};
+use tauri::api::path;
 
 use crate::commands::{placeholder_commands, project_commands, task_commands, task_set_commands};
 use crate::prisma::*;
@@ -59,15 +59,17 @@ async fn main() {
 }
 
 fn get_database_url() -> String {
-    let sast_path = format!("{}\\sast", env::var("APPDATA").expect("APPDATA not found"));
-
-    if !fs::metadata(&sast_path).is_ok() {
-        fs::create_dir_all(&sast_path).expect("Folder creation failed");
-    }
+    let data_dir = path::data_dir()
+        .unwrap_or_else(|| PathBuf::from("./"))
+        .join("sast");
 
     #[cfg(debug_assertions)]
-    return format!("file:{}\\dev.db", sast_path);
+    let data_dir = data_dir.join("dev");
 
-    #[cfg(not(debug_assertions))]
-    return format!("file:{}\\prod.db", sast_path);
+    fs::create_dir_all(&data_dir).expect("Data folder creation failed");
+
+    return format!(
+        "file:{}\\data.db",
+        data_dir.into_os_string().into_string().unwrap()
+    );
 }

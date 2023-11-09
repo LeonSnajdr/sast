@@ -70,7 +70,7 @@ declare global {
   const useNotificationStore: typeof import('../src/stores/NotificationStore')['useNotificationStore']
   const useProjectListStore: typeof import("../src/stores/projectListStore")["useProjectListStore"]
   const useProjectPageStore: typeof import('../src/stores/ProjectPageStore')['useProjectPageStore']
-  const useProjectStore: typeof import('../src/stores/ProjectStore')['useProjectStore']
+  const useProjectStore: typeof import('../src/stores/projectStore')['useProjectStore']
   const useProjectTaskSetStore: typeof import("../src/stores/projectTaskSetStore")["useProjectTaskSetStore"]
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']

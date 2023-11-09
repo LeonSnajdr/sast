@@ -3,7 +3,7 @@
         <v-card-title>Settings</v-card-title>
         <v-card-text>
             <v-row-single>
-                <v-select label="Sprache" :items="availableLocales"> </v-select>
+                <v-autocomplete label="Sprache" :items="availableLocales" @update:modelValue="setLanguage"></v-autocomplete>
             </v-row-single>
         </v-card-text>
     </v-card>
@@ -12,5 +12,9 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 
-const { availableLocales } = useI18n();
+const { availableLocales, locale } = useI18n();
+
+const setLanguage = () => {
+    locale.value = "en";
+};
 </script>

@@ -93,19 +93,6 @@ export default createVuetify({
             hideDetails: "auto",
             persistentPlaceholder: true
         },
-        VField: {
-            variant: "outlined"
-        },
-        VDataTableServer: {
-            density: "compact",
-            hover: true,
-
-            VPagination: {
-                density: "comfortable",
-                showFirstLastPage: true,
-                totalVisible: 6
-            }
-        },
         VChip: {
             color: "primary",
             size: "small",
