@@ -1,6 +1,4 @@
 import type { FullProjectContract, ListProjectContract } from "@/bindings";
-import { defineStore } from "pinia";
-import { ref } from "vue";
 import * as commands from "@/bindings";
 
 export const useProjectStore = defineStore("project", () => {

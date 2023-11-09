@@ -1,6 +1,3 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-
 export const useNotificationStore = defineStore("notification", () => {
     const visible = ref(false);
     const message = ref("");

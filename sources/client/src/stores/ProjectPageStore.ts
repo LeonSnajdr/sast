@@ -1,6 +1,3 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-
 export const useProjectPageStore = defineStore("projectPage", () => {
     const inPlaceholderEdit = ref(false);
     const inTaskSetEdit = ref(false);
