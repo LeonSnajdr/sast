@@ -1,7 +1,6 @@
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod commands;
 mod contracts;
 #[allow(warnings, unused)]
 mod prisma;
@@ -11,8 +10,8 @@ mod utils;
 use std::{env, fs, path::PathBuf, sync::Arc};
 use tauri::api::path;
 
-use crate::commands::{placeholder_commands, project_commands, task_commands, task_set_commands};
 use crate::prisma::*;
+use crate::services::{placeholder_service, project_service, task_service, task_set_service};
 
 macro_rules! tauri_handlers {
 	($($name:path),+) => {{
@@ -37,21 +36,21 @@ async fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri_handlers![
-            project_commands::get_full_project,
-            project_commands::get_list_projects,
-            project_commands::create_project,
-            project_commands::update_project,
-            project_commands::delete_project,
-            placeholder_commands::create_placeholder,
-            placeholder_commands::update_placeholder,
-            placeholder_commands::delete_placeholder,
-            task_set_commands::create_task_set,
-            task_set_commands::update_task_set,
-            task_set_commands::delete_task_set,
-            task_set_commands::start_task_set,
-            task_commands::create_task,
-            task_commands::update_task,
-            task_commands::delete_task
+            project_service::get_full_project,
+            project_service::get_list_projects,
+            project_service::create_project,
+            project_service::update_project,
+            project_service::delete_project,
+            placeholder_service::create_placeholder,
+            placeholder_service::update_placeholder,
+            placeholder_service::delete_placeholder,
+            task_set_service::create_task_set,
+            task_set_service::update_task_set,
+            task_set_service::delete_task_set,
+            task_set_service::start_task_set,
+            task_service::create_task,
+            task_service::update_task,
+            task_service::delete_task
         ])
         .manage(Arc::new(db))
         .run(tauri::generate_context!())

@@ -8,24 +8,32 @@ use crate::contracts::task_set_contracts::{
 use crate::repositories::task_set_repository;
 use crate::utils::db_utils::DbState;
 
+#[tauri::command]
+#[specta::specta]
 pub async fn create_task_set(
     db: DbState<'_>, create_contract: CreateTaskSetContract,
 ) -> Result<full_task_set_contract::Data, QueryError> {
     return task_set_repository::create_task_set(db, create_contract).await;
 }
 
+#[tauri::command]
+#[specta::specta]
 pub async fn update_task_set(
     db: DbState<'_>, update_contract: UpdateTaskSetContract,
 ) -> Result<full_task_set_contract::Data, QueryError> {
     return task_set_repository::update_task_set(db, update_contract).await;
 }
 
+#[tauri::command]
+#[specta::specta]
 pub async fn delete_task_set(
     db: DbState<'_>, task_set_id: String,
 ) -> Result<full_task_set_contract::Data, QueryError> {
     return task_set_repository::delete_task_set(db, task_set_id).await;
 }
 
+#[tauri::command]
+#[specta::specta]
 pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<String, ()> {
     let task_set_to_start: project_task_set_contract::Data =
         task_set_repository::get_project_task_set(db, task_set_id)
