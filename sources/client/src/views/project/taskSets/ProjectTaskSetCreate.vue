@@ -32,6 +32,7 @@ import type { CreateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required, unique } from "@/rules";
 import { VForm } from "vuetify/components";
+import { max } from "lodash";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
@@ -50,8 +51,11 @@ const createTaskSet = async () => {
 
     loading.value = true;
 
+    const highestOrderNumber = max(project.value.task_sets.map((ts) => ts.order)) ?? 0;
+
     const createContract: CreateTaskSetContract = {
         project_id: project.value.id,
+        order: highestOrderNumber + 1,
         description: taskSetDescription.value,
         name: taskSetName.value
     };

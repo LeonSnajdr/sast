@@ -10,6 +10,7 @@ task_set::include!(project_task_set_contract { project: include { placeholders }
 #[derive(Deserialize, Type)]
 pub struct CreateTaskSetContract {
     pub project_id: String,
+    pub order: i32,
     pub name: String,
     pub description: String,
 }

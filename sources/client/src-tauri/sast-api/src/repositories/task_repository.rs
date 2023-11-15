@@ -10,6 +10,7 @@ pub async fn create_task(
     return db
         .task()
         .create(
+            create_contract.order,
             create_contract.command,
             create_contract.working_directory,
             create_contract.delay,

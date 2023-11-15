@@ -29,6 +29,7 @@ model Placeholder {
 
 model TaskSet {
     id          String  @id @default(uuid())
+    order       Int
     name        String
     description String
     tasks       Task[]
@@ -40,6 +41,7 @@ model TaskSet {
 
 model Task {
     id                String  @id @default(uuid())
+    order             Int
     command           String
     working_directory String
     delay             Int

@@ -12,6 +12,7 @@ pub async fn create_task_set(
     return db
         .task_set()
         .create(
+            create_contract.order,
             create_contract.name,
             create_contract.description,
             project::id::equals(create_contract.project_id),
