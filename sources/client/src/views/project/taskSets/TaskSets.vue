@@ -1,29 +1,29 @@
 <template>
     <v-card>
         <v-card-title>
-            {{ $t("projectTaskSets.title") }}
+            {{ $t("taskSets.title") }}
             <v-spacer />
             <v-btn-icon @click="inTaskSetEdit = !inTaskSetEdit" :icon="inTaskSetEdit ? 'mdi-close' : 'mdi-pencil'" />
         </v-card-title>
         <v-card-text>
             <template v-if="inTaskSetEdit">
-                <ProjectTaskSetEdit v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
-                <ProjectTaskSetCreate />
+                <TaskSetEdit v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
+                <TaskSetCreate />
             </template>
             <template v-else>
                 <v-list v-if="project.task_sets.length > 0">
-                    <ProjectTaskSetView v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
+                    <TaskSetView v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
                 </v-list>
-                <span v-else>{{ $t("projectTaskSets.noItems") }}</span>
+                <span v-else>{{ $t("taskSets.noItems") }}</span>
             </template>
         </v-card-text>
     </v-card>
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetEdit from "@/views/project/taskSets/ProjectTaskSetEdit.vue";
-import ProjectTaskSetCreate from "@/views/project/taskSets/ProjectTaskSetCreate.vue";
-import ProjectTaskSetView from "@/views/project/taskSets/ProjectTaskSetView.vue";
+import TaskSetEdit from "@/views/project/taskSets/TaskSetEdit.vue";
+import TaskSetCreate from "@/views/project/taskSets/TaskSetCreate.vue";
+import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
 
 const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();

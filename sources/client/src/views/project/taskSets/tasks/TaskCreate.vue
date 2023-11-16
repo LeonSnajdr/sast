@@ -21,6 +21,7 @@ const taskCommand = ref("");
 
 const createTask = async () => {
     const createTask: CreateTaskContract = {
+        order: 0,
         task_set_id: taskSet.value.id,
         command: taskCommand.value,
         delay: 0,
@@ -30,10 +31,10 @@ const createTask = async () => {
     try {
         const createdTask = await commands.createTask(createTask);
         taskSet.value.tasks.push(createdTask);
-        notify.success("projectTaskSetTaskCreate.create.success");
+        notify.success("taskSetTaskCreate.create.success");
     } catch (error) {
         console.error("Could not create task", error);
-        notify.error("projectTaskSetTaskCreate.create.error");
+        notify.error("taskSetTaskCreate.create.error");
     } finally {
         taskCommand.value = "";
     }

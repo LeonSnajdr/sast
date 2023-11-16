@@ -52,7 +52,7 @@ const taskChanged = async () => {
         await commands.updateTask(updateContract);
     } catch (error) {
         console.log("Failed updating task", error);
-        notify.error("projectTaskSetTaskEdit.update.error");
+        notify.error("taskSetTaskEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -64,10 +64,10 @@ const deleteTask = async () => {
     try {
         await commands.deleteTask(task.value.id);
         remove(taskSet.value.tasks, task.value);
-        notify.success("projectTaskSetTaskEdit.delete.success");
+        notify.success("taskSetTaskEdit.delete.success");
     } catch (error) {
         console.error("Could not delete task", error);
-        notify.error("projectTaskSetTaskEdit.delete.error");
+        notify.error("taskSetTaskEdit.delete.error");
     } finally {
         loading.value = false;
     }

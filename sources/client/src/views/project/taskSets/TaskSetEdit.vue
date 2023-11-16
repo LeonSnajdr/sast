@@ -3,7 +3,7 @@
         <v-text-field v-model="taskSet.description" :loading="loading" @update:modelValue="taskSetChanged" :label="taskSet.name">
             <template #append>
                 <v-btn-icon icon="mdi-tune">
-                    <ProjectTaskSetTasksEditDialog v-model:taskSet="taskSet" />
+                    <TasksEditDialog v-model:taskSet="taskSet" />
                 </v-btn-icon>
 
                 <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetTasksEditDialog from "@/views/project/taskSets/tasks/ProjectTaskSetTasksEditDialog.vue";
+import TasksEditDialog from "@/views/project/taskSets/tasks/TasksEditDialog.vue";
 import type { FullTaskSetContract, UpdateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { remove } from "lodash";
@@ -40,7 +40,7 @@ const taskSetChanged = async () => {
         await commands.updateTaskSet(updateContract);
     } catch (error) {
         console.error("The taskset could not be updated", error);
-        notify.error("projectTaskSetEdit.update.error");
+        notify.error("taskSetEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -51,11 +51,11 @@ const deleteTaskSet = async () => {
 
     try {
         await commands.deleteTaskSet(taskSet.value.id);
-        notify.success("projectTaskSetEdit.delete.success");
+        notify.success("taskSetEdit.delete.success");
         remove(project.value.task_sets, taskSet.value);
     } catch (error) {
         console.error("The taskset could not be deleted", error);
-        notify.error("projectTaskSetEdit.delete.error");
+        notify.error("taskSetEdit.delete.error");
     } finally {
         loading.value = false;
     }

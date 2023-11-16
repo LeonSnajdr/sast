@@ -1,17 +1,17 @@
 <template>
     <template v-if="project">
         <v-row-single>
-            <ProjectPlaceholders />
+            <Placeholders />
         </v-row-single>
         <v-row-single>
-            <ProjectTaskSets />
+            <TaskSets />
         </v-row-single>
     </template>
 </template>
 
 <script setup lang="ts">
-import ProjectPlaceholders from "@/views/project/placeholders/ProjectPlaceholders.vue";
-import ProjectTaskSets from "@/views/project/taskSets/ProjectTaskSets.vue";
+import Placeholders from "@/views/project/placeholders/Placeholders.vue";
+import TaskSets from "@/views/project/taskSets/TaskSets.vue";
 
 const props = defineProps<{
     projectId: string;

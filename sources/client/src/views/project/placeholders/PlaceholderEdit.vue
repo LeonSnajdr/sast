@@ -35,7 +35,7 @@ const placeholderChanged = async (placeholder: Placeholder) => {
         await commands.updatePlaceholder(updateContract);
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectPlaceholderEdit.update.error");
+        notify.error("placeholderEdit.update.error");
     } finally {
         loading.value = false;
     }
@@ -47,10 +47,10 @@ const deletePlaceholder = async (placeholder: Placeholder) => {
         await commands.deletePlaceholder(placeholder.id);
         remove(project.value.placeholders, placeholder);
 
-        notify.success("projectPlaceholderEdit.delete.success");
+        notify.success("placeholderEdit.delete.success");
     } catch (error) {
         console.error("Updating placeholder failed", error);
-        notify.error("projectPlaceholderEdit.delete.error");
+        notify.error("placeholderEdit.delete.error");
     } finally {
         loading.value = false;
     }

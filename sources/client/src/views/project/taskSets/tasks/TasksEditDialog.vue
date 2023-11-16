@@ -3,8 +3,8 @@
         <v-card>
             <v-card-title>{{ taskSet.name }}</v-card-title>
             <v-card-text>
-                <ProjectTaskSetsTaskEdit v-for="(task, index) in taskSet.tasks" :key="task.id" v-model:taskSet="taskSet" v-model:task="taskSet.tasks[index]" />
-                <ProjectTaskSetsTaskCreate v-model:taskSet="taskSet" />
+                <TaskEdit v-for="(task, index) in taskSet.tasks" :key="task.id" v-model:taskSet="taskSet" v-model:task="taskSet.tasks[index]" />
+                <TaskCreate v-model:taskSet="taskSet" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -15,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import ProjectTaskSetsTaskEdit from "@/views/project/taskSets/tasks/ProjectTaskSetsTaskEdit.vue";
-import ProjectTaskSetsTaskCreate from "@/views/project/taskSets/tasks/ProjectTaskSetsTaskCreate.vue";
+import TaskEdit from "@/views/project/taskSets/tasks/TaskEdit.vue";
+import TaskCreate from "@/views/project/taskSets/tasks/TaskCreate.vue";
 import type { FullTaskSetContract } from "@/bindings";
 
 const { taskSet } = defineModels<{

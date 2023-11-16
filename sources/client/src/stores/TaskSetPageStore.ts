@@ -1,6 +1,6 @@
 import * as commands from "@/bindings";
 
-export const useProjectTaskSetPageStore = defineStore("projectTaskSetPage", () => {
+export const useTaskSetPageStore = defineStore("taskSetPage", () => {
     const notify = useNotificationStore();
 
     const executingTaskSets = ref<Record<string, boolean>>({});
@@ -12,7 +12,7 @@ export const useProjectTaskSetPageStore = defineStore("projectTaskSetPage", () =
             await commands.startTaskSet(taskSetId);
         } catch (error) {
             console.error("Error while executing taskset", error);
-            notify.error("projectTaskSetView.execute.error");
+            notify.error("taskSetView.execute.error");
         } finally {
             executingTaskSets.value[taskSetId] = false;
         }

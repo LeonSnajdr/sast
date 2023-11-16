@@ -5,18 +5,18 @@
                 <v-col>
                     <v-text-field
                         v-model="placeholderName"
-                        :placeholder="$t('projectPlaceholderCreate.input.name')"
+                        :placeholder="$t('placeholderCreate.input.name')"
                         :rules="[
-                            required($t('projectPlaceholderCreate.input.name.required')),
+                            required($t('placeholderCreate.input.name.required')),
                             unique(
                                 project.placeholders.map((p) => p.name),
-                                $t('projectPlaceholderCreate.input.name.notUnique')
+                                $t('placeholderCreate.input.name.notUnique')
                             )
                         ]"
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-text-field v-model="placeholderValue" :placeholder="$t('projectPlaceholderCreate.input.value')">
+                    <v-text-field v-model="placeholderValue" :placeholder="$t('placeholderCreate.input.value')">
                         <template #append>
                             <v-btn-icon @click="createPlaceholder" icon="mdi-plus" />
                         </template>
@@ -60,10 +60,10 @@ const createPlaceholder = async () => {
         const createdPlaceholder = await commands.createPlaceholder(createContract);
         project.value.placeholders.push(createdPlaceholder);
 
-        notify.success("projectPlaceholderCreate.create.success");
+        notify.success("placeholderCreate.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
-        notify.error("projectPlaceholderCreate.create.error");
+        notify.error("placeholderCreate.create.error");
     } finally {
         form.value.reset();
         loading.value = false;
