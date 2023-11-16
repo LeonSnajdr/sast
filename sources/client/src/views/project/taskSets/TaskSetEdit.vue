@@ -7,7 +7,7 @@
 
             <template #append>
                 <v-btn-icon icon="mdi-tune">
-                    <TasksEditDialog />
+                    <!-- <TasksEditDialog /> -->
                 </v-btn-icon>
 
                 <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
@@ -26,6 +26,7 @@ const props = defineProps<{
 }>();
 
 const notify = useNotificationStore();
+const taskSetStore = useTaskSetStore();
 
 const internalTaskSet = ref<FullTaskSetContract>();
 
@@ -52,7 +53,7 @@ const deleteTaskSet = async () => {
         await commands.deleteTaskSet(internalTaskSet.value.id);
         notify.success("taskSetEdit.delete.success");
 
-        // TODO Reload list
+        await taskSetStore.loadTaskSets();
     } catch (error) {
         console.error("The taskset could not be deleted", error);
         notify.error("taskSetEdit.delete.error");

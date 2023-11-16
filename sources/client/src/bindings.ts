@@ -42,6 +42,10 @@ export function deletePlaceholder(placeholderId: string) {
     return invoke()<Placeholder>("delete_placeholder", { placeholderId })
 }
 
+export function getTaskSets(projectId: string) {
+    return invoke()<TaskSet[]>("get_task_sets", { projectId })
+}
+
 export function createTaskSet(createContract: CreateTaskSetContract) {
     return invoke()<FullTaskSetContract>("create_task_set", { createContract })
 }
@@ -74,6 +78,7 @@ export type UpdateProjectContract = { id: string; name: string }
 export type CreateProjectContract = { name: string }
 export type FullProjectContract = { id: string; name: string; created_at: string; updated_at: string; placeholders: Placeholder[]; task_sets: { id: string; order: number; name: string; description: string; project_id: string; tasks: Task[] }[] }
 export type Project = { id: string; name: string; created_at: string; updated_at: string }
+export type TaskSet = { id: string; order: number; name: string; description: string; project_id: string }
 export type CreatePlaceholderContract = { name: string; value: string; project_id: string }
 export type ListProjectContract = { id: string; name: string }
 export type CreateTaskContract = { order: number; command: string; working_directory: string; delay: number; task_set_id: string }

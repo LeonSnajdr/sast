@@ -10,10 +10,10 @@
 </template>
 
 <script setup lang="ts">
-import type { FullTaskSetContract } from "@/bindings";
+import type { TaskSet } from "@/bindings";
 
 defineProps<{
-    taskSet: FullTaskSetContract;
+    taskSet: TaskSet;
 }>();
 
 const { startTaskSet, isExecuting } = useTaskSetStore();

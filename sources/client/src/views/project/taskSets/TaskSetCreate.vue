@@ -36,10 +36,10 @@ import { max } from "lodash";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
 const { project } = storeToRefs(projectStore);
 const form = ref<VForm>();
-const loading = ref(false);
 const valid = ref(false);
 const taskSetName = ref("");
 const taskSetDescription = ref("");
@@ -48,8 +48,6 @@ const createTaskSet = async () => {
     await form.value.validate();
 
     if (!valid.value) return;
-
-    loading.value = true;
 
     const highestOrderNumber = max(project.value.task_sets.map((ts) => ts.order)) ?? 0;
 
@@ -64,13 +62,14 @@ const createTaskSet = async () => {
         const createdTaskSet = await commands.createTaskSet(createContract);
         project.value.task_sets.push(createdTaskSet);
 
+        taskSetStore.loadTaskSets();
+
         notify.success("taskSetCreate.create.success");
     } catch (error) {
         console.error("Could not create placeholder", error);
         notify.error("taskSetCreate.create.error");
     } finally {
         form.value.reset();
-        loading.value = false;
     }
 };
 </script>

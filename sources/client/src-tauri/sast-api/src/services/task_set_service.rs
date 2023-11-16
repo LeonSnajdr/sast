@@ -5,8 +5,17 @@ use std::{thread, time};
 use crate::contracts::task_set_contracts::{
     full_task_set_contract, project_task_set_contract, CreateTaskSetContract, UpdateTaskSetContract,
 };
+use crate::prisma::task_set;
 use crate::repositories::task_set_repository;
 use crate::utils::db_utils::DbState;
+
+#[tauri::command]
+#[specta::specta]
+pub async fn get_task_sets(
+    db: DbState<'_>, project_id: String,
+) -> Result<Vec<task_set::Data>, QueryError> {
+    return task_set_repository::get_task_sets(db, project_id).await;
+}
 
 #[tauri::command]
 #[specta::specta]

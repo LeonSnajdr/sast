@@ -1,10 +1,23 @@
-use prisma_client_rust::QueryError;
+use prisma_client_rust::{Direction, QueryError};
 
 use crate::contracts::task_set_contracts::{
     full_task_set_contract, project_task_set_contract, CreateTaskSetContract, UpdateTaskSetContract,
 };
 use crate::prisma::{project, task_set};
 use crate::utils::db_utils::DbState;
+
+pub async fn get_task_sets(
+    db: DbState<'_>, project_id: String,
+) -> Result<Vec<task_set::Data>, QueryError> {
+    let task_sets = db
+        .task_set()
+        .find_many(vec![task_set::project_id::equals(project_id)])
+        .order_by(task_set::order::order(Direction::Asc))
+        .exec()
+        .await;
+
+    return task_sets;
+}
 
 pub async fn create_task_set(
     db: DbState<'_>, create_contract: CreateTaskSetContract,
