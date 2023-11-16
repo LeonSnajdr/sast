@@ -25,9 +25,7 @@ import TaskSetEdit from "@/views/project/taskSets/TaskSetEdit.vue";
 import TaskSetCreate from "@/views/project/taskSets/TaskSetCreate.vue";
 import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
 
-const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
 
-const { project } = storeToRefs(projectStore);
-const { inTaskSetEdit } = storeToRefs(projectPageStore);
+const { project, inTaskSetEdit } = storeToRefs(projectStore);
 </script>

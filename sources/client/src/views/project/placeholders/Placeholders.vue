@@ -26,9 +26,7 @@ import placeholderView from "@/views/project/placeholders/PlaceholderView.vue";
 import placeholderEdit from "@/views/project/placeholders/PlaceholderEdit.vue";
 import placeholderCreate from "@/views/project/placeholders/PlaceholderCreate.vue";
 
-const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
 
-const { project } = storeToRefs(projectStore);
-const { inPlaceholderEdit } = storeToRefs(projectPageStore);
+const { project, inPlaceholderEdit } = storeToRefs(projectStore);
 </script>

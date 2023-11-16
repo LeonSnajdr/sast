@@ -16,5 +16,5 @@ const { taskSet } = defineModels<{
     taskSet: FullTaskSetContract;
 }>();
 
-const { startTaskSet, isExecuting } = useTaskSetPageStore();
+const { startTaskSet, isExecuting } = useTaskSetStore();
 </script>

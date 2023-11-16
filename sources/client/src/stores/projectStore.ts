@@ -7,6 +7,9 @@ export const useProjectStore = defineStore("project", () => {
     const listProjects = ref<ListProjectContract[]>([]);
     const project = ref<FullProjectContract>();
 
+    const inPlaceholderEdit = ref(false);
+    const inTaskSetEdit = ref(false);
+
     const loadListProjects = async () => {
         try {
             listProjects.value = await commands.getListProjects();
@@ -25,5 +28,10 @@ export const useProjectStore = defineStore("project", () => {
         }
     };
 
-    return { listProjects, project, loadProject, loadListProjects };
+    const resetPageState = () => {
+        inPlaceholderEdit.value = false;
+        inTaskSetEdit.value = false;
+    };
+
+    return { listProjects, project, inPlaceholderEdit, inTaskSetEdit, loadProject, loadListProjects, resetPageState };
 });

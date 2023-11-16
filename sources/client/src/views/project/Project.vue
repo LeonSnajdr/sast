@@ -17,7 +17,6 @@ const props = defineProps<{
     projectId: string;
 }>();
 
-const projectPageStore = useProjectPageStore();
 const projectStore = useProjectStore();
 
 const { project } = storeToRefs(projectStore);
@@ -25,7 +24,7 @@ const { project } = storeToRefs(projectStore);
 watch(
     () => props.projectId,
     async () => {
-        projectPageStore.reset();
+        projectStore.resetPageState();
         projectStore.loadProject(props.projectId);
     },
     { immediate: true }

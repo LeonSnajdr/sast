@@ -1,6 +1,6 @@
 import * as commands from "@/bindings";
 
-export const useTaskSetPageStore = defineStore("taskSetPage", () => {
+export const useTaskSetStore = defineStore("taskSetPage", () => {
     const notify = useNotificationStore();
 
     const executingTaskSets = ref<Record<string, boolean>>({});
