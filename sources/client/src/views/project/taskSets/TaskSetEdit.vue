@@ -1,9 +1,13 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="taskSet.description" :loading="loading" @update:modelValue="taskSetChanged" :label="taskSet.name">
+        <v-text-field v-model="internalTaskSet.description" @update:modelValue="taskSetChanged" :label="taskSet.name">
+            <template #prepend>
+                <v-icon icon="mdi-drag"></v-icon>
+            </template>
+
             <template #append>
                 <v-btn-icon icon="mdi-tune">
-                    <TasksEditDialog v-model:taskSet="taskSet" />
+                    <TasksEditDialog />
                 </v-btn-icon>
 
                 <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
@@ -16,24 +20,23 @@
 import TasksEditDialog from "@/views/project/taskSets/tasks/TasksEditDialog.vue";
 import type { FullTaskSetContract, UpdateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { remove } from "lodash";
 
-const { taskSet } = defineModels<{
+const props = defineProps<{
     taskSet: FullTaskSetContract;
 }>();
 
 const notify = useNotificationStore();
-const projectStore = useProjectStore();
 
-const { project } = storeToRefs(projectStore);
-const loading = ref(false);
+const internalTaskSet = ref<FullTaskSetContract>();
+
+onBeforeMount(() => {
+    internalTaskSet.value = Object.create(props.taskSet);
+});
 
 const taskSetChanged = async () => {
-    loading.value = true;
-
     const updateContract: UpdateTaskSetContract = {
-        id: taskSet.value.id,
-        description: taskSet.value.description
+        id: internalTaskSet.value.id,
+        description: internalTaskSet.value.description
     };
 
     try {
@@ -41,23 +44,18 @@ const taskSetChanged = async () => {
     } catch (error) {
         console.error("The taskset could not be updated", error);
         notify.error("taskSetEdit.update.error");
-    } finally {
-        loading.value = false;
     }
 };
 
 const deleteTaskSet = async () => {
-    loading.value = true;
-
     try {
-        await commands.deleteTaskSet(taskSet.value.id);
+        await commands.deleteTaskSet(internalTaskSet.value.id);
         notify.success("taskSetEdit.delete.success");
-        remove(project.value.task_sets, taskSet.value);
+
+        // TODO Reload list
     } catch (error) {
         console.error("The taskset could not be deleted", error);
         notify.error("taskSetEdit.delete.error");
-    } finally {
-        loading.value = false;
     }
 };
 </script>

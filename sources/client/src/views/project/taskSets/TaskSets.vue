@@ -7,12 +7,17 @@
         </v-card-title>
         <v-card-text>
             <template v-if="inTaskSetEdit">
-                <TaskSetEdit v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
+                <draggable v-model="project.task_sets" itemKey="id">
+                    <template #item="{ element: taskSet }">
+                        <TaskSetEdit :taskSet="taskSet" />
+                    </template>
+                </draggable>
+
                 <TaskSetCreate />
             </template>
             <template v-else>
                 <v-list v-if="project.task_sets.length > 0">
-                    <TaskSetView v-for="(taskSet, index) in project.task_sets" :key="taskSet.id" v-model:taskSet="project.task_sets[index]" />
+                    <TaskSetView v-for="taskSet in project.task_sets" :key="taskSet.id" :taskSet="taskSet" />
                 </v-list>
                 <span v-else>{{ $t("taskSets.noItems") }}</span>
             </template>
@@ -24,6 +29,7 @@
 import TaskSetEdit from "@/views/project/taskSets/TaskSetEdit.vue";
 import TaskSetCreate from "@/views/project/taskSets/TaskSetCreate.vue";
 import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
+import draggable from "vuedraggable";
 
 const projectStore = useProjectStore();
 

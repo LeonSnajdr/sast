@@ -54,7 +54,8 @@
         "height": 600,
         "resizable": true,
         "title": "sast_client",
-        "width": 800
+        "width": 800,
+        "fileDropEnabled": false
       }
     ]
   }

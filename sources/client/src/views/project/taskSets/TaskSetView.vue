@@ -12,7 +12,7 @@
 <script setup lang="ts">
 import type { FullTaskSetContract } from "@/bindings";
 
-const { taskSet } = defineModels<{
+defineProps<{
     taskSet: FullTaskSetContract;
 }>();
 
