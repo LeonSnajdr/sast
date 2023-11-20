@@ -1,7 +1,7 @@
 <template>
     <v-list-item>
         <template #prepend>
-            <v-btn-icon @click="startTaskSet(taskSet.id)" :loading="isExecuting(taskSet.id)" icon="mdi-play" color="success" class="mr-2" />
+            <v-btn-icon @click="startTaskSet(taskSet.id)" :loading="isTaskSetRunning(taskSet.id)" icon="mdi-play" color="success" class="mr-2" />
         </template>
 
         <v-list-item-title>{{ taskSet.name }}</v-list-item-title>
@@ -16,5 +16,5 @@ defineProps<{
     taskSet: TaskSet;
 }>();
 
-const { startTaskSet, isExecuting } = useTaskSetStore();
+const { startTaskSet, isTaskSetRunning } = useProjectStore();
 </script>

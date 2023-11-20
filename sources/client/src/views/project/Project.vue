@@ -18,16 +18,14 @@ const props = defineProps<{
 }>();
 
 const projectStore = useProjectStore();
-const taskSetStore = useTaskSetStore();
 
-const { project } = storeToRefs(projectStore);
+const { selectedProjectId, project } = storeToRefs(projectStore);
 
 watch(
     () => props.projectId,
     async () => {
+        selectedProjectId.value = props.projectId;
         projectStore.resetPageState();
-        await projectStore.loadProject(props.projectId);
-        await taskSetStore.loadTaskSets();
     },
     { immediate: true }
 );

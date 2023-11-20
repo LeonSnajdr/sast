@@ -36,7 +36,6 @@ import { max } from "lodash";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
-const taskSetStore = useTaskSetStore();
 
 const { project } = storeToRefs(projectStore);
 const form = ref<VForm>();
@@ -62,7 +61,7 @@ const createTaskSet = async () => {
         const createdTaskSet = await commands.createTaskSet(createContract);
         project.value.task_sets.push(createdTaskSet);
 
-        taskSetStore.loadTaskSets();
+        await projectStore.loadProject();
 
         notify.success("taskSetCreate.create.success");
     } catch (error) {

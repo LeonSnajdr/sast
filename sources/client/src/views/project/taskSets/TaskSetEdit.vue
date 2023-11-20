@@ -26,7 +26,7 @@ const props = defineProps<{
 }>();
 
 const notify = useNotificationStore();
-const taskSetStore = useTaskSetStore();
+const projectStore = useProjectStore();
 
 const internalTaskSet = ref<FullTaskSetContract>();
 
@@ -53,7 +53,7 @@ const deleteTaskSet = async () => {
         await commands.deleteTaskSet(internalTaskSet.value.id);
         notify.success("taskSetEdit.delete.success");
 
-        await taskSetStore.loadTaskSets();
+        await projectStore.loadProject();
     } catch (error) {
         console.error("The taskset could not be deleted", error);
         notify.error("taskSetEdit.delete.error");
