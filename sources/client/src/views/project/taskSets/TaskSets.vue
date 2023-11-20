@@ -41,7 +41,6 @@ watch(
     () => inTaskSetEdit.value,
     async () => {
         await taskSetStore.loadTaskSets();
-    },
-    { immediate: true }
+    }
 );
 </script>
