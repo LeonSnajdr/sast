@@ -17,7 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import TasksEditDialog from "@/views/project/taskSets/tasks/TasksEditDialog.vue";
 import type { FullTaskSetContract, UpdateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 
@@ -36,6 +35,7 @@ onBeforeMount(() => {
 
 const taskSetChanged = async () => {
     const updateContract: UpdateTaskSetContract = {
+        order: internalTaskSet.value.order,
         id: internalTaskSet.value.id,
         description: internalTaskSet.value.description
     };

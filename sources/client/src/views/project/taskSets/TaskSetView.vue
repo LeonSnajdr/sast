@@ -16,5 +16,5 @@ defineProps<{
     taskSet: TaskSet;
 }>();
 
-const { startTaskSet, isTaskSetRunning } = useProjectStore();
+const { startTaskSet, isTaskSetRunning } = useTaskSetStore();
 </script>

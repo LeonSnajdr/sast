@@ -7,7 +7,7 @@
         </v-card-title>
         <v-card-text>
             <template v-if="inTaskSetEdit">
-                <draggable v-model="project.task_sets" itemKey="id">
+                <draggable v-model="taskSets" @end="taskSetOrderChanged" itemKey="id">
                     <template #item="{ element: taskSet }">
                         <TaskSetEdit :taskSet="taskSet" />
                     </template>
@@ -16,8 +16,8 @@
                 <TaskSetCreate />
             </template>
             <template v-else>
-                <v-list v-if="project.task_sets.length > 0">
-                    <TaskSetView v-for="taskSet in project.task_sets" :key="taskSet.id" :taskSet="taskSet" />
+                <v-list v-if="taskSets.length > 0">
+                    <TaskSetView v-for="taskSet in taskSets" :key="taskSet.id" :taskSet="taskSet" />
                 </v-list>
                 <span v-else>{{ $t("taskSets.noItems") }}</span>
             </template>
@@ -32,6 +32,20 @@ import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
 import draggable from "vuedraggable";
 
 const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
-const { project, inTaskSetEdit } = storeToRefs(projectStore);
+const { selectedProjectId } = storeToRefs(projectStore);
+const { taskSets, inTaskSetEdit } = storeToRefs(taskSetStore);
+
+watch(
+    selectedProjectId,
+    async () => {
+        await taskSetStore.loadTaskSetList();
+    },
+    { immediate: true }
+);
+
+const taskSetOrderChanged = () => {
+    console.log(taskSets.value.map((m) => m.name));
+};
 </script>

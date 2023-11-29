@@ -19,4 +19,5 @@ pub struct CreateTaskSetContract {
 pub struct UpdateTaskSetContract {
     pub id: String,
     pub description: String,
+    pub order: i32,
 }

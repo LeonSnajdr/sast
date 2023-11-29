@@ -1,7 +1,7 @@
 <template>
     <template v-if="project">
         <v-row-single>
-            <Placeholders />
+            <!-- <Placeholders /> -->
         </v-row-single>
         <v-row-single>
             <TaskSets />
@@ -18,14 +18,16 @@ const props = defineProps<{
 }>();
 
 const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
 const { selectedProjectId, project } = storeToRefs(projectStore);
+const { inTaskSetEdit } = storeToRefs(taskSetStore);
 
 watch(
     () => props.projectId,
     async () => {
         selectedProjectId.value = props.projectId;
-        projectStore.resetPageState();
+        inTaskSetEdit.value = false;
     },
     { immediate: true }
 );
