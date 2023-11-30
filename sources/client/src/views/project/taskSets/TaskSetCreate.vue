@@ -28,21 +28,19 @@
 </template>
 
 <script setup lang="ts">
-import type { CreateTaskSetContract, TaskSet } from "@/bindings";
+import type { CreateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required, unique } from "@/rules";
 import { VForm } from "vuetify/components";
-import { max } from "lodash";
-
-const props = defineProps<{
-    taskSets: TaskSet[];
-}>();
+import OrderService from "@/services/OrderService";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
 const taskSetStore = useTaskSetStore();
 
 const { selectedProjectId } = storeToRefs(projectStore);
+const { taskSets } = storeToRefs(taskSetStore);
+
 const form = ref<VForm>();
 const valid = ref(false);
 const taskSetName = ref("");
@@ -53,11 +51,11 @@ const createTaskSet = async () => {
 
     if (!valid.value) return;
 
-    const highestOrderNumber = max(props.taskSets.map((ts) => ts.order)) ?? 0;
+    const followingOrderNumber = OrderService.getFollowingOrderNumber(taskSets.value);
 
     const createContract: CreateTaskSetContract = {
         project_id: selectedProjectId.value,
-        order: highestOrderNumber + 1,
+        order: followingOrderNumber,
         description: taskSetDescription.value,
         name: taskSetName.value
     };

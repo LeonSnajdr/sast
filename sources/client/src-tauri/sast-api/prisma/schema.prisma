@@ -19,6 +19,7 @@ model Project {
 
 model Placeholder {
     id         String  @id @default(uuid())
+    order      Int
     name       String
     value      String
     project    Project @relation(fields: [project_id], references: [id], onDelete: Cascade)

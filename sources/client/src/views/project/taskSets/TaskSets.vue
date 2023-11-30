@@ -13,7 +13,7 @@
                     </template>
                 </draggable>
 
-                <TaskSetCreate :taskSets="taskSets" />
+                <TaskSetCreate />
             </template>
             <template v-else>
                 <v-list v-if="taskSets.length > 0">
@@ -32,7 +32,8 @@ import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
 import draggable from "vuedraggable";
 import * as commands from "@/bindings";
 import type { UpdateTaskSetContract } from "@/bindings";
-import { findIndex, indexOf } from "lodash";
+import { findIndex } from "lodash";
+import OrderService from "@/services/OrderService";
 
 const projectStore = useProjectStore();
 const taskSetStore = useTaskSetStore();
@@ -49,12 +50,9 @@ watch(
 );
 
 const taskSetOrderChanged = async () => {
-    const updatedTaskSets: UpdateTaskSetContract[] = taskSets.value.map((ts) => ({
-        id: ts.id,
-        description: ts.description,
-        order: findIndex(taskSets.value, ts)
-    }));
+    const taskSetUpdateContracts = OrderService.getItemListWithUpdatedOrders<UpdateTaskSetContract>(taskSets.value);
 
-    await commands.updateTaskSets(updatedTaskSets);
+    await commands.updateTaskSets(taskSetUpdateContracts);
+    await taskSetStore.loadTaskSetList();
 };
 </script>

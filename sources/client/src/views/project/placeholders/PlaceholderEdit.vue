@@ -1,8 +1,12 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="internalPlaceholder.value" :label="internalPlaceholder.name" @update:modelValue="placeholderChanged(placeholder)">
+        <v-text-field v-model="internalPlaceholder.value" :label="internalPlaceholder.name" @update:modelValue="placeholderChanged">
+            <template #prepend>
+                <v-icon icon="mdi-drag"></v-icon>
+            </template>
+
             <template #append>
-                <v-btn-icon @click="deletePlaceholder(placeholder)" icon="mdi-delete" />
+                <v-btn-icon @click="deletePlaceholder" icon="mdi-delete" />
             </template>
         </v-text-field>
     </v-row-single>
@@ -25,10 +29,11 @@ onBeforeMount(() => {
     internalPlaceholder.value = Object.create(props.placeholder);
 });
 
-const placeholderChanged = async (placeholder: Placeholder) => {
+const placeholderChanged = async () => {
     const updateContract: UpdatePlaceholderContract = {
-        id: placeholder.id,
-        value: placeholder.value
+        id: internalPlaceholder.value.id,
+        order: internalPlaceholder.value.order,
+        value: internalPlaceholder.value.value
     };
 
     try {
@@ -39,9 +44,9 @@ const placeholderChanged = async (placeholder: Placeholder) => {
     }
 };
 
-const deletePlaceholder = async (placeholder: Placeholder) => {
+const deletePlaceholder = async () => {
     try {
-        await commands.deletePlaceholder(placeholder.id);
+        await commands.deletePlaceholder(internalPlaceholder.value.id);
         await placeholderStore.loadPlaceholderList();
 
         notify.success("placeholderEdit.delete.success");

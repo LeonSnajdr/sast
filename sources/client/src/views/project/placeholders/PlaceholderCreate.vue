@@ -32,6 +32,7 @@ import { VForm } from "vuetify/components";
 import type { CreatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 import { required, unique } from "@/rules";
+import OrderService from "@/services/OrderService";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
@@ -52,8 +53,11 @@ const createPlaceholder = async () => {
 
     loading.value = true;
 
+    const followingOrderNumber = OrderService.getFollowingOrderNumber(placeholders.value);
+
     const createContract: CreatePlaceholderContract = {
         project_id: selectedProjectId.value,
+        order: followingOrderNumber,
         name: placeholderName.value,
         value: placeholderValue.value
     };

@@ -1,4 +1,4 @@
-use prisma_client_rust::QueryError;
+use prisma_client_rust::{Direction, QueryError};
 
 use crate::contracts::placeholder_contracts::{
     CreatePlaceholderContract, UpdatePlaceholderContract,
@@ -12,6 +12,7 @@ pub async fn get_placeholders(
     let placeholders = db
         .placeholder()
         .find_many(vec![placeholder::project_id::equals(project_id)])
+        .order_by(placeholder::order::order(Direction::Asc))
         .exec()
         .await;
 
@@ -24,6 +25,7 @@ pub async fn create_placeholder(
     return db
         .placeholder()
         .create(
+            create_contract.order,
             create_contract.name,
             create_contract.value,
             project::id::equals(create_contract.project_id),
@@ -40,10 +42,29 @@ pub async fn update_placeholder(
         .placeholder()
         .update(
             placeholder::id::equals(update_contract.id),
-            vec![placeholder::value::set(update_contract.value)],
+            vec![
+                placeholder::order::set(update_contract.order),
+                placeholder::value::set(update_contract.value),
+            ],
         )
         .exec()
         .await;
+}
+
+pub async fn update_placeholders(
+    db: DbState<'_>, update_contracts: Vec<UpdatePlaceholderContract>,
+) -> Result<Vec<placeholder::Data>, QueryError> {
+    let placeholder_updates = update_contracts.into_iter().map(|update_contract| {
+        db.placeholder().update(
+            placeholder::id::equals(update_contract.id),
+            vec![
+                placeholder::order::set(update_contract.order),
+                placeholder::value::set(update_contract.value),
+            ],
+        )
+    });
+
+    return db._batch(placeholder_updates).await;
 }
 
 pub async fn delete_placeholder(

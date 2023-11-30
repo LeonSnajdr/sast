@@ -3,7 +3,6 @@ use prisma_client_rust::{Direction, QueryError};
 use crate::contracts::task_set_contracts::{
     full_task_set_contract, project_task_set_contract, CreateTaskSetContract, UpdateTaskSetContract,
 };
-use crate::prisma::task_set::Update;
 use crate::prisma::{project, task_set};
 use crate::utils::db_utils::DbState;
 
@@ -45,8 +44,8 @@ pub async fn update_task_set(
         .update(
             task_set::id::equals(update_contract.id),
             vec![
-                task_set::description::set(update_contract.description),
                 task_set::order::set(update_contract.order),
+                task_set::description::set(update_contract.description),
             ],
         )
         .include(full_task_set_contract::include())
@@ -61,8 +60,8 @@ pub async fn update_task_sets(
         db.task_set().update(
             task_set::id::equals(update_contract.id),
             vec![
-                task_set::description::set(update_contract.description),
                 task_set::order::set(update_contract.order),
+                task_set::description::set(update_contract.description),
             ],
         )
     });

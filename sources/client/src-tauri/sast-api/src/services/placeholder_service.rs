@@ -33,6 +33,14 @@ pub async fn update_placeholder(
 
 #[tauri::command]
 #[specta::specta]
+pub async fn update_placeholders(
+    db: DbState<'_>, update_contracts: Vec<UpdatePlaceholderContract>,
+) -> Result<Vec<placeholder::Data>, QueryError> {
+    return placeholder_repository::update_placeholders(db, update_contracts).await;
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn delete_placeholder(
     db: DbState<'_>, placeholder_id: String,
 ) -> Result<placeholder::Data, QueryError> {

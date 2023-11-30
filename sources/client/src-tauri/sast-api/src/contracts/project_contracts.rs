@@ -1,8 +1,7 @@
-use prisma_client_rust::Direction;
 use serde::Deserialize;
 use specta::Type;
 
-use crate::prisma::{project, task_set};
+use crate::prisma::project;
 
 project::select!(list_project_contract { id name });
 
