@@ -6,6 +6,18 @@ use crate::contracts::placeholder_contracts::{
 use crate::prisma::{placeholder, project};
 use crate::utils::db_utils::DbState;
 
+pub async fn get_placeholders(
+    db: DbState<'_>, project_id: String,
+) -> Result<Vec<placeholder::Data>, QueryError> {
+    let placeholders = db
+        .placeholder()
+        .find_many(vec![placeholder::project_id::equals(project_id)])
+        .exec()
+        .await;
+
+    return placeholders;
+}
+
 pub async fn create_placeholder(
     db: DbState<'_>, create_contract: CreatePlaceholderContract,
 ) -> Result<placeholder::Data, QueryError> {

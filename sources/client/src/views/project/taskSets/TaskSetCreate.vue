@@ -9,7 +9,7 @@
                         :rules="[
                             required($t('taskSetCreate.input.name.required')),
                             unique(
-                                project.task_sets.map((ts) => ts.name),
+                                taskSets.map((ts) => ts.name),
                                 $t('taskSetCreate.input.name.notUnique')
                             )
                         ]"
@@ -28,16 +28,21 @@
 </template>
 
 <script setup lang="ts">
-import type { CreateTaskSetContract } from "@/bindings";
+import type { CreateTaskSetContract, TaskSet } from "@/bindings";
 import * as commands from "@/bindings";
 import { required, unique } from "@/rules";
 import { VForm } from "vuetify/components";
 import { max } from "lodash";
 
+const props = defineProps<{
+    taskSets: TaskSet[];
+}>();
+
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
-const { project } = storeToRefs(projectStore);
+const { selectedProjectId } = storeToRefs(projectStore);
 const form = ref<VForm>();
 const valid = ref(false);
 const taskSetName = ref("");
@@ -48,20 +53,18 @@ const createTaskSet = async () => {
 
     if (!valid.value) return;
 
-    const highestOrderNumber = max(project.value.task_sets.map((ts) => ts.order)) ?? 0;
+    const highestOrderNumber = max(props.taskSets.map((ts) => ts.order)) ?? 0;
 
     const createContract: CreateTaskSetContract = {
-        project_id: project.value.id,
+        project_id: selectedProjectId.value,
         order: highestOrderNumber + 1,
         description: taskSetDescription.value,
         name: taskSetName.value
     };
 
     try {
-        const createdTaskSet = await commands.createTaskSet(createContract);
-        project.value.task_sets.push(createdTaskSet);
-
-        await projectStore.loadProject();
+        await commands.createTaskSet(createContract);
+        await taskSetStore.loadTaskSetList();
 
         notify.success("taskSetCreate.create.success");
     } catch (error) {

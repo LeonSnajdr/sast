@@ -9,6 +9,14 @@ use crate::utils::db_utils::DbState;
 
 #[tauri::command]
 #[specta::specta]
+pub async fn get_placeholders(
+    db: DbState<'_>, project_id: String,
+) -> Result<Vec<placeholder::Data>, QueryError> {
+    return placeholder_repository::get_placeholders(db, project_id).await;
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn create_placeholder(
     db: DbState<'_>, create_contract: CreatePlaceholderContract,
 ) -> Result<placeholder::Data, QueryError> {

@@ -1,7 +1,7 @@
 <template>
-    <template v-if="project">
+    <template v-if="selectedProjectId">
         <v-row-single>
-            <!-- <Placeholders /> -->
+            <Placeholders />
         </v-row-single>
         <v-row-single>
             <TaskSets />
@@ -20,7 +20,7 @@ const props = defineProps<{
 const projectStore = useProjectStore();
 const taskSetStore = useTaskSetStore();
 
-const { selectedProjectId, project } = storeToRefs(projectStore);
+const { selectedProjectId } = storeToRefs(projectStore);
 const { inTaskSetEdit } = storeToRefs(taskSetStore);
 
 watch(

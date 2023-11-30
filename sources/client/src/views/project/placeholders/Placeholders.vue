@@ -8,12 +8,12 @@
         </v-card-title>
         <v-card-text>
             <template v-if="inPlaceholderEdit">
-                <placeholderEdit v-for="(placeholder, index) in project.placeholders" :key="placeholder.id" v-model:placeholder="project.placeholders[index]" />
+                <placeholderEdit v-for="placeholder in placeholders" :key="placeholder.id" :placeholder="placeholder" />
                 <placeholderCreate />
             </template>
             <template v-else>
-                <v-chip-group v-if="project.placeholders.length > 0">
-                    <placeholderView v-for="placeholder in project.placeholders" :key="placeholder.id" :placeholder="placeholder" />
+                <v-chip-group v-if="placeholders.length > 0">
+                    <placeholderView v-for="placeholder in placeholders" :key="placeholder.id" :placeholder="placeholder" />
                 </v-chip-group>
                 <span v-else>{{ $t("placeholders.noItems") }}</span>
             </template>
@@ -26,7 +26,7 @@ import placeholderView from "@/views/project/placeholders/PlaceholderView.vue";
 import placeholderEdit from "@/views/project/placeholders/PlaceholderEdit.vue";
 import placeholderCreate from "@/views/project/placeholders/PlaceholderCreate.vue";
 
-const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 
-const { project, inPlaceholderEdit } = storeToRefs(projectStore);
+const { inPlaceholderEdit, placeholders } = storeToRefs(placeholderStore);
 </script>

@@ -41,6 +41,7 @@ async fn main() {
             project_service::create_project,
             project_service::update_project,
             project_service::delete_project,
+            placeholder_service::get_placeholders,
             placeholder_service::create_placeholder,
             placeholder_service::update_placeholder,
             placeholder_service::delete_placeholder,

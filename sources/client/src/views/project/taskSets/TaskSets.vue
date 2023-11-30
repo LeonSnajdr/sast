@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-card v-if="taskSets">
         <v-card-title>
             {{ $t("taskSets.title") }}
             <v-spacer />
@@ -13,7 +13,7 @@
                     </template>
                 </draggable>
 
-                <TaskSetCreate />
+                <TaskSetCreate :taskSets="taskSets" />
             </template>
             <template v-else>
                 <v-list v-if="taskSets.length > 0">

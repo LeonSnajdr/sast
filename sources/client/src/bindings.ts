@@ -30,6 +30,10 @@ export function deleteProject(projectId: string) {
     return invoke()<Project>("delete_project", { projectId })
 }
 
+export function getPlaceholders(projectId: string) {
+    return invoke()<Placeholder[]>("get_placeholders", { projectId })
+}
+
 export function createPlaceholder(createContract: CreatePlaceholderContract) {
     return invoke()<Placeholder>("create_placeholder", { createContract })
 }

@@ -9,7 +9,6 @@ use crate::prisma::task_set;
 use crate::repositories::task_set_repository;
 use crate::utils::db_utils::DbState;
 
-// TODO REMOVE
 #[tauri::command]
 #[specta::specta]
 pub async fn get_task_sets(

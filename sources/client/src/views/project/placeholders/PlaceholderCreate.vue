@@ -9,7 +9,7 @@
                         :rules="[
                             required($t('placeholderCreate.input.name.required')),
                             unique(
-                                project.placeholders.map((p) => p.name),
+                                placeholders.map((p) => p.name),
                                 $t('placeholderCreate.input.name.notUnique')
                             )
                         ]"
@@ -35,8 +35,10 @@ import { required, unique } from "@/rules";
 
 const notify = useNotificationStore();
 const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 
-const { project } = storeToRefs(projectStore);
+const { selectedProjectId } = storeToRefs(projectStore);
+const { placeholders } = storeToRefs(placeholderStore);
 const form = ref<VForm>();
 const loading = ref(false);
 const valid = ref(false);
@@ -51,14 +53,14 @@ const createPlaceholder = async () => {
     loading.value = true;
 
     const createContract: CreatePlaceholderContract = {
-        project_id: project.value.id,
+        project_id: selectedProjectId.value,
         name: placeholderName.value,
         value: placeholderValue.value
     };
 
     try {
-        const createdPlaceholder = await commands.createPlaceholder(createContract);
-        project.value.placeholders.push(createdPlaceholder);
+        await commands.createPlaceholder(createContract);
+        await placeholderStore.loadPlaceholderList();
 
         notify.success("placeholderCreate.create.success");
     } catch (error) {
