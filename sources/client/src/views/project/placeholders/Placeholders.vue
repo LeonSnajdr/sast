@@ -26,7 +26,17 @@ import placeholderView from "@/views/project/placeholders/PlaceholderView.vue";
 import placeholderEdit from "@/views/project/placeholders/PlaceholderEdit.vue";
 import placeholderCreate from "@/views/project/placeholders/PlaceholderCreate.vue";
 
+const projectStore = useProjectStore();
 const placeholderStore = usePlaceholderStore();
 
+const { selectedProjectId } = storeToRefs(projectStore);
 const { inPlaceholderEdit, placeholders } = storeToRefs(placeholderStore);
+
+watch(
+    selectedProjectId,
+    async () => {
+        await placeholderStore.loadPlaceholderList();
+    },
+    { immediate: true }
+);
 </script>

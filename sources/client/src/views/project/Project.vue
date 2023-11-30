@@ -18,15 +18,18 @@ const props = defineProps<{
 }>();
 
 const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 const taskSetStore = useTaskSetStore();
 
 const { selectedProjectId } = storeToRefs(projectStore);
+const { inPlaceholderEdit } = storeToRefs(placeholderStore);
 const { inTaskSetEdit } = storeToRefs(taskSetStore);
 
 watch(
     () => props.projectId,
     async () => {
         selectedProjectId.value = props.projectId;
+        inPlaceholderEdit.value = false;
         inTaskSetEdit.value = false;
     },
     { immediate: true }
