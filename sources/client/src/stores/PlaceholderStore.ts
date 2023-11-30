@@ -15,8 +15,8 @@ export const usePlaceholderStore = defineStore("PlaceholderStore", () => {
         try {
             placeholders.value = await commands.getPlaceholders(selectedProjectId.value);
         } catch (error) {
-            console.error("Loading list projects failed", error);
-            notify.error("TODO key");
+            console.error("Loading placeholders failed", error);
+            notify.error("placeholderStore.load.placeholders.failed");
         }
     };
 

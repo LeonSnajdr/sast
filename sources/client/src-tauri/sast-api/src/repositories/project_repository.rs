@@ -1,7 +1,7 @@
 use prisma_client_rust::QueryError;
 
 use crate::contracts::project_contracts::{
-    full_project_contract, list_project_contract, CreateProjectContract, UpdateProjectContract,
+    list_project_contract, CreateProjectContract, UpdateProjectContract,
 };
 use crate::prisma::project;
 use crate::utils::db_utils::DbState;
@@ -17,19 +17,6 @@ pub async fn get_list_projects(
         .await;
 
     return projects;
-}
-
-pub async fn get_full_project(
-    db: DbState<'_>, project_id: String,
-) -> Result<Option<full_project_contract::Data>, QueryError> {
-    let project = db
-        .project()
-        .find_first(vec![project::id::equals(project_id)])
-        .include(full_project_contract::include())
-        .exec()
-        .await;
-
-    return project;
 }
 
 pub async fn create_project(

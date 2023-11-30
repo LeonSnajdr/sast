@@ -1,7 +1,7 @@
 use prisma_client_rust::QueryError;
 
 use crate::contracts::project_contracts::{
-    full_project_contract, list_project_contract, CreateProjectContract, UpdateProjectContract,
+    list_project_contract, CreateProjectContract, UpdateProjectContract,
 };
 use crate::prisma::project;
 use crate::repositories::project_repository;
@@ -13,14 +13,6 @@ pub async fn get_list_projects(
     db: DbState<'_>,
 ) -> Result<Vec<list_project_contract::Data>, QueryError> {
     return project_repository::get_list_projects(db).await;
-}
-
-#[tauri::command]
-#[specta::specta]
-pub async fn get_full_project(
-    db: DbState<'_>, project_id: String,
-) -> Result<Option<full_project_contract::Data>, QueryError> {
-    return project_repository::get_full_project(db, project_id).await;
 }
 
 #[tauri::command]

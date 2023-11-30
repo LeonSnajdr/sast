@@ -16,8 +16,8 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
         try {
             taskSets.value = await commands.getTaskSets(selectedProjectId.value);
         } catch (error) {
-            console.error("Loading list projects failed", error);
-            notify.error("projectStore.projectList.load.failed");
+            console.error("Loading task sets failed", error);
+            notify.error("taskSetStore.load.taskSets.failed");
         }
     };
 
@@ -27,8 +27,8 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
         try {
             await commands.startTaskSet(taskSetId);
         } catch (error) {
-            console.error("Error while executing taskset", error);
-            notify.error("taskSetView.execute.error");
+            console.error("Error while executing task set", error);
+            notify.error("taskSetStore.execute.error");
         } finally {
             runningTaskSets.value[taskSetId] = false;
         }

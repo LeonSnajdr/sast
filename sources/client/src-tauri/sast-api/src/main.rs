@@ -36,7 +36,6 @@ async fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri_handlers![
-            project_service::get_full_project,
             project_service::get_list_projects,
             project_service::create_project,
             project_service::update_project,
