@@ -1,4 +1,4 @@
-export const useNotificationStore = defineStore("notification", () => {
+export const useNotificationStore = defineStore("notificationStore", () => {
     const visible = ref(false);
     const message = ref("");
     const namedParams = ref<Record<string, unknown>>({});
