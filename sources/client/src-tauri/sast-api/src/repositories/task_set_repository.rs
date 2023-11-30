@@ -3,7 +3,8 @@ use prisma_client_rust::{Direction, QueryError};
 use crate::contracts::task_set_contracts::{
     full_task_set_contract, project_task_set_contract, CreateTaskSetContract, UpdateTaskSetContract,
 };
-use crate::prisma::{self, project, task_set};
+use crate::prisma::task_set::Update;
+use crate::prisma::{project, task_set};
 use crate::utils::db_utils::DbState;
 
 pub async fn get_task_sets(
@@ -43,39 +44,30 @@ pub async fn update_task_set(
         .task_set()
         .update(
             task_set::id::equals(update_contract.id),
-            vec![task_set::description::set(update_contract.description)],
+            vec![
+                task_set::description::set(update_contract.description),
+                task_set::order::set(update_contract.order),
+            ],
         )
         .include(full_task_set_contract::include())
         .exec()
         .await;
 }
 
-pub async fn update_task_sets_order(
+pub async fn update_task_sets(
     db: DbState<'_>, update_contracts: Vec<UpdateTaskSetContract>,
-) -> Result<prisma::task_set::Data, QueryError> {
-    /*return db
-    ._transaction()
-    .run(|db| async move {
-        for update_contract in update_contracts {
-            db.task_set()
-                .update(task_set::id::equals(update_contract.id), vec![])
-                .exec()
-                .await
-        }
-    })
-    .await;*/
+) -> Result<Vec<task_set::Data>, QueryError> {
+    let task_set_updates = update_contracts.into_iter().map(|update_contract| {
+        db.task_set().update(
+            task_set::id::equals(update_contract.id),
+            vec![
+                task_set::description::set(update_contract.description),
+                task_set::order::set(update_contract.order),
+            ],
+        )
+    });
 
-    let test = prisma::task_set::Data {
-        description: "".to_string(),
-        id: "s".to_string(),
-        order: 2,
-        name: "".to_string(),
-        project_id: "".to_string(),
-        project: None,
-        tasks: None,
-    };
-
-    Ok(test)
+    return db._batch(task_set_updates).await;
 }
 
 pub async fn delete_task_set(

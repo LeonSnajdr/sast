@@ -54,6 +54,10 @@ export function updateTaskSet(updateContract: UpdateTaskSetContract) {
     return invoke()<FullTaskSetContract>("update_task_set", { updateContract })
 }
 
+export function updateTaskSets(updateContracts: UpdateTaskSetContract[]) {
+    return invoke()<TaskSet[]>("update_task_sets", { updateContracts })
+}
+
 export function deleteTaskSet(taskSetId: string) {
     return invoke()<FullTaskSetContract>("delete_task_set", { taskSetId })
 }

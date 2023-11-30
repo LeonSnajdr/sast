@@ -35,6 +35,14 @@ pub async fn update_task_set(
 
 #[tauri::command]
 #[specta::specta]
+pub async fn update_task_sets(
+    db: DbState<'_>, update_contracts: Vec<UpdateTaskSetContract>,
+) -> Result<Vec<task_set::Data>, QueryError> {
+    return task_set_repository::update_task_sets(db, update_contracts).await;
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn delete_task_set(
     db: DbState<'_>, task_set_id: String,
 ) -> Result<full_task_set_contract::Data, QueryError> {

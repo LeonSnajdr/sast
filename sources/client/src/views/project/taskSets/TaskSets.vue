@@ -30,6 +30,9 @@ import TaskSetEdit from "@/views/project/taskSets/TaskSetEdit.vue";
 import TaskSetCreate from "@/views/project/taskSets/TaskSetCreate.vue";
 import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
 import draggable from "vuedraggable";
+import * as commands from "@/bindings";
+import type { UpdateTaskSetContract } from "@/bindings";
+import { findIndex, indexOf } from "lodash";
 
 const projectStore = useProjectStore();
 const taskSetStore = useTaskSetStore();
@@ -45,7 +48,13 @@ watch(
     { immediate: true }
 );
 
-const taskSetOrderChanged = () => {
-    console.log(taskSets.value.map((m) => m.name));
+const taskSetOrderChanged = async () => {
+    const updatedTaskSets: UpdateTaskSetContract[] = taskSets.value.map((ts) => ({
+        id: ts.id,
+        description: ts.description,
+        order: findIndex(taskSets.value, ts)
+    }));
+
+    await commands.updateTaskSets(updatedTaskSets);
 };
 </script>
