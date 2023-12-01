@@ -1,10 +1,10 @@
 <template>
     <v-dialog v-model="dialog" width="900">
-        <v-card v-if="taskSet">
-            <v-card-title>{{ taskSet.name }}</v-card-title>
+        <v-card v-if="editTaskSet">
+            <v-card-title>{{ editTaskSet.name }}</v-card-title>
             <v-card-text>
-                <TaskEdit v-for="(task, index) in taskSet.tasks" :key="task.id" v-model:taskSet="taskSet" v-model:task="taskSet.tasks[index]" />
-                <TaskCreate v-model:taskSet="taskSet" />
+                <TaskEdit v-for="(task, index) in editTaskSet.tasks" :key="task.id" v-model:taskSet="editTaskSet" v-model:task="editTaskSet.tasks[index]" />
+                <TaskCreate v-model:taskSet="editTaskSet" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
@@ -17,30 +17,19 @@
 <script setup lang="ts">
 import TaskEdit from "@/views/project/taskSets/tasks/TaskEdit.vue";
 import TaskCreate from "@/views/project/taskSets/tasks/TaskCreate.vue";
-import type { FullTaskSetContract } from "@/bindings";
-import * as commands from "@/bindings";
 
 const taskSetStore = useTaskSetStore();
 
-const { popupEditTaskSetId } = storeToRefs(taskSetStore);
+const { editTaskSet } = storeToRefs(taskSetStore);
 
-const taskSet = ref<FullTaskSetContract>();
-const dialog = ref(false);
+const dialog = computed({
+    get() {
+        return editTaskSet.value != undefined;
+    },
+    set(newValue) {
+        if (newValue) return;
 
-watch(popupEditTaskSetId, async () => {
-    if (!popupEditTaskSetId.value) {
-        return;
+        editTaskSet.value = undefined;
     }
-
-    taskSet.value = await commands.getFullTaskSet(popupEditTaskSetId.value);
-    dialog.value = true;
-});
-
-watch(dialog, () => {
-    if (dialog.value) {
-        return;
-    }
-
-    popupEditTaskSetId.value = "";
 });
 </script>

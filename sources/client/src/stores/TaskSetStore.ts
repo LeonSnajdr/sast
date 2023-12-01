@@ -1,4 +1,4 @@
-import type { TaskSet } from "@/bindings";
+import type { FullTaskSetContract, TaskSet } from "@/bindings";
 import * as commands from "@/bindings";
 
 export const useTaskSetStore = defineStore("taskSetStore", () => {
@@ -8,7 +8,7 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
     const { selectedProjectId } = storeToRefs(projectStore);
 
     const taskSets = ref<TaskSet[]>([]);
-    const dialogEditTaskSetId = ref("");
+    const editTaskSet = ref<FullTaskSetContract>();
 
     const inTaskSetEdit = ref(false);
     const runningTaskSets = ref<Record<string, boolean>>({});
@@ -20,6 +20,10 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
             console.error("Loading task sets failed", error);
             notify.error("taskSetStore.load.taskSets.failed");
         }
+    };
+
+    const openTaskSetEditDialog = async (taskSetId: string) => {
+        editTaskSet.value = await commands.getFullTaskSet(taskSetId);
     };
 
     const startTaskSet = async (taskSetId: string) => {
@@ -41,10 +45,11 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
 
     return {
         loadTaskSetList,
+        openTaskSetEditDialog,
         startTaskSet,
         isTaskSetRunning,
         taskSets,
         inTaskSetEdit,
-        popupEditTaskSetId: dialogEditTaskSetId
+        editTaskSet
     };
 });

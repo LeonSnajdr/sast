@@ -25,8 +25,6 @@ const props = defineProps<{
 const notify = useNotificationStore();
 const taskSetStore = useTaskSetStore();
 
-const { popupEditTaskSetId } = storeToRefs(taskSetStore);
-
 const internalTaskSet = ref<FullTaskSetContract>();
 
 onBeforeMount(() => {
@@ -50,7 +48,7 @@ const taskSetChanged = async () => {
 };
 
 const openDialog = () => {
-    popupEditTaskSetId.value = internalTaskSet.value.id;
+    taskSetStore.openTaskSetEditDialog(internalTaskSet.value.id);
 };
 
 const deleteTaskSet = async () => {
