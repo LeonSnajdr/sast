@@ -1,11 +1,19 @@
+use prisma_client_rust::Direction;
 use serde::Deserialize;
 use specta::Type;
 
-use crate::prisma::task_set;
+use crate::prisma::{task, task_set};
 
-task_set::include!(full_task_set_contract { tasks });
+task_set::include!(full_task_set_contract {
+   tasks(vec![]).order_by(task::order::order(Direction::Asc))
+});
 
-task_set::include!(project_task_set_contract { project: include { placeholders } tasks });
+task_set::include!(project_task_set_contract {
+    project: include {
+        placeholders
+    }
+    tasks(vec![]).order_by(task::order::order(Direction::Asc))
+});
 
 #[derive(Deserialize, Type)]
 pub struct CreateTaskSetContract {
