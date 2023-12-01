@@ -82,6 +82,10 @@ export function updateTask(updateContract: UpdateTaskContract) {
     return invoke()<Task>("update_task", { updateContract })
 }
 
+export function updateTasks(updateContracts: UpdateTaskContract[]) {
+    return invoke()<Task[]>("update_tasks", { updateContracts })
+}
+
 export function deleteTask(taskId: string) {
     return invoke()<Task>("delete_task", { taskId })
 }
@@ -97,6 +101,6 @@ export type CreatePlaceholderContract = { name: string; order: number; value: st
 export type CreateProjectContract = { name: string }
 export type CreateTaskContract = { order: number; command: string; working_directory: string; delay: number; task_set_id: string }
 export type FullTaskSetContract = { id: string; order: number; name: string; description: string; project_id: string; tasks: Task[] }
-export type UpdateTaskContract = { id: string; command: string; working_directory: string; delay: number }
+export type UpdateTaskContract = { id: string; order: number; command: string; working_directory: string; delay: number }
 export type UpdateTaskSetContract = { id: string; description: string; order: number }
 export type CreateTaskSetContract = { project_id: string; order: number; name: string; description: string }

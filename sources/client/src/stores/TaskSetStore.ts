@@ -22,8 +22,10 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
         }
     };
 
-    const openTaskSetEditDialog = async (taskSetId: string) => {
-        editTaskSet.value = await commands.getFullTaskSet(taskSetId);
+    const loadEditTaskSet = async (taskSetId?: string) => {
+        const id = taskSetId ?? editTaskSet.value.id;
+
+        editTaskSet.value = await commands.getFullTaskSet(id);
     };
 
     const startTaskSet = async (taskSetId: string) => {
@@ -45,7 +47,7 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
 
     return {
         loadTaskSetList,
-        openTaskSetEditDialog,
+        loadEditTaskSet,
         startTaskSet,
         isTaskSetRunning,
         taskSets,

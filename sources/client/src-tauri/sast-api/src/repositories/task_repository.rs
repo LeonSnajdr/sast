@@ -38,6 +38,24 @@ pub async fn update_task(
         .await;
 }
 
+pub async fn update_tasks(
+    db: DbState<'_>, update_contracts: Vec<UpdateTaskContract>,
+) -> Result<Vec<task::Data>, QueryError> {
+    let task_updates = update_contracts.into_iter().map(|update_contract| {
+        db.task().update(
+            task::id::equals(update_contract.id),
+            vec![
+                task::order::set(update_contract.order),
+                task::command::set(update_contract.command),
+                task::working_directory::set(update_contract.working_directory),
+                task::delay::set(update_contract.delay),
+            ],
+        )
+    });
+
+    return db._batch(task_updates).await;
+}
+
 pub async fn delete_task(db: DbState<'_>, task_id: String) -> Result<task::Data, QueryError> {
     return db.task().delete(task::id::equals(task_id)).exec().await;
 }

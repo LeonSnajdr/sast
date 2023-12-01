@@ -13,6 +13,7 @@ pub struct CreateTaskContract {
 #[derive(Deserialize, Type)]
 pub struct UpdateTaskContract {
     pub id: String,
+    pub order: i32,
     pub command: String,
     pub working_directory: String,
     pub delay: i32,

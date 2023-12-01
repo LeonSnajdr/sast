@@ -9,28 +9,33 @@
 </template>
 
 <script setup lang="ts">
-import type { CreateTaskContract, FullTaskSetContract } from "@/bindings";
+import type { CreateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
-
-const { taskSet } = defineModels<{
-    taskSet: FullTaskSetContract;
-}>();
+import OrderService from "@/services/OrderService";
 
 const notify = useNotificationStore();
+const taskSetStore = useTaskSetStore();
+
+const { editTaskSet } = storeToRefs(taskSetStore);
+
 const taskCommand = ref("");
 
 const createTask = async () => {
+    //TODO add default working directory in settings
+
+    const followingOrderNumber = OrderService.getFollowingOrderNumber(editTaskSet.value.tasks);
+
     const createTask: CreateTaskContract = {
-        order: 0,
-        task_set_id: taskSet.value.id,
+        order: followingOrderNumber,
+        task_set_id: editTaskSet.value.id,
         command: taskCommand.value,
         delay: 0,
         working_directory: "c:/"
     };
 
     try {
-        const createdTask = await commands.createTask(createTask);
-        taskSet.value.tasks.push(createdTask);
+        await commands.createTask(createTask);
+        await taskSetStore.loadEditTaskSet();
         notify.success("taskSetTaskCreate.create.success");
     } catch (error) {
         console.error("Could not create task", error);

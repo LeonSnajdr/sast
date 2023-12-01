@@ -48,7 +48,7 @@ const taskSetChanged = async () => {
 };
 
 const openDialog = () => {
-    taskSetStore.openTaskSetEditDialog(internalTaskSet.value.id);
+    taskSetStore.loadEditTaskSet(internalTaskSet.value.id);
 };
 
 const deleteTaskSet = async () => {

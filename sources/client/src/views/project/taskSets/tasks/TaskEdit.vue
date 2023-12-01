@@ -1,6 +1,10 @@
 <template>
     <v-row-single v-if="!inOptions">
-        <v-text-field v-model="task.command" :loading="loading" prependInnerIcon="mdi-apple-keyboard-command">
+        <v-text-field v-model="internalTask.command" prependInnerIcon="mdi-apple-keyboard-command">
+            <template #prepend>
+                <v-icon icon="mdi-drag"></v-icon>
+            </template>
+
             <template #append>
                 <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
             </template>
@@ -8,10 +12,10 @@
     </v-row-single>
     <v-row v-else>
         <v-col cols="8">
-            <v-text-field v-model="task.working_directory" :loading="loading" prependInnerIcon="mdi-folder" />
+            <v-text-field v-model="internalTask.working_directory" prependInnerIcon="mdi-folder" />
         </v-col>
         <v-col cols="4">
-            <v-text-field v-model="task.delay" :loading="loading" type="number" prependInnerIcon="mdi-clock">
+            <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">
                 <template #append>
                     <v-btn-icon @click="deleteTask" icon="mdi-delete" />
                     <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
@@ -22,30 +26,32 @@
 </template>
 
 <script setup lang="ts">
-import type { Task, UpdateTaskContract, FullTaskSetContract } from "@/bindings";
+import type { Task, UpdateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
-import { remove } from "lodash";
 
-const loading = ref(false);
-const inOptions = ref(false);
-
-const { task, taskSet } = defineModels<{
-    taskSet: FullTaskSetContract;
+const props = defineProps<{
     task: Task;
 }>();
 
 const notify = useNotificationStore();
+const taskSetStore = useTaskSetStore();
 
-watch(task.value, () => taskChanged());
+const internalTask = ref<Task>();
+const inOptions = ref(false);
+
+onBeforeMount(() => {
+    internalTask.value = Object.create(props.task);
+});
+
+watch(internalTask, () => taskChanged(), { deep: true });
 
 const taskChanged = async () => {
-    loading.value = true;
-
     const updateContract: UpdateTaskContract = {
-        id: task.value.id,
-        command: task.value.command,
-        working_directory: task.value.working_directory,
-        delay: Number(task.value.delay)
+        id: internalTask.value.id,
+        order: internalTask.value.order,
+        command: internalTask.value.command,
+        working_directory: internalTask.value.working_directory,
+        delay: Number(internalTask.value.delay)
     };
 
     try {
@@ -53,23 +59,17 @@ const taskChanged = async () => {
     } catch (error) {
         console.log("Failed updating task", error);
         notify.error("taskSetTaskEdit.update.error");
-    } finally {
-        loading.value = false;
     }
 };
 
 const deleteTask = async () => {
-    loading.value = true;
-
     try {
-        await commands.deleteTask(task.value.id);
-        remove(taskSet.value.tasks, task.value);
+        await commands.deleteTask(internalTask.value.id);
+        await taskSetStore.loadEditTaskSet();
         notify.success("taskSetTaskEdit.delete.success");
     } catch (error) {
         console.error("Could not delete task", error);
         notify.error("taskSetTaskEdit.delete.error");
-    } finally {
-        loading.value = false;
     }
 };
 </script>

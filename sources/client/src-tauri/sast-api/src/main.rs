@@ -54,6 +54,7 @@ async fn main() {
             task_set_service::start_task_set,
             task_service::create_task,
             task_service::update_task,
+            task_service::update_tasks,
             task_service::delete_task
         ])
         .manage(Arc::new(db))
