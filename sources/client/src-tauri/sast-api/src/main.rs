@@ -46,6 +46,7 @@ async fn main() {
             placeholder_service::update_placeholders,
             placeholder_service::delete_placeholder,
             task_set_service::get_task_sets,
+            task_set_service::get_full_task_set,
             task_set_service::create_task_set,
             task_set_service::update_task_set,
             task_set_service::update_task_sets,

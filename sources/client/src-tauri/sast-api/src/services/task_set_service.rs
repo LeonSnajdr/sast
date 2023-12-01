@@ -19,9 +19,17 @@ pub async fn get_task_sets(
 
 #[tauri::command]
 #[specta::specta]
+pub async fn get_full_task_set(
+    db: DbState<'_>, task_set_id: String,
+) -> Result<Option<full_task_set_contract::Data>, QueryError> {
+    return task_set_repository::get_full_task_set(db, task_set_id).await;
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn create_task_set(
     db: DbState<'_>, create_contract: CreateTaskSetContract,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return task_set_repository::create_task_set(db, create_contract).await;
 }
 
@@ -29,7 +37,7 @@ pub async fn create_task_set(
 #[specta::specta]
 pub async fn update_task_set(
     db: DbState<'_>, update_contract: UpdateTaskSetContract,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return task_set_repository::update_task_set(db, update_contract).await;
 }
 
@@ -45,7 +53,7 @@ pub async fn update_task_sets(
 #[specta::specta]
 pub async fn delete_task_set(
     db: DbState<'_>, task_set_id: String,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return task_set_repository::delete_task_set(db, task_set_id).await;
 }
 

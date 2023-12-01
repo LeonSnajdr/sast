@@ -7,6 +7,8 @@
         </v-card-title>
         <v-card-text>
             <template v-if="inTaskSetEdit">
+                <TasksEditDialog />
+
                 <draggable v-model="taskSets" @end="taskSetOrderChanged" itemKey="id">
                     <template #item="{ element: taskSet }">
                         <TaskSetEdit :taskSet="taskSet" />
@@ -29,10 +31,10 @@
 import TaskSetEdit from "@/views/project/taskSets/TaskSetEdit.vue";
 import TaskSetCreate from "@/views/project/taskSets/TaskSetCreate.vue";
 import TaskSetView from "@/views/project/taskSets/TaskSetView.vue";
+import TasksEditDialog from "@/views/project/taskSets/tasks/TasksEditDialog.vue";
 import draggable from "vuedraggable";
 import * as commands from "@/bindings";
 import type { UpdateTaskSetContract } from "@/bindings";
-import { findIndex } from "lodash";
 import OrderService from "@/services/OrderService";
 
 const projectStore = useProjectStore();

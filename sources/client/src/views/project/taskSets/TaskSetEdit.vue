@@ -6,9 +6,7 @@
             </template>
 
             <template #append>
-                <v-btn-icon icon="mdi-tune">
-                    <!-- <TasksEditDialog /> -->
-                </v-btn-icon>
+                <v-btn-icon @click="openDialog" icon="mdi-tune" />
 
                 <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
             </template>
@@ -26,6 +24,8 @@ const props = defineProps<{
 
 const notify = useNotificationStore();
 const taskSetStore = useTaskSetStore();
+
+const { popupEditTaskSetId } = storeToRefs(taskSetStore);
 
 const internalTaskSet = ref<FullTaskSetContract>();
 
@@ -47,6 +47,10 @@ const taskSetChanged = async () => {
         console.error("The taskset could not be updated", error);
         notify.error("taskSetEdit.update.error");
     }
+};
+
+const openDialog = () => {
+    popupEditTaskSetId.value = internalTaskSet.value.id;
 };
 
 const deleteTaskSet = async () => {

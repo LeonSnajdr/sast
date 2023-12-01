@@ -50,12 +50,16 @@ export function getTaskSets(projectId: string) {
     return invoke()<TaskSet[]>("get_task_sets", { projectId })
 }
 
+export function getFullTaskSet(taskSetId: string) {
+    return invoke()<FullTaskSetContract | null>("get_full_task_set", { taskSetId })
+}
+
 export function createTaskSet(createContract: CreateTaskSetContract) {
-    return invoke()<FullTaskSetContract>("create_task_set", { createContract })
+    return invoke()<TaskSet>("create_task_set", { createContract })
 }
 
 export function updateTaskSet(updateContract: UpdateTaskSetContract) {
-    return invoke()<FullTaskSetContract>("update_task_set", { updateContract })
+    return invoke()<TaskSet>("update_task_set", { updateContract })
 }
 
 export function updateTaskSets(updateContracts: UpdateTaskSetContract[]) {
@@ -63,7 +67,7 @@ export function updateTaskSets(updateContracts: UpdateTaskSetContract[]) {
 }
 
 export function deleteTaskSet(taskSetId: string) {
-    return invoke()<FullTaskSetContract>("delete_task_set", { taskSetId })
+    return invoke()<TaskSet>("delete_task_set", { taskSetId })
 }
 
 export function startTaskSet(taskSetId: string) {

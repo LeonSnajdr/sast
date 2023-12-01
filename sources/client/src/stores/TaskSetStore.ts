@@ -8,6 +8,7 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
     const { selectedProjectId } = storeToRefs(projectStore);
 
     const taskSets = ref<TaskSet[]>([]);
+    const dialogEditTaskSetId = ref("");
 
     const inTaskSetEdit = ref(false);
     const runningTaskSets = ref<Record<string, boolean>>({});
@@ -43,6 +44,7 @@ export const useTaskSetStore = defineStore("taskSetStore", () => {
         startTaskSet,
         isTaskSetRunning,
         taskSets,
-        inTaskSetEdit
+        inTaskSetEdit,
+        popupEditTaskSetId: dialogEditTaskSetId
     };
 });

@@ -19,9 +19,22 @@ pub async fn get_task_sets(
     return task_sets;
 }
 
+pub async fn get_full_task_set(
+    db: DbState<'_>, task_set_id: String,
+) -> Result<Option<full_task_set_contract::Data>, QueryError> {
+    let task_set = db
+        .task_set()
+        .find_first(vec![task_set::id::equals(task_set_id)])
+        .include(full_task_set_contract::include())
+        .exec()
+        .await;
+
+    return task_set;
+}
+
 pub async fn create_task_set(
     db: DbState<'_>, create_contract: CreateTaskSetContract,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return db
         .task_set()
         .create(
@@ -31,14 +44,13 @@ pub async fn create_task_set(
             project::id::equals(create_contract.project_id),
             vec![],
         )
-        .include(full_task_set_contract::include())
         .exec()
         .await;
 }
 
 pub async fn update_task_set(
     db: DbState<'_>, update_contract: UpdateTaskSetContract,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return db
         .task_set()
         .update(
@@ -48,7 +60,6 @@ pub async fn update_task_set(
                 task_set::description::set(update_contract.description),
             ],
         )
-        .include(full_task_set_contract::include())
         .exec()
         .await;
 }
@@ -71,11 +82,10 @@ pub async fn update_task_sets(
 
 pub async fn delete_task_set(
     db: DbState<'_>, task_set_id: String,
-) -> Result<full_task_set_contract::Data, QueryError> {
+) -> Result<task_set::Data, QueryError> {
     return db
         .task_set()
         .delete(task_set::id::equals(task_set_id))
-        .include(full_task_set_contract::include())
         .exec()
         .await;
 }
