@@ -1,6 +1,6 @@
 <template>
     <v-row-single>
-        <v-form v-model="valid" ref="form" class="d-flex">
+        <v-form v-model="valid" ref="form">
             <v-row>
                 <v-col>
                     <v-text-field
@@ -13,6 +13,7 @@
                                 $t('placeholderCreate.input.name.notUnique')
                             )
                         ]"
+                        prependIcon="mdi-blur-off"
                     ></v-text-field>
                 </v-col>
                 <v-col>

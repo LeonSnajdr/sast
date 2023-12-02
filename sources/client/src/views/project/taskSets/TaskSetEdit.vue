@@ -1,10 +1,6 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="internalTaskSet.description" @update:modelValue="taskSetChanged" :label="taskSet.name">
-            <template #prepend>
-                <v-icon icon="mdi-drag"></v-icon>
-            </template>
-
+        <v-text-field v-model="internalTaskSet.description" @update:modelValue="taskSetChanged" :label="taskSet.name" prependIcon="mdi-drag">
             <template #append>
                 <v-btn-icon @click="openDialog" icon="mdi-tune" />
 

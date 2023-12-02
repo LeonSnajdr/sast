@@ -1,6 +1,6 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="taskCommand" prependInnerIcon="mdi-apple-keyboard-command">
+        <v-text-field v-model="taskCommand" prependIcon="mdi-blur-off" prependInnerIcon="mdi-apple-keyboard-command">
             <template #append>
                 <v-btn-icon @click="createTask" icon="mdi-plus" />
             </template>

@@ -1,10 +1,6 @@
 <template>
     <v-row-single v-if="!inOptions">
-        <v-text-field v-model="internalTask.command" prependInnerIcon="mdi-apple-keyboard-command">
-            <template #prepend>
-                <v-icon icon="mdi-drag"></v-icon>
-            </template>
-
+        <v-text-field v-model="internalTask.command" prependIcon="mdi-drag" prependInnerIcon="mdi-apple-keyboard-command">
             <template #append>
                 <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
             </template>
@@ -12,7 +8,7 @@
     </v-row-single>
     <v-row v-else>
         <v-col cols="8">
-            <v-text-field v-model="internalTask.working_directory" prependInnerIcon="mdi-folder" />
+            <v-text-field v-model="internalTask.working_directory" prependIcon="mdi-drag" prependInnerIcon="mdi-folder" />
         </v-col>
         <v-col cols="4">
             <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">

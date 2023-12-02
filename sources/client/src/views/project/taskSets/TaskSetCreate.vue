@@ -13,6 +13,7 @@
                                 $t('taskSetCreate.input.name.notUnique')
                             )
                         ]"
+                        prependIcon="mdi-blur-off"
                     ></v-text-field>
                 </v-col>
                 <v-col>

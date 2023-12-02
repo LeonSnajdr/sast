@@ -1,10 +1,6 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="internalPlaceholder.value" :label="internalPlaceholder.name" @update:modelValue="placeholderChanged">
-            <template #prepend>
-                <v-icon icon="mdi-drag"></v-icon>
-            </template>
-
+        <v-text-field v-model="internalPlaceholder.value" :label="internalPlaceholder.name" @update:modelValue="placeholderChanged" prependIcon="mdi-drag">
             <template #append>
                 <v-btn-icon @click="deletePlaceholder" icon="mdi-delete" />
             </template>
