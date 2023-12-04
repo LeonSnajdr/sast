@@ -1,24 +1,27 @@
 <template>
-    <v-row-single v-if="!inOptions">
-        <v-text-field v-model="internalTask.command" prependIcon="mdi-drag" prependInnerIcon="mdi-apple-keyboard-command">
-            <template #append>
-                <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
-            </template>
-        </v-text-field>
-    </v-row-single>
-    <v-row v-else>
-        <v-col cols="8">
-            <v-text-field v-model="internalTask.working_directory" prependIcon="mdi-drag" prependInnerIcon="mdi-folder" />
-        </v-col>
-        <v-col cols="4">
-            <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">
+    <!-- Div is needed to preserve the draggability, otherwise the reference to the object is lost -->
+    <div>
+        <v-row-single v-if="!inOptions">
+            <v-text-field v-model="internalTask.command" prependIcon="mdi-drag" prependInnerIcon="mdi-apple-keyboard-command">
                 <template #append>
-                    <v-btn-icon @click="deleteTask" icon="mdi-delete" />
                     <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
                 </template>
             </v-text-field>
-        </v-col>
-    </v-row>
+        </v-row-single>
+        <v-row v-else>
+            <v-col cols="8">
+                <v-text-field v-model="internalTask.working_directory" prependIcon="mdi-drag" prependInnerIcon="mdi-folder" />
+            </v-col>
+            <v-col cols="4">
+                <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">
+                    <template #append>
+                        <v-btn-icon @click="deleteTask" icon="mdi-delete" />
+                        <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
+                    </template>
+                </v-text-field>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 
 <script setup lang="ts">
