@@ -1,6 +1,6 @@
 <template>
-    <!-- Div is needed to preserve the draggability, otherwise the reference to the object is lost -->
     <div>
+        <!-- Div is needed to preserve the draggability, otherwise the reference to the object is lost-->
         <v-row-single v-if="!inOptions">
             <v-text-field v-model="internalTask.command" prependIcon="mdi-drag" prependInnerIcon="mdi-apple-keyboard-command">
                 <template #append>
