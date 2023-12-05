@@ -97,7 +97,6 @@ pub async fn start_task_set(db: DbState<'_>, task_set_id: String) -> Result<Stri
 
 fn execute_command(working_directory: String, command: String) {
     let mut options = ScriptOptions::new();
-
     options.working_directory = Some(std::path::PathBuf::from(working_directory));
 
     let args = vec![];
