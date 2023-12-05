@@ -1,3 +1,7 @@
+#rust
+target
+prisma.rs
+
 # Logs
 logs
 *.log
