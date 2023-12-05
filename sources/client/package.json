@@ -9,6 +9,7 @@
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit -p tsconfig.app.json --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
+    "lint:style": "stylelint src/**/*.{css,scss,vue} --fix",
     "format": "prettier --write src/"
   },
   "dependencies": {
@@ -20,7 +21,7 @@
     "pinia": "^2.1.6",
     "pinia-plugin-persistedstate": "^3.2.0",
     "vue": "^3.3.4",
-    "vue-i18n": "^9.4.1",
+    "vue-i18n": "^9.5.0",
     "vue-router": "^4.2.4",
     "vuedraggable": "^4.1.0",
     "vuetify": "^3.4.4"
@@ -43,8 +44,12 @@
     "eslint-plugin-vue": "^9.15.1",
     "eslint-plugin-vuetify": "^2.0.5",
     "npm-run-all": "^4.1.5",
+    "postcss-html": "^1.5.0",
     "prettier": "^3.0.0",
     "sass": "^1.67.0",
+    "stylelint": "^15.11.0",
+    "stylelint-config-recommended-scss": "^13.1.0",
+    "stylelint-config-recommended-vue": "^1.5.0",
     "typescript": "~5.1.6",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.2",
