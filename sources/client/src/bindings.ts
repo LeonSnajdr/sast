@@ -14,6 +14,10 @@ export function getSettings() {
     return invoke()<Settings | null>("get_settings")
 }
 
+export function updateSettings(updateContract: UpdateSettingsContract) {
+    return invoke()<Settings>("update_settings", { updateContract })
+}
+
 export function getListProjects() {
     return invoke()<ListProjectContract[]>("get_list_projects")
 }
@@ -109,3 +113,4 @@ export type TaskSet = { id: string; order: number; name: string; description: st
 export type CreateTaskSetContract = { project_id: string; order: number; name: string; description: string }
 export type Placeholder = { id: string; order: number; name: string; value: string; project_id: string }
 export type FullTaskSetContract = { id: string; order: number; name: string; description: string; project_id: string; tasks: Task[] }
+export type UpdateSettingsContract = { id: string; language: string; theme: string; default_dir: string }

@@ -3,13 +3,11 @@
         <v-card-title>Settings</v-card-title>
         <v-card-text>
             <v-row-single>
-                <v-autocomplete label="Sprache" :items="availableLocales" @update:modelValue="setLanguage"></v-autocomplete>
+                <v-autocomplete label="Sprache" v-model="settings.language" :items="availableLocales" @update:modelValue="save"></v-autocomplete>
             </v-row-single>
-            <v-row>
-                <v-col v-for="themeName in keys(theme.themes.value)" @click="changeTheme(themeName)" :key="themeName">
-                    <v-card> {{ themeName }} </v-card>
-                </v-col>
-            </v-row>
+            <v-row-single>
+                <v-autocomplete label="Theme" v-model="settings.theme" :items="keys(theme.themes.value)" @update:modelValue="save"></v-autocomplete>
+            </v-row-single>
         </v-card-text>
     </v-card>
 </template>
@@ -18,15 +16,26 @@
 import { keys } from "lodash";
 import { useI18n } from "vue-i18n";
 import { useTheme } from "vuetify";
+import * as commands from "@/bindings";
+import type { UpdateSettingsContract } from "@/bindings";
 
 const theme = useTheme();
-const { availableLocales, locale } = useI18n();
+const { availableLocales } = useI18n();
+const settingsStore = useSettingsStore();
 
-const setLanguage = () => {
-    locale.value = "en";
-};
+const { settings } = storeToRefs(settingsStore);
 
-const changeTheme = (value: string) => {
-    theme.global.name.value = value;
+const save = async () => {
+    //TODO error handling
+
+    const updateContract: UpdateSettingsContract = {
+        id: settings.value.id,
+        language: settings.value.language,
+        theme: settings.value.theme,
+        default_dir: settings.value.default_dir
+    };
+
+    await commands.updateSettings(updateContract);
+    await settingsStore.initializeAppWithSettings();
 };
 </script>

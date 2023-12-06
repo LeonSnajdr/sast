@@ -13,8 +13,6 @@ export const useSettingsStore = defineStore("settingsStore", () => {
     const loadSettings = async () => {
         try {
             settings.value = await commands.getSettings();
-
-            console.log(settings.value);
         } catch (error) {
             console.error("Loading settings failed", error);
             notify.error("settingsStore.load.settings.failed");
