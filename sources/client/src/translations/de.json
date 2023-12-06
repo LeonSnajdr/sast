@@ -2,6 +2,8 @@
   "close": "Schließen",
   "create": "Erstellen",
   "save": "Speichern",
+  "app.initialize.failed": "Das Programm konnte nicht initialisiert werden",
+  "settingsStore.load.settings.failed": "Fehler beim Laden der Einstellungen",
   "projectList.noItems": "Keine Projekte vorhanden",
   "projectStore.load.projectList.failed": "Fehler beim Laden des Projektliste",
   "projectCreateDialog.title": "Neues Projekt",

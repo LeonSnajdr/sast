@@ -8,6 +8,16 @@ generator client {
     output   = "../src/prisma.rs"
 }
 
+model Settings {
+    id          String  @id @default(uuid())
+    name        String  @unique
+    default     Boolean @default(false)
+    active      Boolean
+    language    String
+    theme       String
+    default_dir String
+}
+
 model Project {
     id           String        @id @default(uuid())
     name         String        @unique

@@ -2,6 +2,8 @@
   "close": "Close",
   "create": "Create",
   "save": "Save",
+  "app.initialize.failed": "The program could not be initialized",
+  "settingsStore.load.settings.failed": "Error loading the settings",
   "projectList.noItems": "No projects available",
   "projectStore.load.projectList.failed": "Error loading the project list",
   "projectCreateDialog.title": "New projekt",

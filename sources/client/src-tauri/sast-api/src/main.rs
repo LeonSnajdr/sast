@@ -11,7 +11,9 @@ use std::{env, fs, path::PathBuf, sync::Arc};
 use tauri::api::path;
 
 use crate::prisma::*;
-use crate::services::{placeholder_service, project_service, task_service, task_set_service};
+use crate::services::{
+    placeholder_service, project_service, settings_service, task_service, task_set_service,
+};
 
 macro_rules! tauri_handlers {
 	($($name:path),+) => {{
@@ -36,6 +38,7 @@ async fn main() {
 
     tauri::Builder::default()
         .invoke_handler(tauri_handlers![
+            settings_service::get_settings,
             project_service::get_list_projects,
             project_service::create_project,
             project_service::update_project,

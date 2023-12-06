@@ -76,6 +76,7 @@ declare global {
   const useProjectTaskSetStore: typeof import("../src/stores/projectTaskSetStore")["useProjectTaskSetStore"]
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
+  const useSettingsStore: typeof import('../src/stores/SettingsStore')['useSettingsStore']
   const useSlots: typeof import('vue')['useSlots']
   const useTaskSetPageStore: typeof import("../src/stores/TaskSetPageStore")["useTaskSetPageStore"]
   const useTaskSetStore: typeof import('../src/stores/TaskSetStore')['useTaskSetStore']

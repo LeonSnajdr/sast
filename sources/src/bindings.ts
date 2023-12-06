@@ -10,10 +10,6 @@ declare global {
 // Function avoids 'window not defined' in SSR
 const invoke = () => window.__TAURI_INVOKE__;
 
-export function getSettings() {
-    return invoke()<Settings | null>("get_settings")
-}
-
 export function getListProjects() {
     return invoke()<ListProjectContract[]>("get_list_projects")
 }
@@ -94,18 +90,17 @@ export function deleteTask(taskId: string) {
     return invoke()<Task>("delete_task", { taskId })
 }
 
+export type TaskSet = { id: string; order: number; name: string; description: string; project_id: string }
 export type UpdateProjectContract = { id: string; name: string }
-export type Project = { id: string; name: string; created_at: string; updated_at: string }
+export type Placeholder = { id: string; order: number; name: string; value: string; project_id: string }
 export type UpdatePlaceholderContract = { id: string; order: number; value: string }
 export type Task = { id: string; order: number; command: string; working_directory: string; delay: number; task_set_id: string }
+export type Project = { id: string; name: string; created_at: string; updated_at: string }
 export type UpdateTaskSetContract = { id: string; description: string; order: number }
 export type ListProjectContract = { id: string; name: string }
 export type CreatePlaceholderContract = { name: string; order: number; value: string; project_id: string }
-export type Settings = { id: string; name: string; default: boolean; active: boolean; language: string; theme: string; default_dir: string }
 export type CreateProjectContract = { name: string }
 export type CreateTaskContract = { order: number; command: string; working_directory: string; delay: number; task_set_id: string }
 export type UpdateTaskContract = { id: string; order: number; command: string; working_directory: string; delay: number }
-export type TaskSet = { id: string; order: number; name: string; description: string; project_id: string }
 export type CreateTaskSetContract = { project_id: string; order: number; name: string; description: string }
-export type Placeholder = { id: string; order: number; name: string; value: string; project_id: string }
 export type FullTaskSetContract = { id: string; order: number; name: string; description: string; project_id: string; tasks: Task[] }
