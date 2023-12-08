@@ -8,6 +8,9 @@
             <v-row-single>
                 <v-autocomplete label="Theme" v-model="settings.theme" :items="keys(theme.themes.value)" @update:modelValue="save"></v-autocomplete>
             </v-row-single>
+            <v-row-single>
+                <v-text-field label="Default dir" v-model="settings.default_dir" @update:modelValue="save"></v-text-field>
+            </v-row-single>
         </v-card-text>
     </v-card>
 </template>

@@ -37,9 +37,11 @@
   "taskSetEdit.update.error": "Aktualisierung des Aufgabensatzes fehlgeschlagen",
   "taskSetEdit.delete.success": "Aufgabensatz erfolgreich gelöscht",
   "taskSetEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden",
-  "taskSetTaskCreate.create.success": "Aufgabe erfolgreich erstellt",
-  "taskSetTaskCreate.create.error": "Aufgabe konnte nicht erstellt werden",
-  "taskSetTaskEdit.update.error": "Aktualisierung der Aufgabe fehlgeschlagen",
-  "taskSetTaskEdit.delete.success": "Aufgabe erfolgreich gelöscht",
-  "taskSetTaskEdit.delete.error": "Aufgabe konnte nicht gelöscht werden"
+  "taskCreate.input.command": "Befehl",
+  "taskCreate.create.success": "Aufgabe erfolgreich erstellt",
+  "taskCreate.create.error": "Aufgabe konnte nicht erstellt werden",
+  "taskEdit.input.command": "Befehl",
+  "taskEdit.update.error": "Aktualisierung der Aufgabe fehlgeschlagen",
+  "taskEdit.delete.success": "Aufgabe erfolgreich gelöscht",
+  "taskEdit.delete.error": "Aufgabe konnte nicht gelöscht werden"
 }

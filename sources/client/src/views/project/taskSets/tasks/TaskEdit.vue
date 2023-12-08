@@ -2,7 +2,7 @@
     <div>
         <!-- Div is needed to preserve the draggability, otherwise the reference to the object is lost-->
         <v-row-single v-if="!inOptions">
-            <v-text-field v-model="internalTask.command" prependIcon="mdi-drag" prependInnerIcon="mdi-apple-keyboard-command">
+            <v-text-field v-model="internalTask.command" :placeholder="$t('taskEdit.input.command')" prependIcon="mdi-drag">
                 <template #append>
                     <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
                 </template>
@@ -57,7 +57,7 @@ const taskChanged = async () => {
         await commands.updateTask(updateContract);
     } catch (error) {
         console.log("Failed updating task", error);
-        notify.error("taskSetTaskEdit.update.error");
+        notify.error("taskEdit.update.error");
     }
 };
 
@@ -65,10 +65,10 @@ const deleteTask = async () => {
     try {
         await commands.deleteTask(internalTask.value.id);
         await taskSetStore.loadEditTaskSet();
-        notify.success("taskSetTaskEdit.delete.success");
+        notify.success("taskEdit.delete.success");
     } catch (error) {
         console.error("Could not delete task", error);
-        notify.error("taskSetTaskEdit.delete.error");
+        notify.error("taskEdit.delete.error");
     }
 };
 </script>

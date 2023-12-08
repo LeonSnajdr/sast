@@ -37,9 +37,11 @@
   "taskSetEdit.update.error": "Task set update failed",
   "taskSetEdit.delete.success": "Task set successfully deleted",
   "taskSetEdit.delete.error": "Task set could not be deleted",
-  "taskSetTaskCreate.create.success": "Task successfully created",
-  "taskSetTaskCreate.create.error": "Task could not be created",
-  "taskSetTaskEdit.update.error": "Task update failed",
-  "taskSetTaskEdit.delete.success": "Task successfully deleted",
-  "taskSetTaskEdit.delete.error": "Task could not be deleted"
+  "taskCreate.input.command": "Command",
+  "taskCreate.create.success": "Task successfully created",
+  "taskCreate.create.error": "Task could not be created",
+  "taskEdit.input.command": "Command",
+  "taskEdit.update.error": "Task update failed",
+  "taskEdit.delete.success": "Task successfully deleted",
+  "taskEdit.delete.error": "Task could not be deleted"
 }
