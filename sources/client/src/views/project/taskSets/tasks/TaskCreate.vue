@@ -1,6 +1,6 @@
 <template>
     <v-row-single>
-        <v-text-field v-model="taskCommand" :placeholder="$t('taskCreate.input.command')" prependIcon="mdi-blur-off">
+        <v-text-field v-model="taskCommand" :placeholder="$t('taskCreate.input.command')" @keydown.enter="createTask" prependIcon="mdi-blur-off">
             <template #append>
                 <v-btn-icon @click="createTask" icon="mdi-plus" />
             </template>

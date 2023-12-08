@@ -17,7 +17,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-text-field v-model="taskSetDescription" :placeholder="$t('taskSetCreate.input.description')">
+                    <v-text-field v-model="taskSetDescription" :placeholder="$t('taskSetCreate.input.description')" @keydown.enter="createTaskSet">
                         <template #append>
                             <v-btn-icon @click="createTaskSet" icon="mdi-plus" />
                         </template>

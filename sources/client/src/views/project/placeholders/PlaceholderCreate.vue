@@ -17,7 +17,7 @@
                     ></v-text-field>
                 </v-col>
                 <v-col>
-                    <v-text-field v-model="placeholderValue" :placeholder="$t('placeholderCreate.input.value')">
+                    <v-text-field v-model="placeholderValue" :placeholder="$t('placeholderCreate.input.value')" @keydown.enter="createPlaceholder">
                         <template #append>
                             <v-btn-icon @click="createPlaceholder" icon="mdi-plus" />
                         </template>
