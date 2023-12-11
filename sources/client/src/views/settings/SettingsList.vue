@@ -24,7 +24,7 @@ const projectStore = useProjectStore();
 
 const { selectedProjectId } = storeToRefs(projectStore);
 
-const settingTabs: ListItem[] = [
+const settingTabs = computed((): ListItem[] => [
     {
         title: i18n.t("settingsList.entry.general"),
         value: "settingsGeneral"
@@ -33,7 +33,7 @@ const settingTabs: ListItem[] = [
         title: i18n.t("settingsList.entry.appearance"),
         value: "settingsAppearance"
     }
-];
+]);
 
 const redirectBack = () => {
     if (selectedProjectId.value) {
