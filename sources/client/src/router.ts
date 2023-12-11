@@ -3,6 +3,7 @@ import ProjectLayout from "./layouts/ProjectLayout.vue";
 import SettingsLayout from "./layouts/SettingsLayout.vue";
 import Home from "@/views/home/Home.vue";
 import SettingsGeneral from "@/views/settings/SettingsGeneral.vue";
+import SettingsAppearance from "@/views/settings/SettingsAppearance.vue";
 import Project from "@/views/project/Project.vue";
 
 const router = createRouter({
@@ -31,6 +32,14 @@ const router = createRouter({
             path: "/settings/general",
             name: "settingsGeneral",
             component: SettingsGeneral,
+            meta: {
+                layout: SettingsLayout
+            }
+        },
+        {
+            path: "/settings/appearance",
+            name: "settingsAppearance",
+            component: SettingsAppearance,
             meta: {
                 layout: SettingsLayout
             }

@@ -5,7 +5,7 @@ import { useTheme } from "vuetify/dist/vuetify-labs.js";
 
 export const useSettingsStore = defineStore("settingsStore", () => {
     const notify = useNotificationStore();
-    const { locale } = useI18n();
+    const i18n = useI18n();
     const theme = useTheme();
 
     const settings = ref<Settings>();
@@ -22,7 +22,7 @@ export const useSettingsStore = defineStore("settingsStore", () => {
     const initializeAppWithSettings = async () => {
         await loadSettings();
 
-        locale.value = settings.value.language;
+        i18n.locale.value = settings.value.language;
         theme.global.name.value = settings.value.theme;
     };
 
