@@ -2,6 +2,7 @@
     <v-card>
         <v-card-title>
             {{ $t("placeholders.title") }}
+
             <v-spacer />
 
             <v-btn-icon @click="inPlaceholderEdit = !inPlaceholderEdit" :icon="inPlaceholderEdit ? 'mdi-close' : 'mdi-pencil'" />

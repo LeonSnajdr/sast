@@ -18,7 +18,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn @click="create" :disabled="!valid" color="primary">{{ $t("create") }}</v-btn>
+                    <v-btn @click="create" :disabled="!valid">{{ $t("create") }}</v-btn>
                     <v-btn @click="dialog = false">{{ $t("close") }}</v-btn>
                 </v-card-actions>
             </v-card>

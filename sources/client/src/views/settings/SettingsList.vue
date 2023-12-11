@@ -46,25 +46,21 @@ const redirectBack = () => {
 
 <style lang="scss" scoped>
 .v-list-item {
-    &--active {
-        :deep(.v-icon) {
-            color: white;
-        }
+    :deep(.v-list-item__overlay) {
+        opacity: 1;
+        background-color: transparent;
+    }
 
-        :deep(.v-list-item__content) {
-            z-index: 1;
-            color: white;
-        }
-
+    &:hover {
         :deep(.v-list-item__overlay) {
-            opacity: 1;
-            background-color: rgb(var(--v-theme-primary));
+            background-color: rgba(var(--v-theme-secondary), 0.2);
         }
+    }
 
-        &:hover {
-            :deep(.v-list-item__overlay) {
-                opacity: 0.9;
-            }
+    &--active {
+        :deep(.v-list-item__overlay) {
+            background-color: rgba(var(--v-theme-secondary), 0.2);
+            border-left: 3px solid rgb(var(--v-theme-primary));
         }
     }
 }

@@ -1,5 +1,5 @@
 <template>
-    <v-btn :disabled="disabled" :loading="loading" icon size="x-small" :to="to">
+    <v-btn :disabled="disabled" :loading="loading" icon size="x-small" color="transparent" :to="to">
         <v-icon :icon="icon" :color="color" />
         <slot></slot>
     </v-btn>

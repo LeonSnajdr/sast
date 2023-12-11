@@ -22,61 +22,27 @@ export default createVuetify({
             light: {
                 colors: {
                     primary: "#303A4E",
-                    "primary-lighten-1": "#636B7A",
-                    "primary-lighten-2": "#969BA5",
-                    "primary-lighten-3": "#E4E5E8",
                     secondary: "#8098A7",
-                    "secondary-lighten-1": "#9FB1BD",
-                    "secondary-lighten-2": "#BFCBD2",
-                    "secondary-lighten-3": "#DEE4E8",
-                    "secondary-lighten-4": "#F2F5F6",
                     tertiary: "#599B8B",
-                    "tertiary-lighten-1": "#82B4A8",
-                    "tertiary-lighten-2": "#ABCCC4",
-                    "tertiary-lighten-3": "#D4E5E1",
                     background: "#F9FAFC",
                     surface: "#FFFFFF",
-                    "on-surface": "#1C1C1C",
                     error: "#E52727",
-                    "error-lighten-1": "#DCBABA",
                     warning: "#DC8B22",
-                    "warning-lighten-1": "#E2D4C1",
                     success: "#7D9E39",
-                    "success-lighten-1": "#D7E1C2",
                     info: "#2196F3"
-                },
-                variables: {
-                    "border-color": "#000000"
                 }
             },
             dark: {
                 colors: {
-                    primary: "#0F1B2E",
-                    "primary-lighten-1": "#1E324F",
-                    "primary-lighten-2": "#3B4B66",
-                    "primary-lighten-3": "#667185",
-                    secondary: "#475D6B",
-                    "secondary-lighten-1": "#5C7384",
-                    "secondary-lighten-2": "#7D8E9B",
-                    "secondary-lighten-3": "#A1ACB3",
-                    "secondary-lighten-4": "#C4CBD1",
+                    primary: "#2F81F7",
+                    secondary: "#30363D",
                     tertiary: "#345F4F",
-                    "tertiary-lighten-1": "#507367",
-                    "tertiary-lighten-2": "#6C8A81",
-                    "tertiary-lighten-3": "#8FAFA7",
-                    background: "#1C1C1C",
-                    surface: "#303A4E",
-                    "on-surface": "#FFFFFF",
+                    background: "#010409",
+                    surface: "#0D1117",
                     error: "#E52727",
-                    "error-lighten-1": "#DCBABA",
                     warning: "#DC8B22",
-                    "warning-lighten-1": "#E2D4C1",
                     success: "#7D9E39",
-                    "success-lighten-1": "#D7E1C2",
                     info: "#2196F3"
-                },
-                variables: {
-                    "border-color": "#FFFFFF"
                 }
             }
         }
