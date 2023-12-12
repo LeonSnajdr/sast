@@ -7,7 +7,11 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    ConfirmationDialog: typeof import('./../src/components/ConfirmationDialog.vue')['default']
+    Notification: typeof import('./../src/components/Notification.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VBtnIcon: typeof import('./../src/components/VBtnIcon.vue')['default']
+    VRowSingle: typeof import('./../src/components/VRowSingle.vue')['default']
   }
 }

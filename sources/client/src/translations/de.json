@@ -3,6 +3,8 @@
   "create": "Erstellen",
   "save": "Speichern",
   "app.initialize.failed": "Das Programm konnte nicht initialisiert werden",
+  "confirmationDialog.confirm": "Bestätigen",
+  "confirmationDialog.cancel": "Abbrechen",
   "settingsStore.load.settings.failed": "Fehler beim Laden der Einstellungen",
   "settingsList.entry.general": "Allgemein",
   "settingsList.entry.appearance": "Anzeige",
@@ -27,6 +29,7 @@
   "placeholders.title": "Platzhalter",
   "placeholders.noItems": "Keine Platzhalter vorhanden",
   "placeholderEdit.update.error": "Aktualisierung des Platzhalters fehlgeschlagen",
+  "placeholderEdit.delete.confirmation": "Bist du sicher den {placeholderName} Platzhalter zu löschen?",
   "placeholderEdit.delete.success": "Platzhalters erfolgreich gelöscht",
   "placeholderEdit.delete.error": "Platzhalter konnte nicht gelöscht werden",
   "placeholderCreate.create.success": "Ein Platzhalter wurde erfolgreich erstellt",
@@ -46,6 +49,7 @@
   "taskSetCreate.create.success": "Der Aufgabensatz wurde erfolgreich erstellt",
   "taskSetCreate.create.error": "Der Aufgabensatz konnte nicht erstellt werden",
   "taskSetEdit.update.error": "Aktualisierung des Aufgabensatzes fehlgeschlagen",
+  "taskSetEdit.delete.confirmation": "Bist du sicher, den {taskSetName} Aufgabensatz zu löschen?",
   "taskSetEdit.delete.success": "Aufgabensatz erfolgreich gelöscht",
   "taskSetEdit.delete.error": "Aufgabensatz konnte nicht gelöscht werden",
   "taskCreate.input.command": "Befehl",
@@ -53,6 +57,7 @@
   "taskCreate.create.error": "Aufgabe konnte nicht erstellt werden",
   "taskEdit.input.command": "Befehl",
   "taskEdit.update.error": "Aktualisierung der Aufgabe fehlgeschlagen",
+  "taskEdit.delete.confirmation": "Bist du sicher, diese Aufgabe zu löschen?",
   "taskEdit.delete.success": "Aufgabe erfolgreich gelöscht",
   "taskEdit.delete.error": "Aufgabe konnte nicht gelöscht werden"
 }

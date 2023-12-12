@@ -15,7 +15,9 @@
             <v-col cols="4">
                 <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">
                     <template #append>
-                        <v-btn-icon @click="deleteTask" icon="mdi-delete" />
+                        <v-btn-icon icon="mdi-delete">
+                            <ConfirmationDialog :message="$t('taskEdit.delete.confirmation')" @confirmAction="deleteTask" />
+                        </v-btn-icon>
                         <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
                     </template>
                 </v-text-field>

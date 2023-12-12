@@ -4,7 +4,12 @@
             <template #append>
                 <v-btn-icon @click="openDialog" icon="mdi-tune" />
 
-                <v-btn-icon @click="deleteTaskSet" icon="mdi-delete" />
+                <v-btn-icon icon="mdi-delete">
+                    <ConfirmationDialog
+                        :message="$t('taskSetEdit.delete.confirmation', { taskSetName: internalTaskSet.name })"
+                        @confirmAction="deleteTaskSet"
+                    />
+                </v-btn-icon>
             </template>
         </v-text-field>
     </v-row-single>

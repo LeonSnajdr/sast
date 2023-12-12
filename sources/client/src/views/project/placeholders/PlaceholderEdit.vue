@@ -2,7 +2,12 @@
     <v-row-single>
         <v-text-field v-model="internalPlaceholder.value" :label="internalPlaceholder.name" @update:modelValue="placeholderChanged" prependIcon="mdi-drag">
             <template #append>
-                <v-btn-icon @click="deletePlaceholder" icon="mdi-delete" />
+                <v-btn-icon icon="mdi-delete">
+                    <ConfirmationDialog
+                        :message="$t('placeholderEdit.delete.confirmation', { placeholderName: internalPlaceholder.name })"
+                        @confirmAction="deletePlaceholder"
+                    />
+                </v-btn-icon>
             </template>
         </v-text-field>
     </v-row-single>
