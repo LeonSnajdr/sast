@@ -15,7 +15,8 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                platform: [macos-latest, ubuntu-20.04, windows-latest]
+                # platform: [macos-latest, ubuntu-20.04, windows-latest]
+                platform: [windows-latest]
         runs-on: ${{ matrix.platform }}
 
         steps:
@@ -40,7 +41,6 @@ jobs:
               uses: actions/setup-node@v4
               with:
                   node-version: "18.x"
-                  cache: "yarn"
 
             - name: Build vue app
               run: |
