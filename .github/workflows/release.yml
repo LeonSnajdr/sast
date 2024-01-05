@@ -54,7 +54,7 @@ jobs:
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               with:
-                  projectPath: "src-tauri/sast-api"
+                  projectPath: "src-tauri"
                   tagName: ${{ github.ref_name }}
                   releaseName: "App Name v__VERSION__"
                   releaseBody: "See the assets to download and install this version."
