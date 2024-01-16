@@ -9,9 +9,6 @@ jobs:
     release:
         permissions:
             contents: write
-        defaults:
-            run:
-                working-directory: sources/client
         strategy:
             fail-fast: false
             matrix:
@@ -43,11 +40,18 @@ jobs:
                   node-version: "18.x"
 
             - name: Install dependencies and lint
+              working-directory: ./sources/client
               run: |
                   node --version
                   yarn --version
                   yarn install --frozen-lockfile
+                  yarn lint
                   yarn lint:style
+
+            - name: Generate Prisma
+              working-directory: ./sources/client/src-tauri
+              run: |
+                  cargo prisma-gen
 
             - name: Build tauri app
               uses: tauri-apps/tauri-action@v0
