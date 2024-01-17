@@ -8,9 +8,10 @@
                     <ProjectCreateDialog />
                 </v-btn-icon>
             </div>
+
+            <v-divider />
         </template>
         <template #default>
-            <v-divider />
             <v-list v-if="listProjects.length > 0">
                 <v-list-item v-for="listProject in listProjects" :key="listProject.id" :to="{ name: 'project', params: { projectId: listProject.id } }" link>
                     <v-list-item-title>{{ listProject.name }}</v-list-item-title>
