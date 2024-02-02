@@ -121,6 +121,11 @@ export default createVuetify({
         VProgressLinear: {
             height: 2,
             color: "secondary"
+        },
+        VCol: {
+            VForm: {
+                class: "mt-2"
+            }
         }
     }
 });

@@ -14,6 +14,7 @@
 </template>
 
 <script setup lang="ts">
+import { debounce } from "lodash";
 import type { Placeholder, UpdatePlaceholderContract } from "@/bindings";
 import * as commands from "@/bindings";
 
@@ -30,7 +31,9 @@ onBeforeMount(() => {
     internalPlaceholder.value = Object.create(props.placeholder);
 });
 
-const placeholderChanged = async () => {
+const placeholderChanged = debounce(async () => {
+    console.log("update");
+
     const updateContract: UpdatePlaceholderContract = {
         id: internalPlaceholder.value.id,
         order: internalPlaceholder.value.order,
@@ -39,11 +42,12 @@ const placeholderChanged = async () => {
 
     try {
         await commands.updatePlaceholder(updateContract);
+        await placeholderStore.loadPlaceholderList();
     } catch (error) {
         console.error("Updating placeholder failed", error);
         notify.error("placeholderEdit.update.error");
     }
-};
+}, 500);
 
 const deletePlaceholder = async () => {
     try {

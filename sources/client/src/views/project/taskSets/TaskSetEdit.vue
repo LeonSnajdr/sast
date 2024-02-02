@@ -16,6 +16,7 @@
 </template>
 
 <script setup lang="ts">
+import { debounce } from "lodash";
 import type { FullTaskSetContract, UpdateTaskSetContract } from "@/bindings";
 import * as commands from "@/bindings";
 
@@ -32,7 +33,7 @@ onBeforeMount(() => {
     internalTaskSet.value = Object.create(props.taskSet);
 });
 
-const taskSetChanged = async () => {
+const taskSetChanged = debounce(async () => {
     const updateContract: UpdateTaskSetContract = {
         order: internalTaskSet.value.order,
         id: internalTaskSet.value.id,
@@ -46,7 +47,7 @@ const taskSetChanged = async () => {
         console.error("The taskset could not be updated", error);
         notify.error("taskSetEdit.update.error");
     }
-};
+}, 500);
 
 const openDialog = () => {
     taskSetStore.loadEditTaskSet(internalTaskSet.value.id);

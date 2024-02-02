@@ -2,7 +2,7 @@
     <div>
         <!-- Div is needed to preserve the draggability, otherwise the reference to the object is lost-->
         <v-row-single v-if="!inOptions">
-            <v-text-field v-model="internalTask.command" :placeholder="$t('taskEdit.input.command')" prependIcon="mdi-drag">
+            <v-text-field v-model="internalTask.command" :placeholder="$t('taskEdit.input.command')" @update:modelValue="taskChanged" prependIcon="mdi-drag">
                 <template #append>
                     <v-btn-icon @click="inOptions = !inOptions" icon="mdi-cog" />
                 </template>
@@ -10,10 +10,10 @@
         </v-row-single>
         <v-row v-else>
             <v-col cols="8">
-                <v-text-field v-model="internalTask.working_directory" prependIcon="mdi-drag" prependInnerIcon="mdi-folder" />
+                <v-text-field v-model="internalTask.working_directory" @update:modelValue="taskChanged" prependIcon="mdi-drag" prependInnerIcon="mdi-folder" />
             </v-col>
             <v-col cols="4">
-                <v-text-field v-model="internalTask.delay" type="number" prependInnerIcon="mdi-clock">
+                <v-text-field v-model="internalTask.delay" @update:modelValue="taskChanged" type="number" prependInnerIcon="mdi-clock">
                     <template #append>
                         <v-btn-icon icon="mdi-delete">
                             <ConfirmationDialog :message="$t('taskEdit.delete.confirmation')" @confirmAction="deleteTask" />
@@ -27,6 +27,7 @@
 </template>
 
 <script setup lang="ts">
+import { debounce } from "lodash";
 import type { Task, UpdateTaskContract } from "@/bindings";
 import * as commands from "@/bindings";
 
@@ -44,9 +45,7 @@ onBeforeMount(() => {
     internalTask.value = Object.create(props.task);
 });
 
-watch(internalTask, () => taskChanged(), { deep: true });
-
-const taskChanged = async () => {
+const taskChanged = debounce(async () => {
     const updateContract: UpdateTaskContract = {
         id: internalTask.value.id,
         order: internalTask.value.order,
@@ -61,7 +60,7 @@ const taskChanged = async () => {
         console.log("Failed updating task", error);
         notify.error("taskEdit.update.error");
     }
-};
+}, 500);
 
 const deleteTask = async () => {
     try {
