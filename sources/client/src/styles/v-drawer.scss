@@ -1,0 +1,19 @@
+.v-navigation-drawer {
+  .v-list-item {
+    .v-list-item__overlay {
+      opacity: 1 !important;
+      background-color: transparent;
+    }
+
+    &:not(&--active):hover {
+      background-color: rgba(var(--v-theme-secondary), 0.2);
+    }
+
+    &--active {
+      .v-list-item__overlay {
+        background-color: rgba(var(--v-theme-secondary), 0.2);
+        border-left: 3px solid rgb(var(--v-theme-primary));
+      }
+    }
+  }
+}
