@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@nuxtjs/i18n": "^8.5.5",
+    "@tauri-apps/api": "^2.0.2",
     "nuxt": "^3.13.0",
     "nuxt-typed-router": "^3.7.0",
     "vue": "latest",

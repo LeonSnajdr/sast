@@ -2316,6 +2316,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/api@npm:^2.0.2":
+  version: 2.0.2
+  resolution: "@tauri-apps/api@npm:2.0.2"
+  checksum: 10c0/6647cc00cf521bcfaf83e4f397b15aca6fd03db27e2afd883ee9e9ea6b14bc3b90c3df0756aaa0636bd9be791799320e44e99a2e83f2865916b0447879d00682
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/cli-darwin-arm64@npm:2.0.3":
   version: 2.0.3
   resolution: "@tauri-apps/cli-darwin-arm64@npm:2.0.3"
@@ -7133,6 +7140,7 @@ __metadata:
   dependencies:
     "@nuxt/eslint": "npm:^0.6.0"
     "@nuxtjs/i18n": "npm:^8.5.5"
+    "@tauri-apps/api": "npm:^2.0.2"
     "@tauri-apps/cli": "npm:^2.0.3"
     eslint: "npm:^9.12.0"
     nuxt: "npm:^3.13.0"

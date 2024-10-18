@@ -1,3 +1,8 @@
 <template>
-    <h1>Hallo</h1>
+    <NuxtLayout>
+        <VApp>
+            <WindowBar />
+            <NuxtPage />
+        </VApp>
+    </NuxtLayout>
 </template>
