@@ -10,6 +10,7 @@
   "dependencies": {
     "@nuxtjs/i18n": "^8.5.5",
     "nuxt": "^3.13.0",
+    "nuxt-typed-router": "^3.7.0",
     "vue": "latest",
     "vue-router": "latest",
     "vuetify-nuxt-module": "^0.18.3"

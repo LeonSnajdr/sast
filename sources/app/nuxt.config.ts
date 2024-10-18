@@ -11,7 +11,7 @@ export default defineNuxtConfig({
             strictPort: true
         }
     },
-    modules: ["@nuxt/eslint", "vuetify-nuxt-module", "@nuxtjs/i18n"],
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "nuxt-typed-router"],
     i18n: {
         locales: [
             {
