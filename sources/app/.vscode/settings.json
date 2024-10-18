@@ -31,5 +31,16 @@
   "i18n-ally.sortCompare": "locale",
   "vue.complete.casing.props": "camel",
   "vue.complete.casing.tags": "pascal",
-  "files.exclude": {}
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": "yarn.lock, .yarnrc.yml",
+    "nuxt.config.ts": "eslint.config.mjs, i18n.config.ts, vuetify.config.ts, tsconfig.json"
+  },
+  "files.exclude": {
+    "node_modules": true,
+    "dist": true,
+    ".output": true,
+    ".yarn": true,
+    ".nuxt": true
+  }
 }
