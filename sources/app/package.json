@@ -11,6 +11,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@nuxtjs/i18n": "^8.5.5",
     "nuxt": "^3.13.0",
     "vue": "latest",
     "vue-router": "latest",
