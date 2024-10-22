@@ -1,0 +1,7 @@
+.v-input {
+    &.required {
+        .v-field-label::after {
+            content: "*";
+        }
+    }
+}

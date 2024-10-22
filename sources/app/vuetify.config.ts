@@ -148,18 +148,18 @@ export default defineVuetifyConfiguration({
             }
         },
         VNavigationDrawer: {
-            class: "elevation-1",
             railWidth: "72",
             width: "210",
-            rounded: true,
 
             VListItem: {
-                rounded: true,
-                class: "mx-3 px-3 my-1",
                 VListItemTitle: {
                     class: "text-caption"
                 }
             }
+        },
+        VSystemBar: {
+            class: "border-b",
+            color: "surface"
         },
         VProgressCircular: {
             size: 20

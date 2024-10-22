@@ -25,7 +25,9 @@ export default withNuxt().override("nuxt/vue/rules", {
                     ["UNIQUE", "SLOT"],
                     "TWO_WAY_BINDING",
                     "EVENTS",
-                    "OTHER_ATTR",
+                    "ATTR_DYNAMIC",
+                    "ATTR_STATIC",
+                    "ATTR_SHORTHAND_BOOL",
                     "OTHER_DIRECTIVES",
                     "CONTENT"
                 ],

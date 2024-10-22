@@ -1,0 +1,14 @@
+@forward "settings";
+@forward "scroll";
+@forward "transitions";
+@forward "links";
+
+@forward "v-chip";
+@forward "v-field";
+@forward "v-input";
+@forward "v-show";
+
+html {
+    // Only show main scrollbar if the page is scrollable
+    overflow-y: auto !important;
+}

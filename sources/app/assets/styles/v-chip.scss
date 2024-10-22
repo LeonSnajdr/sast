@@ -1,0 +1,18 @@
+@use "settings";
+
+.v-chip {
+    @each $density, $multiplier in settings.$chip-density {
+        &.v-chip--density-#{$density} {
+            height: auto;
+            min-height: calc(var(--v-chip-height) + #{$multiplier * settings.$spacer});
+        }
+    }
+
+    .v-chip__content {
+        max-width: 100%;
+    }
+}
+
+.v-chip-group {
+    flex-wrap: wrap;
+}

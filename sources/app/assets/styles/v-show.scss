@@ -1,0 +1,6 @@
+// fixes conflict between v-show of vuejs and d-flex of vuetify
+// d-flex uses display: flex !important and v-show just adds display: none
+// needs to be imported after vuetify styles to ensure it has a higher priority then vuetify
+*[style*="display: none"] {
+    display: none !important;
+}

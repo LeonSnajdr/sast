@@ -1,0 +1,21 @@
+.link-inherit-color {
+    color: inherit;
+}
+
+.link-text {
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.link-primary {
+    color: rgb(var(--v-theme-primary-lighten-2));
+    text-decoration: none;
+    cursor: pointer;
+
+    &.active,
+    &.router-link-active {
+        color: rgb(var(--v-theme-primary));
+        border-bottom: 2px solid rgb(var(--v-theme-primary));
+    }
+}

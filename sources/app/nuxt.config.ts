@@ -27,7 +27,13 @@ export default defineNuxtConfig({
         strategy: "no_prefix",
         vueI18n: "./i18n.config.ts"
     },
+    css: ["./assets/styles/global.scss"],
     vuetify: {
+        moduleOptions: {
+            styles: {
+                configFile: "./assets/styles/settings.scss"
+            }
+        },
         vuetifyOptions: "./vuetify.config.ts"
     }
 });

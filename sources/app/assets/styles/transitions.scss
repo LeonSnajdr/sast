@@ -1,0 +1,14 @@
+#sidePanelMenu {
+    .fadein-enter-active {
+        transition: 2s ease;
+    }
+
+    .fadein-leave-active {
+        transition: 0s ease;
+    }
+
+    .fadein-enter-from,
+    .fadein-leave-to {
+        opacity: 0;
+    }
+}
