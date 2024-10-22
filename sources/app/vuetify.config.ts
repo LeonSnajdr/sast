@@ -53,8 +53,8 @@ export default defineVuetifyConfiguration({
                     "tertiary-lighten-1": "#45786D",
                     "tertiary-lighten-2": "#31564F",
                     "tertiary-lighten-3": "#1E3332",
-                    background: "#0A1014",
-                    surface: "#212D34",
+                    background: "#191919",
+                    surface: "#2C2C2C",
                     "on-surface": "#FFFFFF",
                     error: "#E52727",
                     "error-lighten-1": "#DCBABA",
@@ -140,7 +140,7 @@ export default defineVuetifyConfiguration({
             class: "d-flex flex-column",
 
             VCardTitle: {
-                class: "text-medium-emphasis font-weight-light d-flex align-center"
+                class: "text-h6 font-weight-light d-flex align-center"
             },
 
             VCardSubtitle: {
