@@ -1,0 +1,6 @@
+CREATE TABLE project (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE UNIQUE INDEX uidx_name ON project(name);
