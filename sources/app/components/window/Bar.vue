@@ -1,6 +1,11 @@
 <template>
     <VSystemBar data-tauri-drag-region window>
-        <span>Sast</span>
+        <VBtn @click="$router.back()" size="x-small" variant="text">
+            <VIcon icon="mdi-arrow-left" />
+        </VBtn>
+        <VBtn @click="$router.forward()" size="x-small" variant="text">
+            <VIcon icon="mdi-arrow-right" />
+        </VBtn>
         <VSpacer />
         <VBtn @click="appWindow.minimize()" size="x-small" variant="text">
             <VIcon icon="mdi-minus" />

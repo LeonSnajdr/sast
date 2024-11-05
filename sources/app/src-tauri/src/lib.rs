@@ -6,10 +6,23 @@ mod prelude;
 mod repositories;
 mod services;
 
-use commands::*;
+use specta_typescript::Typescript;
+use tauri_specta::{collect_commands, Builder};
+
+use crate::commands::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
+		project_commands::create_project,
+		project_commands::get_all_projects
+	]);
+
+	#[cfg(debug_assertions)]
+	builder
+		.export(Typescript::default(), "../types/tauri_bindings.ts")
+		.expect("Failed to export typescript bindings");
+
 	tauri::Builder::default()
 		.setup(|app| {
 			if cfg!(debug_assertions) {
@@ -23,10 +36,7 @@ pub fn run() {
 			app.handle().plugin(db::init_sqlx())?;
 			Ok(())
 		})
-		.invoke_handler(tauri::generate_handler![
-			project_commands::create_project,
-			project_commands::get_all_projects
-		])
+		.invoke_handler(builder.invoke_handler())
 		.run(tauri::generate_context!())
 		.expect("error while running tauri application");
 }

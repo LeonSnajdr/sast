@@ -7,8 +7,6 @@ use tauri::{
 	Manager, Runtime,
 };
 
-use crate::prelude::*;
-
 static POOL: OnceCell<Pool<Sqlite>> = OnceCell::new();
 
 fn build_data_dir<R: Runtime>(app: &tauri::AppHandle<R>) -> Option<String> {
@@ -47,8 +45,8 @@ pub fn init_sqlx<R: Runtime>() -> TauriPlugin<R> {
 		.build()
 }
 
-pub fn get_pool() -> Result<&'static Pool<Sqlite>> {
-	POOL.get().ok_or(crate::error::Error::Generic(
-		"Database not initialized".to_string(),
-	))
+pub fn get_pool() -> &'static Pool<Sqlite> {
+	let pool = POOL.get().expect("Database not initialized");
+
+	return pool;
 }

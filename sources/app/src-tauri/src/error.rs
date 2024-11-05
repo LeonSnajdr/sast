@@ -1,18 +1,7 @@
-#[derive(Debug, thiserror::Error)]
-pub enum Error {
-	#[error("Generic {0}")]
-	Generic(String),
-	#[error(transparent)]
-	Tauri(#[from] tauri::Error),
-	#[error(transparent)]
-	Db(#[from] sqlx::Error),
-}
+use serde::Serialize;
+use specta::Type;
 
-impl serde::Serialize for Error {
-	fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
-	where
-		S: serde::ser::Serializer,
-	{
-		serializer.serialize_str(self.to_string().as_ref())
-	}
+#[derive(Debug, Serialize, Type)]
+pub enum Error {
+	Db,
 }

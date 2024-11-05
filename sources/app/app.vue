@@ -1,11 +1,10 @@
 <template>
-    <NuxtLayout>
-        <VApp>
-            <WindowBar />
-            <WindowDrawer />
+    <VApp>
+        <WindowBar />
+        <NuxtLayout>
             <VMain>
                 <NuxtPage />
             </VMain>
-        </VApp>
-    </NuxtLayout>
+        </NuxtLayout>
+    </VApp>
 </template>
