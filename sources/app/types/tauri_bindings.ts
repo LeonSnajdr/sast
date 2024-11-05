@@ -5,7 +5,7 @@
 
 
 export const commands = {
-async createProject(createDto: CreateProject) : Promise<Result<null, Error>> {
+async createProject(createDto: CreateProjectContract) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("create_project", { createDto }) };
 } catch (e) {
@@ -13,7 +13,7 @@ async createProject(createDto: CreateProject) : Promise<Result<null, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async getAllProjects() : Promise<Result<Project[], Error>> {
+async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_all_projects") };
 } catch (e) {
@@ -33,9 +33,9 @@ async getAllProjects() : Promise<Result<Project[], Error>> {
 
 /** user-defined types **/
 
-export type CreateProject = { name: string }
+export type CreateProjectContract = { name: string }
 export type Error = "Db"
-export type Project = { id: string; name: string }
+export type ProjectContract = { id: number; name: string }
 
 /** tauri-specta globals **/
 

@@ -1,7 +1,9 @@
 mod commands;
+mod contracts;
 mod db;
-mod dtos;
 mod error;
+mod mappers;
+mod models;
 mod prelude;
 mod repositories;
 mod services;

@@ -1,10 +1,10 @@
-use crate::dtos::project_dtos::{CreateProject, Project};
+use crate::contracts::project_contracts::{CreateProjectContract, ProjectContract};
 use crate::prelude::*;
 use crate::services::project_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_project(create_dto: CreateProject) -> Result<()> {
+pub async fn create_project(create_dto: CreateProjectContract) -> Result<()> {
 	project_service::create_project(&create_dto).await?;
 
 	Ok(())
@@ -12,7 +12,7 @@ pub async fn create_project(create_dto: CreateProject) -> Result<()> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_all_projects() -> Result<Vec<Project>> {
+pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 	let projects = project_service::get_all_projects().await?;
 
 	Ok(projects)
