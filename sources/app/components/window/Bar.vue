@@ -6,6 +6,7 @@
         <VBtn @click="$router.forward()" size="x-small" variant="text">
             <VIcon icon="mdi-arrow-right" />
         </VBtn>
+        {{ $route.fullPath }}
         <VSpacer />
         <VBtn @click="appWindow.minimize()" size="x-small" variant="text">
             <VIcon icon="mdi-minus" />

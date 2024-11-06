@@ -1,7 +1,13 @@
 {
   "action.close": "Schließen",
   "action.create": "Erstellen",
+  "project.create.error": "Projekterstellung fehlgeschlagen",
+  "project.create.sucess": "Projekt {projectName} erstellt",
   "project.create.title": "Projekt erstellen",
   "project.field.name": "Name",
+  "project.load.failed": "Laden des Projekts fehlgeschlagen",
+  "project.select.title": "Projekt auswählen",
+  "search.filter": "Filter",
+  "search.noResults": "Keine Ergebnisse",
   "validation.rule.required": " {field} ist erforderlich"
 }

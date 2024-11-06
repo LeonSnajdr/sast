@@ -23,7 +23,7 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 	Ok(project_contracts)
 }
 
-pub async fn get_project(id: &String) -> Result<ProjectContract> {
+pub async fn get_project(id: &i32) -> Result<ProjectContract> {
 	let project_model = project_repository::get_project(id).await?;
 
 	let project_contract = ProjectContract::from(project_model);

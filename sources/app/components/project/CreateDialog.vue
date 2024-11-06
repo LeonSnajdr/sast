@@ -6,7 +6,7 @@
                 {{ $t("project.create.title") }}
             </VCardTitle>
             <VCardText>
-                <VForm v-model="isFormValid">
+                <VForm ref="form" v-model="isFormValid">
                     <VTextField
                         v-model="project.name"
                         :label="$t('project.field.name')"
@@ -16,7 +16,7 @@
                 </VForm>
             </VCardText>
             <VCardActions>
-                <VBtn @click="createProject()" :disabled="!isFormValid">{{ $t("action.create") }}</VBtn>
+                <VBtn @click="createProject()" :disabled="!isFormValid" :loading="isLoading">{{ $t("action.create") }}</VBtn>
                 <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
             </VCardActions>
         </VCard>
@@ -26,17 +26,33 @@
 <script setup lang="ts">
 const i18n = useI18n();
 const notify = useNotify();
+const router = useRouter();
+
+const form = ref();
 
 const isDialogOpen = ref(false);
 const isFormValid = ref(false);
+const isLoading = ref(false);
 
 const project = ref({} as CreateProjectContract);
 
 const createProject = async () => {
-    notify.success(i18n.t("action.close"));
+    isLoading.value = true;
 
-    /*const createResult = await commands.createProject(project.value);
+    const createResult = await commands.createProject(project.value);
 
-    console.log(createResult);*/
+    isLoading.value = false;
+
+    if (createResult.status == "error") {
+        notify.error(i18n.t("project.create.error"));
+
+        return;
+    }
+
+    notify.success(i18n.t("project.create.sucess", { projectName: createResult.data.name }));
+
+    form.value!.resetValidation();
+
+    router.push({ name: "project-id", params: { id: createResult.data.id } });
 };
 </script>

@@ -3,7 +3,7 @@
         <VContainer>
             <VRow>
                 <VCol cols="12" sm="6">
-                    <VCard @click="openLastProject()" text="Beginne dort, wo du aufgehört hast" title="Letztes Projekt öffnen">
+                    <VCard text="Beginne dort, wo du aufgehört hast" title="Letztes Projekt öffnen">
                         <template #prepend>
                             <VIcon color="info" icon="mdi-folder" />
                         </template>
@@ -15,6 +15,8 @@
                         <template #prepend>
                             <VIcon color="warning" icon="mdi-folder-marker" />
                         </template>
+
+                        <ProjectSelectDialog />
                     </VCard>
                 </VCol>
 
@@ -39,17 +41,3 @@
         </VContainer>
     </VEmptyState>
 </template>
-
-<script setup lang="ts">
-const projectStore = useProjectStore();
-
-const { projects } = storeToRefs(projectStore);
-
-const openLastProject = async () => {
-    await projectStore.loadProjects();
-
-    console.log(projects.value);
-
-    // router.push({ name: "project-id", params: { id: 1 } });
-};
-</script>

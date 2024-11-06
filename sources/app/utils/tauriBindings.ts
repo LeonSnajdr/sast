@@ -21,7 +21,7 @@ async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async getProject(id: string) : Promise<Result<ProjectContract, Error>> {
+async getProject(id: number) : Promise<Result<ProjectContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_project", { id }) };
 } catch (e) {

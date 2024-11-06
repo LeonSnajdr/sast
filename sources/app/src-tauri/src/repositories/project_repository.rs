@@ -24,7 +24,7 @@ pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 	Ok(projects)
 }
 
-pub async fn get_project(id: &String) -> Result<ProjectModel> {
+pub async fn get_project(id: &i32) -> Result<ProjectModel> {
 	let project = sqlx::query_as!(ProjectModel, "select * from project where id = $1", id)
 		.fetch_one(db::get_pool())
 		.await
