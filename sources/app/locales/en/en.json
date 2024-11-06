@@ -2,5 +2,6 @@
   "action.close": "Close",
   "action.create": "Create",
   "project.create.title": "Create project",
+  "project.fields.name": "Name",
   "validation.rule.required": "{field} is required"
 }

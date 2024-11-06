@@ -23,9 +23,9 @@
                         <template #prepend>
                             <VIcon color="success" icon="mdi-folder-plus" />
                         </template>
-                    </VCard>
 
-                    <ProjectCreateDialog />
+                        <ProjectCreateDialog />
+                    </VCard>
                 </VCol>
 
                 <VCol cols="12" sm="6">

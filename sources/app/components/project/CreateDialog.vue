@@ -7,7 +7,12 @@
             </VCardTitle>
             <VCardText>
                 <VForm v-model="isFormValid">
-                    <VTextField v-model="project.name" :rules="[required($t('validation.rule.required', { field: 'Name' }))]" autofocus />
+                    <VTextField
+                        v-model="project.name"
+                        :label="$t('project.fields.name')"
+                        :rules="[required($t('validation.rule.required', { field: $t('project.fields.name') }))]"
+                        autofocus
+                    />
                 </VForm>
             </VCardText>
             <VCardActions>
