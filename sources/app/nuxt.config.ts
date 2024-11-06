@@ -11,7 +11,7 @@ export default defineNuxtConfig({
             strictPort: true
         }
     },
-    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "nuxt-typed-router", "@pinia/nuxt"],
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "nuxt-typed-router", "@pinia/nuxt", "nuxt-lodash"],
     i18n: {
         locales: [
             {
@@ -35,5 +35,8 @@ export default defineNuxtConfig({
             }
         },
         vuetifyOptions: "./vuetify.config.ts"
+    },
+    lodash: {
+        prefix: "lod"
     }
 });
