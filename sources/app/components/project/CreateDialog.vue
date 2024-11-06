@@ -7,11 +7,11 @@
             </VCardTitle>
             <VCardText>
                 <VForm v-model="isFormValid">
-                    <VTextField v-model="project.name" autofocus />
+                    <VTextField v-model="project.name" :rules="[required($t('validation.rule.required', { field: 'Name' }))]" autofocus />
                 </VForm>
             </VCardText>
             <VCardActions>
-                <VBtn @click="createProject()">{{ $t("action.create") }}</VBtn>
+                <VBtn @click="createProject()" :disabled="!isFormValid">{{ $t("action.create") }}</VBtn>
                 <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
             </VCardActions>
         </VCard>
