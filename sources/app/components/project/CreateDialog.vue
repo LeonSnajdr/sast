@@ -19,8 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import type { CreateProjectContract } from "~/types/tauriBindings";
-
 const i18n = useI18n();
 const notify = useNotify();
 

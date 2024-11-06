@@ -23,7 +23,7 @@ pub fn run() {
 
 	#[cfg(debug_assertions)]
 	builder
-		.export(Typescript::default(), "../types/tauriBindings.ts")
+		.export(Typescript::default(), "../utils/tauriBindings.ts")
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()
