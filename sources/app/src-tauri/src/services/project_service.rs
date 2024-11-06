@@ -2,10 +2,14 @@ use crate::contracts::project_contracts::{CreateProjectContract, ProjectContract
 use crate::prelude::*;
 use crate::repositories::project_repository;
 
-pub async fn create_project(create_dto: &CreateProjectContract) -> Result<()> {
-	project_repository::create_project(&create_dto.name).await?;
+pub async fn create_project(
+	create_project_contract: &CreateProjectContract,
+) -> Result<ProjectContract> {
+	let project_model = project_repository::create_project(&create_project_contract.name).await?;
 
-	Ok(())
+	let project_contract = ProjectContract::from(project_model);
+
+	Ok(project_contract)
 }
 
 pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
@@ -17,4 +21,12 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 		.collect();
 
 	Ok(project_contracts)
+}
+
+pub async fn get_project(id: &String) -> Result<ProjectContract> {
+	let project_model = project_repository::get_project(id).await?;
+
+	let project_contract = ProjectContract::from(project_model);
+
+	Ok(project_contract)
 }

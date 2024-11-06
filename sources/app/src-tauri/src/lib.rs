@@ -17,12 +17,13 @@ use crate::commands::*;
 pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
 		project_commands::create_project,
-		project_commands::get_all_projects
+		project_commands::get_all_projects,
+		project_commands::get_project
 	]);
 
 	#[cfg(debug_assertions)]
 	builder
-		.export(Typescript::default(), "../types/tauri_bindings.ts")
+		.export(Typescript::default(), "../types/tauriBindings.ts")
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()

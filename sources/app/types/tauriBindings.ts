@@ -5,9 +5,9 @@
 
 
 export const commands = {
-async createProject(createDto: CreateProjectContract) : Promise<Result<null, Error>> {
+async createProject(createProjectContract: CreateProjectContract) : Promise<Result<ProjectContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("create_project", { createDto }) };
+    return { status: "ok", data: await TAURI_INVOKE("create_project", { createProjectContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -16,6 +16,14 @@ async createProject(createDto: CreateProjectContract) : Promise<Result<null, Err
 async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_all_projects") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getProject(id: string) : Promise<Result<ProjectContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_project", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

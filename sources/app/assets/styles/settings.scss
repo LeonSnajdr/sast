@@ -36,7 +36,7 @@
 
     // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VCard/_variables.scss
     $card-title-font-size: 26px,
-    $card-title-padding: 12px 16px 20px,
+    $card-title-padding: 16px 24px,
     $card-subtitle-opacity: 1,
 
     //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VInput/_variables.scss
@@ -75,5 +75,6 @@
     $chip-group-margin: 2px 4px 2px 0,
 
     // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VChip/_variables.scss
-    $chip-border-radius: 16px
+    $chip-border-radius: 16px,
+    $chip-density: ("default": 0, "comfortable": -2, "compact": -3) !default
 );

@@ -1,5 +1,5 @@
 <template>
-    <VSystemBar data-tauri-drag-region window>
+    <VSystemBar style="z-index: 10000" data-tauri-drag-region window>
         <VBtn @click="$router.back()" size="x-small" variant="text">
             <VIcon icon="mdi-arrow-left" />
         </VBtn>

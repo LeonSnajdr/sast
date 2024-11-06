@@ -3,6 +3,7 @@
         <WindowBar />
         <NuxtLayout>
             <VMain>
+                <NotificationView />
                 <NuxtPage />
             </VMain>
         </NuxtLayout>

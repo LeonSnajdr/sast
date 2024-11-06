@@ -4,10 +4,12 @@ use crate::services::project_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_project(create_dto: CreateProjectContract) -> Result<()> {
-	project_service::create_project(&create_dto).await?;
+pub async fn create_project(
+	create_project_contract: CreateProjectContract,
+) -> Result<ProjectContract> {
+	let project = project_service::create_project(&create_project_contract).await?;
 
-	Ok(())
+	Ok(project)
 }
 
 #[tauri::command]
@@ -16,4 +18,12 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 	let projects = project_service::get_all_projects().await?;
 
 	Ok(projects)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn get_project(id: String) -> Result<ProjectContract> {
+	let project = project_service::get_project(&id).await?;
+
+	Ok(project)
 }

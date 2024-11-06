@@ -1,5 +1,5 @@
-import type { ProjectContract } from "~/types/tauri_bindings";
-import { commands } from "~/types/tauri_bindings";
+import type { ProjectContract } from "~/types/tauriBindings";
+import { commands } from "~/types/tauriBindings";
 
 export const useProjectStore = defineStore("project", () => {
     const projects = ref<ProjectContract[]>([]);

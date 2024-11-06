@@ -1,1 +1,5 @@
-{}
+{
+  "action.close": "Close",
+  "action.create": "Create",
+  "project.create.title": "Create project"
+}

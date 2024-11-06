@@ -1,6 +1,7 @@
 import { defineVuetifyConfiguration } from "vuetify-nuxt-module/custom-configuration";
 
 export default defineVuetifyConfiguration({
+    labComponents: ["VSnackbarQueue"],
     theme: {
         defaultTheme: "dark",
         // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/composables/theme.ts#L128
@@ -140,7 +141,7 @@ export default defineVuetifyConfiguration({
             class: "d-flex flex-column",
 
             VCardTitle: {
-                class: "text-h6 font-weight-light d-flex align-center"
+                class: "text-h6 font-weight-light d-flex ga-2 align-center"
             },
 
             VCardSubtitle: {
