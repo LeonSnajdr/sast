@@ -9,8 +9,8 @@
                 <VForm v-model="isFormValid">
                     <VTextField
                         v-model="project.name"
-                        :label="$t('project.fields.name')"
-                        :rules="[required($t('validation.rule.required', { field: $t('project.fields.name') }))]"
+                        :label="$t('project.field.name')"
+                        :rules="[required($t('validation.rule.required', { field: $t('project.field.name') }))]"
                         autofocus
                     />
                 </VForm>
