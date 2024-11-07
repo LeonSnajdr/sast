@@ -15,7 +15,11 @@
                 </template>
             </VListItem>
             <VDivider />
-            <VListItem v-for="page in subPages" :key="page.name" :prependIcon="page.icon" :title="page.name" :to="page.to" link />
+            <VListItem v-for="page in subPages" :key="page.name" :title="page.name" :to="page.to" link>
+                <template #prepend>
+                    <VIcon :icon="page.icon" size="small" />
+                </template>
+            </VListItem>
         </VList>
     </VNavigationDrawer>
 </template>
@@ -35,12 +39,17 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
             to: { name: "project-id-home", params: { id: selectedProject.value.id } }
         },
         {
-            icon: "mdi-label-multiple-outline",
+            icon: "mdi-tab",
+            name: "Tabs",
+            to: { name: "project-id-tabs", params: { id: selectedProject.value.id } }
+        },
+        {
+            icon: "mdi-label-outline",
             name: "Platzhalter",
             to: { name: "project-id-placeholder", params: { id: selectedProject.value.id } }
         },
         {
-            icon: "mdi-label-multiple-outline",
+            icon: "mdi-checkbox-marked-circle-outline",
             name: "Tasks",
             to: { name: "project-id-tasks", params: { id: selectedProject.value.id } }
         }
