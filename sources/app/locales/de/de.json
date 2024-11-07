@@ -1,13 +1,21 @@
 {
   "action.close": "Schließen",
   "action.create": "Erstellen",
+  "project.create.description": "Erstelle eine neue leere Hülle",
   "project.create.error": "Projekterstellung fehlgeschlagen",
   "project.create.sucess": "Projekt {projectName} erstellt",
   "project.create.title": "Projekt erstellen",
   "project.field.name": "Name",
   "project.load.failed": "Laden des Projekts fehlgeschlagen",
+  "project.openLast.description": "Beginne dort, wo du aufgehört hast",
+  "project.openLast.title": "Letztes Projekt öffnen",
+  "project.select.description": "Wähle eines deiner Projekte aus",
   "project.select.title": "Projekt auswählen",
   "search.filter": "Filter",
   "search.noResults": "Keine Ergebnisse",
-  "validation.rule.required": " {field} ist erforderlich"
+  "settings.description": "Konfigurierte alles nach deinen Vorstellungen",
+  "settings.title": "Einstellungen öffnen",
+  "validation.rule.required": " {field} ist erforderlich",
+  "welcome.headline": "Willkommen,",
+  "welcome.title": "was möchtest du heute erledigen?"
 }

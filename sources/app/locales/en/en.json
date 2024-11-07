@@ -1,13 +1,21 @@
 {
   "action.close": "Close",
   "action.create": "Create",
+  "project.create.description": "Create a new empty shell",
   "project.create.error": "Creating project failed",
   "project.create.sucess": "Created project {projectName]",
   "project.create.title": "Create project",
   "project.field.name": "Name",
   "project.load.failed": "Loading project failed",
+  "project.openLast.description": "Start where you left off",
+  "project.openLast.title": "Open last project",
+  "project.select.description": "Choose one of your projects",
   "project.select.title": "Select project",
   "search.filter": "Filter",
   "search.noResults": "No results",
-  "validation.rule.required": "{field} is required"
+  "settings.description": "Configure everything to suit your needs",
+  "settings.title": "Open settings",
+  "validation.rule.required": "{field} is required",
+  "welcome.headline": "Welcome,",
+  "welcome.title": "what do you want to do today?"
 }

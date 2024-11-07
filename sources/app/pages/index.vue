@@ -1,9 +1,9 @@
 <template>
-    <VEmptyState headline="Willkommen," title="was möchtest du heute erledigen?">
+    <VEmptyState :headline="$t('welcome.headline')" :title="$t('welcome.title')">
         <VContainer>
             <VRow>
                 <VCol cols="12" sm="6">
-                    <VCard text="Beginne dort, wo du aufgehört hast" title="Letztes Projekt öffnen">
+                    <VCard :text="$t('project.openLast.description')" :title="$t('project.openLast.title')">
                         <template #prepend>
                             <VIcon color="info" icon="mdi-folder" />
                         </template>
@@ -11,7 +11,7 @@
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard text="Wähle eines deiner Projekte aus" title="Projekt auswählen">
+                    <VCard :text="$t('project.select.description')" :title="$t('project.select.title')">
                         <template #prepend>
                             <VIcon color="warning" icon="mdi-folder-marker" />
                         </template>
@@ -21,7 +21,7 @@
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard text="Erstelle ein neues Projekt" title="Projekt erstellen">
+                    <VCard :text="$t('project.create.description')" :title="$t('project.create.title')">
                         <template #prepend>
                             <VIcon color="success" icon="mdi-folder-plus" />
                         </template>
@@ -31,7 +31,7 @@
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard text="Konfigurierte alles nach deinen Vorstellungen" title="Einstellungen öffnen">
+                    <VCard :text="$t('settings.description')" :title="$t('settings.title')">
                         <template #prepend>
                             <VIcon color="secondary" icon="mdi-cog" />
                         </template>

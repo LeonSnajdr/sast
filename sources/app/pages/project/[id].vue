@@ -36,5 +36,4 @@ const loadProject = async () => {
 
     selectedProject.value = projectResult.data;
 };
-
 </script>
