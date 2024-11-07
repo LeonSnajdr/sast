@@ -3,7 +3,9 @@
         <VList class="mt-n2">
             <VListItem height="50">
                 <template #prepend>
-                    <VIcon color="info" icon="mdi-folder-open" />
+                    <VHover v-slot="{ isHovering, props }">
+                        <VIcon @click="closeProject()" v-bind="props" :icon="isHovering ? 'mdi-folder' : 'mdi-folder-open'" color="info" />
+                    </VHover>
                 </template>
                 <VListItemTitle>{{ selectedProject.name }}</VListItemTitle>
                 <template #append>
@@ -44,4 +46,8 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         }
     ];
 });
+
+const closeProject = () => {
+    navigateTo("/");
+};
 </script>
