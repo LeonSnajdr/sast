@@ -11,7 +11,10 @@ export default defineNuxtConfig({
             strictPort: true
         }
     },
-    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "nuxt-typed-router", "@pinia/nuxt", "nuxt-lodash"],
+    experimental: {
+        typedPages: true
+    },
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "nuxt-lodash", "@vueuse/nuxt"],
     i18n: {
         locales: [
             {

@@ -7,17 +7,17 @@
 </template>
 
 <script setup lang="ts">
-import type { RoutesNamedLocations } from "@typed-router/__routes";
+import type { RouteLocationRaw } from 'vue-router';
 
 const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const subPages: { icon: string; name: string; to: RoutesNamedLocations }[] = [
+const subPages: { icon: string; name: string; to: RouteLocationRaw }[] = [
     {
         icon: "mdi-home",
         name: "Home",
-        to: { name: "project-id", params: { id: selectedProject.value.id } }
+        to: { name: "project-id-home", params: { id: selectedProject.value.id } }
     },
     {
         icon: "mdi-label-multiple-outline",

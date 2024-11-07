@@ -1,5 +1,5 @@
 <template>
-    <VDialog v-model="isDialogOpen" activator="parent" width="800">
+    <VDialog v-model="isDialogOpen" activator="parent" width="800" eager>
         <VCard>
             <VCardTitle>
                 <VIcon color="success" icon="mdi-folder-plus" />
@@ -11,7 +11,6 @@
                         v-model="project.name"
                         :label="$t('project.field.name')"
                         :rules="[required($t('validation.rule.required', { field: $t('project.field.name') }))]"
-                        autofocus
                     />
                 </VForm>
             </VCardText>
@@ -26,7 +25,6 @@
 <script setup lang="ts">
 const i18n = useI18n();
 const notify = useNotify();
-const router = useRouter();
 
 const form = ref();
 
@@ -51,8 +49,12 @@ const createProject = async () => {
 
     notify.success(i18n.t("project.create.sucess", { projectName: createResult.data.name }));
 
-    form.value!.resetValidation();
+    isDialogOpen.value = false;
 
-    router.push({ name: "project-id", params: { id: createResult.data.id } });
+    navigateTo({ name: "project-id-home", params: { id: createResult.data.id } })
 };
+
+watch(isDialogOpen, () => {
+    form.value!.reset();
+});
 </script>

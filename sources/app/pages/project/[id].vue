@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute();
+const route = useRoute("project-id");
 const i18n = useI18n();
 const notify = useNotify();
 
@@ -23,7 +23,7 @@ onBeforeMount(() => {
 const loadProject = async () => {
     isLoading.value = true;
 
-    const projectResult = await commands.getProject(Number.parseInt(route.params.id as string));
+    const projectResult = await commands.getProject(Number.parseInt(route.params.id));
 
     isLoading.value = false;
 
@@ -36,4 +36,5 @@ const loadProject = async () => {
 
     selectedProject.value = projectResult.data;
 };
+
 </script>

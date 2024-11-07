@@ -6,9 +6,15 @@
                 {{ $t("project.select.title") }}
             </VCardTitle>
             <VCardText>
-                <VTextField v-model="search" :placeholder="$t('search.filter')" appendInnerIcon="mdi-filter-outline" autofocus />
+                <VTextField
+                    v-model="search"
+                    :label="$t('search.filter')"
+                    :persistentPlaceholder="false"
+                    appendInnerIcon="mdi-filter-outline"
+                    clearable
+                />
                 <VList>
-                    <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'project-id', params: { id: project.id } }">
+                    <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'project-id-home', params: { id: project.id } }">
                         <VListItemTitle>{{ project.name }}</VListItemTitle>
                         <template #append>
                             <VIcon icon="mdi-arrow-right" />
@@ -32,7 +38,7 @@ const notify = useNotify();
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-const search = ref("");
+const search = ref<string>();
 
 const projects = ref<ProjectContract[]>([]);
 
@@ -56,6 +62,14 @@ const loadProjects = async () => {
 };
 
 const filteredProjects = computed(() => {
-    return projects.value.filter((x) => x.name.toLowerCase().includes(search.value.toLowerCase()));
+    if (!search.value) {
+        return projects.value;
+    }
+
+    return projects.value.filter((x) => x.name.toLowerCase().includes(search.value!.toLowerCase()));
+});
+
+watch(isDialogOpen, () => {
+    search.value = undefined;
 });
 </script>
