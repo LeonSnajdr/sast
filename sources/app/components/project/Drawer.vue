@@ -1,16 +1,15 @@
 <template>
     <VNavigationDrawer location="left" permanent>
         <VList class="mt-n2">
-            <VListItem>
+            <VListItem height="50">
                 <template #prepend>
                     <VIcon color="info" icon="mdi-folder-open" />
                 </template>
                 <VListItemTitle>{{ selectedProject.name }}</VListItemTitle>
                 <template #append>
-                    <VBtn size="small" variant="text" icon>
-                        <VIcon icon="mdi-swap-horizontal" />
+                    <IconBtn icon="mdi-swap-horizontal">
                         <ProjectSelectDialog />
-                    </VBtn>
+                    </IconBtn>
                 </template>
             </VListItem>
             <VDivider />

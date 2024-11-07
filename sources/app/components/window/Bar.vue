@@ -1,24 +1,14 @@
 <template>
     <VSystemBar style="z-index: 10000" data-tauri-drag-region window>
-        <VBtn @click="$router.back()" size="x-small" variant="text">
-            <VIcon icon="mdi-arrow-left" />
-        </VBtn>
-        <VBtn @click="$router.forward()" size="x-small" variant="text">
-            <VIcon icon="mdi-arrow-right" />
-        </VBtn>
+        <IconBtn @click="$router.back()" icon="mdi-arrow-left" />
+        <IconBtn @click="$router.forward()" icon="mdi-arrow-right" />
         <VSpacer />
         {{ $route.path }}
         <VSpacer />
-        <VBtn @click="appWindow.minimize()" size="x-small" variant="text">
-            <VIcon icon="mdi-minus" />
-        </VBtn>
-        <VBtn @click="appWindow.toggleMaximize()" size="x-small" variant="text">
-            <VIcon :icon="isMaximized ? 'mdi-checkbox-multiple-blank-outline' : 'mdi-checkbox-blank-outline'" size="small" />
-        </VBtn>
+        <IconBtn @click="appWindow.minimize()" icon="mdi-minus" />
+        <IconBtn @click="appWindow.toggleMaximize()" :icon="isMaximized ? 'mdi-checkbox-multiple-blank-outline' : 'mdi-checkbox-blank-outline'" />
         <VHover v-slot="{ isHovering, props }">
-            <VBtn @click="appWindow.close()" v-bind="props" :color="isHovering ? 'error' : ''" :variant="isHovering ? 'flat' : 'text'" size="x-small">
-                <VIcon icon="mdi-close " />
-            </VBtn>
+            <IconBtn @click="appWindow.minimize()" v-bind="props" :color="isHovering ? 'error' : ''" :variant="isHovering ? 'flat' : 'text'" icon="mdi-close" />
         </VHover>
     </VSystemBar>
 </template>
