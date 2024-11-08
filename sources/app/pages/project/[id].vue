@@ -27,7 +27,7 @@ onBeforeUnmount(() => {
 const loadProject = async () => {
     isLoading.value = true;
 
-    const projectResult = await commands.getProject(Number.parseInt(route.params.id));
+    const projectResult = await commands.getProject(route.params.id);
 
     isLoading.value = false;
 

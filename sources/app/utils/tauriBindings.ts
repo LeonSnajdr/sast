@@ -21,7 +21,7 @@ async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async getProject(id: number) : Promise<Result<ProjectContract, Error>> {
+async getProject(id: string) : Promise<Result<ProjectContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_project", { id }) };
 } catch (e) {
@@ -43,7 +43,7 @@ async getProject(id: number) : Promise<Result<ProjectContract, Error>> {
 
 export type CreateProjectContract = { name: string }
 export type Error = "Db"
-export type ProjectContract = { id: number; name: string; date_created: string; date_last_opened: string }
+export type ProjectContract = { id: string; name: string; date_created: string; date_last_opened: string }
 
 /** tauri-specta globals **/
 
