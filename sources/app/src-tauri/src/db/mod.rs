@@ -1,4 +1,3 @@
-use chrono::{DateTime, Utc};
 use once_cell::sync::OnceCell;
 use sqlx::{sqlite::SqliteConnectOptions, Pool, Sqlite, SqlitePool};
 use std::fs::create_dir_all;
@@ -7,6 +6,8 @@ use tauri::{
 	plugin::{Builder as PluginBuilder, TauriPlugin},
 	Manager, Runtime,
 };
+
+pub mod types;
 
 static POOL: OnceCell<Pool<Sqlite>> = OnceCell::new();
 
@@ -50,19 +51,4 @@ pub fn get_pool() -> &'static Pool<Sqlite> {
 	let pool = POOL.get().expect("Database not initialized");
 
 	return pool;
-}
-
-// https://stackoverflow.com/questions/25413201/how-do-i-implement-a-trait-i-dont-own-for-a-type-i-dont-own
-#[derive(Debug)]
-pub struct UtcDateTime(pub DateTime<Utc>);
-
-// https://www.rustadventure.dev/uploading-pokemon-data-from-a-csv-into-a-planetscale-sql-database/sqlx-0.7/implementing-the-encode-and-type-mysql-traits
-// https://github.com/launchbadge/sqlx/pull/1335/files
-
-impl Into<UtcDateTime> for String {
-	fn into(self) -> UtcDateTime {
-		let datetime_utc = self.parse().unwrap();
-
-		return UtcDateTime(datetime_utc);
-	}
 }

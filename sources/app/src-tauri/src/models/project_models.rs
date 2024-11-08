@@ -1,4 +1,4 @@
-use crate::db::UtcDateTime;
+use crate::db::types::UtcDateTime;
 use sqlx::FromRow;
 
 #[derive(Debug, FromRow)]
