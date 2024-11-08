@@ -6,13 +6,7 @@
                 {{ $t("project.select.title") }}
             </VCardTitle>
             <VCardText>
-                <VTextField
-                    v-model="search"
-                    :label="$t('search.filter')"
-                    :persistentPlaceholder="false"
-                    appendInnerIcon="mdi-filter-outline"
-                    clearable
-                />
+                <VTextField v-model="search" :label="$t('search.filter')" :persistentPlaceholder="false" appendInnerIcon="mdi-filter-outline" clearable />
                 <VList>
                     <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'project-id-home', params: { id: project.id } }">
                         <VListItemTitle>{{ project.name }}</VListItemTitle>
@@ -34,6 +28,10 @@
 <script setup lang="ts">
 const i18n = useI18n();
 const notify = useNotify();
+
+const projectStore = useProjectStore();
+
+const { selectedProject } = storeToRefs(projectStore);
 
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
@@ -62,11 +60,14 @@ const loadProjects = async () => {
 };
 
 const filteredProjects = computed(() => {
-    if (!search.value) {
-        return projects.value;
-    }
+    const lowerCaseSearch = search.value?.toLocaleLowerCase() ?? "";
 
-    return projects.value.filter((x) => x.name.toLowerCase().includes(search.value!.toLowerCase()));
+    return projects.value.filter((x) => {
+        const isMatchingSearch = x.name.toLowerCase().includes(lowerCaseSearch);
+        const isCurrentProject = selectedProject.value.id === x.id;
+
+        return isMatchingSearch && !isCurrentProject;
+    });
 });
 
 watch(isDialogOpen, () => {

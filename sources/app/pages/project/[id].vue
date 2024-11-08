@@ -20,6 +20,10 @@ onBeforeMount(() => {
     loadProject();
 });
 
+onBeforeUnmount(() => {
+    selectedProject.value = {} as ProjectContract;
+});
+
 const loadProject = async () => {
     isLoading.value = true;
 
