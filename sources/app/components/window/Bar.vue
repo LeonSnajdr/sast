@@ -8,7 +8,7 @@
         <IconBtn @click="appWindow.minimize()" icon="mdi-minus" />
         <IconBtn @click="appWindow.toggleMaximize()" :icon="isMaximized ? 'mdi-checkbox-multiple-blank-outline' : 'mdi-checkbox-blank-outline'" />
         <VHover v-slot="{ isHovering, props }">
-            <IconBtn @click="appWindow.minimize()" v-bind="props" :color="isHovering ? 'error' : ''" :variant="isHovering ? 'flat' : 'text'" icon="mdi-close" />
+            <IconBtn @click="appWindow.close()" v-bind="props" :color="isHovering ? 'error' : ''" :variant="isHovering ? 'flat' : 'text'" icon="mdi-close" />
         </VHover>
     </VSystemBar>
 </template>
