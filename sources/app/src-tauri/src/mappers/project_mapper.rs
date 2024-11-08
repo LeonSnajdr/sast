@@ -6,6 +6,8 @@ impl From<ProjectModel> for ProjectContract {
 		Self {
 			id: value.id as i32,
 			name: value.name,
+			date_created: value.date_created.0,
+			date_last_opened: value.date_last_opened.0,
 		}
 	}
 }

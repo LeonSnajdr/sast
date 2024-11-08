@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
@@ -10,4 +11,6 @@ pub struct CreateProjectContract {
 pub struct ProjectContract {
 	pub id: i32,
 	pub name: String,
+	pub date_created: DateTime<Utc>,
+	pub date_last_opened: DateTime<Utc>,
 }

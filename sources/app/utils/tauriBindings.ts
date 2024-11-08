@@ -43,7 +43,7 @@ async getProject(id: number) : Promise<Result<ProjectContract, Error>> {
 
 export type CreateProjectContract = { name: string }
 export type Error = "Db"
-export type ProjectContract = { id: number; name: string }
+export type ProjectContract = { id: number; name: string; date_created: string; date_last_opened: string }
 
 /** tauri-specta globals **/
 
