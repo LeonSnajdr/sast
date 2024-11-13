@@ -27,3 +27,11 @@ pub async fn open_project(id: String) -> Result<ProjectContract> {
 
 	Ok(project)
 }
+
+#[tauri::command]
+#[specta::specta]
+pub async fn open_last_project() -> Result<Option<ProjectContract>> {
+	let project = project_service::open_last_project().await?;
+
+	Ok(project)
+}

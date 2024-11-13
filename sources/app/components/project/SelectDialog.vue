@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-const i18n = useI18n();
+const { t } = useI18n();
 const notify = useNotify();
 
 const projectStore = useProjectStore();
@@ -53,7 +53,7 @@ const loadProjects = async () => {
     isLoading.value = false;
 
     if (projectsResult.status == "error") {
-        notify.error(i18n.t("project.load.failed"));
+        notify.error(t("project.load.failed"));
         return;
     }
 

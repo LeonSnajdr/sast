@@ -27,10 +27,13 @@ pub async fn create_project(
 }
 
 pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
-	let projects = sqlx::query_as!(ProjectModel, "select * from project")
-		.fetch_all(db::get_pool())
-		.await
-		.map_err(|_| Error::Db)?;
+	let projects = sqlx::query_as!(
+		ProjectModel,
+		"select * from project order by date_last_opened desc"
+	)
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
 	Ok(projects)
 }
@@ -46,6 +49,16 @@ pub async fn get_project(id: &String) -> Result<ProjectModel> {
 	.map_err(|_| Error::Db)?;
 
 	Ok(project)
+}
+
+pub async fn get_last_opened_project() -> Result<Option<ProjectModel>> {
+	let last_opened_project =
+		sqlx::query_as!(ProjectModel, "select id, name, date_created, date_last_opened from project order by date_last_opened desc limit 1")
+			.fetch_optional(db::get_pool())
+			.await
+			.map_err(|_| Error::Db)?;
+
+	Ok(last_opened_project)
 }
 
 pub async fn update_project_last_opened(
