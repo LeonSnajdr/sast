@@ -18,7 +18,7 @@ pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
 		project_commands::create_project,
 		project_commands::get_all_projects,
-		project_commands::get_project
+		project_commands::open_project
 	]);
 
 	#[cfg(debug_assertions)]

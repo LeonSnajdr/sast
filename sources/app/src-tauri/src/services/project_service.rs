@@ -31,7 +31,10 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 	Ok(project_contracts)
 }
 
-pub async fn get_project(id: &String) -> Result<ProjectContract> {
+pub async fn open_project(id: &String) -> Result<ProjectContract> {
+	let date_last_opened = chrono::Utc::now();
+	project_repository::update_project_last_opened(&id, &date_last_opened).await?;
+
 	let project_model = project_repository::get_project(id).await?;
 
 	let project_contract = ProjectContract::from(project_model);

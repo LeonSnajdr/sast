@@ -22,8 +22,8 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_project(id: String) -> Result<ProjectContract> {
-	let project = project_service::get_project(&id).await?;
+pub async fn open_project(id: String) -> Result<ProjectContract> {
+	let project = project_service::open_project(&id).await?;
 
 	Ok(project)
 }

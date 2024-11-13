@@ -47,3 +47,19 @@ pub async fn get_project(id: &String) -> Result<ProjectModel> {
 
 	Ok(project)
 }
+
+pub async fn update_project_last_opened(
+	id: &String,
+	date_last_opened: &DateTime<Utc>,
+) -> Result<()> {
+	sqlx::query!(
+		"update project set date_last_opened = $1 where id = $2",
+		date_last_opened,
+		id,
+	)
+	.execute(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
+
+	Ok(())
+}

@@ -41,5 +41,8 @@ export default defineNuxtConfig({
     },
     lodash: {
         prefix: "lod"
+    },
+    vueuse: {
+        autoImports: true
     }
 });
