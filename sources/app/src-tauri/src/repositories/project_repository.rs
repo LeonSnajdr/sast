@@ -77,25 +77,20 @@ pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 	Ok(project)
 }
 
-pub async fn get_last_opened_project() -> Result<Option<ProjectModel>> {
-	let last_opened_project = sqlx::query_as!(
-		ProjectModel,
+pub async fn get_last_opened_project_id() -> Result<Option<Uuid>> {
+	let last_opened_project_id = sqlx::query_scalar!(
 		r#"--sql
-            select
-                id as "id: Uuid",
-                name,
-                date_created as "date_created: DateTime<Utc>",
-                date_last_opened as "date_last_opened: DateTime<Utc>"
-            from project
-            order by date_last_opened desc
-            limit 1
-        "#
+        select id as "id: Uuid"
+        from project
+        order by date_last_opened desc
+        limit 1
+    "#
 	)
 	.fetch_optional(db::get_pool())
 	.await
 	.map_err(|_| Error::Db)?;
 
-	Ok(last_opened_project)
+	Ok(last_opened_project_id)
 }
 
 pub async fn update_project_last_opened(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
