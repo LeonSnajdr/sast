@@ -14,11 +14,20 @@ pub async fn create_project(
 
 	let project = sqlx::query_as!(
 		ProjectModel,
-		r#"insert into project (id, name, date_created, date_last_opened) values ($1, $2, $3, $4) returning id as "id: Uuid", name, date_created as "date_created: DateTime<Utc>", date_last_opened as "date_last_opened: DateTime<Utc>""#,
-        id,
+		r#"
+            insert into project 
+                (id, name, date_created, date_last_opened) 
+                values 
+                ($1, $2, $3, $4) 
+            returning
+                id as "id: Uuid",
+                name, date_created as "date_created: DateTime<Utc>",
+                date_last_opened as "date_last_opened: DateTime<Utc>"
+        "#,
+		id,
 		name,
-        date_created,
-        date_last_opened
+		date_created,
+		date_last_opened
 	)
 	.fetch_one(db::get_pool())
 	.await
@@ -30,7 +39,15 @@ pub async fn create_project(
 pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 	let projects = sqlx::query_as!(
 		ProjectModel,
-		r#"select id as "id: Uuid", name, date_created as "date_created: DateTime<Utc>", date_last_opened as "date_last_opened: DateTime<Utc>" from project order by date_last_opened desc"#
+		r#"
+            select 
+                id as "id: Uuid",
+                name,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_opened as "date_last_opened: DateTime<Utc>"
+            from project
+            order by date_last_opened desc
+        "#
 	)
 	.fetch_all(db::get_pool())
 	.await
@@ -42,7 +59,15 @@ pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 	let project = sqlx::query_as!(
 		ProjectModel,
-		r#"select id as "id: Uuid", name, date_created as "date_created: DateTime<Utc>", date_last_opened as "date_last_opened: DateTime<Utc>" from project where id = $1"#,
+		r#"
+            select
+                id as "id: Uuid",
+                name,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_opened as "date_last_opened: DateTime<Utc>"
+            from project
+            where id = $1
+        "#,
 		id
 	)
 	.fetch_one(db::get_pool())
@@ -53,11 +78,22 @@ pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 }
 
 pub async fn get_last_opened_project() -> Result<Option<ProjectModel>> {
-	let last_opened_project =
-		sqlx::query_as!(ProjectModel, r#"select id as "id: Uuid", name, date_created as "date_created: DateTime<Utc>", date_last_opened as "date_last_opened: DateTime<Utc>"  from project order by date_last_opened desc limit 1"#)
-			.fetch_optional(db::get_pool())
-			.await
-			.map_err(|_| Error::Db)?;
+	let last_opened_project = sqlx::query_as!(
+		ProjectModel,
+		r#"
+            select 
+                id as "id: Uuid",
+                name,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_opened as "date_last_opened: DateTime<Utc>"
+            from project 
+            order by date_last_opened desc 
+            limit 1
+        "#
+	)
+	.fetch_optional(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
 	Ok(last_opened_project)
 }
