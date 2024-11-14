@@ -14,7 +14,7 @@ pub async fn create_project(
 
 	let project = sqlx::query_as!(
 		ProjectModel,
-		r#"
+		r#"--sql
             insert into project 
                 (id, name, date_created, date_last_opened) 
                 values 
@@ -39,7 +39,7 @@ pub async fn create_project(
 pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 	let projects = sqlx::query_as!(
 		ProjectModel,
-		r#"
+		r#"--sql
             select 
                 id as "id: Uuid",
                 name,
@@ -59,7 +59,7 @@ pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 	let project = sqlx::query_as!(
 		ProjectModel,
-		r#"
+		r#"--sql
             select
                 id as "id: Uuid",
                 name,
@@ -80,14 +80,14 @@ pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 pub async fn get_last_opened_project() -> Result<Option<ProjectModel>> {
 	let last_opened_project = sqlx::query_as!(
 		ProjectModel,
-		r#"
-            select 
+		r#"--sql
+            select
                 id as "id: Uuid",
                 name,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
-            from project 
-            order by date_last_opened desc 
+            from project
+            order by date_last_opened desc
             limit 1
         "#
 	)
@@ -100,7 +100,9 @@ pub async fn get_last_opened_project() -> Result<Option<ProjectModel>> {
 
 pub async fn update_project_last_opened(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
 	sqlx::query!(
-		r#"update project set date_last_opened = $1 where id = $2"#,
+		r#"--sql 
+            update project set date_last_opened = $1 where id = $2
+        "#,
 		date_last_opened,
 		id,
 	)
