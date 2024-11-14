@@ -7,8 +7,6 @@ use tauri::{
 	Manager, Runtime,
 };
 
-pub mod types;
-
 static POOL: OnceCell<Pool<Sqlite>> = OnceCell::new();
 
 fn build_data_dir<R: Runtime>(app: &tauri::AppHandle<R>) -> Option<String> {

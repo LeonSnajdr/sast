@@ -1,3 +1,5 @@
+use uuid::Uuid;
+
 use crate::contracts::project_contracts::{CreateProjectContract, ProjectContract};
 use crate::prelude::*;
 use crate::services::project_service;
@@ -22,7 +24,7 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn open_project(id: String) -> Result<ProjectContract> {
+pub async fn open_project(id: Uuid) -> Result<ProjectContract> {
 	let project = project_service::open_project(&id).await?;
 
 	Ok(project)

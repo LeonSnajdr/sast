@@ -1,3 +1,6 @@
+use chrono::Utc;
+use uuid::Uuid;
+
 use crate::contracts::project_contracts::{CreateProjectContract, ProjectContract};
 use crate::prelude::*;
 use crate::repositories::project_repository;
@@ -5,8 +8,8 @@ use crate::repositories::project_repository;
 pub async fn create_project(
 	create_project_contract: &CreateProjectContract,
 ) -> Result<ProjectContract> {
-	let date_created = chrono::Utc::now();
-	let date_last_opened = chrono::Utc::now();
+	let date_created = Utc::now();
+	let date_last_opened = Utc::now();
 
 	let project_model = project_repository::create_project(
 		&create_project_contract.name,
@@ -31,7 +34,10 @@ pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
 	Ok(project_contracts)
 }
 
-pub async fn open_project(id: &String) -> Result<ProjectContract> {
+pub async fn open_project(id: &Uuid) -> Result<ProjectContract> {
+	let current_time = chrono::Utc::now();
+	project_repository::update_project_last_opened(&id, &current_time).await?;
+
 	let project_model = project_repository::get_project(id).await?;
 
 	let project_contract = ProjectContract::from(project_model);
@@ -47,11 +53,8 @@ pub async fn open_last_project() -> Result<Option<ProjectContract>> {
 			let project_contract = ProjectContract::from(project_model);
 
 			let current_time = chrono::Utc::now();
-			project_repository::update_project_last_opened(
-				&project_contract.id.to_string(),
-				&current_time,
-			)
-			.await?;
+			project_repository::update_project_last_opened(&project_contract.id, &current_time)
+				.await?;
 
 			Ok(Some(project_contract))
 		}
