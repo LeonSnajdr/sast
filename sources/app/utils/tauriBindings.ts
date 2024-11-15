@@ -5,17 +5,17 @@
 
 
 export const commands = {
-async initSetting(initContract: InitSettingContract) : Promise<Result<SettingContract, Error>> {
+async initializeSetting(initContract: InitSettingContract) : Promise<Result<SettingContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("init_setting", { initContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("initialize_setting", { initContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getIsSettingEmpty() : Promise<Result<boolean, Error>> {
+async getIsSettingInitialized() : Promise<Result<boolean, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_is_setting_empty") };
+    return { status: "ok", data: await TAURI_INVOKE("get_is_setting_initialized") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

@@ -4,10 +4,10 @@ use crate::contracts::setting_contracts::{InitSettingContract, SettingContract};
 use crate::prelude::*;
 use crate::repositories::setting_repository;
 
-pub async fn init_setting(init_contract: &InitSettingContract) -> Result<SettingContract> {
+pub async fn initialize_setting(init_contract: &InitSettingContract) -> Result<SettingContract> {
 	let meta_date_updated = Utc::now();
 
-	let setting_model = setting_repository::init_setting(
+	let setting_model = setting_repository::initialize_setting(
 		&meta_date_updated,
 		&init_contract.presentation_language,
 		&init_contract.presentation_theme,
@@ -19,8 +19,8 @@ pub async fn init_setting(init_contract: &InitSettingContract) -> Result<Setting
 	Ok(setting_contract)
 }
 
-pub async fn get_is_setting_empty() -> Result<bool> {
-	let is_setting_empty = setting_repository::get_is_setting_empty().await?;
+pub async fn get_is_setting_initialized() -> Result<bool> {
+	let is_setting_empty = setting_repository::get_is_setting_initialized().await?;
 
 	Ok(is_setting_empty)
 }

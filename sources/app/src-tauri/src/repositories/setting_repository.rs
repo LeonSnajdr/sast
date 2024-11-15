@@ -5,7 +5,7 @@ use crate::db;
 use crate::models::setting_models::SettingModel;
 use crate::prelude::*;
 
-pub async fn init_setting(
+pub async fn initialize_setting(
 	meta_date_updated: &DateTime<Utc>,
 	presentation_language: &String,
 	presentation_theme: &String,
@@ -37,7 +37,7 @@ pub async fn init_setting(
 	Ok(setting)
 }
 
-pub async fn get_is_setting_empty() -> Result<bool> {
+pub async fn get_is_setting_initialized() -> Result<bool> {
 	let setting_count = sqlx::query_scalar!(
 		r#"--sql
            select count(id) from setting

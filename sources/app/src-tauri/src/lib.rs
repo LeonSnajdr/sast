@@ -16,8 +16,8 @@ use crate::commands::*;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
-		setting_commands::init_setting,
-		setting_commands::get_is_setting_empty,
+		setting_commands::initialize_setting,
+		setting_commands::get_is_setting_initialized,
 		setting_commands::get_setting,
 		project_commands::create_project,
 		project_commands::get_all_projects,
