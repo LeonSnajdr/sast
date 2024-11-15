@@ -1,5 +1,4 @@
 use crate::contracts::project_contracts::ProjectContract;
-
 use crate::models::project_models::ProjectModel;
 
 impl From<ProjectModel> for ProjectContract {

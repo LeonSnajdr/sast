@@ -21,7 +21,8 @@ pub async fn create_project(
                 ($1, $2, $3, $4) 
             returning
                 id as "id: Uuid",
-                name, date_created as "date_created: DateTime<Utc>",
+                name, 
+                date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
         "#,
 		id,

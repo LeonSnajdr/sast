@@ -5,6 +5,30 @@
 
 
 export const commands = {
+async initSetting(initContract: InitSettingContract) : Promise<Result<SettingContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("init_setting", { initContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getIsSettingEmpty() : Promise<Result<boolean, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_is_setting_empty") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getSetting() : Promise<Result<SettingContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_setting") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async createProject(createProjectContract: CreateProjectContract) : Promise<Result<ProjectContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("create_project", { createProjectContract }) };
@@ -51,7 +75,9 @@ async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
 
 export type CreateProjectContract = { name: string }
 export type Error = "Db"
+export type InitSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
+export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 
 /** tauri-specta globals **/
 

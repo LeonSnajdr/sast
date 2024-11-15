@@ -56,7 +56,13 @@ const lastOpenedProject = ref<ProjectContract | null>();
 onBeforeMount(async () => {
     await loadLastOpenedProject();
 
-    console.log(lastOpenedProject.value);
+    const test = await commands.getIsSettingEmpty();
+
+    if (test.status == "error") {
+        return;
+    }
+
+    console.log(test.data);
 });
 
 const loadLastOpenedProject = async () => {
