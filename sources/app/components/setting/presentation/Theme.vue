@@ -1,6 +1,6 @@
 <template>
     <VRow>
-        <VCol v-for="theme in availableThemes" :key="theme.name" cols="12" md="6">
+        <VCol v-for="theme in availableThemes" :key="theme.name" cols="12" sm="6">
             <VThemeProvider :theme="theme.name">
                 <VCard @click="selectTheme(theme.name)" :class="{ selected: theme.name === currentThemeName }" :text="theme.description" :title="theme.title">
                     <template #prepend>

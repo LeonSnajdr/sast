@@ -7,8 +7,14 @@
 
             <VCardText>
                 <div class="v-chip-group">
-                    <VChip v-for="language in availableLanguages" :key="language.value" density="comfortable" variant="outlined">
-                        {{ language.title }}
+                    <VChip
+                        v-for="language in availableLanguages"
+                        :key="language.language"
+                        @click="selectLanguage(language.language)"
+                        :variant="language.language === locale ? 'flat' : 'outlined'"
+                        density="comfortable"
+                    >
+                        {{ language.translation }}
                     </VChip>
                 </div>
             </VCardText>
@@ -17,7 +23,20 @@
 </template>
 
 <script setup lang="ts">
-const { t, availableLocales } = useI18n();
+const { t, locale } = useI18n();
 
-const availableLanguages = computed(() => availableLocales.map((locale) => ({ title: t(`setting.presentation.language.${locale}`), value: locale })));
+const availableLanguages = computed(() => [
+    {
+        language: "en",
+        translation: t("setting.presentation.language.en")
+    },
+    {
+        language: "de",
+        translation: t("setting.presentation.language.de")
+    }
+]);
+
+const selectLanguage = (language: string) => {
+    locale.value = language;
+};
 </script>

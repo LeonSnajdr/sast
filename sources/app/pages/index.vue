@@ -1,16 +1,13 @@
 <template>
-    <Welcome v-if="!isLoading && isSettingInitalized" />
-    <SettingInitialize v-if="!isLoading && !isSettingInitalized" />
+    <div />
 </template>
 
 <script setup lang="ts">
-const isLoading = ref(true);
 const isSettingInitalized = ref(false);
 
 onBeforeMount(async () => {
-    isLoading.value = true;
     await loadIsSettingInitalized();
-    isLoading.value = false;
+    redirect();
 });
 
 const loadIsSettingInitalized = async () => {
@@ -21,5 +18,14 @@ const loadIsSettingInitalized = async () => {
     }
 
     isSettingInitalized.value = isSettingInitalizedResult.data;
+};
+
+const redirect = () => {
+    if (isSettingInitalized.value) {
+        navigateTo({ name: "welcome" });
+        return;
+    }
+
+    navigateTo({ name: "initialize" });
 };
 </script>

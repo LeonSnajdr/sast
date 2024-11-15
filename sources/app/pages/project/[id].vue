@@ -1,10 +1,8 @@
 <template>
-    <div>
-        <ProjectDrawer />
-        <VContainer>
-            <NuxtPage />
-        </VContainer>
-    </div>
+    <ProjectDrawer />
+    <VContainer>
+        <NuxtPage />
+    </VContainer>
 </template>
 
 <script setup lang="ts">
