@@ -20,9 +20,9 @@ pub async fn initialize_setting(init_contract: &InitSettingContract) -> Result<S
 }
 
 pub async fn get_is_setting_initialized() -> Result<bool> {
-	let is_setting_empty = setting_repository::get_is_setting_initialized().await?;
+	let is_setting_initialized = setting_repository::get_is_setting_initialized().await?;
 
-	Ok(is_setting_empty)
+	Ok(is_setting_initialized)
 }
 
 pub async fn get_setting() -> Result<SettingContract> {

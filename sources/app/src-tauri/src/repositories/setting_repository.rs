@@ -47,9 +47,9 @@ pub async fn get_is_setting_initialized() -> Result<bool> {
 	.await
 	.map_err(|_| Error::Db)?;
 
-	let is_setting_empty = setting_count == 0;
+	let is_setting_initialized = setting_count > 0;
 
-	Ok(is_setting_empty)
+	Ok(is_setting_initialized)
 }
 
 pub async fn get_setting() -> Result<SettingModel> {

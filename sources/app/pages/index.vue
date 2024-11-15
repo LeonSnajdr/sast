@@ -1,82 +1,25 @@
 <template>
-    <VEmptyState :headline="$t('welcome.headline')" :title="$t('welcome.title')">
-        <VContainer>
-            <VRow>
-                <VCol cols="12" sm="6">
-                    <VCard :text="$t('project.create.description')" :title="$t('project.create.title')" link>
-                        <template #prepend>
-                            <VIcon color="success" icon="mdi-folder-plus" />
-                        </template>
-
-                        <ProjectCreateDialog />
-                    </VCard>
-                </VCol>
-
-                <VCol cols="12" sm="6">
-                    <VCard :text="$t('project.select.description')" :title="$t('project.select.title')" link>
-                        <template #prepend>
-                            <VIcon color="warning" icon="mdi-folder-marker" />
-                        </template>
-
-                        <ProjectSelectDialog />
-                    </VCard>
-                </VCol>
-
-                <VCol cols="12" sm="6">
-                    <VCard
-                        @click="openLastProject()"
-                        :disabled="!lastOpenedProject"
-                        :text="$t('project.openLast.description')"
-                        :title="$t('project.openLast.title')"
-                    >
-                        <template #prepend>
-                            <VIcon color="info" icon="mdi-folder" />
-                        </template>
-                    </VCard>
-                </VCol>
-
-                <VCol cols="12" sm="6">
-                    <VCard :text="$t('settings.description')" :title="$t('settings.title')" disabled>
-                        <template #prepend>
-                            <VIcon color="secondary" icon="mdi-cog" />
-                        </template>
-                    </VCard>
-                </VCol>
-            </VRow>
-        </VContainer>
-    </VEmptyState>
+    <Welcome v-if="!isLoading && isSettingInitalized" />
+    <SettingInitialize v-if="!isLoading && !isSettingInitalized" />
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
-const notify = useNotify();
-
-const lastOpenedProject = ref<ProjectContract | null>();
+const isLoading = ref(true);
+const isSettingInitalized = ref(false);
 
 onBeforeMount(async () => {
-    await loadLastOpenedProject();
-
-    const test = await commands.getIsSettingEmpty();
-
-    if (test.status == "error") {
-        return;
-    }
-
-    console.log(test.data);
+    isLoading.value = true;
+    await loadIsSettingInitalized();
+    isLoading.value = false;
 });
 
-const loadLastOpenedProject = async () => {
-    const lastOpenedProjectResult = await commands.openLastProject();
+const loadIsSettingInitalized = async () => {
+    const isSettingInitalizedResult = await commands.getIsSettingInitialized();
 
-    if (lastOpenedProjectResult.status == "error") {
-        notify.error(t("project.load.failed"));
+    if (isSettingInitalizedResult.status == "error") {
         return;
     }
 
-    lastOpenedProject.value = lastOpenedProjectResult.data;
-};
-
-const openLastProject = () => {
-    navigateTo({ name: "project-id-home", params: { id: lastOpenedProject.value!.id } });
+    isSettingInitalized.value = isSettingInitalizedResult.data;
 };
 </script>

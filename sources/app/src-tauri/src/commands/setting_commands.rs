@@ -13,9 +13,9 @@ pub async fn initialize_setting(init_contract: InitSettingContract) -> Result<Se
 #[tauri::command]
 #[specta::specta]
 pub async fn get_is_setting_initialized() -> Result<bool> {
-	let is_setting_empty = setting_service::get_is_setting_initialized().await?;
+	let is_setting_initialized = setting_service::get_is_setting_initialized().await?;
 
-	Ok(is_setting_empty)
+	Ok(is_setting_initialized)
 }
 
 #[tauri::command]
