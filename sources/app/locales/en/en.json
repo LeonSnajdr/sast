@@ -1,6 +1,9 @@
 {
   "action.close": "Close",
   "action.create": "Create",
+  "error.button": "Reinitialize",
+  "error.headline": "Error",
+  "error.message": "An unknown error has occurred",
   "project.create.description": "Create a new empty shell",
   "project.create.error": "Creating project failed",
   "project.create.sucess": "Created project {projectName]",

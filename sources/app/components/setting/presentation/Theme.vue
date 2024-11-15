@@ -48,8 +48,9 @@ const selectTheme = (name: string) => {
 
 <style lang="scss">
 .v-card {
+    border: 1px solid transparent;
     &.selected {
-        border: 1px solid rgb(var(--v-theme-info));
+        border-color: rgb(var(--v-theme-info));
     }
 }
 </style>

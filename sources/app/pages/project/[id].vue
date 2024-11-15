@@ -38,4 +38,8 @@ const loadProject = async () => {
 
     selectedProject.value = projectResult.data;
 };
+
+definePageMeta({
+    middleware: "initialize"
+});
 </script>

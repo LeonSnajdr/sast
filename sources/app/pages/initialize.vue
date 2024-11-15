@@ -11,6 +11,6 @@
 
 <script setup lang="ts">
 const initializeSetting = () => {
-    navigateTo({ name: "welcome" });
+    navigateTo({ name: "index" });
 };
 </script>
