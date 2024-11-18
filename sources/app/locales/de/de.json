@@ -4,6 +4,7 @@
   "error.button": "Neu initialisieren",
   "error.headline": "Fehler",
   "error.message": "Es ist ein unbekannter Fehler aufgetreten",
+  "initialize.finish": "Einrichtung abschließen",
   "project.create.description": "Erstelle eine neue leere Hülle",
   "project.create.error": "Projekterstellung fehlgeschlagen",
   "project.create.sucess": "Projekt {projectName} erstellt",

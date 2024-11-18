@@ -73,6 +73,6 @@ const openLastProject = () => {
 };
 
 definePageMeta({
-    middleware: "initialize"
+    middleware: "initialized"
 });
 </script>

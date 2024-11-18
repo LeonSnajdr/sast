@@ -1,10 +1,15 @@
 <template>
     <VRow>
-        <VCol v-for="theme in availableThemes" :key="theme.name" cols="12" sm="6">
-            <VThemeProvider :theme="theme.name">
-                <VCard @click="selectTheme(theme.name)" :class="{ selected: theme.name === currentThemeName }" :text="theme.description" :title="theme.title">
+        <VCol v-for="themeItem in themeItems" :key="themeItem.name" cols="12" sm="6">
+            <VThemeProvider :theme="themeItem.name">
+                <VCard
+                    @click="selectTheme(themeItem.name)"
+                    :class="{ selected: themeItem.name === selectedTheme }"
+                    :text="themeItem.description"
+                    :title="themeItem.title"
+                >
                     <template #prepend>
-                        <VIcon :color="theme.color" :icon="theme.icon" />
+                        <VIcon :color="themeItem.color" :icon="themeItem.icon" />
                     </template>
                     <VCardText class="d-flex flex-column ga-2">
                         <div class="d-flex ga-2 align-center">
@@ -21,10 +26,12 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
-const { global, name: currentThemeName } = useTheme();
+const selectedTheme = defineModel<string>({ required: true });
 
-const availableThemes = computed(() => [
+const { t } = useI18n();
+const { global: uiTheme } = useTheme();
+
+const themeItems = computed(() => [
     {
         title: t("setting.presentation.theme.dark"),
         description: t("setting.presentation.theme.dark.description"),
@@ -42,7 +49,8 @@ const availableThemes = computed(() => [
 ]);
 
 const selectTheme = (name: string) => {
-    global.name.value = name;
+    uiTheme.name.value = name;
+    selectedTheme.value = name;
 };
 </script>
 

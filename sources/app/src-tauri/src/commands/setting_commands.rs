@@ -1,10 +1,12 @@
-use crate::contracts::setting_contracts::{InitSettingContract, SettingContract};
+use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract};
 use crate::prelude::*;
 use crate::services::setting_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn initialize_setting(init_contract: InitSettingContract) -> Result<SettingContract> {
+pub async fn initialize_setting(
+	init_contract: InitializeSettingContract,
+) -> Result<SettingContract> {
 	let setting = setting_service::initialize_setting(&init_contract).await?;
 
 	Ok(setting)

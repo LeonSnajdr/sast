@@ -1,10 +1,12 @@
 use chrono::Utc;
 
-use crate::contracts::setting_contracts::{InitSettingContract, SettingContract};
+use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract};
 use crate::prelude::*;
 use crate::repositories::setting_repository;
 
-pub async fn initialize_setting(init_contract: &InitSettingContract) -> Result<SettingContract> {
+pub async fn initialize_setting(
+	init_contract: &InitializeSettingContract,
+) -> Result<SettingContract> {
 	let meta_date_updated = Utc::now();
 
 	let setting_model = setting_repository::initialize_setting(

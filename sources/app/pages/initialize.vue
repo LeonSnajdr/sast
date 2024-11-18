@@ -1,16 +1,36 @@
 <template>
     <VContainer class="d-flex flex-column align-content-center" maxWidth="800">
-        <SettingPresentationLanguage />
-        <SettingPresentationTheme />
+        <SettingPresentationLanguage v-model="setting.presentationLanguage" />
+        <SettingPresentationTheme v-model="setting.presentationTheme" />
         <VRowSingle colClass="d-flex">
             <VSpacer />
-            <VBtn @click="initializeSetting()" appendIcon="mdi-arrow-right" color="primary">Los gehts</VBtn>
+            <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary">{{ $t("initialize.finish") }}</VBtn>
         </VRowSingle>
     </VContainer>
 </template>
 
 <script setup lang="ts">
-const initializeSetting = () => {
+import type { InitializeSettingContract } from "~/utils/tauriBindings";
+
+const { locale: uiLanguage } = useI18n();
+const { name: uiTheme } = useTheme();
+
+const setting = ref<InitializeSettingContract>({
+    presentationLanguage: uiLanguage.value,
+    presentationTheme: uiTheme.value
+});
+
+const finish = async () => {
+    const keckw = await commands.initializeSetting(setting.value);
+
+    if (keckw.status == "error") {
+        return;
+    }
+
     navigateTo({ name: "index" });
 };
+
+definePageMeta({
+    middleware: "not-initialized"
+});
 </script>

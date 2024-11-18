@@ -5,7 +5,7 @@ use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct InitSettingContract {
+pub struct InitializeSettingContract {
 	pub presentation_language: String,
 	pub presentation_theme: String,
 }

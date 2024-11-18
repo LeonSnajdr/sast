@@ -5,7 +5,7 @@
 
 
 export const commands = {
-async initializeSetting(initContract: InitSettingContract) : Promise<Result<SettingContract, Error>> {
+async initializeSetting(initContract: InitializeSettingContract) : Promise<Result<SettingContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("initialize_setting", { initContract }) };
 } catch (e) {
@@ -75,7 +75,7 @@ async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
 
 export type CreateProjectContract = { name: string }
 export type Error = "Db"
-export type InitSettingContract = { presentationLanguage: string; presentationTheme: string }
+export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 
