@@ -1,10 +1,12 @@
 <template>
-    <VContainer class="d-flex flex-column align-content-center" maxWidth="800">
-        <SettingPresentationLanguage v-model="setting.presentationLanguage" />
-        <SettingPresentationTheme v-model="setting.presentationTheme" />
-        <VRowSingle colClass="d-flex">
-            <VSpacer />
-            <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary">{{ $t("initialize.finish") }}</VBtn>
+    <VContainer class="fill-height" maxWidth="800">
+        <VRowSingle>
+            <SettingPresentationLanguage v-model="setting.presentationLanguage" />
+            <SettingPresentationTheme v-model="setting.presentationTheme" />
+            <VRowSingle colClass="d-flex">
+                <VSpacer />
+                <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary">{{ $t("initialize.finish") }}</VBtn>
+            </VRowSingle>
         </VRowSingle>
     </VContainer>
 </template>
