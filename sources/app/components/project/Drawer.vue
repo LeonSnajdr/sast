@@ -5,12 +5,14 @@
                 <template #prepend>
                     <VHover v-slot="{ isHovering, props }">
                         <VIcon @click="closeProject()" v-bind="props" :icon="isHovering ? 'mdi-folder' : 'mdi-folder-open'" color="info" />
+                        <VTooltip activator="parent">{{ $t("project.drawer.close") }}</VTooltip>
                     </VHover>
                 </template>
                 <VListItemTitle>{{ selectedProject.name }}</VListItemTitle>
                 <template #append>
                     <IconBtn icon="mdi-swap-horizontal">
                         <ProjectSelectDialog />
+                        <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
                     </IconBtn>
                 </template>
             </VListItem>

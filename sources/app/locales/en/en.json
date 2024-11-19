@@ -9,6 +9,8 @@
   "project.create.error": "Creating project failed",
   "project.create.sucess": "Created project {projectName]",
   "project.create.title": "Create project",
+  "project.drawer.close": "Close project",
+  "project.drawer.select": "Select other project",
   "project.field.name": "Name",
   "project.load.failed": "Loading project failed",
   "project.openLast.description": "Start where you left off",

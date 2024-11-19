@@ -76,5 +76,8 @@
 
     // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VChip/_variables.scss
     $chip-border-radius: 16px,
-    $chip-density: ("default": 0, "comfortable": -2, "compact": -3) !default
+    $chip-density: ("default": 0, "comfortable": -2, "compact": -3),
+    // https: //github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VTooltip/_variables.scss
+    $tooltip-padding: 2px 8px,
+    $tooltip-font-size: 0.775rem
 );
