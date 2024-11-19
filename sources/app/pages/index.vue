@@ -50,10 +50,12 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const notify = useNotify();
+const presentation = usePresentation();
 
 const lastOpenedProject = ref<ProjectContract | null>();
 
 onBeforeMount(async () => {
+    presentation.applyUsingSetting();
     await loadLastOpenedProject();
 });
 

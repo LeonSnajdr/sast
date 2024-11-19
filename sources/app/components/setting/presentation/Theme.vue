@@ -1,10 +1,10 @@
 <template>
     <VRow>
-        <VCol v-for="themeItem in themeItems" :key="themeItem.name" cols="12" sm="6">
-            <VThemeProvider :theme="themeItem.name">
+        <VCol v-for="themeItem in themeItems" :key="themeItem.theme" cols="12" sm="6">
+            <VThemeProvider :theme="themeItem.theme">
                 <VCard
-                    @click="selectTheme(themeItem.name)"
-                    :class="{ selected: themeItem.name === selectedTheme }"
+                    @click="selectTheme(themeItem.theme)"
+                    :class="{ selected: themeItem.theme === selectedTheme }"
                     :text="themeItem.description"
                     :title="themeItem.title"
                 >
@@ -28,29 +28,29 @@
 <script setup lang="ts">
 const selectedTheme = defineModel<string>({ required: true });
 
+const presentation = usePresentation();
 const { t } = useI18n();
-const { global: uiTheme } = useTheme();
 
 const themeItems = computed(() => [
     {
         title: t("setting.presentation.theme.dark"),
         description: t("setting.presentation.theme.dark.description"),
-        name: "dark",
+        theme: "dark",
         icon: "mdi-weather-night",
         color: "secondary"
     },
     {
         title: t(`setting.presentation.theme.light`),
         description: t(`setting.presentation.theme.light.description`),
-        name: "light",
+        theme: "light",
         icon: "mdi-weather-sunny",
         color: "success"
     }
 ]);
 
-const selectTheme = (name: string) => {
-    uiTheme.name.value = name;
-    selectedTheme.value = name;
+const selectTheme = (theme: string) => {
+    presentation.applyTheme(theme);
+    selectedTheme.value = theme;
 };
 </script>
 

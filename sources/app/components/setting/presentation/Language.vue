@@ -25,7 +25,8 @@
 <script setup lang="ts">
 const selectedLangauge = defineModel<string>({ required: true });
 
-const { t, setLocale } = useI18n();
+const presentation = usePresentation();
+const { t } = useI18n();
 
 const laguageItems = computed(() => [
     {
@@ -39,7 +40,7 @@ const laguageItems = computed(() => [
 ]);
 
 const selectLanguage = (language: string) => {
-    setLocale(language);
+    presentation.applyLangauge(language);
     selectedLangauge.value = language;
 };
 </script>

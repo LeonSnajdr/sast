@@ -1,11 +1,13 @@
 export default defineNuxtRouteMiddleware(async () => {
-    const isSettingInitalizedResult = await commands.getIsSettingInitialized();
+    const settingStore = useSettingStore();
 
-    if (isSettingInitalizedResult.status == "error") {
-        return navigateTo({ name: "error" });
-    }
+    const { isInitialized } = storeToRefs(settingStore);
 
-    if (!isSettingInitalizedResult.data) {
+    await settingStore.loadIsInitialized();
+
+    if (!isInitialized.value) {
         return navigateTo({ name: "initialize" });
     }
+
+    await settingStore.loadSetting();
 });

@@ -23,12 +23,10 @@
 </template>
 
 <script setup lang="ts">
-import type { InitSettingContract } from "~/utils/tauriBindings";
-
 const isLoading = ref(true);
 const isSettingInitalized = ref(false);
 
-const initSetting = ref<InitSettingContract>({} as InitSettingContract);
+const initSetting = ref<InitializeSettingContract>({} as InitializeSettingContract);
 
 enum StepType {
     Language = 1,
