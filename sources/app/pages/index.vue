@@ -36,7 +36,7 @@
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard :text="$t('setting.description')" :title="$t('setting.title')" disabled>
+                    <VCard @click="openSetting()" :text="$t('setting.description')" :title="$t('setting.title')">
                         <template #prepend>
                             <VIcon color="secondary" icon="mdi-cog" />
                         </template>
@@ -72,6 +72,10 @@ const loadLastOpenedProject = async () => {
 
 const openLastProject = () => {
     navigateTo({ name: "project-id-home", params: { id: lastOpenedProjectId.value! } });
+};
+
+const openSetting = () => {
+    navigateTo({ name: "setting-index-presentation" });
 };
 
 definePageMeta({
