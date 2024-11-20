@@ -45,11 +45,8 @@ pub async fn open_project(id: &Uuid) -> Result<ProjectContract> {
 	Ok(project_contract)
 }
 
-pub async fn open_last_project() -> Result<Option<ProjectContract>> {
+pub async fn get_last_opened_project_id() -> Result<Option<Uuid>> {
 	let last_opened_project_id = project_repository::get_last_opened_project_id().await?;
 
-	match last_opened_project_id {
-		Some(project_id) => Ok(Some(open_project(&project_id).await?)),
-		None => Ok(None),
-	}
+	Ok(last_opened_project_id)
 }

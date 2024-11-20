@@ -21,7 +21,7 @@ pub fn run() {
 		setting_commands::get_setting,
 		project_commands::create_project,
 		project_commands::get_all_projects,
-		project_commands::open_last_project,
+		project_commands::get_last_opened_project_id,
 		project_commands::open_project,
 	]);
 

@@ -45,9 +45,9 @@ async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async openLastProject() : Promise<Result<ProjectContract | null, Error>> {
+async getLastOpenedProjectId() : Promise<Result<string | null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("open_last_project") };
+    return { status: "ok", data: await TAURI_INVOKE("get_last_opened_project_id") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

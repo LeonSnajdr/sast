@@ -25,7 +25,7 @@
                 <VCol cols="12" sm="6">
                     <VCard
                         @click="openLastProject()"
-                        :disabled="!lastOpenedProject"
+                        :disabled="!lastOpenedProjectId"
                         :text="$t('project.openLast.description')"
                         :title="$t('project.openLast.title')"
                     >
@@ -52,7 +52,7 @@ const { t } = useI18n();
 const notify = useNotify();
 const presentation = usePresentation();
 
-const lastOpenedProject = ref<ProjectContract | null>();
+const lastOpenedProjectId = ref<string | null>();
 
 onBeforeMount(async () => {
     presentation.applyUsingSetting();
@@ -60,18 +60,18 @@ onBeforeMount(async () => {
 });
 
 const loadLastOpenedProject = async () => {
-    const lastOpenedProjectResult = await commands.openLastProject();
+    const lastOpenedProjectIdResult = await commands.getLastOpenedProjectId();
 
-    if (lastOpenedProjectResult.status == "error") {
+    if (lastOpenedProjectIdResult.status == "error") {
         notify.error(t("project.load.failed"));
         return;
     }
 
-    lastOpenedProject.value = lastOpenedProjectResult.data;
+    lastOpenedProjectId.value = lastOpenedProjectIdResult.data;
 };
 
 const openLastProject = () => {
-    navigateTo({ name: "project-id-home", params: { id: lastOpenedProject.value!.id } });
+    navigateTo({ name: "project-id-home", params: { id: lastOpenedProjectId.value! } });
 };
 
 definePageMeta({

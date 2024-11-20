@@ -8,6 +8,7 @@
             <VCardText>
                 <VForm ref="form" v-model="isFormValid">
                     <VTextField
+                        id="input"
                         v-model="project.name"
                         :label="$t('project.field.name')"
                         :rules="[required($t('validation.rule.required', { field: $t('project.field.name') }))]"
@@ -33,6 +34,14 @@ const isFormValid = ref(false);
 const isLoading = ref(false);
 
 const project = ref({} as CreateProjectContract);
+
+whenever(isDialogOpen, () => {
+    const test = document.getElementById("input");
+
+    console.log(test);
+
+    test?.focus();
+});
 
 const createProject = async () => {
     isLoading.value = true;
