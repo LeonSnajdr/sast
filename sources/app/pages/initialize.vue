@@ -33,6 +33,6 @@ const finish = async () => {
         return;
     }
 
-    reloadNuxtApp({ path: "/" });
+    navigateTo({ name: "index" });
 };
 </script>

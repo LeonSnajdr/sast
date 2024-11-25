@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute("project-id");
+const route = useRoute("index-project-id");
 const i18n = useI18n();
 const notify = useNotify();
 

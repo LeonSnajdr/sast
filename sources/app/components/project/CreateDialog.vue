@@ -60,7 +60,7 @@ const createProject = async () => {
 
     isDialogOpen.value = false;
 
-    navigateTo({ name: "project-id-home", params: { id: createResult.data.id } });
+    navigateTo({ name: "index-project-id-home", params: { id: createResult.data.id } });
 };
 
 watch(isDialogOpen, () => {

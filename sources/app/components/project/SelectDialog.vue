@@ -8,7 +8,7 @@
             <VCardText>
                 <VTextField v-model="search" :label="$t('search.filter')" :persistentPlaceholder="false" appendInnerIcon="mdi-filter-outline" clearable />
                 <VList>
-                    <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'project-id-home', params: { id: project.id } }">
+                    <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'index-project-id-home', params: { id: project.id } }">
                         <VListItemTitle>{{ project.name }}</VListItemTitle>
                         <VListItemSubtitle>{{ useLocaleTimeAgo(project.dateLastOpened) }}</VListItemSubtitle>
                         <template #append>

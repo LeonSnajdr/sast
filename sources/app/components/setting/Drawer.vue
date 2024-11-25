@@ -18,7 +18,7 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         {
             icon: "mdi-brush-variant",
             name: "Darstellung",
-            to: { name: "setting-index-presentation" }
+            to: { name: "index-setting-index-presentation" }
         }
     ];
 });

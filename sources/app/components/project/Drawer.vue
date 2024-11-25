@@ -38,22 +38,22 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         {
             icon: "mdi-home",
             name: "Home",
-            to: { name: "project-id-home", params: { id: selectedProject.value.id } }
+            to: { name: "index-project-id-home", params: { id: selectedProject.value.id } }
         },
         {
             icon: "mdi-tab",
             name: "Tabs",
-            to: { name: "project-id-tabs", params: { id: selectedProject.value.id } }
+            to: { name: "index-project-id-tabs", params: { id: selectedProject.value.id } }
         },
         {
             icon: "mdi-label-outline",
             name: "Platzhalter",
-            to: { name: "project-id-placeholder", params: { id: selectedProject.value.id } }
+            to: { name: "index-project-id-placeholder", params: { id: selectedProject.value.id } }
         },
         {
             icon: "mdi-checkbox-marked-circle-outline",
             name: "Tasks",
-            to: { name: "project-id-tasks", params: { id: selectedProject.value.id } }
+            to: { name: "index-project-id-tasks", params: { id: selectedProject.value.id } }
         }
     ];
 });
