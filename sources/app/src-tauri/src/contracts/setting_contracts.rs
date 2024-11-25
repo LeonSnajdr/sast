@@ -13,8 +13,9 @@ pub struct InitializeSettingContract {
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct UpdateSettingContract {
-	pub presentation_language: Option<String>,
-	pub presentation_theme: Option<String>,
+	pub id: Uuid,
+	pub presentation_language: String,
+	pub presentation_theme: String,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]

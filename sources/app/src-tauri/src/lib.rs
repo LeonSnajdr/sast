@@ -18,6 +18,7 @@ pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
 		setting_commands::initialize_setting,
 		setting_commands::get_setting,
+		setting_commands::update_setting,
 		project_commands::create_project,
 		project_commands::get_all_projects,
 		project_commands::get_last_opened_project_id,

@@ -21,6 +21,14 @@ async getSetting() : Promise<Result<SettingContract | null, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
+async updateSetting(updateContract: UpdateSettingContract) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("update_setting", { updateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async createProject(createProjectContract: CreateProjectContract) : Promise<Result<ProjectContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("create_project", { createProjectContract }) };
@@ -70,6 +78,7 @@ export type Error = "Db" | "AlreadyExists"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
+export type UpdateSettingContract = { id: string; presentationLanguage: string; presentationTheme: string }
 
 /** tauri-specta globals **/
 

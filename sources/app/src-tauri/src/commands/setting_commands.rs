@@ -1,4 +1,6 @@
-use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract};
+use crate::contracts::setting_contracts::{
+	InitializeSettingContract, SettingContract, UpdateSettingContract,
+};
 use crate::prelude::*;
 use crate::services::setting_service;
 
@@ -22,6 +24,8 @@ pub async fn get_setting() -> Result<Option<SettingContract>> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn update_setting() -> Result<()> {
+pub async fn update_setting(update_contract: UpdateSettingContract) -> Result<()> {
+	setting_service::update_setting(&update_contract).await?;
+
 	Ok(())
 }

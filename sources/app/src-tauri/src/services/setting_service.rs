@@ -1,6 +1,8 @@
 use chrono::Utc;
 
-use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract};
+use crate::contracts::setting_contracts::{
+	InitializeSettingContract, SettingContract, UpdateSettingContract,
+};
 use crate::prelude::*;
 use crate::repositories::setting_repository;
 
@@ -34,4 +36,15 @@ pub async fn get_setting() -> Result<Option<SettingContract>> {
 		Some(setting_model) => Ok(Some(SettingContract::from(setting_model))),
 		None => Ok(None),
 	}
+}
+
+pub async fn update_setting(update_contract: &UpdateSettingContract) -> Result<()> {
+	setting_repository::update_setting(
+		&update_contract.id,
+		&update_contract.presentation_language,
+		&update_contract.presentation_theme,
+	)
+	.await?;
+
+	Ok(())
 }
