@@ -7,4 +7,8 @@
 const settingStore = useSettingStore();
 
 const { setting } = storeToRefs(settingStore);
+
+onMounted(() => {
+    console.log(setting.value);
+});
 </script>
