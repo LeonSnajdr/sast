@@ -17,7 +17,6 @@ use crate::commands::*;
 pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
 		setting_commands::initialize_setting,
-		setting_commands::get_is_setting_initialized,
 		setting_commands::get_setting,
 		project_commands::create_project,
 		project_commands::get_all_projects,

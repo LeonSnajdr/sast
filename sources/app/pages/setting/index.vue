@@ -1,14 +1,6 @@
 <template>
     <SettingDrawer />
-    <VContainer>
-        <NuxtPage v-model="editSetting" />
+    <VContainer class="h-100">
+        <NuxtPage />
     </VContainer>
 </template>
-
-<script setup lang="ts">
-const settingStore = useSettingStore();
-
-const { setting } = storeToRefs(settingStore);
-
-const editSetting = ref<SettingContract>(lodCloneDeep(setting.value));
-</script>

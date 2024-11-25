@@ -50,12 +50,10 @@
 <script setup lang="ts">
 const { t } = useI18n();
 const notify = useNotify();
-const presentation = usePresentation();
 
 const lastOpenedProjectId = ref<string | null>();
 
 onBeforeMount(async () => {
-    presentation.applyUsingSetting();
     await loadLastOpenedProject();
 });
 
@@ -77,8 +75,4 @@ const openLastProject = () => {
 const openSetting = () => {
     navigateTo({ name: "setting-index-presentation" });
 };
-
-definePageMeta({
-    middleware: "initialized"
-});
 </script>

@@ -13,15 +13,7 @@ async initializeSetting(initContract: InitializeSettingContract) : Promise<Resul
     else return { status: "error", error: e  as any };
 }
 },
-async getIsSettingInitialized() : Promise<Result<boolean, Error>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("get_is_setting_initialized") };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-async getSetting() : Promise<Result<SettingContract, Error>> {
+async getSetting() : Promise<Result<SettingContract | null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("get_setting") };
 } catch (e) {
@@ -74,7 +66,7 @@ async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
 /** user-defined types **/
 
 export type CreateProjectContract = { name: string }
-export type Error = "Db"
+export type Error = "Db" | "AlreadyExists"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }

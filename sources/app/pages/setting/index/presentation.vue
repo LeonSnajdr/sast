@@ -1,8 +1,10 @@
 <template>
-    <SettingPresentationLanguage v-model="editSetting.presentationLanguage" />
-    <SettingPresentationTheme v-model="editSetting.presentationTheme" />
+    <SettingPresentationLanguage v-model="setting.presentationLanguage" />
+    <SettingPresentationTheme v-model="setting.presentationTheme" />
 </template>
 
 <script setup lang="ts">
-const editSetting = defineModel<SettingContract>({ required: true });
+const settingStore = useSettingStore();
+
+const { setting } = storeToRefs(settingStore);
 </script>

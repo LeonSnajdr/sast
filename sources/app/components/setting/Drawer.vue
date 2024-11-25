@@ -1,7 +1,6 @@
 <template>
     <VNavigationDrawer location="left" permanent>
         <VList class="mt-n2">
-            <VListItem height="50" />
             <VListItem v-for="page in subPages" :key="page.name" :title="page.name" :to="page.to" link>
                 <template #prepend>
                     <VIcon :icon="page.icon" size="small" />
@@ -23,8 +22,4 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         }
     ];
 });
-
-const saveSetting = () => {
-    navigateTo({ name: "index" });
-};
 </script>

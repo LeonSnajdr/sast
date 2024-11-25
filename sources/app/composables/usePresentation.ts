@@ -6,8 +6,10 @@ export default function usePresentation() {
 
     const { setting } = storeToRefs(settingStore);
 
-    const applyUsingSetting = () => {
+    const applySetting = () => {
         console.debug("Applying presentation using setting", setting.value.presentationLanguage, setting.value.presentationTheme);
+
+        console.log(setting);
 
         applyLangauge(setting.value.presentationLanguage);
         applyTheme(setting.value.presentationTheme);
@@ -21,5 +23,5 @@ export default function usePresentation() {
         uiTheme.name.value = theme;
     };
 
-    return { applyUsingSetting, applyLangauge, applyTheme };
+    return { applySetting, applyLangauge, applyTheme };
 }

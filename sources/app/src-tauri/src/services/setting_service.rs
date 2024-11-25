@@ -7,6 +7,12 @@ use crate::repositories::setting_repository;
 pub async fn initialize_setting(
 	init_contract: &InitializeSettingContract,
 ) -> Result<SettingContract> {
+	let already_initializied = setting_repository::get_is_setting_initialized().await?;
+
+	if already_initializied {
+		return Err(Error::AlreadyExists);
+	}
+
 	let meta_date_updated = Utc::now();
 
 	let setting_model = setting_repository::initialize_setting(
@@ -21,16 +27,11 @@ pub async fn initialize_setting(
 	Ok(setting_contract)
 }
 
-pub async fn get_is_setting_initialized() -> Result<bool> {
-	let is_setting_initialized = setting_repository::get_is_setting_initialized().await?;
+pub async fn get_setting() -> Result<Option<SettingContract>> {
+	let setting_model_option = setting_repository::get_setting().await?;
 
-	Ok(is_setting_initialized)
-}
-
-pub async fn get_setting() -> Result<SettingContract> {
-	let setting_model = setting_repository::get_setting().await?;
-
-	let setting_contract = SettingContract::from(setting_model);
-
-	Ok(setting_contract)
+	match setting_model_option {
+		Some(setting_model) => Ok(Some(SettingContract::from(setting_model))),
+		None => Ok(None),
+	}
 }

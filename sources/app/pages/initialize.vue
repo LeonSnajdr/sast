@@ -12,7 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import type { InitializeSettingContract } from "~/utils/tauriBindings";
+const { t } = useI18n();
+const notify = useNotify();
 
 const { locale: uiLanguage } = useI18n();
 const { name: uiTheme } = useTheme();
@@ -23,16 +24,17 @@ const setting = ref<InitializeSettingContract>({
 });
 
 const finish = async () => {
-    const keckw = await commands.initializeSetting(setting.value);
+    const initializeResult = await commands.initializeSetting(setting.value);
 
-    if (keckw.status == "error") {
+    if (initializeResult.status == "error") {
+        switch (initializeResult.error) {
+            case "AlreadyExists":
+                notify.error(t("initialize.error.alreadyExists"));
+                break;
+        }
         return;
     }
 
-    navigateTo({ name: "index" });
+    reloadNuxtApp({ path: "/" });
 };
-
-definePageMeta({
-    middleware: "not-initialized"
-});
 </script>

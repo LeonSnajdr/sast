@@ -14,16 +14,14 @@ pub async fn initialize_setting(
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_is_setting_initialized() -> Result<bool> {
-	let is_setting_initialized = setting_service::get_is_setting_initialized().await?;
+pub async fn get_setting() -> Result<Option<SettingContract>> {
+	let setting = setting_service::get_setting().await?;
 
-	Ok(is_setting_initialized)
+	Ok(setting)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_setting() -> Result<SettingContract> {
-	let setting = setting_service::get_setting().await?;
-
-	Ok(setting)
+pub async fn update_setting() -> Result<()> {
+	Ok(())
 }
