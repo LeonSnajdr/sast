@@ -13,11 +13,13 @@
 <script setup lang="ts">
 import type { RouteLocationRaw } from "vue-router";
 
+const { t } = useI18n();
+
 const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw }[] => {
     return [
         {
-            icon: "mdi-brush-variant",
-            name: "Darstellung",
+            icon: "mdi-auto-fix",
+            name: t("setting.presentation"),
             to: { name: "index-setting-index-presentation" }
         }
     ];
