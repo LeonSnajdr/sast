@@ -27,10 +27,8 @@ const finish = async () => {
     const initializeResult = await commands.initializeSetting(setting.value);
 
     if (initializeResult.status == "error") {
-        switch (initializeResult.error) {
-            case "AlreadyExists":
-                notify.error(t("initialize.error.alreadyExists"));
-                break;
+        if (initializeResult.error === "AlreadyExists") {
+            notify.error(t("initialize.error.alreadyExists"));
         }
         return;
     }
