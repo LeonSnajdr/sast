@@ -3,17 +3,18 @@
         <VToolbar border="b" height="38">
             <VSlideGroup showArrows>
                 <VSlideGroupItem v-for="tab in tabs" :key="tab">
-                    <VBtn :to="{ name: 'index-project-id-tabs-tabId', params: { id: route.params.id, tabId: tab } }" class="ml-2" density="compact">
+                    <VBtn :to="{ name: 'index-project-id-tabs-tabId', params: { id: route.params.id, tabId: tab } }" class="ml-2 px-2" density="compact">
                         <template #prepend>
                             <VIcon color="info" icon="mdi-powershell" />
                         </template>
                         <span>{{ tab }}</span>
-
-                        <IconBtn @click.prevent.stop="closeTab(tab)" class="ml-2" icon="mdi-close" variant="plain" />
+                        <template #append>
+                            <IconBtn @click.prevent.stop="closeTab(tab)" icon="mdi-close" variant="plain" />
+                        </template>
                     </VBtn>
                 </VSlideGroupItem>
             </VSlideGroup>
-            <IconBtn icon="mdi-plus" />
+            <IconBtn class="ml-2" color="secondary" icon="mdi-plus" variant="flat" />
         </VToolbar>
 
         <VContainer class="flex-grow-1">
