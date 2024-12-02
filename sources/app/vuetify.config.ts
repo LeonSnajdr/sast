@@ -189,6 +189,9 @@ export default defineVuetifyConfiguration({
         },
         VTooltip: {
             openDelay: 400
+        },
+        VToolbar: {
+            color: "surface"
         }
     }
 });

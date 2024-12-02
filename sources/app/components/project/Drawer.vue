@@ -1,7 +1,7 @@
 <template>
     <VNavigationDrawer location="left" permanent>
         <VList class="mt-n2">
-            <VListItem height="50">
+            <VListItem>
                 <template #prepend>
                     <VHover v-slot="{ isHovering, props }">
                         <VIcon @click="closeProject()" v-bind="props" :icon="isHovering ? 'mdi-folder' : 'mdi-folder-open'" color="info" />

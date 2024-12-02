@@ -8,5 +8,6 @@
 <script setup lang="ts">
 defineProps<{
     icon: string;
+    iconSize?: string;
 }>();
 </script>

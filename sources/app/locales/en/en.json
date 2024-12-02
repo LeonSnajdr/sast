@@ -30,6 +30,7 @@
   "setting.presentation.theme.light": "Light",
   "setting.presentation.theme.light.description": "Bring light into the dark",
   "setting.title": "Open settings",
+  "tabs.noSelected": "No tab selected",
   "validation.rule.required": "{field} is required",
   "vueUse.timeAgo.ago": "{0} ago",
   "vueUse.timeAgo.day": "day | days",
