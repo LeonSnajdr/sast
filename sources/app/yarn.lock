@@ -3077,6 +3077,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@xterm/addon-web-links@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@xterm/addon-web-links@npm:0.11.0"
+  peerDependencies:
+    "@xterm/xterm": ^5.0.0
+  checksum: 10c0/9426bed80afa954b0ea97771d041eb44e77a64e560ce8b8ef507a5d3a763979af18ae9f74ed54007bb7e235d0daf035be2a33f90d8edfecb431caf8ba0b0664e
+  languageName: node
+  linkType: hard
+
 "abbrev@npm:1":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -7292,6 +7301,7 @@ __metadata:
     "@tauri-apps/cli": "npm:^2.0.3"
     "@vueuse/core": "npm:^11.2.0"
     "@vueuse/nuxt": "npm:^11.2.0"
+    "@xterm/addon-web-links": "npm:^0.11.0"
     eslint: "npm:^9.12.0"
     nuxt: "npm:^3.13.0"
     nuxt-lodash: "npm:^2.5.3"

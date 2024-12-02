@@ -3,6 +3,7 @@
 </template>
 
 <script setup lang="ts">
+import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 import "xterm/css/xterm.css";
@@ -18,8 +19,12 @@ let fitAddon: FitAddon;
 onMounted(async () => {
     terminal = new Terminal({});
     fitAddon = new FitAddon();
+    const webLinksAddon = new WebLinksAddon((_, uri) => {
+        console.log("link clicked", uri);
+    });
 
     terminal.loadAddon(fitAddon);
+    terminal.loadAddon(webLinksAddon);
     terminal.open(termElement.value!);
 
     fitAddon.fit();
