@@ -23,6 +23,11 @@ pub fn run() {
 		project_commands::get_all_projects,
 		project_commands::get_last_opened_project_id,
 		project_commands::open_project,
+		task_commands::spawn_task,
+		task_commands::write_to_task,
+		task_commands::read_from_task,
+		task_commands::resize_task,
+		task_commands::kill_task,
 	]);
 
 	#[cfg(debug_assertions)]

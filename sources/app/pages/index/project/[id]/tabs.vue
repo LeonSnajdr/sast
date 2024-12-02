@@ -17,9 +17,7 @@
             <IconBtn class="ml-2" color="secondary" icon="mdi-plus" variant="flat" />
         </VToolbar>
 
-        <VContainer class="flex-grow-1">
-            <NuxtPage />
-        </VContainer>
+        <NuxtPage keepalive />
     </div>
 </template>
 

@@ -60,6 +60,46 @@ async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async spawnTask(spawnContract: SpawnTaskContract) : Promise<Result<string, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("spawn_task", { spawnContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async writeToTask(sessionId: string, data: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("write_to_task", { sessionId, data }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async readFromTask(sessionId: string) : Promise<Result<string, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("read_from_task", { sessionId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async resizeTask() : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("resize_task") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async killTask() : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("kill_task") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -74,10 +114,11 @@ async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
 /** user-defined types **/
 
 export type CreateProjectContract = { name: string }
-export type Error = "Db" | "AlreadyExists"
+export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
+export type SpawnTaskContract = { cols: number; rows: number }
 export type UpdateSettingContract = { id: string; presentationLanguage: string; presentationTheme: string }
 
 /** tauri-specta globals **/

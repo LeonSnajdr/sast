@@ -5,4 +5,6 @@ use specta::Type;
 pub enum Error {
 	Db,
 	AlreadyExists,
+	NotExists,
+	Failed,
 }
