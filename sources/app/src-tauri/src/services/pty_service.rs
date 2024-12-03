@@ -14,10 +14,10 @@ static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 });
 
 struct PtyState {
-	sessions: RwLock<BTreeMap<Uuid, Arc<TaskSession>>>,
+	sessions: RwLock<BTreeMap<Uuid, Arc<PtySession>>>,
 }
 
-struct TaskSession {
+struct PtySession {
 	pair: Mutex<PtyPair>,
 	child: Mutex<Box<dyn Child + Send + Sync>>,
 	child_killer: Mutex<Box<dyn ChildKiller + Send + Sync>>,
@@ -45,7 +45,7 @@ pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
 	let child_killer = child.clone_killer();
 
-	let pair = Arc::new(TaskSession {
+	let pair = Arc::new(PtySession {
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
