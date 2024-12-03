@@ -6,7 +6,7 @@ use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPai
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
 
-use crate::contracts::pty_contracts::SpawnPtyContract;
+use crate::contracts::pty_contracts::{ResizePtyContract, SpawnPtyContract};
 use crate::prelude::*;
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
@@ -64,10 +64,7 @@ pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 }
 
 pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
-	let sessions = PTY_STATE.sessions.read().await;
-	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
-
-	drop(sessions);
+	let session = get_session(session_id).await?;
 
 	session.writer.lock().await.write_all(data.as_bytes()).map_err(|_| Error::Failed)?;
 
@@ -75,16 +72,55 @@ pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
 }
 
 pub async fn read(session_id: &Uuid) -> Result<String> {
-	println!("wait for read");
-	let sessions = PTY_STATE.sessions.read().await;
-	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
-
-	drop(sessions);
+	let session = get_session(session_id).await?;
 
 	let mut buf = [0u8; 1024];
 	let read_bytes = session.reader.lock().await.read(&mut buf).map_err(|_| Error::Failed)?;
 
-	println!("read value");
-
 	Ok(String::from_utf8_lossy(&buf[..read_bytes]).to_string())
+}
+
+pub async fn resize(session_id: &Uuid, resize_contract: &ResizePtyContract) -> Result<()> {
+	let session = get_session(session_id).await?;
+
+	session
+		.pair
+		.lock()
+		.await
+		.master
+		.resize(PtySize {
+			rows: resize_contract.rows,
+			cols: resize_contract.cols,
+			pixel_width: 0,
+			pixel_height: 0,
+		})
+		.map_err(|_| Error::Failed)?;
+
+	Ok(())
+}
+
+pub async fn kill(session_id: &Uuid) -> Result<()> {
+	let session = get_session(session_id).await?;
+
+	session.child_killer.lock().await.kill().map_err(|_| Error::Failed)?;
+
+	Ok(())
+}
+
+pub async fn exitstatus(session_id: &Uuid) -> Result<u32> {
+	let session = get_session(session_id).await?;
+
+	let exitstatus = session.child.lock().await.wait().map_err(|_| Error::Failed)?.exit_code();
+
+	Ok(exitstatus)
+}
+
+async fn get_session(session_id: &Uuid) -> Result<Arc<PtySession>> {
+	let sessions = PTY_STATE.sessions.read().await;
+	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
+
+	// Ensure that the lock on the sessions is droped, to prevent dead locks
+	drop(sessions);
+
+	Ok(session)
 }

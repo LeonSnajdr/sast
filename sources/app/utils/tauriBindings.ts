@@ -85,17 +85,25 @@ async ptyRead(sessionId: string) : Promise<Result<string, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async ptyResize() : Promise<Result<null, Error>> {
+async ptyResize(sessionId: string, resizeContract: ResizePtyContract) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_resize") };
+    return { status: "ok", data: await TAURI_INVOKE("pty_resize", { sessionId, resizeContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyKill() : Promise<Result<null, Error>> {
+async ptyKill(sessionId: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_kill") };
+    return { status: "ok", data: await TAURI_INVOKE("pty_kill", { sessionId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async ptyExitstatus(sessionId: string) : Promise<Result<number, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("pty_exitstatus", { sessionId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -117,6 +125,7 @@ export type CreateProjectContract = { name: string }
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
+export type ResizePtyContract = { cols: number; rows: number }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SpawnPtyContract = { cols: number; rows: number }
 export type UpdateSettingContract = { id: string; presentationLanguage: string; presentationTheme: string }

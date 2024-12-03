@@ -28,6 +28,7 @@ pub fn run() {
 		pty_commands::pty_read,
 		pty_commands::pty_resize,
 		pty_commands::pty_kill,
+		pty_commands::pty_exitstatus,
 	]);
 
 	#[cfg(debug_assertions)]
