@@ -6,14 +6,14 @@ use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPai
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
 
-use crate::contracts::task_contracts::SpawnTaskContract;
+use crate::contracts::pty_contracts::SpawnPtyContract;
 use crate::prelude::*;
 
-static TASK_STATE: Lazy<TaskState> = Lazy::new(|| TaskState {
+static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(BTreeMap::new()),
 });
 
-struct TaskState {
+struct PtyState {
 	sessions: RwLock<BTreeMap<Uuid, Arc<TaskSession>>>,
 }
 
@@ -25,7 +25,7 @@ struct TaskSession {
 	reader: Mutex<Box<dyn std::io::Read + Send>>,
 }
 
-pub async fn spawn(spawn_contract: &SpawnTaskContract) -> Result<Uuid> {
+pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
 
 	let pair = pty_system
@@ -53,7 +53,7 @@ pub async fn spawn(spawn_contract: &SpawnTaskContract) -> Result<Uuid> {
 		reader: Mutex::new(reader),
 	});
 
-	let mut sessions = TASK_STATE.sessions.write().await;
+	let mut sessions = PTY_STATE.sessions.write().await;
 	let session_id = Uuid::new_v4();
 
 	sessions.insert(session_id, pair);
@@ -64,7 +64,7 @@ pub async fn spawn(spawn_contract: &SpawnTaskContract) -> Result<Uuid> {
 }
 
 pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
-	let sessions = TASK_STATE.sessions.read().await;
+	let sessions = PTY_STATE.sessions.read().await;
 	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
 
 	drop(sessions);
@@ -76,7 +76,7 @@ pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
 
 pub async fn read(session_id: &Uuid) -> Result<String> {
 	println!("wait for read");
-	let sessions = TASK_STATE.sessions.read().await;
+	let sessions = PTY_STATE.sessions.read().await;
 	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
 
 	drop(sessions);

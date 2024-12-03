@@ -45,7 +45,7 @@ useResizeObserver(termElement, () => {
 const spawn = async () => {
     console.log("try to spawn");
 
-    const spawnResult = await commands.spawnTask({ cols: terminal.cols, rows: terminal.rows });
+    const spawnResult = await commands.ptySpawn({ cols: terminal.cols, rows: terminal.rows });
 
     console.log(spawnResult);
 
@@ -66,7 +66,7 @@ const spawn = async () => {
 const writeData = async (data: string) => {
     console.log("write");
 
-    const writeResult = await commands.writeToTask(sessionId.value, data);
+    const writeResult = await commands.ptyWrite(sessionId.value, data);
 
     if (writeResult.status === "error") {
         console.error("failed to write data");
@@ -76,7 +76,7 @@ const writeData = async (data: string) => {
 
 const readData = async () => {
     while (true) {
-        const readResult = await commands.readFromTask(sessionId.value);
+        const readResult = await commands.ptyRead(sessionId.value);
 
         if (readResult.status === "error") {
             console.error("Error while reading data");
