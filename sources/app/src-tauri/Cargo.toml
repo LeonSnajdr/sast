@@ -40,3 +40,4 @@ specta-typescript = "0.0.7"
 uuid = { version = "1.11.0", features = ["serde", "v4"] }
 chrono = { version = "0.4.38", features = ["serde"] }
 portable-pty = { version = "0.8.1", features = ["serde_support"] }
+tauri-plugin-shell = "2"

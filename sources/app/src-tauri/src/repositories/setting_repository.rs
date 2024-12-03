@@ -7,11 +7,7 @@ use crate::db;
 use crate::models::setting_models::SettingModel;
 use crate::prelude::*;
 
-pub async fn initialize_setting(
-	meta_date_updated: &DateTime<Utc>,
-	presentation_language: &String,
-	presentation_theme: &String,
-) -> Result<SettingModel> {
+pub async fn initialize_setting(meta_date_updated: &DateTime<Utc>, presentation_language: &String, presentation_theme: &String) -> Result<SettingModel> {
 	let id = Uuid::new_v4();
 
 	let setting = sqlx::query_as!(
@@ -74,11 +70,7 @@ pub async fn get_setting() -> Result<Option<SettingModel>> {
 	Ok(setting)
 }
 
-pub async fn update_setting(
-	id: &Uuid,
-	presentation_language: &String,
-	presentation_theme: &String,
-) -> Result<()> {
+pub async fn update_setting(id: &Uuid, presentation_language: &String, presentation_theme: &String) -> Result<()> {
 	let date_updated = Utc::now();
 
 	sqlx::query!(

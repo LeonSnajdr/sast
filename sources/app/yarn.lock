@@ -2375,6 +2375,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/api@npm:^2.0.0":
+  version: 2.1.1
+  resolution: "@tauri-apps/api@npm:2.1.1"
+  checksum: 10c0/383b5e7c3870e1f2a555977b9f0af3f26c7d813025cccb2cc287e9469adc44d68c94f828931317373c5d942edb3a5faa0b2f8c50fa3d77e1a720e896318145db
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/api@npm:^2.0.2":
   version: 2.0.2
   resolution: "@tauri-apps/api@npm:2.0.2"
@@ -2490,6 +2497,15 @@ __metadata:
   bin:
     tauri: tauri.js
   checksum: 10c0/ec176049d83a8333005f17d9afa2732f4e9367efbdfab1563d4a936744424a6555659406400a1946dec4e5f78b788994a5980d460e73b26185a5038c49980e6b
+  languageName: node
+  linkType: hard
+
+"@tauri-apps/plugin-shell@npm:~2":
+  version: 2.0.1
+  resolution: "@tauri-apps/plugin-shell@npm:2.0.1"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.0.0"
+  checksum: 10c0/78e3fb1118f77a71abe477b65b31af9b584613347bf5237426ea4a80a0c0bb38ce13fc7d66adbcd45e5171d67aa43863ba22ef26891ae7fdb718a8f82ea0d98d
   languageName: node
   linkType: hard
 
@@ -7299,6 +7315,7 @@ __metadata:
     "@pinia/nuxt": "npm:^0.5.5"
     "@tauri-apps/api": "npm:^2.0.2"
     "@tauri-apps/cli": "npm:^2.0.3"
+    "@tauri-apps/plugin-shell": "npm:~2"
     "@vueuse/core": "npm:^11.2.0"
     "@vueuse/nuxt": "npm:^11.2.0"
     "@xterm/addon-web-links": "npm:^0.11.0"

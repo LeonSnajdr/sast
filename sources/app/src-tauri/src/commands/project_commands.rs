@@ -6,9 +6,7 @@ use crate::services::project_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_project(
-	create_project_contract: CreateProjectContract,
-) -> Result<ProjectContract> {
+pub async fn create_project(create_project_contract: CreateProjectContract) -> Result<ProjectContract> {
 	let project = project_service::create_project(&create_project_contract).await?;
 
 	Ok(project)

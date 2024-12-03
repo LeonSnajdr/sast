@@ -5,11 +5,7 @@ use crate::db;
 use crate::models::project_models::ProjectModel;
 use crate::prelude::*;
 
-pub async fn create_project(
-	name: &String,
-	date_created: &DateTime<Utc>,
-	date_last_opened: &DateTime<Utc>,
-) -> Result<ProjectModel> {
+pub async fn create_project(name: &String, date_created: &DateTime<Utc>, date_last_opened: &DateTime<Utc>) -> Result<ProjectModel> {
 	let id = uuid::Uuid::new_v4();
 
 	let project = sqlx::query_as!(

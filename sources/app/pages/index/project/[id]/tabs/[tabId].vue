@@ -7,6 +7,7 @@ import { WebLinksAddon } from "@xterm/addon-web-links";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 import "xterm/css/xterm.css";
+import { open } from "@tauri-apps/plugin-shell";
 
 // const route = useRoute("index-project-id-tabs-tabId");
 
@@ -20,6 +21,7 @@ onMounted(async () => {
     terminal = new Terminal({});
     fitAddon = new FitAddon();
     const webLinksAddon = new WebLinksAddon((_, uri) => {
+        open(uri);
         console.log("link clicked", uri);
     });
 
