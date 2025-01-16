@@ -6,8 +6,8 @@
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
-    "beforeDevCommand": "yarn dev",
-    "beforeBuildCommand": "yarn build"
+    "beforeDevCommand": "yarn dev:nuxt",
+    "beforeBuildCommand": "yarn build:nuxt"
   },
   "app": {
     "windows": [
