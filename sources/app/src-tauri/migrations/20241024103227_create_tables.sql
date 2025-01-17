@@ -26,4 +26,4 @@ create table if not exists placeholder (
 );
 
 create unique index uidx_name on project(name);
-create unique index uidx_project_id_name on placeholder(project_id, name);
+create unique index uidx_project_id_name on placeholder(coalesce(project_id, -1), name);
