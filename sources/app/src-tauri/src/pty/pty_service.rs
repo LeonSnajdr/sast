@@ -119,7 +119,7 @@ async fn get_session(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
 	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
 
-	// Ensure that the lock on the sessions is droped, to prevent dead locks
+	// Ensure that the lock on the sessions is dropped, to prevent deadlocks
 	drop(sessions);
 
 	Ok(session)
