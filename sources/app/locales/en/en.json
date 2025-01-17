@@ -9,7 +9,7 @@
   "initialize.finish": "Complete setup",
   "project.create.description": "Create a new empty shell",
   "project.create.error": "Creating project failed",
-  "project.create.sucess": "Created project {projectName]",
+  "project.create.sucess": "Created project {projectName}",
   "project.create.title": "Create project",
   "project.drawer.close": "Close project",
   "project.drawer.select": "Select other project",
