@@ -35,14 +35,6 @@ const isLoading = ref(false);
 
 const project = ref({} as CreateProjectContract);
 
-whenever(isDialogOpen, () => {
-    const test = document.getElementById("input");
-
-    console.log(test);
-
-    test?.focus();
-});
-
 const createProject = async () => {
     isLoading.value = true;
 
@@ -56,7 +48,7 @@ const createProject = async () => {
         return;
     }
 
-    notify.success(i18n.t("project.create.sucess", { projectName: createResult.data.name }));
+    notify.success(i18n.t("project.create.success", { projectName: createResult.data.name }));
 
     isDialogOpen.value = false;
 

@@ -191,7 +191,10 @@ export default defineVuetifyConfiguration({
             openDelay: 400
         },
         VToolbar: {
-            color: "surface"
+            color: "surface",
+            border: "b",
+            class: "pr-3",
+            height: "38"
         }
     }
 });

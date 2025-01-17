@@ -1,6 +1,6 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <VToolbar border="b" height="38">
+        <VToolbar>
             <VSlideGroup showArrows>
                 <VSlideGroupItem v-for="tab in tabs" :key="tab">
                     <VBtn :to="{ name: 'index-project-id-tabs-tabId', params: { id: route.params.id, tabId: tab } }" class="ml-2 px-2" density="compact">

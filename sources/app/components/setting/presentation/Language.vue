@@ -6,17 +6,7 @@
             </template>
 
             <VCardText>
-                <div class="v-chip-group">
-                    <VChip
-                        v-for="languageItem in laguageItems"
-                        :key="languageItem.language"
-                        @click="selectLanguage(languageItem.language)"
-                        :variant="languageItem.language === selectedLangauge ? 'flat' : 'outlined'"
-                        density="comfortable"
-                    >
-                        {{ languageItem.translation }}
-                    </VChip>
-                </div>
+                <ChipSelect v-model="selectedLangauge" :items="laguageItems" itemText="translation" itemValue="language" />
             </VCardText>
         </VCard>
     </VRowSingle>
@@ -39,8 +29,7 @@ const laguageItems = computed(() => [
     }
 ]);
 
-const selectLanguage = (language: string) => {
-    presentation.applyLangauge(language);
-    selectedLangauge.value = language;
-};
+watch(selectedLangauge, () => {
+    presentation.applyLangauge(selectedLangauge.value);
+});
 </script>

@@ -108,6 +108,30 @@ async ptyExitstatus(sessionId: string) : Promise<Result<number, Error>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async createPlaceholder(createPlaceholderContract: CreatePlaceholderContract) : Promise<Result<PlaceholderContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("create_placeholder", { createPlaceholderContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getAllPlaceholders() : Promise<Result<PlaceholderContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_all_placeholders") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getPlaceholder(id: string) : Promise<Result<PlaceholderContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_placeholder", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -121,9 +145,11 @@ async ptyExitstatus(sessionId: string) : Promise<Result<number, Error>> {
 
 /** user-defined types **/
 
+export type CreatePlaceholderContract = { projectId: string | null; name: string; value: string }
 export type CreateProjectContract = { name: string }
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
+export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; dateCreated: string; dateLastUpdated: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ResizePtyContract = { cols: number; rows: number }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
