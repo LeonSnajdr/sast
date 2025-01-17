@@ -11,13 +11,8 @@
                     <template #prepend>
                         <VIcon :color="themeItem.color" :icon="themeItem.icon" />
                     </template>
-                    <VCardText class="d-flex flex-column ga-2">
-                        <div class="d-flex ga-2 align-center">
-                            <VChip :color="''" class="w-50" variant="tonal" />
-                            <VChip :color="''" class="w-50" density="compact" variant="tonal" />
-                        </div>
-                        <VChip :color="''" class="w-100" density="compact" variant="tonal" />
-                        <VChip :color="''" class="w-100" density="compact" variant="tonal" />
+                    <VCardText class="ma-n4">
+                        <VSkeletonLoader type="paragraph" boilerplate />
                     </VCardText>
                 </VCard>
             </VThemeProvider>
