@@ -4,6 +4,7 @@ mod prelude;
 mod project;
 mod pty;
 mod setting;
+mod placeholder;
 
 use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, Builder};
@@ -11,6 +12,7 @@ use tauri_specta::{collect_commands, Builder};
 use crate::project::project_commands;
 use crate::pty::pty_commands;
 use crate::setting::setting_commands;
+use crate::placeholder::placeholder_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -28,6 +30,9 @@ pub fn run() {
 		pty_commands::pty_resize,
 		pty_commands::pty_kill,
 		pty_commands::pty_exitstatus,
+		placeholder_commands::create_placeholder,
+		placeholder_commands::get_all_placeholders,
+		placeholder_commands::get_placeholder,
 	]);
 
 	#[cfg(debug_assertions)]
