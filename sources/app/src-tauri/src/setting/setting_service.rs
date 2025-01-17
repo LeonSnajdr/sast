@@ -1,13 +1,13 @@
 use chrono::Utc;
 
-use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract, UpdateSettingContract};
 use crate::prelude::*;
-use crate::repositories::setting_repository;
+use crate::setting::setting_contracts::{InitializeSettingContract, SettingContract, UpdateSettingContract};
+use crate::setting::setting_repository;
 
 pub async fn initialize_setting(init_contract: &InitializeSettingContract) -> Result<SettingContract> {
-	let already_initializied = setting_repository::get_is_setting_initialized().await?;
+	let already_initialized = setting_repository::get_is_setting_initialized().await?;
 
-	if already_initializied {
+	if already_initialized {
 		return Err(Error::AlreadyExists);
 	}
 

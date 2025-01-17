@@ -1,6 +1,6 @@
-use crate::contracts::setting_contracts::{InitializeSettingContract, SettingContract, UpdateSettingContract};
 use crate::prelude::*;
-use crate::services::setting_service;
+use crate::setting::setting_contracts::{InitializeSettingContract, SettingContract, UpdateSettingContract};
+use crate::setting::setting_service;
 
 #[tauri::command]
 #[specta::specta]

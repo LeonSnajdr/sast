@@ -1,17 +1,16 @@
-mod commands;
-mod contracts;
 mod db;
 mod error;
-mod mappers;
-mod models;
 mod prelude;
-mod repositories;
-mod services;
+mod project;
+mod pty;
+mod setting;
 
 use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, Builder};
 
-use crate::commands::*;
+use crate::project::project_commands;
+use crate::pty::pty_commands;
+use crate::setting::setting_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {

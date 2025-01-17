@@ -1,10 +1,8 @@
 use uuid::Uuid;
 
-use crate::{
-	contracts::pty_contracts::{ResizePtyContract, SpawnPtyContract},
-	prelude::*,
-	services::pty_service,
-};
+use crate::prelude::*;
+use crate::pty::pty_contracts::{ResizePtyContract, SpawnPtyContract};
+use crate::pty::pty_service;
 
 #[tauri::command]
 #[specta::specta]

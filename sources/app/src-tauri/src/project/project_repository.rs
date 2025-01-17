@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::db;
-use crate::models::project_models::ProjectModel;
+use crate::project::project_models::ProjectModel;
 use crate::prelude::*;
 
 pub async fn create_project(name: &String, date_created: &DateTime<Utc>, date_last_opened: &DateTime<Utc>) -> Result<ProjectModel> {

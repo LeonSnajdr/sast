@@ -1,11 +1,9 @@
 use chrono::{DateTime, Utc};
-use sqlx::QueryBuilder;
 use uuid::Uuid;
 
-use crate::contracts::setting_contracts::UpdateSettingContract;
-use crate::db;
-use crate::models::setting_models::SettingModel;
 use crate::prelude::*;
+use crate::db;
+use crate::setting::setting_models::SettingModel;
 
 pub async fn initialize_setting(meta_date_updated: &DateTime<Utc>, presentation_language: &String, presentation_theme: &String) -> Result<SettingModel> {
 	let id = Uuid::new_v4();

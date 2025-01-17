@@ -6,8 +6,8 @@ use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPai
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
 
-use crate::contracts::pty_contracts::{ResizePtyContract, SpawnPtyContract};
 use crate::prelude::*;
+use crate::pty::pty_contracts::{ResizePtyContract, SpawnPtyContract};
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(BTreeMap::new()),
@@ -40,7 +40,7 @@ pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 	let writer = pair.master.take_writer().map_err(|_| Error::Failed)?;
 	let reader = pair.master.try_clone_reader().map_err(|_| Error::Failed)?;
 
-	let cmd = CommandBuilder::new("pwsh.exe");
+	let cmd = CommandBuilder::new("powershell.exe");
 
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
 	let child_killer = child.clone_killer();

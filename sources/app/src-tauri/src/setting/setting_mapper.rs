@@ -1,5 +1,5 @@
-use crate::contracts::setting_contracts::SettingContract;
-use crate::models::setting_models::SettingModel;
+use crate::setting::setting_contracts::SettingContract;
+use crate::setting::setting_models::SettingModel;
 
 impl From<SettingModel> for SettingContract {
 	fn from(value: SettingModel) -> Self {

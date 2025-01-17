@@ -1,9 +1,9 @@
 use chrono::Utc;
 use uuid::Uuid;
 
-use crate::contracts::project_contracts::{CreateProjectContract, ProjectContract};
 use crate::prelude::*;
-use crate::repositories::project_repository;
+use crate::project::project_contracts::{CreateProjectContract, ProjectContract};
+use crate::project::project_repository;
 
 pub async fn create_project(create_project_contract: &CreateProjectContract) -> Result<ProjectContract> {
 	let date_created = Utc::now();
