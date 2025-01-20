@@ -141,11 +141,11 @@ export default defineVuetifyConfiguration({
             class: "d-flex flex-column",
 
             VCardTitle: {
-                class: "text-h6 font-weight-light d-flex ga-2 align-center"
-            },
+                class: "text-h6 font-weight-light d-flex ga-2 align-center",
 
-            VCardSubtitle: {
-                class: "text-uppercase"
+                VIcon: {
+                    size: "small"
+                }
             }
         },
         VNavigationDrawer: {

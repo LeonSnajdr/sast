@@ -3,43 +3,52 @@
         <VContainer>
             <VRow>
                 <VCol cols="12" sm="6">
-                    <VCard :text="$t('project.create.description')" :title="$t('project.create.title')" link>
-                        <template #prepend>
+                    <VCard link>
+                        <VCardTitle>
                             <VIcon color="success" icon="mdi-folder-plus" />
-                        </template>
-
+                            {{ $t("project.create.title") }}
+                        </VCardTitle>
+                        <VCardText>
+                            {{ $t("project.create.description") }}
+                        </VCardText>
                         <ProjectCreateDialog />
                     </VCard>
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard :text="$t('project.select.description')" :title="$t('project.select.title')" link>
-                        <template #prepend>
+                    <VCard link>
+                        <VCardTitle>
                             <VIcon color="warning" icon="mdi-folder-marker" />
-                        </template>
-
+                            {{ $t("project.select.title") }}
+                        </VCardTitle>
+                        <VCardText>
+                            {{ $t("project.select.description") }}
+                        </VCardText>
                         <ProjectSelectDialog />
                     </VCard>
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard
-                        @click="openLastProject()"
-                        :disabled="!lastOpenedProjectId"
-                        :text="$t('project.openLast.description')"
-                        :title="$t('project.openLast.title')"
-                    >
-                        <template #prepend>
+                    <VCard @click="openLastProject()" :disabled="!lastOpenedProjectId">
+                        <VCardTitle>
                             <VIcon color="info" icon="mdi-folder" />
-                        </template>
+                            {{ $t("project.openLast.title") }}
+                        </VCardTitle>
+                        <VCardText>
+                            {{ $t("project.openLast.description") }}
+                        </VCardText>
                     </VCard>
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard @click="openSetting()" :text="$t('setting.description')" :title="$t('setting.title')">
-                        <template #prepend>
+                    <VCard @click="openSetting()">
+                        <VCardTitle>
                             <VIcon color="secondary" icon="mdi-cog" />
-                        </template>
+                            {{ $t("setting.title") }}
+                        </VCardTitle>
+                        <VCardText>
+                            {{ $t("setting.description") }}
+                        </VCardText>
                     </VCard>
                 </VCol>
             </VRow>

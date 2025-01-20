@@ -9,6 +9,9 @@
         <template #[`item.actions`]>
             <IconBtn icon="mdi-pencil" />
         </template>
+        <template #loading>
+            <VSkeletonLoader type="table-row" />
+        </template>
     </VDataTableVirtual>
 </template>
 

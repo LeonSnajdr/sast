@@ -2,15 +2,14 @@
     <VRow>
         <VCol v-for="themeItem in themeItems" :key="themeItem.theme" cols="12" sm="6">
             <VThemeProvider :theme="themeItem.theme">
-                <VCard
-                    @click="selectTheme(themeItem.theme)"
-                    :class="{ selected: themeItem.theme === selectedTheme }"
-                    :text="themeItem.description"
-                    :title="themeItem.title"
-                >
-                    <template #prepend>
+                <VCard @click="selectTheme(themeItem.theme)" :class="{ selected: themeItem.theme === selectedTheme }">
+                    <VCardTitle>
                         <VIcon :color="themeItem.color" :icon="themeItem.icon" />
-                    </template>
+                        {{ themeItem.title }}
+                    </VCardTitle>
+                    <VCardSubtitle>
+                        {{ themeItem.description }}
+                    </VCardSubtitle>
                     <VCardText class="ma-n4">
                         <VSkeletonLoader type="paragraph" boilerplate />
                     </VCardText>

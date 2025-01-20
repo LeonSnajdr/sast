@@ -1,13 +1,19 @@
 <template>
-    <VAppBar class="d-flex ga-4">
+    <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.edit.title") }}</VAppBarTitle>
-        <div class="d-flex ga-2">
-            <IconBtn color="error" icon="mdi-delete" />
-            <IconBtn color="success" icon="mdi-content-save" variant="flat" />
-        </div>
+        <VBtn density="comfortable" variant="flat">Löschen</VBtn>
+        <VBtn :disabled="!isFormValid" color="success" density="comfortable" variant="flat">Speichern</VBtn>
     </VAppBar>
     <VContainer>
-        {{ route.params.placeholderId }}
+        <VCard :loading="isLoading">
+            <VCardText v-if="placeholder">
+                <VForm ref="form" v-model="isFormValid">
+                    <PlaceholderFieldName v-model="placeholder.name" />
+                    <PlaceholderFieldValue v-model="placeholder.value" />
+                    <PlaceholderFieldProjectId v-model="placeholder.projectId" />
+                </VForm>
+            </VCardText>
+        </VCard>
     </VContainer>
 </template>
 
@@ -15,6 +21,7 @@
 const route = useRoute("index-project-id-placeholder-placeholderId");
 
 const isLoading = ref(false);
+const isFormValid = ref(false);
 const placeholder = ref<PlaceholderContract>();
 
 onBeforeMount(() => {

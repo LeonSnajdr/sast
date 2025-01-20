@@ -1,6 +1,8 @@
 <template>
-    <ProjectDrawer />
-    <NuxtPage v-if="!isLoading" />
+    <template v-if="!isLoading">
+        <ProjectDrawer />
+        <NuxtPage />
+    </template>
 </template>
 
 <script setup lang="ts">

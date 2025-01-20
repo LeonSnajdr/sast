@@ -7,18 +7,20 @@
             </IconBtn>
         </VAppBar>
         <VContainer class="flex-grow-1 d-flex flex-column ga-4">
-            <VCard title="Global">
-                <template #prepend>
+            <VCard>
+                <VCardTitle>
                     <VIcon color="info" icon="mdi-web" />
-                </template>
+                    {{ $t("placeholder.card.global.title") }}
+                </VCardTitle>
                 <VCardText>
                     <PlaceholderTable :loading="isLoading" :placeholders="globalPlaceholders" />
                 </VCardText>
             </VCard>
-            <VCard title="Project">
-                <template #prepend>
+            <VCard>
+                <VCardTitle>
                     <VIcon color="success" icon="mdi-map-marker-radius" />
-                </template>
+                    {{ $t("placeholder.card.global.project") }}
+                </VCardTitle>
                 <VCardText>
                     <PlaceholderTable :loading="isLoading" :placeholders="projectPlaceholders" />
                 </VCardText>

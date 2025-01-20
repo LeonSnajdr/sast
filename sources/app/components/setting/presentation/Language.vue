@@ -1,10 +1,10 @@
 <template>
     <VRowSingle>
-        <VCard title="Sprache">
-            <template #prepend>
+        <VCard>
+            <VCardTitle>
                 <VIcon color="info" icon="mdi-web" />
-            </template>
-
+                {{ $t("setting.presentation.language.title") }}
+            </VCardTitle>
             <VCardText>
                 <ChipSelect v-model="selectedLangauge" :items="laguageItems" itemText="translation" itemValue="language" />
             </VCardText>
