@@ -17,9 +17,9 @@ use crate::placeholder::placeholder_commands;
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
 	let builder = Builder::<tauri::Wry>::new().commands(collect_commands![
-		setting_commands::initialize_setting,
-		setting_commands::get_setting,
-		setting_commands::update_setting,
+		setting_commands::setting_initialize,
+		setting_commands::setting_get_default,
+		setting_commands::setting_update_one,
 		project_commands::create_project,
 		project_commands::get_all_projects,
 		project_commands::get_last_opened_project_id,
@@ -32,7 +32,7 @@ pub fn run() {
 		pty_commands::pty_exitstatus,
 		placeholder_commands::placeholder_create,
 		placeholder_commands::placeholder_get_all_global,
-		placeholder_commands::placeholders_get_all_project,
+		placeholder_commands::placeholder_get_all_project,
 		placeholder_commands::placeholder_get_one,
 	]);
 

@@ -18,13 +18,13 @@ const notify = useNotify();
 const { locale: uiLanguage } = useI18n();
 const { name: uiTheme } = useTheme();
 
-const setting = ref<InitializeSettingContract>({
+const setting = ref<SettingInitializeContract>({
     presentationLanguage: uiLanguage.value,
     presentationTheme: uiTheme.value
 });
 
 const finish = async () => {
-    const initializeResult = await commands.initializeSetting(setting.value);
+    const initializeResult = await commands.settingInitialize(setting.value);
 
     if (initializeResult.status == "error") {
         if (initializeResult.error === "AlreadyExists") {

@@ -5,14 +5,14 @@ use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct InitializeSettingContract {
+pub struct SettingInitializeContract {
 	pub presentation_language: String,
 	pub presentation_theme: String,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct UpdateSettingContract {
+pub struct SettingUpdateContract {
 	pub id: Uuid,
 	pub presentation_language: String,
 	pub presentation_theme: String,

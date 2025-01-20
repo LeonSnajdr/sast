@@ -5,7 +5,7 @@ use crate::prelude::*;
 use crate::db;
 use crate::setting::setting_models::SettingModel;
 
-pub async fn initialize_setting(meta_date_updated: &DateTime<Utc>, presentation_language: &String, presentation_theme: &String) -> Result<SettingModel> {
+pub async fn setting_initialize(meta_date_updated: &DateTime<Utc>, presentation_language: &String, presentation_theme: &String) -> Result<SettingModel> {
 	let id = Uuid::new_v4();
 
 	let setting = sqlx::query_as!(
@@ -33,7 +33,7 @@ pub async fn initialize_setting(meta_date_updated: &DateTime<Utc>, presentation_
 	Ok(setting)
 }
 
-pub async fn get_is_setting_initialized() -> Result<bool> {
+pub async fn setting_get_is_initialized() -> Result<bool> {
 	let setting_count = sqlx::query_scalar!(
 		r#"--sql
            select count(id) from setting
@@ -48,7 +48,7 @@ pub async fn get_is_setting_initialized() -> Result<bool> {
 	Ok(is_setting_initialized)
 }
 
-pub async fn get_setting() -> Result<Option<SettingModel>> {
+pub async fn setting_get_default() -> Result<Option<SettingModel>> {
 	let setting = sqlx::query_as!(
 		SettingModel,
 		r#"--sql
@@ -68,7 +68,7 @@ pub async fn get_setting() -> Result<Option<SettingModel>> {
 	Ok(setting)
 }
 
-pub async fn update_setting(id: &Uuid, presentation_language: &String, presentation_theme: &String) -> Result<()> {
+pub async fn setting_update_one(id: &Uuid, presentation_language: &String, presentation_theme: &String) -> Result<()> {
 	let date_updated = Utc::now();
 
 	sqlx::query!(

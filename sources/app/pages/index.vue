@@ -15,7 +15,7 @@ onBeforeMount(async () => {
 });
 
 const initialize = async () => {
-    const settingResult = await commands.getSetting();
+    const settingResult = await commands.settingGetDefault();
 
     if (settingResult.status == "error") {
         return navigateTo({ name: "error" });

@@ -18,7 +18,7 @@ const { setting } = storeToRefs(settingStore);
 watch(
     setting,
     async () => {
-        const updateResult = await commands.updateSetting({
+        const updateResult = await commands.settingUpdateOne({
             id: setting.value.id,
             presentationLanguage: setting.value.presentationLanguage,
             presentationTheme: setting.value.presentationTheme

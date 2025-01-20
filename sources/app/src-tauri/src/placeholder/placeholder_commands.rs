@@ -22,7 +22,7 @@ pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderContract>> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn placeholders_get_all_project(project_id: Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
+pub async fn placeholder_get_all_project(project_id: Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
     let placeholders = placeholder_service::placeholder_get_all_project(&project_id).await?;
 
     Ok(placeholders)

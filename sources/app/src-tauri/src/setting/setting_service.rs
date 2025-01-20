@@ -1,11 +1,11 @@
 use chrono::Utc;
 
 use crate::prelude::*;
-use crate::setting::setting_contracts::{InitializeSettingContract, SettingContract, UpdateSettingContract};
+use crate::setting::setting_contracts::{SettingInitializeContract, SettingContract, SettingUpdateContract};
 use crate::setting::setting_repository;
 
-pub async fn initialize_setting(init_contract: &InitializeSettingContract) -> Result<SettingContract> {
-	let already_initialized = setting_repository::get_is_setting_initialized().await?;
+pub async fn setting_initialize(initialize_contract: &SettingInitializeContract) -> Result<SettingContract> {
+	let already_initialized = setting_repository::setting_get_is_initialized().await?;
 
 	if already_initialized {
 		return Err(Error::AlreadyExists);
@@ -13,16 +13,15 @@ pub async fn initialize_setting(init_contract: &InitializeSettingContract) -> Re
 
 	let meta_date_updated = Utc::now();
 
-	let setting_model =
-		setting_repository::initialize_setting(&meta_date_updated, &init_contract.presentation_language, &init_contract.presentation_theme).await?;
+	let setting_model = setting_repository::setting_initialize(&meta_date_updated, &initialize_contract.presentation_language, &initialize_contract.presentation_theme).await?;
 
 	let setting_contract = SettingContract::from(setting_model);
 
 	Ok(setting_contract)
 }
 
-pub async fn get_setting() -> Result<Option<SettingContract>> {
-	let setting_model_option = setting_repository::get_setting().await?;
+pub async fn setting_get_default() -> Result<Option<SettingContract>> {
+	let setting_model_option = setting_repository::setting_get_default().await?;
 
 	match setting_model_option {
 		Some(setting_model) => Ok(Some(SettingContract::from(setting_model))),
@@ -30,8 +29,8 @@ pub async fn get_setting() -> Result<Option<SettingContract>> {
 	}
 }
 
-pub async fn update_setting(update_contract: &UpdateSettingContract) -> Result<()> {
-	setting_repository::update_setting(&update_contract.id, &update_contract.presentation_language, &update_contract.presentation_theme).await?;
+pub async fn setting_update_one(update_contract: &SettingUpdateContract) -> Result<()> {
+	setting_repository::setting_update_one(&update_contract.id, &update_contract.presentation_language, &update_contract.presentation_theme).await?;
 
 	Ok(())
 }

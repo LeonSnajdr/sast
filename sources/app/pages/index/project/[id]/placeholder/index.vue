@@ -49,7 +49,7 @@ const loadPlaceholders = async () => {
     isLoading.value = true;
 
     const globalPlaceholdersResult = await commands.placeholderGetAllGlobal();
-    const projectPlaceholdersResult = await commands.placeholdersGetAllProject(selectedProject.value.id);
+    const projectPlaceholdersResult = await commands.placeholderGetAllProject(selectedProject.value.id);
 
     isLoading.value = false;
 
