@@ -4,8 +4,8 @@
             {{ t("setting.presentation") }}
         </VAppBarTitle>
     </VAppBar>
-    <SettingPresentationLanguage v-model="setting.presentationLanguage" />
-    <SettingPresentationTheme v-model="setting.presentationTheme" />
+    <SettingPresentationFieldLanguage v-model="setting.presentationLanguage" />
+    <SettingPresentationFieldTheme v-model="setting.presentationTheme" />
 </template>
 
 <script setup lang="ts">

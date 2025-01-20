@@ -16,7 +16,7 @@
   "placeholder.field.name": "Name",
   "placeholder.field.projectId.global": "Globaler Platzhalter",
   "placeholder.field.projectId.specific": "Projektspezifischer Platzhalter",
-  "placeholder.field.value": "Value",
+  "placeholder.field.value": "Wert",
   "placeholder.load.error": "Laden der Platzhalter fehlgeschlagen",
   "placeholder.table.column.actions": "Aktionen",
   "placeholder.table.column.dateCreated": "Erstellt",

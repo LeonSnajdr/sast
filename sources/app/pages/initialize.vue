@@ -1,8 +1,8 @@
 <template>
     <VContainer class="fill-height" maxWidth="800">
         <VRowSingle>
-            <SettingPresentationLanguage v-model="setting.presentationLanguage" />
-            <SettingPresentationTheme v-model="setting.presentationTheme" />
+            <SettingPresentationFieldLanguage v-model="setting.presentationLanguage" />
+            <SettingPresentationFieldTheme v-model="setting.presentationTheme" />
             <VRowSingle colClass="d-flex">
                 <VSpacer />
                 <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary">{{ $t("initialize.finish") }}</VBtn>
