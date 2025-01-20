@@ -46,7 +46,11 @@ const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const placeholder = ref({ projectId: selectedProject.value.id } as CreatePlaceholderContract);
+const placeholder = ref({} as CreatePlaceholderContract);
+
+onMounted(() => {
+    placeholder.value.projectId = selectedProject.value.id;
+});
 
 const createPlaceholder = async () => {
     isLoading.value = true;

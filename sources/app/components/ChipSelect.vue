@@ -1,6 +1,7 @@
 <template>
     <div class="v-chip-group">
-        <template v-for="item in items" :key="item[valueKey]">
+        <!-- Index used here as key, because it is allowed to pass null as itemValue-->
+        <template v-for="(item, index) in items" :key="index">
             <VChip @click="itemSelected(item)" :color="isSelected(item) ? 'primary' : ''" :variant="isSelected(item) ? 'flat' : 'tonal'" density="comfortable">
                 {{ item[itemText] }}
             </VChip>
