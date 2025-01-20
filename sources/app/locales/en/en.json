@@ -10,6 +10,7 @@
   "placeholder.create.error": "Creating placeholder failed",
   "placeholder.create.success": "Created placeholder {placeholderName}",
   "placeholder.create.title": "Create placeholder",
+  "placeholder.edit.title": "Placeholder - Edit",
   "placeholder.field.name": "Name",
   "placeholder.load.error": "Loading placeholders failed",
   "placeholder.table.column.actions": "Actions",

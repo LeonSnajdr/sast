@@ -10,6 +10,7 @@
   "placeholder.create.error": "Platzhaltererstellung fehlgeschlagen",
   "placeholder.create.success": "Platzhalter {placeholderName} erstellt",
   "placeholder.create.title": "Platzhalter erstellen",
+  "placeholder.edit.title": "Platzhalter - Bearbeiten",
   "placeholder.field.name": "Name",
   "placeholder.load.error": "Laden der Platzhalter fehlgeschlagen",
   "placeholder.table.column.actions": "Aktionen",

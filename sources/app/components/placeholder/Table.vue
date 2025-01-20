@@ -1,5 +1,5 @@
 <template>
-    <VDataTableVirtual :headers="headers" :items="placeholders" hideDefaultFooter>
+    <VDataTableVirtual :headers="headers" :items="placeholders" :rowProps="getRowProps" hideDefaultFooter>
         <template #[`item.dateCreated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateCreated) }}
         </template>
@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import type { RouteLocationRaw } from "vue-router";
 import type { DataTableHeader } from "vuetify/helpers";
 
 defineProps<{
@@ -20,6 +21,10 @@ defineProps<{
 }>();
 
 const { t } = useI18n();
+
+const projectStore = useProjectStore();
+
+const { selectedProject } = storeToRefs(projectStore);
 
 const headers: DataTableHeader[] = [
     {
@@ -44,4 +49,17 @@ const headers: DataTableHeader[] = [
         width: 50
     }
 ];
+
+const getRowProps = ({ item }: { item: PlaceholderContract }) => {
+    return {
+        onClick: () => {
+            const placeholderRouteLoaction = getPlaceholderRouteLocation(item);
+            navigateTo(placeholderRouteLoaction);
+        }
+    };
+};
+
+const getPlaceholderRouteLocation = (placeholder: PlaceholderContract): RouteLocationRaw => {
+    return { name: "index-project-id-placeholder-placeholderId", params: { id: selectedProject.value.id, placeholderId: placeholder.id } };
+};
 </script>
