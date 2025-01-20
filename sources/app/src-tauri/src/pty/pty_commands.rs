@@ -7,7 +7,7 @@ use crate::pty::pty_service;
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_spawn(spawn_contract: SpawnPtyContract) -> Result<Uuid> {
-	let session_id = pty_service::spawn(&spawn_contract).await?;
+	let session_id = pty_service::pty_spawn(&spawn_contract).await?;
 
 	Ok(session_id)
 }
@@ -15,7 +15,7 @@ pub async fn pty_spawn(spawn_contract: SpawnPtyContract) -> Result<Uuid> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_write(session_id: Uuid, data: String) -> Result<()> {
-	pty_service::write(&session_id, &data).await?;
+	pty_service::pty_write(&session_id, &data).await?;
 
 	Ok(())
 }
@@ -23,7 +23,7 @@ pub async fn pty_write(session_id: Uuid, data: String) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_read(session_id: Uuid) -> Result<String> {
-	let result = pty_service::read(&session_id).await?;
+	let result = pty_service::pty_read(&session_id).await?;
 
 	Ok(result)
 }
@@ -31,7 +31,7 @@ pub async fn pty_read(session_id: Uuid) -> Result<String> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_resize(session_id: Uuid, resize_contract: ResizePtyContract) -> Result<()> {
-	pty_service::resize(&session_id, &resize_contract).await?;
+	pty_service::pty_resize(&session_id, &resize_contract).await?;
 
 	Ok(())
 }
@@ -39,7 +39,7 @@ pub async fn pty_resize(session_id: Uuid, resize_contract: ResizePtyContract) ->
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_kill(session_id: Uuid) -> Result<()> {
-	pty_service::kill(&session_id).await?;
+	pty_service::pty_kill(&session_id).await?;
 
 	Ok(())
 }
@@ -47,7 +47,7 @@ pub async fn pty_kill(session_id: Uuid) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_exitstatus(session_id: Uuid) -> Result<u32> {
-	let exitstatus = pty_service::exitstatus(&session_id).await?;
+	let exitstatus = pty_service::pty_exitstatus(&session_id).await?;
 
 	Ok(exitstatus)
 }

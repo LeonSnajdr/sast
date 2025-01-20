@@ -25,7 +25,7 @@ struct PtySession {
 	reader: Mutex<Box<dyn std::io::Read + Send>>,
 }
 
-pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
+pub async fn pty_spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
 
 	let pair = pty_system
@@ -63,16 +63,16 @@ pub async fn spawn(spawn_contract: &SpawnPtyContract) -> Result<Uuid> {
 	Ok(session_id)
 }
 
-pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
-	let session = get_session(session_id).await?;
+pub async fn pty_write(session_id: &Uuid, data: &String) -> Result<()> {
+	let session = pty_get_session(session_id).await?;
 
 	session.writer.lock().await.write_all(data.as_bytes()).map_err(|_| Error::Failed)?;
 
 	Ok(())
 }
 
-pub async fn read(session_id: &Uuid) -> Result<String> {
-	let session = get_session(session_id).await?;
+pub async fn pty_read(session_id: &Uuid) -> Result<String> {
+	let session = pty_get_session(session_id).await?;
 
 	let mut buf = [0u8; 1024];
 	let read_bytes = session.reader.lock().await.read(&mut buf).map_err(|_| Error::Failed)?;
@@ -80,8 +80,8 @@ pub async fn read(session_id: &Uuid) -> Result<String> {
 	Ok(String::from_utf8_lossy(&buf[..read_bytes]).to_string())
 }
 
-pub async fn resize(session_id: &Uuid, resize_contract: &ResizePtyContract) -> Result<()> {
-	let session = get_session(session_id).await?;
+pub async fn pty_resize(session_id: &Uuid, resize_contract: &ResizePtyContract) -> Result<()> {
+	let session = pty_get_session(session_id).await?;
 
 	session
 		.pair
@@ -99,23 +99,23 @@ pub async fn resize(session_id: &Uuid, resize_contract: &ResizePtyContract) -> R
 	Ok(())
 }
 
-pub async fn kill(session_id: &Uuid) -> Result<()> {
-	let session = get_session(session_id).await?;
+pub async fn pty_kill(session_id: &Uuid) -> Result<()> {
+	let session = pty_get_session(session_id).await?;
 
 	session.child_killer.lock().await.kill().map_err(|_| Error::Failed)?;
 
 	Ok(())
 }
 
-pub async fn exitstatus(session_id: &Uuid) -> Result<u32> {
-	let session = get_session(session_id).await?;
+pub async fn pty_exitstatus(session_id: &Uuid) -> Result<u32> {
+	let session = pty_get_session(session_id).await?;
 
 	let exitstatus = session.child.lock().await.wait().map_err(|_| Error::Failed)?.exit_code();
 
 	Ok(exitstatus)
 }
 
-async fn get_session(session_id: &Uuid) -> Result<Arc<PtySession>> {
+async fn pty_get_session(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
 	let session = sessions.get(session_id).ok_or(Error::NotExists)?.clone();
 
