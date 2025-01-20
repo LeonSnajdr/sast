@@ -5,7 +5,7 @@ use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CreateProjectContract {
+pub struct ProjectCreateContract {
 	pub name: String,
 }
 

@@ -2,27 +2,27 @@ use uuid::Uuid;
 
 use crate::prelude::*;
 use crate::project::project_service;
-use crate::project::project_contracts::{CreateProjectContract, ProjectContract};
+use crate::project::project_contracts::{ProjectCreateContract, ProjectContract};
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_project(create_project_contract: CreateProjectContract) -> Result<ProjectContract> {
-	let project = project_service::create_project(&create_project_contract).await?;
+pub async fn project_create(project_create_contract: ProjectCreateContract) -> Result<ProjectContract> {
+	let project = project_service::project_create(&project_create_contract).await?;
 
 	Ok(project)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_all_projects() -> Result<Vec<ProjectContract>> {
-	let projects = project_service::get_all_projects().await?;
+pub async fn project_get_all() -> Result<Vec<ProjectContract>> {
+	let projects = project_service::project_get_all().await?;
 
 	Ok(projects)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn open_project(id: Uuid) -> Result<ProjectContract> {
+pub async fn project_open(id: Uuid) -> Result<ProjectContract> {
 	let project = project_service::open_project(&id).await?;
 
 	Ok(project)
@@ -30,8 +30,8 @@ pub async fn open_project(id: Uuid) -> Result<ProjectContract> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_last_opened_project_id() -> Result<Option<Uuid>> {
-	let project = project_service::get_last_opened_project_id().await?;
+pub async fn project_get_id_last_opened() -> Result<Option<Uuid>> {
+	let project = project_service::project_get_id_last_opened().await?;
 
 	Ok(project)
 }

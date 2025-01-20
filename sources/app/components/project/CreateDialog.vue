@@ -33,12 +33,12 @@ const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const project = ref({} as CreateProjectContract);
+const project = ref({} as ProjectCreateContract);
 
 const createProject = async () => {
     isLoading.value = true;
 
-    const createResult = await commands.createProject(project.value);
+    const createResult = await commands.projectCreate(project.value);
 
     isLoading.value = false;
 

@@ -5,7 +5,7 @@ use crate::db;
 use crate::project::project_models::ProjectModel;
 use crate::prelude::*;
 
-pub async fn create_project(name: &String, date_created: &DateTime<Utc>, date_last_opened: &DateTime<Utc>) -> Result<ProjectModel> {
+pub async fn project_create(name: &String, date_created: &DateTime<Utc>, date_last_opened: &DateTime<Utc>) -> Result<ProjectModel> {
 	let id = uuid::Uuid::new_v4();
 
 	let project = sqlx::query_as!(
@@ -33,7 +33,7 @@ pub async fn create_project(name: &String, date_created: &DateTime<Utc>, date_la
 	Ok(project)
 }
 
-pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
+pub async fn project_get_all() -> Result<Vec<ProjectModel>> {
 	let projects = sqlx::query_as!(
 		ProjectModel,
 		r#"--sql
@@ -53,7 +53,7 @@ pub async fn get_all_projects() -> Result<Vec<ProjectModel>> {
 	Ok(projects)
 }
 
-pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
+pub async fn project_get_one(id: &Uuid) -> Result<ProjectModel> {
 	let project = sqlx::query_as!(
 		ProjectModel,
 		r#"--sql
@@ -74,7 +74,7 @@ pub async fn get_project(id: &Uuid) -> Result<ProjectModel> {
 	Ok(project)
 }
 
-pub async fn get_last_opened_project_id() -> Result<Option<Uuid>> {
+pub async fn project_get_id_last_opened() -> Result<Option<Uuid>> {
 	let last_opened_project_id = sqlx::query_scalar!(
 		r#"--sql
         select id as "id: Uuid"
@@ -90,7 +90,7 @@ pub async fn get_last_opened_project_id() -> Result<Option<Uuid>> {
 	Ok(last_opened_project_id)
 }
 
-pub async fn update_project_last_opened(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
+pub async fn project_update_one(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
 	sqlx::query!(
 		r#"--sql 
             update project set date_last_opened = $1 where id = $2

@@ -29,33 +29,33 @@ async settingUpdateOne(updateContract: SettingUpdateContract) : Promise<Result<n
     else return { status: "error", error: e  as any };
 }
 },
-async createProject(createProjectContract: CreateProjectContract) : Promise<Result<ProjectContract, Error>> {
+async projectCreate(projectCreateContract: ProjectCreateContract) : Promise<Result<ProjectContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("create_project", { createProjectContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("project_create", { projectCreateContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getAllProjects() : Promise<Result<ProjectContract[], Error>> {
+async projectGetAll() : Promise<Result<ProjectContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_all_projects") };
+    return { status: "ok", data: await TAURI_INVOKE("project_get_all") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getLastOpenedProjectId() : Promise<Result<string | null, Error>> {
+async projectGetIdLastOpened() : Promise<Result<string | null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_last_opened_project_id") };
+    return { status: "ok", data: await TAURI_INVOKE("project_get_id_last_opened") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async openProject(id: string) : Promise<Result<ProjectContract, Error>> {
+async projectOpen(id: string) : Promise<Result<ProjectContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("open_project", { id }) };
+    return { status: "ok", data: await TAURI_INVOKE("project_open", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -153,11 +153,11 @@ async placeholderGetOne(id: string) : Promise<Result<PlaceholderContract, Error>
 
 /** user-defined types **/
 
-export type CreateProjectContract = { name: string }
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
+export type ProjectCreateContract = { name: string }
 export type ResizePtyContract = { cols: number; rows: number }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }

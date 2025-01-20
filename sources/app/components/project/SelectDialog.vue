@@ -48,7 +48,7 @@ onBeforeMount(() => {
 const loadProjects = async () => {
     isLoading.value = true;
 
-    const projectsResult = await commands.getAllProjects();
+    const projectsResult = await commands.projectGetAll();
 
     isLoading.value = false;
 
