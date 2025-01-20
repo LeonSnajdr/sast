@@ -3,7 +3,7 @@
         <VAppBar>
             <VAppBarTitle>{{ t("placeholder.title") }}</VAppBarTitle>
             <IconBtn color="secondary" icon="mdi-plus" variant="flat">
-                <PlaceholderCreateDialog />
+                <PlaceholderCreateDialog @created="loadPlaceholders()" />
             </IconBtn>
         </VAppBar>
         <VContainer class="flex-grow-1 d-flex flex-column ga-4">

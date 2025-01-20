@@ -21,6 +21,10 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits<{
+    created: [];
+}>();
+
 const notify = useNotify();
 const { t } = useI18n();
 
@@ -47,6 +51,8 @@ const createPlaceholder = async () => {
     notify.success(t("placeholder.create.success", { placeholderName: createResult.data.name }));
 
     isDialogOpen.value = false;
+
+    emit("created");
 };
 
 watch(isDialogOpen, () => {
