@@ -1,19 +1,14 @@
 <template>
-    <VDialog v-model="isDialogOpen" activator="parent" width="800" eager>
-        <VCard>
-            <VCardTitle>
-                <VIcon color="success" icon="mdi-label" />
-                {{ $t("placeholder.delete.title") }}
-            </VCardTitle>
-            <VCardText>
-                {{ $t("placeholder.delete.description", { placeholderName: placeholder.name }) }}
-            </VCardText>
-            <VCardActions>
-                <VBtn @click="placeholderDelete()" :loading="isLoading">{{ $t("action.delete") }}</VBtn>
-                <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
-            </VCardActions>
-        </VCard>
-    </VDialog>
+    <VBtn variant="flat">
+        {{ $t("action.delete") }}
+        <ConfirmationDialog
+            @confirm="placeholderDelete"
+            :message="$t('placeholder.delete.description', { placeholderName: placeholder.name })"
+            :title="$t('placeholder.delete.title')"
+            icon="mdi-label"
+            iconColor="error"
+        />
+    </VBtn>
 </template>
 
 <script setup lang="ts">

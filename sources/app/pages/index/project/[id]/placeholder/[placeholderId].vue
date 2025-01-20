@@ -1,10 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.edit.title") }}</VAppBarTitle>
-        <VBtn density="comfortable" variant="flat">
-            {{ $t("action.delete") }}
-            <PlaceholderDeleteDialog v-if="placeholder" :placeholder="placeholder" />
-        </VBtn>
+        <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" />
         <VBtn :disabled="!isFormValid" color="success" density="comfortable" variant="flat">{{ $t("action.save") }}</VBtn>
     </VAppBar>
     <VContainer>

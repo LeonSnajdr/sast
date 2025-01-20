@@ -1,5 +1,7 @@
 {
+  "action.cancel": "Cancel#",
   "action.close": "Schließen",
+  "action.confirm": "Bestätigen",
   "action.create": "Erstellen",
   "action.delete": "Löschen",
   "action.save": "Speichern",
