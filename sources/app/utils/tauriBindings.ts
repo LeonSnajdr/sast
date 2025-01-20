@@ -140,6 +140,22 @@ async placeholderGetOne(id: string) : Promise<Result<PlaceholderContract, Error>
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async placeholderUpdateOne(id: string, placeholderUpdateContract: PlaceholderUpdateContract) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_update_one", { id, placeholderUpdateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async placeholderDeleteOne(id: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_delete_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -156,6 +172,7 @@ async placeholderGetOne(id: string) : Promise<Result<PlaceholderContract, Error>
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string }
+export type PlaceholderUpdateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
 export type ResizePtyContract = { cols: number; rows: number }

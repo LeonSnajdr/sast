@@ -1,8 +1,11 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.edit.title") }}</VAppBarTitle>
-        <VBtn density="comfortable" variant="flat">Löschen</VBtn>
-        <VBtn :disabled="!isFormValid" color="success" density="comfortable" variant="flat">Speichern</VBtn>
+        <VBtn density="comfortable" variant="flat">
+            {{ $t("action.delete") }}
+            <PlaceholderDeleteDialog v-if="placeholder" :placeholder="placeholder" />
+        </VBtn>
+        <VBtn :disabled="!isFormValid" color="success" density="comfortable" variant="flat">{{ $t("action.save") }}</VBtn>
     </VAppBar>
     <VContainer>
         <VCard :loading="isLoading">
@@ -31,7 +34,7 @@ onBeforeMount(() => {
 const loadPlaceholder = async () => {
     isLoading.value = true;
 
-    const placeholderResult = await commands.getPlaceholder(route.params.placeholderId);
+    const placeholderResult = await commands.placeholderGetOne(route.params.placeholderId);
 
     isLoading.value = false;
 

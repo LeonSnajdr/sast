@@ -1,6 +1,8 @@
 {
   "action.close": "Schließen",
   "action.create": "Erstellen",
+  "action.delete": "Löschen",
+  "action.save": "Speichern",
   "error.button": "Neu initialisieren",
   "error.default": "Ein Fehler ist aufgetreten",
   "error.headline": "Fehler",
@@ -12,6 +14,9 @@
   "placeholder.create.error": "Platzhaltererstellung fehlgeschlagen",
   "placeholder.create.success": "Platzhalter {placeholderName} erstellt",
   "placeholder.create.title": "Platzhalter erstellen",
+  "placeholder.delete.description": "Sind Sie sicher, dass Sie den Platzhalter {placeholderName} unwiderruflich löschen wollen?",
+  "placeholder.delete.success": "Platzhalter {placeholderName} gelöscht",
+  "placeholder.delete.title": "Platzhalter löschen",
   "placeholder.edit.title": "Platzhalter - Bearbeiten",
   "placeholder.field.name": "Name",
   "placeholder.field.projectId.global": "Globaler Platzhalter",
