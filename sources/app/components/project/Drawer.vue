@@ -8,7 +8,9 @@
                         <VTooltip activator="parent">{{ $t("project.drawer.close") }}</VTooltip>
                     </VHover>
                 </template>
-                <VListItemTitle>{{ selectedProject.name }}</VListItemTitle>
+                <VListItemTitle>
+                    <span class="font-weight-regular text-body-1">{{ selectedProject.name }}</span>
+                </VListItemTitle>
                 <template #append>
                     <IconBtn icon="mdi-swap-horizontal">
                         <ProjectSelectDialog />

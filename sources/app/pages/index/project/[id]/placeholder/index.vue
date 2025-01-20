@@ -1,7 +1,7 @@
 <template>
-    <div class="fill-height d-flex flex-column">
+    <div class="d-flex flex-column">
         <VAppBar>
-            <VAppBarTitle>{{ t("placeholder.title") }}</VAppBarTitle>
+            <VAppBarTitle>{{ $t("placeholder.title") }}</VAppBarTitle>
             <PlaceholderActionCreate @created="loadPlaceholders()" />
         </VAppBar>
         <VContainer class="flex-grow-1 d-flex flex-column ga-4">

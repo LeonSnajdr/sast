@@ -193,8 +193,12 @@ export default defineVuetifyConfiguration({
         VAppBar: {
             density: "compact",
             border: "b",
-            class: "pr-3",
-            elevation: "0"
+            class: "pr-3 ",
+            elevation: "0",
+
+            VAppBarTitle: {
+                class: "text-body-1"
+            }
         }
     }
 });
