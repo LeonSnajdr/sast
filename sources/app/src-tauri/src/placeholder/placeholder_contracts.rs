@@ -5,7 +5,7 @@ use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct CreatePlaceholderContract {
+pub struct PlaceholderCreateContract {
     pub project_id: Option<Uuid>,
     pub name: String,
     pub value: String

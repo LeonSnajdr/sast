@@ -30,10 +30,10 @@ pub fn run() {
 		pty_commands::pty_resize,
 		pty_commands::pty_kill,
 		pty_commands::pty_exitstatus,
-		placeholder_commands::create_placeholder,
-		placeholder_commands::get_global_placeholders,
-		placeholder_commands::get_project_placeholders,
-		placeholder_commands::get_placeholder,
+		placeholder_commands::placeholder_create,
+		placeholder_commands::placeholder_get_all_global,
+		placeholder_commands::placeholders_get_all_project,
+		placeholder_commands::placeholder_get_one,
 	]);
 
 	#[cfg(debug_assertions)]

@@ -33,12 +33,12 @@ const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const placeholder = ref({} as CreatePlaceholderContract);
+const placeholder = ref({} as PlaceholderCreateContract);
 
 const createPlaceholder = async () => {
     isLoading.value = true;
 
-    const createResult = await commands.createPlaceholder(placeholder.value);
+    const createResult = await commands.placeholderCreate(placeholder.value);
 
     isLoading.value = false;
 

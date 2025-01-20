@@ -5,7 +5,7 @@ use crate::db;
 use crate::placeholder::placeholder_models::PlaceholderModel;
 use crate::prelude::*;
 
-pub async fn create_placeholder(project_id: &Option<Uuid>, name: &String, value: &String, date_created: &DateTime<Utc>, date_last_updated: &DateTime<Utc>) -> Result<PlaceholderModel> {
+pub async fn placeholder_create(project_id: &Option<Uuid>, name: &String, value: &String, date_created: &DateTime<Utc>, date_last_updated: &DateTime<Utc>) -> Result<PlaceholderModel> {
     let id = Uuid::new_v4();
 
     let placeholder = sqlx::query_as!(
@@ -37,7 +37,7 @@ pub async fn create_placeholder(project_id: &Option<Uuid>, name: &String, value:
     Ok(placeholder)
 }
 
-pub async fn get_placeholders(project_id: &Option<Uuid>) -> Result<Vec<PlaceholderModel>> {
+pub async fn placeholder_get_many(project_id: &Option<Uuid>) -> Result<Vec<PlaceholderModel>> {
     let placeholders = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -61,7 +61,7 @@ pub async fn get_placeholders(project_id: &Option<Uuid>) -> Result<Vec<Placehold
     Ok(placeholders)
 }
 
-pub async fn get_placeholder(id: &Uuid) -> Result<PlaceholderModel> {
+pub async fn placeholder_get_one(id: &Uuid) -> Result<PlaceholderModel> {
     let placeholder = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql

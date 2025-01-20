@@ -2,36 +2,36 @@ use uuid::Uuid;
 
 use crate::prelude::*;
 use crate::placeholder::placeholder_service;
-use crate::placeholder::placeholder_contracts::{CreatePlaceholderContract, PlaceholderContract};
+use crate::placeholder::placeholder_contracts::{PlaceholderCreateContract, PlaceholderContract};
 
 #[tauri::command]
 #[specta::specta]
-pub async fn create_placeholder(create_placeholder_contract: CreatePlaceholderContract) -> Result<PlaceholderContract> {
-    let placeholder = placeholder_service::create_placeholder(&create_placeholder_contract).await?;
+pub async fn placeholder_create(placeholder_create_contract: PlaceholderCreateContract) -> Result<PlaceholderContract> {
+    let placeholder = placeholder_service::placeholder_create(&placeholder_create_contract).await?;
 
     Ok(placeholder)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_global_placeholders() -> Result<Vec<PlaceholderContract>> {
-    let placeholders = placeholder_service::get_global_placeholders().await?;
+pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderContract>> {
+    let placeholders = placeholder_service::placeholder_get_all_global().await?;
 
     Ok(placeholders)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_project_placeholders(project_id: Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
-    let placeholders = placeholder_service::get_project_placeholders(&project_id).await?;
+pub async fn placeholders_get_all_project(project_id: Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
+    let placeholders = placeholder_service::placeholder_get_all_project(&project_id).await?;
 
     Ok(placeholders)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_placeholder(id: Uuid) -> Result<PlaceholderContract> {
-    let placeholder = placeholder_service::get_placeholder(&id).await?;
+pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderContract> {
+    let placeholder = placeholder_service::placeholder_get_one(&id).await?;
 
     Ok(placeholder)
 }

@@ -48,8 +48,8 @@ onBeforeMount(() => {
 const loadPlaceholders = async () => {
     isLoading.value = true;
 
-    const globalPlaceholdersResult = await commands.getGlobalPlaceholders();
-    const projectPlaceholdersResult = await commands.getProjectPlaceholders(selectedProject.value.id);
+    const globalPlaceholdersResult = await commands.placeholderGetAllGlobal();
+    const projectPlaceholdersResult = await commands.placeholdersGetAllProject(selectedProject.value.id);
 
     isLoading.value = false;
 

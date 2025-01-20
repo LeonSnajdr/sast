@@ -109,33 +109,33 @@ async ptyExitstatus(sessionId: string) : Promise<Result<number, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async createPlaceholder(createPlaceholderContract: CreatePlaceholderContract) : Promise<Result<PlaceholderContract, Error>> {
+async placeholderCreate(placeholderCreateContract: PlaceholderCreateContract) : Promise<Result<PlaceholderContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("create_placeholder", { createPlaceholderContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_create", { placeholderCreateContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getGlobalPlaceholders() : Promise<Result<PlaceholderContract[], Error>> {
+async placeholderGetAllGlobal() : Promise<Result<PlaceholderContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_global_placeholders") };
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_get_all_global") };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getProjectPlaceholders(projectId: string | null) : Promise<Result<PlaceholderContract[], Error>> {
+async placeholdersGetAllProject(projectId: string | null) : Promise<Result<PlaceholderContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_project_placeholders", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("placeholders_get_all_project", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async getPlaceholder(id: string) : Promise<Result<PlaceholderContract, Error>> {
+async placeholderGetOne(id: string) : Promise<Result<PlaceholderContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_placeholder", { id }) };
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_get_one", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -153,11 +153,11 @@ async getPlaceholder(id: string) : Promise<Result<PlaceholderContract, Error>> {
 
 /** user-defined types **/
 
-export type CreatePlaceholderContract = { projectId: string | null; name: string; value: string }
 export type CreateProjectContract = { name: string }
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type InitializeSettingContract = { presentationLanguage: string; presentationTheme: string }
 export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; dateCreated: string; dateLastUpdated: string }
+export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ResizePtyContract = { cols: number; rows: number }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
