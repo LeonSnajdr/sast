@@ -1,4 +1,9 @@
 <template>
+    <VAppBar>
+        <VAppBarTitle>
+            {{ t("setting.presentation") }}
+        </VAppBarTitle>
+    </VAppBar>
     <SettingPresentationLanguage v-model="setting.presentationLanguage" />
     <SettingPresentationTheme v-model="setting.presentationTheme" />
 </template>

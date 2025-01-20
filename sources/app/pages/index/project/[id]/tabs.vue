@@ -1,6 +1,6 @@
 <template>
     <div class="fill-height d-flex flex-column">
-        <VToolbar>
+        <VAppBar>
             <VSlideGroup showArrows>
                 <VSlideGroupItem v-for="tab in tabs" :key="tab">
                     <VBtn :to="{ name: 'index-project-id-tabs-tabId', params: { id: route.params.id, tabId: tab } }" class="ml-2 px-2" density="compact">
@@ -14,8 +14,9 @@
                     </VBtn>
                 </VSlideGroupItem>
             </VSlideGroup>
+            <VSpacer />
             <IconBtn class="ml-2" color="secondary" icon="mdi-plus" variant="flat" />
-        </VToolbar>
+        </VAppBar>
 
         <NuxtPage keepalive />
     </div>

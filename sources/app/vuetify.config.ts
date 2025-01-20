@@ -190,11 +190,11 @@ export default defineVuetifyConfiguration({
         VTooltip: {
             openDelay: 400
         },
-        VToolbar: {
-            color: "surface",
+        VAppBar: {
+            density: "compact",
             border: "b",
             class: "pr-3",
-            height: "38"
+            elevation: "0"
         }
     }
 });
