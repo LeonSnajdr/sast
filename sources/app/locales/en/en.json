@@ -26,7 +26,7 @@
   "placeholder.field.projectId.specific": "Project specific placeholder",
   "placeholder.field.value": "Value",
   "placeholder.load.error": "Loading placeholders failed",
-  "placeholder.save.error": "Platzhalter {placeholderName} konnte nicht gespeichert werden",
+  "placeholder.save.error": "Placeholder {placeholderName} could not be saved",
   "placeholder.save.success": "Saved placeholder {placeholderName}",
   "placeholder.table.column.actions": "Actions",
   "placeholder.table.column.dateCreated": "Created",

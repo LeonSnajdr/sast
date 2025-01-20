@@ -25,7 +25,7 @@
   "placeholder.field.projectId.specific": "Projektspezifischer Platzhalter",
   "placeholder.field.value": "Wert",
   "placeholder.load.error": "Laden der Platzhalter fehlgeschlagen",
-  "placeholder.save.error": "Placeholder {placeholderName} could not be saved",
+  "placeholder.save.error": "Platzhalter {placeholderName} konnte nicht gespeichert werden",
   "placeholder.save.success": "Platzhalter {placeholderName} gespeichert",
   "placeholder.table.column.actions": "Aktionen",
   "placeholder.table.column.dateCreated": "Erstellt",

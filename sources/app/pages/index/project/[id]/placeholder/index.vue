@@ -2,9 +2,7 @@
     <div class="fill-height d-flex flex-column">
         <VAppBar>
             <VAppBarTitle>{{ t("placeholder.title") }}</VAppBarTitle>
-            <IconBtn color="secondary" icon="mdi-plus" variant="flat">
-                <PlaceholderCreateDialog @created="loadPlaceholders()" />
-            </IconBtn>
+            <PlaceholderActionCreate @created="loadPlaceholders()" />
         </VAppBar>
         <VContainer class="flex-grow-1 d-flex flex-column ga-4">
             <VCard>
