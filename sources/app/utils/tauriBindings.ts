@@ -117,9 +117,17 @@ async createPlaceholder(createPlaceholderContract: CreatePlaceholderContract) : 
     else return { status: "error", error: e  as any };
 }
 },
-async getAllPlaceholders() : Promise<Result<PlaceholderContract[], Error>> {
+async getGlobalPlaceholders() : Promise<Result<PlaceholderContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("get_all_placeholders") };
+    return { status: "ok", data: await TAURI_INVOKE("get_global_placeholders") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async getProjectPlaceholders(projectId: string | null) : Promise<Result<PlaceholderContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("get_project_placeholders", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

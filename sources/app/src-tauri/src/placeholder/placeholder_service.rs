@@ -16,10 +16,20 @@ pub async fn create_placeholder(create_placeholder_contract: &CreatePlaceholderC
     Ok(placeholder_contract)
 }
 
-pub async fn get_all_placeholders() -> Result<Vec<PlaceholderContract>> {
-    let placeholder_models = placeholder_repository::get_all_placeholders().await?;
+pub async fn get_global_placeholders() -> Result<Vec<PlaceholderContract>> {
 
-    let placeholder_contracts: Vec<PlaceholderContract> = placeholder_models.into_iter().map(PlaceholderContract::from).collect();
+    let empty_project_id: Option<Uuid> = None;
+
+    let placeholder_contracts = get_project_placeholders(&empty_project_id).await?;
+
+    Ok(placeholder_contracts)
+}
+
+pub async fn get_project_placeholders(project_id: &Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
+
+    let placeholder_models = placeholder_repository::get_placeholders(&project_id).await?;
+
+    let placeholder_contracts = placeholder_models.into_iter().map(PlaceholderContract::from).collect();
 
     Ok(placeholder_contracts)
 }

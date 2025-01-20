@@ -35,19 +35,18 @@
 </template>
 
 <script setup lang="ts">
-const i18n = useI18n();
-const notify = useNotify();
 const projectStore = useProjectStore();
+
+const notify = useNotify();
 const { t } = useI18n();
 
-const form = ref();
-
 const { selectedProject } = storeToRefs(projectStore);
+const form = ref();
 const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const placeholder = ref({} as CreatePlaceholderContract);
+const placeholder = ref({ projectId: selectedProject.value.id } as CreatePlaceholderContract);
 
 const createPlaceholder = async () => {
     isLoading.value = true;
@@ -57,12 +56,12 @@ const createPlaceholder = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(i18n.t("placeholder.create.error"));
+        notify.error(t("placeholder.create.error"));
 
         return;
     }
 
-    notify.success(i18n.t("placeholder.create.success", { placeholderName: createResult.data.name }));
+    notify.success(t("placeholder.create.success", { placeholderName: createResult.data.name }));
 
     isDialogOpen.value = false;
 };
@@ -74,7 +73,7 @@ const projectIdItems = computed(() => [
     },
     {
         projectId: selectedProject.value.id,
-        translation: t("project.field.projectId.specific", { projectName: selectedProject.value.name })
+        translation: t("project.field.projectId.specific")
     }
 ]);
 

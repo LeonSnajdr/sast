@@ -59,7 +59,7 @@ declare module "vuetify/helpers" {
         | ((value: any) => ValidationResult)
         | ((value: any) => PromiseLike<ValidationResult>);
 
-    export { SortItem, ListItem, DataTableHeader, ValidationResult, ValidationRule, InternalDataTableHeader, IconValue };
+    type Density = null | "default" | "comfortable" | "compact";
 
-    export type Density = null | "default" | "comfortable" | "compact";
+    export { SortItem, ListItem, DataTableHeader, ValidationResult, ValidationRule, InternalDataTableHeader, IconValue, Density };
 }

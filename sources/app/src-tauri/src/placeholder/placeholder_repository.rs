@@ -37,7 +37,7 @@ pub async fn create_placeholder(project_id: &Option<Uuid>, name: &String, value:
     Ok(placeholder)
 }
 
-pub async fn get_all_placeholders() -> Result<Vec<PlaceholderModel>> {
+pub async fn get_placeholders(project_id: &Option<Uuid>) -> Result<Vec<PlaceholderModel>> {
     let placeholders = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -49,8 +49,10 @@ pub async fn get_all_placeholders() -> Result<Vec<PlaceholderModel>> {
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from placeholder
+            where project_id is not distinct from $1
             order by name desc
-        "#
+        "#,
+		project_id
 	)
         .fetch_all(db::get_pool())
         .await

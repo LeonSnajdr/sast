@@ -1,7 +1,7 @@
 <template>
     <div class="v-chip-group">
         <template v-for="item in items" :key="item[valueKey]">
-            <VChip @click="itemSelected(item)" :variant="isSelected(item) ? 'flat' : 'outlined'" density="comfortable">
+            <VChip @click="itemSelected(item)" :color="isSelected(item) ? 'primary' : ''" :variant="isSelected(item) ? 'flat' : 'tonal'" density="comfortable">
                 {{ item[itemText] }}
             </VChip>
         </template>

@@ -31,7 +31,8 @@ pub fn run() {
 		pty_commands::pty_kill,
 		pty_commands::pty_exitstatus,
 		placeholder_commands::create_placeholder,
-		placeholder_commands::get_all_placeholders,
+		placeholder_commands::get_global_placeholders,
+		placeholder_commands::get_project_placeholders,
 		placeholder_commands::get_placeholder,
 	]);
 

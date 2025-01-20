@@ -14,8 +14,16 @@ pub async fn create_placeholder(create_placeholder_contract: CreatePlaceholderCo
 
 #[tauri::command]
 #[specta::specta]
-pub async fn get_all_placeholders() -> Result<Vec<PlaceholderContract>> {
-    let placeholders = placeholder_service::get_all_placeholders().await?;
+pub async fn get_global_placeholders() -> Result<Vec<PlaceholderContract>> {
+    let placeholders = placeholder_service::get_global_placeholders().await?;
+
+    Ok(placeholders)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn get_project_placeholders(project_id: Option<Uuid>) -> Result<Vec<PlaceholderContract>> {
+    let placeholders = placeholder_service::get_project_placeholders(&project_id).await?;
 
     Ok(placeholders)
 }
