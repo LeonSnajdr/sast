@@ -194,11 +194,7 @@ export default defineVuetifyConfiguration({
             density: "compact",
             border: "b",
             class: "pr-3",
-            elevation: "0",
-
-            VBtn: {
-                density: "comfortable"
-            }
+            elevation: "0"
         }
     }
 });

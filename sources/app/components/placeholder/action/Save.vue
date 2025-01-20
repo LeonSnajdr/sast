@@ -1,7 +1,7 @@
 <template>
-    <VBtn @click="placeholderSave()" :loading="isLoading" color="success" variant="flat">
+    <IconBtn @click="placeholderSave()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
         {{ $t("action.save") }}
-    </VBtn>
+    </IconBtn>
 </template>
 
 <script setup lang="ts">

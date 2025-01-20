@@ -1,6 +1,5 @@
 <template>
-    <VBtn :loading="isLoading">
-        {{ $t("action.delete") }}
+    <IconBtn :loading="isLoading" icon="mdi-delete">
         <ConfirmationDialog
             @confirm="placeholderDelete"
             :message="$t('placeholder.delete.description', { placeholderName: placeholder.name })"
@@ -8,7 +7,7 @@
             icon="mdi-label"
             iconColor="error"
         />
-    </VBtn>
+    </IconBtn>
 </template>
 
 <script setup lang="ts">
