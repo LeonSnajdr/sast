@@ -1,5 +1,5 @@
 <template>
-    <VBtn variant="flat">
+    <VBtn :loading="isLoading">
         {{ $t("action.delete") }}
         <ConfirmationDialog
             @confirm="placeholderDelete"
@@ -40,8 +40,8 @@ const placeholderDelete = async () => {
 
     notify.success(t("placeholder.delete.success", { placeholderName: props.placeholder.name }));
 
-    isDialogOpen.value = false;
-
     navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+
+    isDialogOpen.value = false;
 };
 </script>

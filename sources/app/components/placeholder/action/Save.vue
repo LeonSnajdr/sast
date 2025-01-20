@@ -1,0 +1,46 @@
+<template>
+    <VBtn @click="placeholderSave()" :loading="isLoading" color="success" variant="flat">
+        {{ $t("action.save") }}
+    </VBtn>
+</template>
+
+<script setup lang="ts">
+const props = defineProps<{
+    placeholder: PlaceholderContract;
+}>();
+
+const notify = useNotify();
+const { t } = useI18n();
+
+const projectStore = useProjectStore();
+
+const { selectedProject } = storeToRefs(projectStore);
+
+const isDialogOpen = ref(false);
+const isLoading = ref(false);
+
+const placeholderSave = async () => {
+    isLoading.value = true;
+
+    const updateContract: PlaceholderUpdateContract = {
+        projectId: props.placeholder.projectId,
+        name: props.placeholder.name,
+        value: props.placeholder.value
+    };
+
+    const saveResult = await commands.placeholderUpdateOne(props.placeholder.id, updateContract);
+
+    isLoading.value = false;
+
+    if (saveResult.status == "error") {
+        notify.error(t("placeholder.save.error", { placeholderName: props.placeholder.name }));
+        return;
+    }
+
+    notify.success(t("placeholder.save.success", { placeholderName: props.placeholder.name }));
+
+    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+
+    isDialogOpen.value = false;
+};
+</script>

@@ -13,8 +13,8 @@
                 </VForm>
             </VCardText>
             <VCardActions>
-                <VBtn @click="createPlaceholder()" :disabled="!isFormValid" :loading="isLoading">{{ $t("action.create") }}</VBtn>
                 <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
+                <VBtn @click="createPlaceholder()" :disabled="!isFormValid" :loading="isLoading">{{ $t("action.create") }}</VBtn>
             </VCardActions>
         </VCard>
     </VDialog>
@@ -28,12 +28,16 @@ const emit = defineEmits<{
 const notify = useNotify();
 const { t } = useI18n();
 
+const projectStore = useProjectStore();
+
+const { selectedProject } = storeToRefs(projectStore);
+
 const form = ref();
 const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const placeholder = ref({} as PlaceholderCreateContract);
+const placeholder = ref({ projectId: selectedProject.value.id } as PlaceholderCreateContract);
 
 const createPlaceholder = async () => {
     isLoading.value = true;

@@ -7,10 +7,6 @@
 <script setup lang="ts">
 const projectId = defineModel<string | null>();
 
-onMounted(() => {
-    projectId.value = selectedProject.value.id;
-});
-
 const { t } = useI18n();
 
 const projectStore = useProjectStore();

@@ -1,5 +1,5 @@
 {
-  "action.cancel": "Cancel#",
+  "action.cancel": "Abbrechen",
   "action.close": "Schließen",
   "action.confirm": "Bestätigen",
   "action.create": "Erstellen",
@@ -25,6 +25,8 @@
   "placeholder.field.projectId.specific": "Projektspezifischer Platzhalter",
   "placeholder.field.value": "Wert",
   "placeholder.load.error": "Laden der Platzhalter fehlgeschlagen",
+  "placeholder.save.error": "Placeholder {placeholderName} could not be saved",
+  "placeholder.save.success": "Platzhalter {placeholderName} gespeichert",
   "placeholder.table.column.actions": "Aktionen",
   "placeholder.table.column.dateCreated": "Erstellt",
   "placeholder.table.column.dateLastUpdated": "Geändert",

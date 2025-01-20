@@ -1,5 +1,5 @@
 {
-  "action.cancel": "Abbrechen",
+  "action.cancel": "Cancel",
   "action.close": "Close",
   "action.confirm": "Confirm",
   "action.create": "Create",
@@ -26,6 +26,8 @@
   "placeholder.field.projectId.specific": "Project specific placeholder",
   "placeholder.field.value": "Value",
   "placeholder.load.error": "Loading placeholders failed",
+  "placeholder.save.error": "Platzhalter {placeholderName} konnte nicht gespeichert werden",
+  "placeholder.save.success": "Saved placeholder {placeholderName}",
   "placeholder.table.column.actions": "Actions",
   "placeholder.table.column.dateCreated": "Created",
   "placeholder.table.column.dateLastUpdated": "Updated",

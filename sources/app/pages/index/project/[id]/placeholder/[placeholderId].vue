@@ -2,7 +2,7 @@
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.edit.title") }}</VAppBarTitle>
         <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" />
-        <VBtn :disabled="!isFormValid" color="success" density="comfortable" variant="flat">{{ $t("action.save") }}</VBtn>
+        <PlaceholderActionSave v-if="placeholder" :disabled="!isFormValid" :placeholder="placeholder" />
     </VAppBar>
     <VContainer>
         <VCard :loading="isLoading">

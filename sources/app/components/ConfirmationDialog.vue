@@ -10,7 +10,7 @@
             </VCardText>
             <VCardActions>
                 <VBtn @click="isDialogOpen = false">{{ $t("action.cancel") }}</VBtn>
-                <VBtn @click="emit('confirm')" color="primary" variant="flat">{{ $t("action.confirm") }}</VBtn>
+                <VBtn @click="emit('confirm')">{{ $t("action.confirm") }}</VBtn>
             </VCardActions>
         </VCard>
     </VDialog>
