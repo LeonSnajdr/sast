@@ -30,9 +30,9 @@ pub async fn placeholder_create(project_id: &Option<Uuid>, name: &String, value:
 		date_created,
 		date_last_updated
 	)
-        .fetch_one(db::get_pool())
-        .await
-        .map_err(|_| Error::Db)?;
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
     Ok(placeholder)
 }
@@ -54,9 +54,9 @@ pub async fn placeholder_get_many(project_id: &Option<Uuid>) -> Result<Vec<Place
         "#,
 		project_id
 	)
-        .fetch_all(db::get_pool())
-        .await
-        .map_err(|_| Error::Db)?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
     Ok(placeholders)
 }
@@ -77,9 +77,49 @@ pub async fn placeholder_get_one(id: &Uuid) -> Result<PlaceholderModel> {
         "#,
 		id
 	)
-        .fetch_one(db::get_pool())
-        .await
-        .map_err(|_| Error::Db)?;
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
     Ok(placeholder)
+}
+
+pub async fn placeholder_update_one(id: &Uuid, project_id: &Option<Uuid>, name: &String, value: &String, date_last_updated: &DateTime<Utc>) -> Result<()> {
+	sqlx::query!(
+		r#"--sql
+            update placeholder
+            set
+                project_id = $1,
+                name = $2,
+                value = $3,
+                date_last_updated = $4
+            where id = $5
+        "#,
+		project_id,
+		name,
+		value,
+		date_last_updated,
+		id
+	)
+	.execute(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
+
+	Ok(())
+}
+
+pub async fn placeholder_delete_one(id: &Uuid) -> Result<()> {
+	sqlx::query!(
+		r#"--sql
+            delete
+            from placeholder
+            where id = $1
+        "#,
+		id
+	)
+	.execute(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
+
+	Ok(())
 }

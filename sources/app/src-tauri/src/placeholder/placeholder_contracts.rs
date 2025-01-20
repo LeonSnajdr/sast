@@ -13,6 +13,14 @@ pub struct PlaceholderCreateContract {
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub struct PlaceholderUpdateContract {
+    pub project_id: Option<Uuid>,
+    pub name: String,
+    pub value: String
+}
+
+#[derive(Debug, Type, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub struct PlaceholderContract {
     pub id: Uuid,
     pub project_id: Option<Uuid>,

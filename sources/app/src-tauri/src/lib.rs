@@ -34,6 +34,8 @@ pub fn run() {
 		placeholder_commands::placeholder_get_all_global,
 		placeholder_commands::placeholder_get_all_project,
 		placeholder_commands::placeholder_get_one,
+		placeholder_commands::placeholder_update_one,
+		placeholder_commands::placeholder_delete_one,
 	]);
 
 	#[cfg(debug_assertions)]

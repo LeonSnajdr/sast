@@ -2,7 +2,7 @@ use uuid::Uuid;
 
 use crate::prelude::*;
 use crate::placeholder::placeholder_service;
-use crate::placeholder::placeholder_contracts::{PlaceholderCreateContract, PlaceholderContract};
+use crate::placeholder::placeholder_contracts::{PlaceholderCreateContract, PlaceholderContract, PlaceholderUpdateContract};
 
 #[tauri::command]
 #[specta::specta]
@@ -34,4 +34,20 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderContract> {
     let placeholder = placeholder_service::placeholder_get_one(&id).await?;
 
     Ok(placeholder)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn placeholder_update_one(id: Uuid, placeholder_update_contract: PlaceholderUpdateContract) -> Result<()> {
+    placeholder_service::placeholder_update_one(&id, &placeholder_update_contract).await?;
+
+    Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn placeholder_delete_one(id: Uuid) -> Result<()> {
+    placeholder_service::placeholder_delete_one(&id).await?;
+
+    Ok(())
 }
