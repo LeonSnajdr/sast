@@ -23,8 +23,7 @@ let fitAddon: FitAddon;
 onMounted(async () => {
     terminal = new Terminal({
         theme: {
-            // background: theme.current.value.colors.background,
-            background: "red",
+            background: theme.current.value.colors.background,
             foreground: theme.current.value.colors["on-surface"],
             cursor: theme.current.value.colors["on-surface"],
             selectionForeground: theme.current.value.colors.primary,

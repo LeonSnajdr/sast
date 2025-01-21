@@ -183,6 +183,11 @@ export default defineVuetifyConfiguration({
             }
         },
         VDialog: {
+            VCardTitle: {
+                VIcon: {
+                    class: "ml-n1"
+                }
+            },
             VCardActions: {
                 class: "mx-4"
             }

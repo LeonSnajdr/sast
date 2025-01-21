@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex flex-column">
+    <div class="fill-height d-flex flex-column">
         <VAppBar>
             <VAppBarTitle>{{ $t("placeholder.title") }}</VAppBarTitle>
             <PlaceholderActionCreate @created="loadPlaceholders()" />
