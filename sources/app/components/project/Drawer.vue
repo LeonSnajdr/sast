@@ -56,8 +56,8 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         },
         {
             icon: "mdi-checkbox-marked-circle-outline",
-            name: t("tasks.title"),
-            to: { name: "index-project-id-tasks", params: { id: selectedProject.value.id } }
+            name: t("task.title"),
+            to: { name: "index-project-id-task", params: { id: selectedProject.value.id } }
         }
     ];
 });
