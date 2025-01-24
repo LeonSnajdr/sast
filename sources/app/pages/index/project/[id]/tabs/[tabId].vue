@@ -1,5 +1,5 @@
 <template>
-    <VContainer id="termContainer" class="flex-grow-1">
+    <VContainer class="h-100">
         <div ref="termElement" />
     </VContainer>
 </template>
@@ -13,9 +13,12 @@ import { open } from "@tauri-apps/plugin-shell";
 
 // const route = useRoute("index-project-id-tabs-tabId");
 const theme = useTheme();
+
 const termElement = ref<HTMLDivElement>();
 
 const sessionId = ref("");
+
+const resultHistory = ref<string[]>([]);
 
 let terminal: Terminal;
 let fitAddon: FitAddon;
@@ -48,17 +51,19 @@ onMounted(async () => {
 
 onActivated(() => {
     fitTerminal();
-    terminal.scrollToBottom();
+    reRender();
 });
 
-useResizeObserver(termElement, () => fitTerminal());
-
 const fitTerminal = () => {
-    // TODO: The height 103 is currently hardcoded, if height of elements e.g. header change, this will break
-    termElement.value!.style.height = window.innerHeight - 103 + "px";
     fitAddon.fit();
+};
 
-    //const dimensions = fitAddon.proposeDimensions()!;
+const reRender = () => {
+    terminal.reset();
+
+    for (const result of resultHistory.value) {
+        terminal.write(result);
+    }
 };
 
 const spawn = async () => {
@@ -83,10 +88,6 @@ const spawn = async () => {
     await readData();
 };
 
-const clear = () => {
-    terminal.reset();
-};
-
 const writeData = async (data: string) => {
     const writeResult = await commands.ptyWrite(sessionId.value, data);
 
@@ -105,9 +106,9 @@ const readData = async () => {
             break;
         }
 
-        console.log("read", readResult.data);
-
         terminal.write(readResult.data);
+
+        resultHistory.value.push(readResult.data);
     }
 };
 

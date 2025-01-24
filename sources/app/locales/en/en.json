@@ -61,7 +61,7 @@
   "setting.title": "Settings",
   "tabs.noSelected": "No tab selected",
   "tabs.title": "Tabs",
-  "task.title": "Tasks",
+  "taskset.title": "Tasksets",
   "validation.rule.required": "{field} is required",
   "vueUse.timeAgo.ago": "{0} ago",
   "vueUse.timeAgo.day": "day | days",

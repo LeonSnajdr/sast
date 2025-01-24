@@ -1,5 +1,5 @@
 <template>
-    <VContainer class="flex-grow-1">
+    <VContainer class="h-100">
         <VEmptyState icon="mdi-tab-unselected">{{ $t("tabs.noSelected") }}</VEmptyState>
     </VContainer>
 </template>

@@ -60,7 +60,7 @@
   "setting.title": "Einstellungen",
   "tabs.noSelected": "Kein Tab ausgewählt",
   "tabs.title": "Tabs",
-  "task.title": "Aufgaben",
+  "taskset.title": "Aufgabensätze",
   "validation.rule.required": " {field} ist erforderlich",
   "vueUse.timeAgo.ago": "vor {0}",
   "vueUse.timeAgo.day": "Tag | Tagen",
