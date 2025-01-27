@@ -2,7 +2,7 @@
     <VApp>
         <WindowBar />
         <NuxtLayout>
-            <VMain>
+            <VMain class="h-screen">
                 <NotificationView />
                 <NuxtPage />
             </VMain>

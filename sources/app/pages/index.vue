@@ -1,5 +1,7 @@
 <template>
-    <NuxtPage v-if="isInitialized" />
+    <div class="h-100 overflow-auto">
+        <NuxtPage v-if="isInitialized" />
+    </div>
 </template>
 
 <script setup lang="ts">

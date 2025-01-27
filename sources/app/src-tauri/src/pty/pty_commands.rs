@@ -1,12 +1,12 @@
 use uuid::Uuid;
 
 use crate::prelude::*;
-use crate::pty::pty_contracts::{ResizePtyContract, SpawnPtyContract};
+use crate::pty::pty_contracts::{PtyInfoContract, PtyResizeContract, PtySpawnContract};
 use crate::pty::pty_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn pty_spawn(spawn_contract: SpawnPtyContract) -> Result<Uuid> {
+pub async fn pty_spawn(spawn_contract: PtySpawnContract) -> Result<Uuid> {
 	let session_id = pty_service::pty_spawn(&spawn_contract).await?;
 
 	Ok(session_id)
@@ -30,7 +30,23 @@ pub async fn pty_read(session_id: Uuid) -> Result<String> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn pty_resize(session_id: Uuid, resize_contract: ResizePtyContract) -> Result<()> {
+pub async fn pty_get_read_history(session_id: Uuid) -> Result<Vec<String>> {
+	let result = pty_service::get_read_history(&session_id).await?;
+
+	Ok(result)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn pty_get_sessions(project_id: Uuid) -> Result<Vec<PtyInfoContract>> {
+	let result: Vec<PtyInfoContract> = pty_service::pty_get_sessions(&project_id).await?;
+
+	Ok(result)
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn pty_resize(session_id: Uuid, resize_contract: PtyResizeContract) -> Result<()> {
 	pty_service::pty_resize(&session_id, &resize_contract).await?;
 
 	Ok(())

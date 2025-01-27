@@ -27,6 +27,8 @@ pub fn run() {
 		pty_commands::pty_spawn,
 		pty_commands::pty_write,
 		pty_commands::pty_read,
+		pty_commands::pty_get_read_history,
+		pty_commands::pty_get_sessions,
 		pty_commands::pty_resize,
 		pty_commands::pty_kill,
 		pty_commands::pty_exitstatus,

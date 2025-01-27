@@ -61,7 +61,7 @@ async projectOpen(id: string) : Promise<Result<ProjectContract, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async ptySpawn(spawnContract: SpawnPtyContract) : Promise<Result<string, Error>> {
+async ptySpawn(spawnContract: PtySpawnContract) : Promise<Result<string, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("pty_spawn", { spawnContract }) };
 } catch (e) {
@@ -85,7 +85,23 @@ async ptyRead(sessionId: string) : Promise<Result<string, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async ptyResize(sessionId: string, resizeContract: ResizePtyContract) : Promise<Result<null, Error>> {
+async ptyGetReadHistory(sessionId: string) : Promise<Result<string[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("pty_get_read_history", { sessionId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async ptyGetSessions(projectId: string) : Promise<Result<PtyInfoContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("pty_get_sessions", { projectId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async ptyResize(sessionId: string, resizeContract: PtyResizeContract) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("pty_resize", { sessionId, resizeContract }) };
 } catch (e) {
@@ -175,11 +191,12 @@ export type PlaceholderCreateContract = { projectId: string | null; name: string
 export type PlaceholderUpdateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
-export type ResizePtyContract = { cols: number; rows: number }
+export type PtyInfoContract = { sessionId: string; projectId: string; name: string }
+export type PtyResizeContract = { cols: number; rows: number }
+export type PtySpawnContract = { projectId: string; name: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string }
-export type SpawnPtyContract = { cols: number; rows: number }
 
 /** tauri-specta globals **/
 
