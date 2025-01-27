@@ -61,65 +61,65 @@ async projectOpen(id: string) : Promise<Result<ProjectContract, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async ptySpawn(spawnContract: PtySpawnContract) : Promise<Result<string, Error>> {
+async ptySessionSpawn(spawnContract: PtySessionSpawnContract) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_spawn", { spawnContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_spawn", { spawnContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyWrite(sessionId: string, data: string) : Promise<Result<null, Error>> {
+async ptySessionWrite(sessionId: string, data: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_write", { sessionId, data }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_write", { sessionId, data }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyRead(sessionId: string) : Promise<Result<string, Error>> {
+async ptySessionRead(sessionId: string) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_read", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_read", { sessionId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyGetReadHistory(sessionId: string) : Promise<Result<string[], Error>> {
+async ptySessionGetReadHistory(sessionId: string) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_get_read_history", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_read_history", { sessionId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyGetSessions(projectId: string) : Promise<Result<PtyInfoContract[], Error>> {
+async ptySessionInfoGetAll(projectId: string) : Promise<Result<PtySessionInfoContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_get_sessions", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_info_get_all", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyResize(sessionId: string, resizeContract: PtyResizeContract) : Promise<Result<null, Error>> {
+async ptySessionResize(sessionId: string, resizeContract: PtySessionResizeContract) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_resize", { sessionId, resizeContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_resize", { sessionId, resizeContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyKill(sessionId: string) : Promise<Result<null, Error>> {
+async ptySessionKill(sessionId: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_kill", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_kill", { sessionId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptyExitstatus(sessionId: string) : Promise<Result<number, Error>> {
+async ptySessionGetExitstatus(sessionId: string) : Promise<Result<number, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_exitstatus", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_exitstatus", { sessionId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -191,9 +191,9 @@ export type PlaceholderCreateContract = { projectId: string | null; name: string
 export type PlaceholderUpdateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
-export type PtyInfoContract = { sessionId: string; projectId: string; name: string }
-export type PtyResizeContract = { cols: number; rows: number }
-export type PtySpawnContract = { projectId: string; name: string }
+export type PtySessionInfoContract = { sessionId: string; projectId: string; name: string }
+export type PtySessionResizeContract = { cols: number; rows: number }
+export type PtySessionSpawnContract = { projectId: string; name: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string }

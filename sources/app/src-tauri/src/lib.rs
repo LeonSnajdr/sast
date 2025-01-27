@@ -2,7 +2,7 @@ mod db;
 mod error;
 mod prelude;
 mod project;
-mod pty;
+mod pty_session;
 mod setting;
 mod placeholder;
 
@@ -10,7 +10,7 @@ use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, Builder};
 
 use crate::project::project_commands;
-use crate::pty::pty_commands;
+use crate::pty_session::pty_session_commands;
 use crate::setting::setting_commands;
 use crate::placeholder::placeholder_commands;
 
@@ -24,14 +24,14 @@ pub fn run() {
 		project_commands::project_get_all,
 		project_commands::project_get_id_last_opened,
 		project_commands::project_open,
-		pty_commands::pty_spawn,
-		pty_commands::pty_write,
-		pty_commands::pty_read,
-		pty_commands::pty_get_read_history,
-		pty_commands::pty_get_sessions,
-		pty_commands::pty_resize,
-		pty_commands::pty_kill,
-		pty_commands::pty_exitstatus,
+		pty_session_commands::pty_session_spawn,
+		pty_session_commands::pty_session_write,
+		pty_session_commands::pty_session_read,
+		pty_session_commands::pty_session_get_read_history,
+		pty_session_commands::pty_session_info_get_all,
+		pty_session_commands::pty_session_resize,
+		pty_session_commands::pty_session_kill,
+		pty_session_commands::pty_session_get_exitstatus,
 		placeholder_commands::placeholder_create,
 		placeholder_commands::placeholder_get_all_global,
 		placeholder_commands::placeholder_get_all_project,

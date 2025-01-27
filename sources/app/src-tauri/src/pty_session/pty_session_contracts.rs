@@ -4,14 +4,14 @@ use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySpawnContract {
+pub struct PtySessionSpawnContract {
 	pub project_id: Uuid,
 	pub name: String,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtyInfoContract {
+pub struct PtySessionInfoContract {
 	pub session_id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
@@ -19,7 +19,7 @@ pub struct PtyInfoContract {
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtyResizeContract {
+pub struct PtySessionResizeContract {
 	pub cols: u16,
 	pub rows: u16,
 }
