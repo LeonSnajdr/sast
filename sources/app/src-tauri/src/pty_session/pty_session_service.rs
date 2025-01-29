@@ -1,6 +1,6 @@
-use std::io::Write;
+use std::io::{Read, Write};
 use once_cell::sync::Lazy;
-use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
+use portable_pty::{native_pty_system, Child, CommandBuilder, PtyPair, PtySize};
 use std::sync::Arc;
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
@@ -22,8 +22,8 @@ struct PtySession {
 	name: String,
 	pair: Mutex<PtyPair>,
 	child: Mutex<Box<dyn Child + Send + Sync>>,
-	writer: Mutex<Box<dyn std::io::Write + Send>>,
-	reader: Mutex<Box<dyn std::io::Read + Send>>,
+	writer: Mutex<Box<dyn Write + Send>>,
+	reader: Mutex<Box<dyn Read + Send>>,
 	read_history: Mutex<String>,
 }
 
@@ -92,6 +92,7 @@ pub async fn pty_session_get_read_history(session_id: &Uuid) -> Result<String> {
 
 pub async fn pty_session_resize(session_id: &Uuid, resize_contract: &PtySessionResizeContract) -> Result<()> {
 	let session = pty_session_get_one(session_id).await?;
+
 	session
 		.pair
 		.lock()
@@ -117,7 +118,7 @@ pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 	let ctrl_c: u8 = 3;
 	writer.write_all(&[ctrl_c]).map_err(|_| Error::Failed)?;
 
-	child.kill().map_err(|err| Error::Failed)?;
+	child.kill().map_err(|_| Error::Failed)?;
 
 	let mut sessions = PTY_STATE.sessions.write().await;
 	if let Some(pos) = sessions.iter().position(|s| s.session_id == *session_id) {
@@ -129,6 +130,7 @@ pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 
 pub async fn pty_session_get_exitstatus(session_id: &Uuid) -> Result<u32> {
 	let session = pty_session_get_one(session_id).await?;
+
 	let exitstatus = session
 		.child
 		.lock()
@@ -136,11 +138,13 @@ pub async fn pty_session_get_exitstatus(session_id: &Uuid) -> Result<u32> {
 		.wait()
 		.map_err(|_| Error::Failed)?
 		.exit_code();
+
 	Ok(exitstatus)
 }
 
 async fn pty_session_get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
+
 	let session = sessions
 		.iter()
 		.find(|&s| s.session_id == *session_id)
@@ -154,6 +158,7 @@ async fn pty_session_get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 
 pub async fn pty_session_info_get_all(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
 	let sessions = PTY_STATE.sessions.read().await;
+
 	let info_list = sessions
 		.iter()
 		.filter(|s| s.project_id == *project_id)
@@ -163,5 +168,6 @@ pub async fn pty_session_info_get_all(project_id: &Uuid) -> Result<Vec<PtySessio
 			name: session.name.clone(),
 		})
 		.collect::<Vec<PtySessionInfoContract>>();
+
 	Ok(info_list)
 }
