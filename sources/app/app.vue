@@ -3,6 +3,7 @@
         <WindowBar />
         <NuxtLayout>
             <VMain class="h-screen">
+                <PtySessionPool />
                 <NotificationView />
                 <NuxtPage />
             </VMain>
