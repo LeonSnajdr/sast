@@ -4,9 +4,11 @@ use portable_pty::{native_pty_system, Child, CommandBuilder, PtyPair, PtySize};
 use std::sync::Arc;
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
-
+use tauri::AppHandle;
+use tauri_specta::Event;
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
+use crate::pty_session::pty_session_events::{PtySessionEvent, PtySessionEventData};
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(Vec::new()),
@@ -27,7 +29,7 @@ struct PtySession {
 	read_history: Mutex<String>,
 }
 
-pub async fn pty_session_spawn(spawn_contract: &PtySessionSpawnContract) -> Result<Uuid> {
+pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: &PtySessionSpawnContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
 	let pair = pty_system
 		.openpty(PtySize::default())
@@ -55,8 +57,46 @@ pub async fn pty_session_spawn(spawn_contract: &PtySessionSpawnContract) -> Resu
 	let mut sessions = PTY_STATE.sessions.write().await;
 	sessions.push(session);
 
-	println!("{}", session_id);
+	start_pty_session_read_thread(app_handle, session_id);
+
 	Ok(session_id)
+}
+
+fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
+	tauri::async_runtime::spawn(async move {
+		let session = pty_session_get_one(&session_id).await.unwrap();
+
+		println!("Starting pty session thread {}", session_id);
+
+		loop {
+			let mut buf = [0u8; 1024];
+
+			let read_bytes = match session.reader.lock().await.read(&mut buf) {
+				Ok(0) => {
+					println!("Reached EOF for session {}", session_id);
+					break;
+				}
+				Ok(read_bytes) => read_bytes,
+				Err(e) => {
+					eprintln!("Reading failed for session {session_id}: {e}");
+					break;
+				}
+			};
+
+			let read_data = String::from_utf8_lossy(&buf[..read_bytes]).to_string();
+
+			session.read_history.lock().await.push_str(&read_data);
+
+			let event_data = PtySessionEventData {
+				session_id,
+				data: read_data,
+			};
+
+			PtySessionEvent(event_data).emit(&app_handle).map_err(|_| Error::Failed).unwrap();
+		}
+
+		println!("Finished pty session thread {}", session_id);
+	});
 }
 
 pub async fn pty_session_write(session_id: &Uuid, data: &String) -> Result<()> {
@@ -69,19 +109,6 @@ pub async fn pty_session_write(session_id: &Uuid, data: &String) -> Result<()> {
 		.write_all(data.as_bytes())
 		.map_err(|_| Error::Failed)?;
 	Ok(())
-}
-
-pub async fn pty_session_read(session_id: &Uuid) -> Result<String> {
-	let session = pty_session_get_one(session_id).await?;
-
-	let mut buf = [0u8; 1024];
-	let read_bytes = session.reader.lock().await.read(&mut buf).map_err(|_| Error::Failed)?;
-
-	let read_data = String::from_utf8_lossy(&buf[..read_bytes]).to_string();
-
-	session.read_history.lock().await.push_str(&read_data);
-
-	Ok(read_data)
 }
 
 pub async fn pty_session_get_read_history(session_id: &Uuid) -> Result<String> {

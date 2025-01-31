@@ -77,14 +77,6 @@ async ptySessionWrite(sessionId: string, data: string) : Promise<Result<null, Er
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionRead(sessionId: string) : Promise<Result<string, Error>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_read", { sessionId }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
 async ptySessionGetReadHistory(sessionId: string) : Promise<Result<string, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("pty_session_get_read_history", { sessionId }) };
@@ -178,6 +170,11 @@ async placeholderDeleteOne(id: string) : Promise<Result<null, Error>> {
 /** user-defined events **/
 
 
+export const events = __makeEvents__<{
+ptySessionEvent: PtySessionEvent
+}>({
+ptySessionEvent: "pty-session-event"
+})
 
 /** user-defined constants **/
 
@@ -191,6 +188,8 @@ export type PlaceholderCreateContract = { projectId: string | null; name: string
 export type PlaceholderUpdateContract = { projectId: string | null; name: string; value: string }
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
+export type PtySessionEvent = PtySessionEventData
+export type PtySessionEventData = { sessionId: string; data: string }
 export type PtySessionInfoContract = { sessionId: string; projectId: string; name: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
 export type PtySessionSpawnContract = { projectId: string; name: string }

@@ -1,4 +1,5 @@
 use uuid::Uuid;
+use tauri::AppHandle;
 
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
@@ -6,8 +7,8 @@ use crate::pty_session::pty_session_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn pty_session_spawn(spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
-	let session_id = pty_session_service::pty_session_spawn(&spawn_contract).await?;
+pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+	let session_id = pty_session_service::pty_session_spawn(app_handle, &spawn_contract).await?;
 
 	Ok(session_id)
 }
@@ -18,14 +19,6 @@ pub async fn pty_session_write(session_id: Uuid, data: String) -> Result<()> {
 	pty_session_service::pty_session_write(&session_id, &data).await?;
 
 	Ok(())
-}
-
-#[tauri::command]
-#[specta::specta]
-pub async fn pty_session_read(session_id: Uuid) -> Result<String> {
-	let result = pty_session_service::pty_session_read(&session_id).await?;
-
-	Ok(result)
 }
 
 #[tauri::command]

@@ -24,6 +24,8 @@ let fitAddon: FitAddon;
 let webLinksAddon: WebLinksAddon;
 
 onMounted(async () => {
+    console.log("test");
+
     terminal = new Terminal({
         theme: {
             background: theme.current.value.colors.background,
@@ -44,14 +46,27 @@ onMounted(async () => {
 
     terminal.open(termElement.value!);
 
-    fitAddon.fit();
-
     await restoreHistory();
 
     terminal.onData((data) => writeToPtySession(data));
     terminal.onResize((data) => resizePtySession(data));
 
-    await startPtySessionReadLoop();
+    fitAddon.fit();
+
+    //await startPtySessionReadLoop();
+
+    console.log("listen for data");
+
+    const unlisten = await events.ptySessionEvent.listen((data) => {
+        console.log("Got data");
+
+        terminal.write(data.payload);
+        console.log(data);
+    });
+
+    onBeforeUnmount(() => {
+        unlisten();
+    });
 });
 
 onBeforeUnmount(() => {
@@ -88,19 +103,6 @@ const writeToPtySession = async (data: string) => {
     const writeResult = await commands.ptySessionWrite(props.sessionId, data);
     if (writeResult.status === "error") {
         console.error("failed to write data");
-    }
-};
-
-const startPtySessionReadLoop = async () => {
-    while (true) {
-        const readResult = await commands.ptySessionRead(props.sessionId);
-
-        if (readResult.status === "error") {
-            console.error("Error while reading data");
-            break;
-        }
-
-        terminal.write(readResult.data);
     }
 };
 
