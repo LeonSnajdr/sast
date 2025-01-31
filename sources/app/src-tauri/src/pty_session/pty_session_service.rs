@@ -38,7 +38,7 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: &PtySessio
 	let writer = pair.master.take_writer().map_err(|_| Error::Failed)?;
 	let reader = pair.master.try_clone_reader().map_err(|_| Error::Failed)?;
 
-	let cmd = CommandBuilder::new("powershell.exe");
+	let cmd = CommandBuilder::new("pwsh.exe");
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
 
 	let session_id = Uuid::new_v4();

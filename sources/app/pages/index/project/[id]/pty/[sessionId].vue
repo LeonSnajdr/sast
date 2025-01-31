@@ -28,12 +28,31 @@ let cleanup: () => void;
 
 onMounted(async () => {
     terminal = new Terminal({
+        cursorStyle: "bar",
+        fontWeight: "900",
+        fontSize: 16,
         theme: {
-            background: theme.current.value.colors.background,
-            foreground: theme.current.value.colors["on-surface"],
-            cursor: theme.current.value.colors["on-surface"],
-            selectionForeground: theme.current.value.colors.primary,
-            selectionBackground: theme.current.value.colors["primary-lighten-3"]
+            background: theme.current.value.colors["terminal-white"],
+            foreground: theme.current.value.colors["terminal-black"],
+            cursor: theme.current.value.colors["terminal-brightBlack"],
+            selectionForeground: theme.current.value.colors["terminal-black"],
+            selectionBackground: theme.current.value.colors["terminal-selectionBackground"],
+            white: theme.current.value.colors["terminal-white"],
+            brightWhite: theme.current.value.colors["terminal-brightWhite"],
+            black: theme.current.value.colors["terminal-black"],
+            brightBlack: theme.current.value.colors["terminal-brightBlack"],
+            blue: theme.current.value.colors["terminal-blue"],
+            brightBlue: theme.current.value.colors["terminal-brightBlue"],
+            cyan: theme.current.value.colors["terminal-cyan"],
+            brightCyan: theme.current.value.colors["terminal-brightCyan"],
+            green: theme.current.value.colors["terminal-green"],
+            brightGreen: theme.current.value.colors["terminal-brightGreen"],
+            magenta: theme.current.value.colors["terminal-magenta"],
+            brightMagenta: theme.current.value.colors["terminal-brightMagenta"],
+            red: theme.current.value.colors["terminal-red"],
+            brightRed: theme.current.value.colors["terminal-brightRed"],
+            yellow: theme.current.value.colors["terminal-yellow"],
+            brightYellow: theme.current.value.colors["terminal-brightYellow"]
         }
     });
 
