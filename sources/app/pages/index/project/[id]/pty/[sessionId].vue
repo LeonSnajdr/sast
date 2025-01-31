@@ -29,14 +29,16 @@ let cleanup: () => void;
 onMounted(async () => {
     terminal = new Terminal({
         cursorStyle: "bar",
+        cursorInactiveStyle: "none",
         fontWeight: "900",
         fontSize: 16,
         theme: {
-            background: theme.current.value.colors["terminal-white"],
-            foreground: theme.current.value.colors["terminal-black"],
-            cursor: theme.current.value.colors["terminal-brightBlack"],
-            selectionForeground: theme.current.value.colors["terminal-black"],
+            background: theme.current.value.colors["terminal-background"],
+            foreground: theme.current.value.colors["terminal-foreground"],
+            cursor: theme.current.value.colors["terminal-cursor"],
+            selectionForeground: theme.current.value.colors["terminal-selectionForeground"],
             selectionBackground: theme.current.value.colors["terminal-selectionBackground"],
+            selectionInactiveBackground: theme.current.value.colors["terminal-selectionInactiveBackground"],
             white: theme.current.value.colors["terminal-white"],
             brightWhite: theme.current.value.colors["terminal-brightWhite"],
             black: theme.current.value.colors["terminal-black"],
