@@ -30,7 +30,6 @@ onMounted(async () => {
     terminal = new Terminal({
         cursorStyle: "bar",
         cursorInactiveStyle: "none",
-        fontWeight: "900",
         fontSize: 16,
         theme: {
             background: theme.current.value.colors["terminal-background"],
