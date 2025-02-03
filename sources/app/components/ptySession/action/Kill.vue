@@ -1,5 +1,7 @@
 <template>
-    <VBtn @click.prevent.stop="killSession()" icon="mdi-close" size="20" variant="plain" />
+    <VBtn @click.prevent.stop="killSession()" size="20" variant="plain">
+        <VIcon icon="mdi-close" />
+    </VBtn>
 </template>
 
 <script setup lang="ts">

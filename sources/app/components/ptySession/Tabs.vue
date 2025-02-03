@@ -3,7 +3,7 @@
         <VSlideGroupItem v-for="ptySession in ptySessions" :key="ptySession.sessionId">
             <VBtn
                 :to="{ name: 'index-project-id-pty-sessionId', params: { id: route.params.id, sessionId: ptySession.sessionId } }"
-                class="ml-2 px-2"
+                class="ml-2 px-2 text-body-2"
                 density="comfortable"
             >
                 <template #prepend>

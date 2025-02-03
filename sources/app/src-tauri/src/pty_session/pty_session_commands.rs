@@ -8,7 +8,7 @@ use crate::pty_session::pty_session_service;
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
-	let session_id = pty_session_service::pty_session_spawn(app_handle, &spawn_contract).await?;
+	let session_id = pty_session_service::pty_session_spawn(app_handle, spawn_contract).await?;
 
 	Ok(session_id)
 }

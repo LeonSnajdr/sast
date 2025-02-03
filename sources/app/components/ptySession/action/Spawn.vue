@@ -13,8 +13,12 @@ const { selectedProject } = storeToRefs(projectService);
 
 const ptySpawn = async () => {
     const spawnContract: PtySessionSpawnContract = {
-        name: "Test",
-        projectId: selectedProject.value.id
+        name: null,
+        projectId: selectedProject.value.id,
+        taskSetId: null,
+        command: null,
+        noExit: true,
+        workingDirectory: null
     };
 
     const spawnResult = await commands.ptySessionSpawn(spawnContract);

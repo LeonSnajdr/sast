@@ -1,6 +1,6 @@
 use std::io::{Read, Write};
 use once_cell::sync::Lazy;
-use portable_pty::{native_pty_system, Child, CommandBuilder, PtyPair, PtySize};
+use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
 use std::sync::Arc;
 use tokio::sync::{Mutex, RwLock};
 use uuid::Uuid;
@@ -21,15 +21,18 @@ struct PtyState {
 struct PtySession {
 	session_id: Uuid,
 	project_id: Uuid,
+	task_set_id: Option<Uuid>,
 	name: String,
+	running: Mutex<bool>,
 	pair: Mutex<PtyPair>,
 	child: Mutex<Box<dyn Child + Send + Sync>>,
+	child_killer: Mutex<Box<dyn ChildKiller + Send + Sync>>,
 	writer: Mutex<Box<dyn Write + Send>>,
 	reader: Mutex<Box<dyn Read + Send>>,
 	read_history: Mutex<String>,
 }
 
-pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: &PtySessionSpawnContract) -> Result<Uuid> {
+pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
 	let pair = pty_system
 		.openpty(PtySize::default())
@@ -38,17 +41,35 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: &PtySessio
 	let writer = pair.master.take_writer().map_err(|_| Error::Failed)?;
 	let reader = pair.master.try_clone_reader().map_err(|_| Error::Failed)?;
 
-	let cmd = CommandBuilder::new("pwsh.exe");
+	let mut cmd = CommandBuilder::new("pwsh.exe");
+
+	if let Some(working_directory) = spawn_contract.working_directory {
+		cmd.args(["-WorkingDirectory", working_directory.as_str()]);
+	}
+
+	if spawn_contract.no_exit {
+		cmd.args(["-NoExit"]);
+	}
+
+	if let Some(command) = spawn_contract.command {
+		cmd.args(["-Command", command.as_str()]);
+	}
+
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
+
+	let child_killer = child.clone_killer();
 
 	let session_id = Uuid::new_v4();
 
 	let session = Arc::new(PtySession {
 		session_id,
 		project_id: spawn_contract.project_id,
-		name: spawn_contract.name.clone(),
+		task_set_id: spawn_contract.task_set_id,
+		name: build_pty_session_name(spawn_contract.name),
+		running: Mutex::new(true),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
+		child_killer: Mutex::new(child_killer),
 		writer: Mutex::new(writer),
 		reader: Mutex::new(reader),
 		read_history: Mutex::new(String::new()),
@@ -62,25 +83,42 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: &PtySessio
 	Ok(session_id)
 }
 
+fn build_pty_session_name(name: Option<String>) -> String {
+	match name {
+		Some(ref name) => {
+			name.clone()
+		},
+		None => {
+			"PowerShell".to_string()
+		}
+	}
+}
+
 fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
+	// https://github.com/wez/wezterm/issues/4206
 	tauri::async_runtime::spawn(async move {
 		let session = pty_session_get_one(&session_id).await.unwrap();
 
 		println!("Starting pty session thread {}", session_id);
 
+		let mut buf = [0u8; 1024];
+
 		loop {
-			let mut buf = [0u8; 1024];
+			if !*session.running.lock().await {
+				break;
+			}
 
 			let read_bytes = match session.reader.lock().await.read(&mut buf) {
-				Ok(0) => {
-					println!("Reached EOF for session {}", session_id);
-					break;
-				}
 				Ok(read_bytes) => read_bytes,
 				Err(e) => {
-					eprintln!("Reading failed for session {session_id}: {e}");
+					println!("Reading failed for session {}: {}", session_id, e);
 					break;
 				}
+			};
+
+			if read_bytes == 0 {
+				println!("Exited");
+				break;
 			};
 
 			let read_data = String::from_utf8_lossy(&buf[..read_bytes]).to_string();
@@ -92,8 +130,13 @@ fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
 				data: read_data,
 			};
 
-			PtySessionEvent(event_data).emit(&app_handle).map_err(|_| Error::Failed).unwrap();
+			if let Err(e) = PtySessionEvent(event_data).emit(&app_handle) {
+				println!("Emit failed for session {}: {}", session_id, e);
+				break;
+			}
 		}
+
+		session.child_killer.lock().await.kill().ok();
 
 		println!("Finished pty session thread {}", session_id);
 	});
@@ -138,14 +181,16 @@ pub async fn pty_session_resize(session_id: &Uuid, resize_contract: &PtySessionR
 pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 	let session = pty_session_get_one(session_id).await?;
 
-	let mut child = session.child.lock().await;
 	let mut writer = session.writer.lock().await;
+	let mut running = session.running.lock().await;
 
-	// Send ctrl+c to child to terminate the currently running process
+	// The read thread loop will break in next run of the loop and kill the child. We need to ensure
+	// that the reader receives data after setting the running flag.
+	*running = false;
+
+	// Send ctrl+c to child to terminate the currently running process and ensure read thread is finished
 	let ctrl_c: u8 = 3;
 	writer.write_all(&[ctrl_c]).map_err(|_| Error::Failed)?;
-
-	child.kill().map_err(|_| Error::Failed)?;
 
 	let mut sessions = PTY_STATE.sessions.write().await;
 	if let Some(pos) = sessions.iter().position(|s| s.session_id == *session_id) {

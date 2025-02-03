@@ -6,7 +6,11 @@ use uuid::Uuid;
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionSpawnContract {
 	pub project_id: Uuid,
-	pub name: String,
+	pub task_set_id: Option<Uuid>,
+	pub name: Option<String>,
+	pub working_directory: Option<String>,
+	pub command: Option<String>,
+	pub no_exit: bool
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
