@@ -96,6 +96,23 @@ fn build_pty_session_name(name: Option<String>) -> String {
 
 fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
 	// https://github.com/wez/wezterm/issues/4206
+
+	tauri::async_runtime::spawn(async move {
+		let session = pty_session_get_one(&session_id).await.unwrap();
+
+		session.child.lock().await.wait().ok();
+
+		*session.running.lock().await = false;
+
+		let mut cmd = CommandBuilder::new("whoami");
+		let child = session.pair.lock().await.slave.spawn_command(cmd).ok();
+
+		/*let mut sessions = PTY_STATE.sessions.write().await;
+		if let Some(pos) = sessions.iter().position(|s| s.session_id == *session_id) {
+			sessions.remove(pos);
+		}*/
+	});
+
 	tauri::async_runtime::spawn(async move {
 		let session = pty_session_get_one(&session_id).await.unwrap();
 
@@ -182,20 +199,13 @@ pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 	let session = pty_session_get_one(session_id).await?;
 
 	let mut writer = session.writer.lock().await;
-	let mut running = session.running.lock().await;
-
-	// The read thread loop will break in next run of the loop and kill the child. We need to ensure
-	// that the reader receives data after setting the running flag.
-	*running = false;
+	let mut child_killer = session.child_killer.lock().await;
 
 	// Send ctrl+c to child to terminate the currently running process and ensure read thread is finished
 	let ctrl_c: u8 = 3;
 	writer.write_all(&[ctrl_c]).map_err(|_| Error::Failed)?;
 
-	let mut sessions = PTY_STATE.sessions.write().await;
-	if let Some(pos) = sessions.iter().position(|s| s.session_id == *session_id) {
-		sessions.remove(pos);
-	}
+	child_killer.kill().ok();
 
 	Ok(())
 }
