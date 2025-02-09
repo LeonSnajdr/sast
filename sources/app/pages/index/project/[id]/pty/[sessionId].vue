@@ -76,15 +76,22 @@ onMounted(async () => {
         fitAddon.fit();
     });
 
-    const unlistenData = await events.ptySessionReadEvent.listen((eventData) => {
+    const unlistenPtyReadEvent = await events.ptySessionReadEvent.listen((eventData) => {
         if (eventData.payload.sessionId !== route.params.sessionId) return;
 
         terminal.write(eventData.payload.data);
     });
 
+    const unlistenPtyKilledEvent = await events.ptySessionKilledEvent.listen((event) => {
+        if (event.payload !== route.params.sessionId) return;
+
+        navigateTo({ name: "index-project-id-pty" });
+    });
+
     cleanup = () => {
         unlistenResize();
-        unlistenData();
+        unlistenPtyReadEvent();
+        unlistenPtyKilledEvent();
         terminal.dispose();
     };
 

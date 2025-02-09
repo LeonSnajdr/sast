@@ -8,7 +8,7 @@ use tauri::AppHandle;
 use tauri_specta::Event;
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
-use crate::pty_session::pty_session_events::{PtySessionReadEvent, PtySessionReadEventData, PtySessionsUpdatedEvent};
+use crate::pty_session::pty_session_events::{PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent};
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(Vec::new()),
@@ -76,7 +76,7 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 	let mut sessions = PTY_STATE.sessions.write().await;
 	sessions.push(session);
 
-	PtySessionsUpdatedEvent().emit(&app_handle).map_err(|_| Error::Failed)?;
+	PtySessionSpawnedEvent(session_id).emit(&app_handle).map_err(|_| Error::Failed)?;
 
 	start_pty_session_handle_threads(&app_handle, &session_id);
 
@@ -116,7 +116,7 @@ fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 			sessions.remove(pos);
 		}
 
-		PtySessionsUpdatedEvent().emit(&kill_app_handle).unwrap();
+		PtySessionKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
 
 		drop(kill_app_handle);
 	});

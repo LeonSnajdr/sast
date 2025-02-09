@@ -11,7 +11,7 @@
                 </template>
                 <span class="text-truncate" style="max-width: 150px">{{ ptySession.name }}</span>
                 <template #append>
-                    <PtySessionActionKill :isActive="route.params.sessionId === ptySession.sessionId" :sessionId="ptySession.sessionId" />
+                    <PtySessionActionKill :sessionId="ptySession.sessionId" />
                 </template>
             </VBtn>
         </VSlideGroupItem>

@@ -44,7 +44,8 @@ pub fn run() {
 		.events(
 			collect_events![
 				pty_session_events::PtySessionReadEvent,
-				pty_session_events::PtySessionsUpdatedEvent
+				pty_session_events::PtySessionSpawnedEvent,
+				pty_session_events::PtySessionKilledEvent,
 			]
 		);
 

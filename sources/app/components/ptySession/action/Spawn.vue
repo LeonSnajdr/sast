@@ -15,9 +15,9 @@ const ptySpawn = async () => {
         name: null,
         projectId: selectedProject.value.id,
         taskSetId: null,
-        command: "dir",
-        noExit: true,
-        workingDirectory: null
+        command: "dotnet build",
+        noExit: false,
+        workingDirectory: "C:\\Repos\\metis\\sources\\ControlCenter.Api"
     };
 
     const spawnResult = await commands.ptySessionSpawn(spawnContract);
@@ -26,7 +26,5 @@ const ptySpawn = async () => {
         notify.error(t("ptySession.spawn.error"));
         return;
     }
-
-    navigateTo({ name: "index-project-id-pty-sessionId", params: { id: selectedProject.value.id, sessionId: spawnResult.data } });
 };
 </script>

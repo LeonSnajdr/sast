@@ -17,7 +17,8 @@ const ptySessionStore = usePtySessionStore();
 
 const { isLoading, selectedProject } = storeToRefs(projectStore);
 
-let unlistenPtyUpdatedEvents: UnlistenFn;
+let unlistenPtyKilledEvent: UnlistenFn;
+let unlistenPtySpawnedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     await loadProject();
@@ -27,7 +28,8 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     selectedProject.value = {} as ProjectContract;
 
-    unlistenPtyUpdatedEvents();
+    unlistenPtyKilledEvent();
+    unlistenPtySpawnedEvent();
 });
 
 const loadProject = async () => {
@@ -50,7 +52,11 @@ const loadProject = async () => {
 const loadPtySessions = async () => {
     await ptySessionStore.loadAll();
 
-    unlistenPtyUpdatedEvents = await events.ptySessionsUpdatedEvent.listen(() => {
+    unlistenPtyKilledEvent = await events.ptySessionKilledEvent.listen(() => {
+        ptySessionStore.loadAll();
+    });
+
+    unlistenPtySpawnedEvent = await events.ptySessionSpawnedEvent.listen(() => {
         ptySessionStore.loadAll();
     });
 };

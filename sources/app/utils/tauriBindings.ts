@@ -171,11 +171,13 @@ async placeholderDeleteOne(id: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
+ptySessionKilledEvent: PtySessionKilledEvent,
 ptySessionReadEvent: PtySessionReadEvent,
-ptySessionsUpdatedEvent: PtySessionsUpdatedEvent
+ptySessionSpawnedEvent: PtySessionSpawnedEvent
 }>({
+ptySessionKilledEvent: "pty-session-killed-event",
 ptySessionReadEvent: "pty-session-read-event",
-ptySessionsUpdatedEvent: "pty-sessions-updated-event"
+ptySessionSpawnedEvent: "pty-session-spawned-event"
 })
 
 /** user-defined constants **/
@@ -191,11 +193,12 @@ export type PlaceholderUpdateContract = { projectId: string | null; name: string
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
 export type PtySessionInfoContract = { sessionId: string; projectId: string; name: string }
+export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
 export type PtySessionReadEventData = { sessionId: string; data: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
 export type PtySessionSpawnContract = { projectId: string; taskSetId: string | null; name: string | null; workingDirectory: string | null; command: string | null; noExit: boolean }
-export type PtySessionsUpdatedEvent = []
+export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string }
