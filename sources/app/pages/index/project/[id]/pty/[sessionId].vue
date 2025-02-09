@@ -76,7 +76,7 @@ onMounted(async () => {
         fitAddon.fit();
     });
 
-    const unlistenData = await events.ptySessionEvent.listen((eventData) => {
+    const unlistenData = await events.ptySessionReadEvent.listen((eventData) => {
         if (eventData.payload.sessionId !== route.params.sessionId) return;
 
         terminal.write(eventData.payload.data);

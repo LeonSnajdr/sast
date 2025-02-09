@@ -9,11 +9,3 @@
         <NuxtPage />
     </div>
 </template>
-
-<script setup lang="ts">
-const ptySessionStore = usePtySessionStore();
-
-onBeforeMount(() => {
-    ptySessionStore.loadAll();
-});
-</script>

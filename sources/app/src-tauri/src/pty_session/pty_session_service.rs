@@ -2,13 +2,13 @@ use std::io::{Read, Write};
 use once_cell::sync::Lazy;
 use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
 use std::sync::Arc;
-use tokio::sync::{Mutex, RwLock};
+use tokio::sync::{oneshot, Mutex, RwLock};
 use uuid::Uuid;
 use tauri::AppHandle;
 use tauri_specta::Event;
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
-use crate::pty_session::pty_session_events::{PtySessionEvent, PtySessionEventData};
+use crate::pty_session::pty_session_events::{PtySessionReadEvent, PtySessionReadEventData, PtySessionsUpdatedEvent};
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(Vec::new()),
@@ -23,7 +23,6 @@ struct PtySession {
 	project_id: Uuid,
 	task_set_id: Option<Uuid>,
 	name: String,
-	running: Mutex<bool>,
 	pair: Mutex<PtyPair>,
 	child: Mutex<Box<dyn Child + Send + Sync>>,
 	child_killer: Mutex<Box<dyn ChildKiller + Send + Sync>>,
@@ -66,7 +65,6 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 		project_id: spawn_contract.project_id,
 		task_set_id: spawn_contract.task_set_id,
 		name: build_pty_session_name(spawn_contract.name),
-		running: Mutex::new(true),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
@@ -78,7 +76,9 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 	let mut sessions = PTY_STATE.sessions.write().await;
 	sessions.push(session);
 
-	start_pty_session_read_thread(app_handle, session_id);
+	PtySessionsUpdatedEvent().emit(&app_handle).map_err(|_| Error::Failed)?;
+
+	start_pty_session_handle_threads(&app_handle, &session_id);
 
 	Ok(session_id)
 }
@@ -94,44 +94,60 @@ fn build_pty_session_name(name: Option<String>) -> String {
 	}
 }
 
-fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
-	// https://github.com/wez/wezterm/issues/4206
+fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
+	let (tx, mut rx) = oneshot::channel();
 
+	let kill_app_handle = app_handle.clone();
+	let kill_session_id = session_id.clone();
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_get_one(&session_id).await.unwrap();
+		let session = pty_session_get_one(&kill_session_id).await.unwrap();
 
-		session.child.lock().await.wait().ok();
+		session.child.lock().await.wait().unwrap();
 
-		*session.running.lock().await = false;
+		tx.send(()).unwrap();
 
-		let mut cmd = CommandBuilder::new("whoami");
-		let child = session.pair.lock().await.slave.spawn_command(cmd).ok();
+		session.pair.lock().await.slave.spawn_command(CommandBuilder::new("whoami")).unwrap();
 
-		/*let mut sessions = PTY_STATE.sessions.write().await;
-		if let Some(pos) = sessions.iter().position(|s| s.session_id == *session_id) {
+		drop(session.writer.lock().await);
+		drop(session.pair.lock().await);
+
+		let mut sessions = PTY_STATE.sessions.write().await;
+		if let Some(pos) = sessions.iter().position(|s| s.session_id == kill_session_id) {
 			sessions.remove(pos);
-		}*/
+		}
+
+		PtySessionsUpdatedEvent().emit(&kill_app_handle).unwrap();
+
+		drop(kill_app_handle);
 	});
 
+	let read_app_handle = app_handle.clone();
+	let read_session_id = session_id.clone();
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_get_one(&session_id).await.unwrap();
+		let session = pty_session_get_one(&read_session_id).await.unwrap();
 
-		println!("Starting pty session thread {}", session_id);
+		println!("Starting pty session thread {}", read_session_id);
 
 		let mut buf = [0u8; 1024];
 
 		loop {
-			if !*session.running.lock().await {
+			if let Ok(()) = rx.try_recv() {
+				println!("Received stop signal for session {}", read_session_id);
 				break;
 			}
 
 			let read_bytes = match session.reader.lock().await.read(&mut buf) {
 				Ok(read_bytes) => read_bytes,
 				Err(e) => {
-					println!("Reading failed for session {}: {}", session_id, e);
+					println!("Reading failed for session {}: {}", read_session_id, e);
 					break;
 				}
 			};
+
+			if let Ok(()) = rx.try_recv() {
+				println!("Received stop signal for session {}", read_session_id);
+				break;
+			}
 
 			if read_bytes == 0 {
 				println!("Exited");
@@ -142,20 +158,22 @@ fn start_pty_session_read_thread(app_handle: AppHandle, session_id: Uuid) {
 
 			session.read_history.lock().await.push_str(&read_data);
 
-			let event_data = PtySessionEventData {
-				session_id,
+			let event_data = PtySessionReadEventData {
+				session_id: read_session_id.clone(),
 				data: read_data,
 			};
 
-			if let Err(e) = PtySessionEvent(event_data).emit(&app_handle) {
-				println!("Emit failed for session {}: {}", session_id, e);
+			if let Err(e) = PtySessionReadEvent(event_data).emit(&read_app_handle) {
+				println!("Emit failed for session {}: {}", read_session_id, e);
 				break;
 			}
 		}
 
 		session.child_killer.lock().await.kill().ok();
 
-		println!("Finished pty session thread {}", session_id);
+		println!("Finished pty session thread {}", read_session_id);
+
+		drop(read_app_handle);
 	});
 }
 

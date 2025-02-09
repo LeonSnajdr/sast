@@ -13,7 +13,7 @@ pub struct PtySessionSpawnContract {
 	pub no_exit: bool
 }
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionInfoContract {
 	pub session_id: Uuid,

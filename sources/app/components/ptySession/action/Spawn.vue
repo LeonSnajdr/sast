@@ -7,7 +7,6 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const projectService = useProjectStore();
-const ptySessionStore = usePtySessionStore();
 
 const { selectedProject } = storeToRefs(projectService);
 
@@ -16,7 +15,7 @@ const ptySpawn = async () => {
         name: null,
         projectId: selectedProject.value.id,
         taskSetId: null,
-        command: null,
+        command: "dir",
         noExit: true,
         workingDirectory: null
     };
@@ -27,8 +26,6 @@ const ptySpawn = async () => {
         notify.error(t("ptySession.spawn.error"));
         return;
     }
-
-    await ptySessionStore.loadAll();
 
     navigateTo({ name: "index-project-id-pty-sessionId", params: { id: selectedProject.value.id, sessionId: spawnResult.data } });
 };

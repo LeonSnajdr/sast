@@ -6,20 +6,28 @@
 </template>
 
 <script setup lang="ts">
+import type { UnlistenFn } from "@tauri-apps/api/event";
+
 const route = useRoute("index-project-id");
 const i18n = useI18n();
 const notify = useNotify();
 
 const projectStore = useProjectStore();
+const ptySessionStore = usePtySessionStore();
 
 const { isLoading, selectedProject } = storeToRefs(projectStore);
 
-onBeforeMount(() => {
-    loadProject();
+let unlistenPtyUpdatedEvents: UnlistenFn;
+
+onBeforeMount(async () => {
+    await loadProject();
+    await loadPtySessions();
 });
 
 onBeforeUnmount(() => {
     selectedProject.value = {} as ProjectContract;
+
+    unlistenPtyUpdatedEvents();
 });
 
 const loadProject = async () => {
@@ -37,5 +45,13 @@ const loadProject = async () => {
     }
 
     selectedProject.value = projectResult.data;
+};
+
+const loadPtySessions = async () => {
+    await ptySessionStore.loadAll();
+
+    unlistenPtyUpdatedEvents = await events.ptySessionsUpdatedEvent.listen(() => {
+        ptySessionStore.loadAll();
+    });
 };
 </script>

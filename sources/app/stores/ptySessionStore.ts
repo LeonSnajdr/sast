@@ -10,7 +10,9 @@ export const usePtySessionStore = defineStore("ptySession", () => {
     const ptySessions = ref<PtySessionInfoContract[]>([]);
 
     const loadAll = async () => {
+        isLoading.value = true;
         const sessionInfoResult = await commands.ptySessionInfoGetAll(selectedProject.value.id);
+        isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
             notify.error(t("ptySession.load.error"));
