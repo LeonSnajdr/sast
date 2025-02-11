@@ -10,7 +10,7 @@
                 <VForm ref="form" v-model="isFormValid">
                     <PlaceholderFieldName v-model="placeholder.name" />
                     <PlaceholderFieldValue v-model="placeholder.value" />
-                    <PlaceholderFieldProjectId v-model="placeholder.projectId" />
+                    <PlaceholderFieldVisibility v-model="placeholder.visibility" />
                 </VForm>
             </VCardText>
         </VCard>

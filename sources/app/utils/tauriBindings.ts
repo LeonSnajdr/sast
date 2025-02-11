@@ -133,7 +133,7 @@ async placeholderGetAllGlobal() : Promise<Result<PlaceholderContract[], Error>> 
     else return { status: "error", error: e  as any };
 }
 },
-async placeholderGetAllProject(projectId: string | null) : Promise<Result<PlaceholderContract[], Error>> {
+async placeholderGetAllProject(projectId: string) : Promise<Result<PlaceholderContract[], Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("placeholder_get_all_project", { projectId }) };
 } catch (e) {
@@ -149,9 +149,9 @@ async placeholderGetOne(id: string) : Promise<Result<PlaceholderContract, Error>
     else return { status: "error", error: e  as any };
 }
 },
-async placeholderUpdateOne(id: string, placeholderUpdateContract: PlaceholderUpdateContract) : Promise<Result<null, Error>> {
+async placeholderUpdateOne(placeholderUpdateContract: PlaceholderUpdateContract) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("placeholder_update_one", { id, placeholderUpdateContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_update_one", { placeholderUpdateContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -187,9 +187,12 @@ ptySessionSpawnedEvent: "pty-session-spawned-event"
 /** user-defined types **/
 
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
-export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; dateCreated: string; dateLastUpdated: string }
-export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string }
-export type PlaceholderUpdateContract = { projectId: string | null; name: string; value: string }
+export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
+export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderKind = "Text" | "Select"
+export type PlaceholderSource = "Static"
+export type PlaceholderUpdateContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
 export type PtySessionInfoContract = { sessionId: string; projectId: string; name: string }

@@ -23,12 +23,16 @@ const placeholderSave = async () => {
     isLoading.value = true;
 
     const updateContract: PlaceholderUpdateContract = {
+        id: props.placeholder.id,
         projectId: props.placeholder.projectId,
         name: props.placeholder.name,
-        value: props.placeholder.value
+        value: props.placeholder.value,
+        visibility: props.placeholder.visibility,
+        kind: props.placeholder.kind,
+        source: props.placeholder.source
     };
 
-    const saveResult = await commands.placeholderUpdateOne(props.placeholder.id, updateContract);
+    const saveResult = await commands.placeholderUpdateOne(updateContract);
 
     isLoading.value = false;
 

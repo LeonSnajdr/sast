@@ -16,7 +16,7 @@ const ptySpawn = async () => {
         projectId: selectedProject.value.id,
         taskSetId: null,
         command: "dotnet build",
-        noExit: false,
+        noExit: true,
         workingDirectory: "C:\\Repos\\metis\\sources\\ControlCenter.Api"
     };
 
