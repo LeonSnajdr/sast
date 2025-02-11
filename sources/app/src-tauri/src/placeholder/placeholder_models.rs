@@ -6,7 +6,7 @@ use crate::placeholder::placeholder_enums::{PlaceholderKind, PlaceholderSource, 
 #[derive(Debug, FromRow)]
 pub struct PlaceholderModel {
     pub id: Uuid,
-    pub project_id: Option<Uuid>,
+    pub project_id: Uuid,
     pub name: String,
     pub value: String,
     pub visibility: PlaceholderVisibility,
@@ -19,7 +19,7 @@ pub struct PlaceholderModel {
 #[derive(Debug)]
 pub struct PlaceholderUpdateContainer {
     pub id: Uuid,
-    pub project_id: Option<Uuid>,
+    pub project_id: Uuid,
     pub name: String,
     pub value: String,
     pub visibility: PlaceholderVisibility,
