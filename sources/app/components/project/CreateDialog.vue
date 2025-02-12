@@ -9,7 +9,7 @@
                 <VForm ref="form" v-model="isFormValid">
                     <VTextField
                         id="input"
-                        v-model="project.name"
+                        v-model.trim="project.name"
                         :label="$t('project.field.name')"
                         :rules="[required($t('validation.rule.required', { field: $t('project.field.name') }))]"
                     />
