@@ -17,7 +17,7 @@ pub struct PlaceholderModel {
 }
 
 #[derive(Debug)]
-pub struct PlaceholderUpdateContainer {
+pub struct PlaceholderUpdateModel {
     pub id: Uuid,
     pub project_id: Uuid,
     pub name: String,

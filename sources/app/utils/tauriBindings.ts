@@ -187,11 +187,11 @@ ptySessionSpawnedEvent: "pty-session-spawned-event"
 /** user-defined types **/
 
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
-export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
-export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
+export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderKind = "Text" | "Select"
 export type PlaceholderSource = "Static"
-export type PlaceholderUpdateContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderUpdateContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }

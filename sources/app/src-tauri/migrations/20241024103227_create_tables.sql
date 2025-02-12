@@ -14,9 +14,11 @@ create table if not exists project (
     primary key (id)
 );
 
+create unique index uidx_project_name on project(name);
+
 create table if not exists placeholder (
     id blob not null,
-    project_id blob,
+    project_id blob not null,
     name text not null,
     value text not null,
     visibility text not null,
@@ -28,5 +30,33 @@ create table if not exists placeholder (
     foreign key (project_id) references project(id)
 );
 
-create unique index uidx_name on project(name);
-create unique index uidx_project_id_name on placeholder(coalesce(project_id, -1), name);
+create unique index uidx_placeholder_project_id_name on placeholder(project_id, name);
+
+create table if not exists placeholder_insert_tile (
+    id blob not null,
+    placeholder_id blob,
+    task_command_id blob,
+    task_working_dir_id blob,
+    kind text not null,
+    position integer not null,
+    text_value text,
+    primary key (id),
+    foreign key (task_command_id) references task(id) on delete cascade,
+    foreign key (task_working_dir_id) references task(id) on delete cascade,
+    foreign key (placeholder_id) references placeholder(id) on delete cascade
+);
+
+create table if not exists task (
+    id blob not null,
+    project_id blob not null,
+    name text not null,
+    blocking boolean not null,
+    date_created text not null,
+    date_last_updated text not null,
+    primary key (id),
+    foreign key (project_id) references project(id)
+);
+
+
+
+

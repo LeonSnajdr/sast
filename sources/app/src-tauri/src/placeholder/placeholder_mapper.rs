@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 use crate::placeholder::placeholder_contracts::{PlaceholderContract, PlaceholderCreateContract, PlaceholderUpdateContract};
-use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateContainer};
+use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateModel};
 
 impl From<PlaceholderModel> for PlaceholderContract {
     fn from(value: PlaceholderModel) -> Self {
@@ -35,7 +35,7 @@ impl PlaceholderModel {
     }
 }
 
-impl PlaceholderUpdateContainer {
+impl PlaceholderUpdateModel {
     pub fn from(date_last_updated: DateTime<Utc>, value: PlaceholderUpdateContract) -> Self {
         Self {
             id: value.id,

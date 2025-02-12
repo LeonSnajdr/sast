@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::db;
-use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateContainer};
+use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateModel};
 use crate::placeholder::placeholder_enums::{PlaceholderVisibility, PlaceholderKind, PlaceholderSource};
 use crate::prelude::*;
 
@@ -90,9 +90,9 @@ pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderModel>> {
         "#,
 		PlaceholderVisibility::Global
 	)
-		.fetch_all(db::get_pool())
-		.await
-		.map_err(|_| Error::Db)?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|_| Error::Db)?;
 
 	Ok(placeholders)
 }
@@ -123,7 +123,7 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
     Ok(placeholder)
 }
 
-pub async fn placeholder_update_one(update_container: PlaceholderUpdateContainer) -> Result<()> {
+pub async fn placeholder_update_one(update_container: PlaceholderUpdateModel) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             update placeholder

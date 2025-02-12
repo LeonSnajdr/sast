@@ -8,7 +8,7 @@ pub struct PtySessionSpawnContract {
 	pub project_id: Uuid,
 	pub task_set_id: Option<Uuid>,
 	pub name: Option<String>,
-	pub working_directory: Option<String>,
+	pub working_dir: Option<String>,
 	pub command: Option<String>,
 	pub no_exit: bool
 }

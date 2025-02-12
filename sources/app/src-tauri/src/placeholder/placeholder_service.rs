@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::prelude::*;
 use crate::placeholder::placeholder_contracts::{PlaceholderCreateContract, PlaceholderContract, PlaceholderUpdateContract};
-use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateContainer};
+use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateModel};
 use crate::placeholder::placeholder_repository;
 
 pub async fn placeholder_create(placeholder_create_contract: PlaceholderCreateContract) -> Result<PlaceholderContract> {
@@ -46,7 +46,7 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderContract> {
 pub async fn placeholder_update_one(placeholder_update_contract: PlaceholderUpdateContract) -> Result<()> {
     let date_last_updated = Utc::now();
 
-    let update_container = PlaceholderUpdateContainer::from(date_last_updated, placeholder_update_contract);
+    let update_container = PlaceholderUpdateModel::from(date_last_updated, placeholder_update_contract);
 
     placeholder_repository::placeholder_update_one(update_container).await?;
 

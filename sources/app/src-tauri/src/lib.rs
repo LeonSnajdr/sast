@@ -5,6 +5,7 @@ mod project;
 mod pty_session;
 mod setting;
 mod placeholder;
+mod task;
 
 use specta_typescript::Typescript;
 use tauri_specta::{collect_commands, collect_events, Builder};
@@ -13,6 +14,7 @@ use crate::project::project_commands;
 use crate::pty_session::{pty_session_commands, pty_session_events};
 use crate::setting::setting_commands;
 use crate::placeholder::placeholder_commands;
+use crate::task::task_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -39,6 +41,11 @@ pub fn run() {
 				placeholder_commands::placeholder_get_one,
 				placeholder_commands::placeholder_update_one,
 				placeholder_commands::placeholder_delete_one,
+				task_commands::task_create,
+				task_commands::task_get_one,
+				task_commands::task_get_info_all_project,
+				task_commands::task_update_one,
+				task_commands::task_delete_one,
 			]
 		)
 		.events(

@@ -1,3 +1,5 @@
+pub mod insert;
+
 pub mod placeholder_commands;
 pub mod placeholder_contracts;
 pub mod placeholder_enums;
