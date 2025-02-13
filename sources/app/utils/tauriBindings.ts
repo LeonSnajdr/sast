@@ -164,6 +164,46 @@ async placeholderDeleteOne(id: string) : Promise<Result<null, Error>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async taskCreate(taskCreateContract: TaskCreateContract) : Promise<Result<string, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_create", { taskCreateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskGetOne(id: string) : Promise<Result<TaskContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_get_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskGetInfoAllProject(projectId: string) : Promise<Result<TaskInfoContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_get_info_all_project", { projectId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskUpdateOne(taskUpdateContract: TaskUpdateContract) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_update_one", { taskUpdateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskDeleteOne(id: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_delete_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -189,6 +229,8 @@ ptySessionSpawnedEvent: "pty-session-spawned-event"
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null }
+export type PlaceholderInsertTileKind = "Text" | "Placeholder"
 export type PlaceholderKind = "Text" | "Select"
 export type PlaceholderSource = "Static"
 export type PlaceholderUpdateContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
@@ -200,11 +242,15 @@ export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
 export type PtySessionReadEventData = { sessionId: string; data: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
-export type PtySessionSpawnContract = { projectId: string; taskSetId: string | null; name: string | null; workingDirectory: string | null; command: string | null; noExit: boolean }
+export type PtySessionSpawnContract = { projectId: string; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean }
 export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string }
+export type TaskContract = { id: string; projectId: string; name: string; blocking: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
+export type TaskCreateContract = { projectId: string; name: string; blocking: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TaskInfoContract = { id: string; projectId: string; name: string; blocking: boolean; dateCreated: string; dateLastUpdated: string }
+export type TaskUpdateContract = { id: string; name: string; blocking: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 
 /** tauri-specta globals **/
 

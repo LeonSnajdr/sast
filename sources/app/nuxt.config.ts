@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     experimental: {
         typedPages: true
     },
-    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "nuxt-lodash", "@vueuse/nuxt", "nuxt-adaptive-teleport"],
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "nuxt-lodash", "@vueuse/nuxt"],
     i18n: {
         locales: [
             {

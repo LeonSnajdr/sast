@@ -2014,7 +2014,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:^3.12.4, @nuxt/kit@npm:^3.13.2, @nuxt/kit@npm:^3.9.0":
+"@nuxt/kit@npm:^3.12.4, @nuxt/kit@npm:^3.9.0":
   version: 3.13.2
   resolution: "@nuxt/kit@npm:3.13.2"
   dependencies:
@@ -3567,25 +3567,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vueuse/core@npm:^11.1.0":
-  version: 11.3.0
-  resolution: "@vueuse/core@npm:11.3.0"
-  dependencies:
-    "@types/web-bluetooth": "npm:^0.0.20"
-    "@vueuse/metadata": "npm:11.3.0"
-    "@vueuse/shared": "npm:11.3.0"
-    vue-demi: "npm:>=0.14.10"
-  checksum: 10c0/57ebed3ee2fd5b33297bbb36727424dc1707357db52954a1715366dd6583a4d53a05b10d17d16d1e5bf91fe8f12ea69fd6b232551f60167098ebc606b7234d4a
-  languageName: node
-  linkType: hard
-
-"@vueuse/metadata@npm:11.3.0":
-  version: 11.3.0
-  resolution: "@vueuse/metadata@npm:11.3.0"
-  checksum: 10c0/4548912f325d4f250595b029357977824431db66a94651bc6801c04e4992374286ff71eb41604470638ef100338c2b80df2039d663a20f66d92799f68ccba7e9
-  languageName: node
-  linkType: hard
-
 "@vueuse/metadata@npm:12.5.0":
   version: 12.5.0
   resolution: "@vueuse/metadata@npm:12.5.0"
@@ -3605,15 +3586,6 @@ __metadata:
   peerDependencies:
     nuxt: ^3.0.0
   checksum: 10c0/886ee84edf46cb972b16972af170b76509e128766db03351fa313c092d47f0b7940a9938d4f8820d44e78fb8d1980ace29776348c2673c135021296e13ba4ce2
-  languageName: node
-  linkType: hard
-
-"@vueuse/shared@npm:11.3.0":
-  version: 11.3.0
-  resolution: "@vueuse/shared@npm:11.3.0"
-  dependencies:
-    vue-demi: "npm:>=0.14.10"
-  checksum: 10c0/820af5359d204e434b27ef570e5dfb5fe765e19d540738665c51c8d1569b81dd000dbe292add15dffb1b9538cbcec890626d0b47a5525e624273a0963b524e1f
   languageName: node
   linkType: hard
 
@@ -7980,16 +7952,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nuxt-adaptive-teleport@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "nuxt-adaptive-teleport@npm:1.1.0"
-  dependencies:
-    "@nuxt/kit": "npm:^3.13.2"
-    "@vueuse/core": "npm:^11.1.0"
-  checksum: 10c0/ae708660528f19f9681a0c4f257be08be17fb0c3b1133073a43b0562ac4f7139f39da1e61882282bc76d67737d3dc8a77841f651a8485fffaccd682942b6f57c
-  languageName: node
-  linkType: hard
-
 "nuxt-app@workspace:.":
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
@@ -8005,13 +7967,13 @@ __metadata:
     "@xterm/addon-web-links": "npm:^0.11.0"
     eslint: "npm:^9.19.0"
     nuxt: "npm:^3.15.4"
-    nuxt-adaptive-teleport: "npm:^1.1.0"
     nuxt-lodash: "npm:^2.5.3"
     pinia: "npm:^2.3.1"
     sass: "npm:^1.83.4"
     typescript: "npm:^5.7.3"
     vue: "npm:^3.5.13"
     vue-router: "npm:^4.5.0"
+    vue-text-insert: "npm:^0.0.3"
     vuetify-nuxt-module: "npm:^0.18.3"
     xterm: "npm:^5.3.0"
     xterm-addon-fit: "npm:^0.8.0"
@@ -11031,7 +10993,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-demi@npm:>=0.14.10, vue-demi@npm:^0.14.10":
+"vue-demi@npm:^0.14.10":
   version: 0.14.10
   resolution: "vue-demi@npm:0.14.10"
   peerDependencies:
@@ -11092,6 +11054,15 @@ __metadata:
   peerDependencies:
     vue: ^3.2.0
   checksum: 10c0/5521c8d0ab7634ea75118824d4b4cae3748964725b3d3b4064eb3dbd44013381ea3163d4d856af61655936cd897b84f8eeebb312d0668532c3074d53814bd953
+  languageName: node
+  linkType: hard
+
+"vue-text-insert@npm:^0.0.3":
+  version: 0.0.3
+  resolution: "vue-text-insert@npm:0.0.3"
+  peerDependencies:
+    vue: ">=3.3 <4.0"
+  checksum: 10c0/03791e5d444037496d3fbf52d17adfac6a2c6049affa1c39346b5f2ae5676a9efbe2b7f45f283b025a0ca11b8034319a6e8c52995ae442cb9be47fc379e5ead4
   languageName: node
   linkType: hard
 
