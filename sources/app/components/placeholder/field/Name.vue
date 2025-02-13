@@ -2,7 +2,7 @@
     <VRowSingle>
         <VTextField
             v-model.trim="name"
-            :label="$t('project.field.name')"
+            :label="$t('placeholder.field.name')"
             :rules="[required($t('validation.rule.required', { field: $t('placeholder.field.name') }))]"
         />
     </VRowSingle>

@@ -45,7 +45,7 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
         .map(|(position, working_dir_tile)|
             {
                 let id = Uuid::new_v4();
-                PlaceholderInsertTileModel::from(id, position as i64, Some(task_model.id), None, working_dir_tile)
+                PlaceholderInsertTileModel::from(id, position as i64, None, Some(task_model.id), working_dir_tile)
             })
         .collect();
 

@@ -57,6 +57,8 @@ create table if not exists task (
     foreign key (project_id) references project(id) on delete cascade
 );
 
+create unique index uidx_task_project_id_name on task(project_id, name);
+
 
 
 

@@ -7,7 +7,7 @@
     <VContainer>
         <VCard :loading="isLoading">
             <VCardText v-if="placeholder">
-                <VForm ref="form" v-model="isFormValid">
+                <VForm v-model="isFormValid">
                     <PlaceholderFieldName v-model="placeholder.name" />
                     <PlaceholderFieldValue v-model="placeholder.value" />
                     <PlaceholderFieldVisibility v-model="placeholder.visibility" />

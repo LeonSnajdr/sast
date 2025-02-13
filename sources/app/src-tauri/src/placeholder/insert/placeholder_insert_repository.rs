@@ -60,7 +60,9 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
             	p.name as placeholder_name
             from placeholder_insert_tile as pit
             left join placeholder as p on p.id = pit.placeholder_id
-            where pit.task_command_id = $1 and pit.task_working_dir_id = $2
+            where
+            	pit.task_command_id is $1 and
+            	pit.task_working_dir_id is $2
         "#,
 		filter.task_command_id,
 		filter.task_working_dir_id
