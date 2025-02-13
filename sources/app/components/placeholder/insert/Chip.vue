@@ -2,9 +2,9 @@
     <VChip
         @click:close.prevent="props.destroy()"
         :prependIcon="iconMap[props.item.placeholderVisibility!]"
-        class="mx-1"
-        size="small"
         :color="''"
+        size="small"
+        class="mx-1"
         variant="tonal"
         closable
     >

@@ -26,6 +26,7 @@ const addInsert = (placeholder: PlaceholderContract) => {
         kind: "Placeholder",
         placeholderId: placeholder.id,
         placeholderName: placeholder.name,
+        placeholderVisibility: placeholder.visibility,
         textValue: null
     });
 };
