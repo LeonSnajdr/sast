@@ -5,13 +5,21 @@ use crate::db;
 use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
 use crate::prelude::*;
 
-pub async fn task_create(create_model: TaskModel) -> Result<()> {
-    sqlx::query!(
+pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
+    let task = sqlx::query_as!(
+		TaskModel,
 		r#"--sql
             insert into task
                 (id, project_id, name, blocking, date_created, date_last_updated)
                 values
                 ($1, $2, $3, $4, $5, $6)
+			returning
+                id as "id: Uuid",
+                project_id as "project_id: Uuid",
+                name,
+                blocking,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_updated as "date_last_updated: DateTime<Utc>"
         "#,
 		create_model.id,
 		create_model.project_id,
@@ -20,11 +28,11 @@ pub async fn task_create(create_model: TaskModel) -> Result<()> {
         create_model.date_created,
         create_model.date_last_updated
 	)
-        .execute(db::get_pool())
+        .fetch_one(db::get_pool())
         .await
         .map_err(|_| Error::Db)?;
 
-    Ok(())
+    Ok(task)
 }
 
 pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {

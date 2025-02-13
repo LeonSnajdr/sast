@@ -42,8 +42,8 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 
 	let mut cmd = CommandBuilder::new("pwsh.exe");
 
-	if let Some(working_directory) = spawn_contract.working_dir {
-		cmd.args(["-WorkingDirectory", working_directory.as_str()]);
+	if let Some(working_dir) = spawn_contract.working_dir {
+		cmd.args(["-WorkingDirectory", working_dir.as_str()]);
 	}
 
 	if spawn_contract.no_exit {

@@ -27,7 +27,7 @@ create table if not exists placeholder (
     date_created text not null,
     date_last_updated text not null,
     primary key (id),
-    foreign key (project_id) references project(id)
+    foreign key (project_id) references project(id) on delete cascade
 );
 
 create unique index uidx_placeholder_project_id_name on placeholder(project_id, name);
@@ -54,7 +54,7 @@ create table if not exists task (
     date_created text not null,
     date_last_updated text not null,
     primary key (id),
-    foreign key (project_id) references project(id)
+    foreign key (project_id) references project(id) on delete cascade
 );
 
 

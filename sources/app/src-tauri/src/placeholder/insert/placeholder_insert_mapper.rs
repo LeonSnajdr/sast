@@ -14,11 +14,11 @@ impl PlaceholderInsertTileContract {
 }
 
 impl PlaceholderInsertTileModel {
-    pub fn from(id: Uuid, position: i64, task_command_id: Option<Uuid>, task_working_directory_id: Option<Uuid>, value: PlaceholderInsertTileContract) -> Self {
+    pub fn from(id: Uuid, position: i64, task_command_id: Option<Uuid>, task_working_dir_id: Option<Uuid>, value: PlaceholderInsertTileContract) -> Self {
         Self {
             id,
             task_command_id,
-            task_working_dir_id: task_working_directory_id,
+            task_working_dir_id,
             placeholder_id: value.placeholder_id,
             kind: value.kind,
             position,

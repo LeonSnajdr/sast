@@ -13,12 +13,12 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
     let date_created = Utc::now();
     let date_last_updated = Utc::now();
 
-    let (task_model, command_tiles, working_dir_tiles) = TaskModel::from_create_contract(id, date_created, date_last_updated, task_create_contract);
+    let (task_create_model, command_tiles, working_dir_tiles) = TaskModel::from_create_contract(id, date_created, date_last_updated, task_create_contract);
 
-    task_repository::task_create(task_model).await?;
+    let task_model = task_repository::task_create(task_create_model).await?;
 
     let delete_command_tiles_filter = PlaceholderInsertTileFilterModel {
-        task_command_id: Some(id),
+        task_command_id: Some(task_model.id),
         ..PlaceholderInsertTileFilterModel::default()
     };
 
@@ -28,12 +28,11 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
         .map(|(position, command_tile)|
         {
             let id = Uuid::new_v4();
-            PlaceholderInsertTileModel::from(id, position as i64, Some(id), None, command_tile)
+            PlaceholderInsertTileModel::from(id, position as i64, Some(task_model.id.clone()), None, command_tile)
         })
         .collect();
 
     placeholder_insert_repository::placeholder_insert_tile_update_many(command_tile_models, delete_command_tiles_filter).await?;
-
 
     let delete_working_dir_tiles_filter = PlaceholderInsertTileFilterModel {
         task_working_dir_id: Some(id),
@@ -46,7 +45,7 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
         .map(|(position, working_dir_tile)|
             {
                 let id = Uuid::new_v4();
-                PlaceholderInsertTileModel::from(id, position as i64, Some(id), None, working_dir_tile)
+                PlaceholderInsertTileModel::from(id, position as i64, Some(task_model.id), None, working_dir_tile)
             })
         .collect();
 
@@ -65,14 +64,14 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskContract> {
 
     let command_tiles = placeholder_insert_repository::placeholder_insert_tile_get_many(command_tile_filter).await?;
 
-    let working_directory_tiles_filter = PlaceholderInsertTileFilterModel {
+    let working_dir_tiles_filter = PlaceholderInsertTileFilterModel {
         task_working_dir_id: Some(id),
         ..PlaceholderInsertTileFilterModel::default()
     };
 
-    let working_directory_tiles = placeholder_insert_repository::placeholder_insert_tile_get_many(working_directory_tiles_filter).await?;
+    let working_dir_tiles = placeholder_insert_repository::placeholder_insert_tile_get_many(working_dir_tiles_filter).await?;
 
-    let task_contract = TaskContract::from(command_tiles, working_directory_tiles, task_model);
+    let task_contract = TaskContract::from(command_tiles, working_dir_tiles, task_model);
 
     Ok(task_contract)
 }
