@@ -2,10 +2,10 @@
     <IconBtn :loading="isLoading" variant="flat" icon="mdi-delete">
         {{ $t("action.delete") }}
         <ConfirmationDialog
-            @confirm="placeholderDelete"
-            :message="$t('placeholder.delete.description', { placeholderName: placeholder.name })"
-            :title="$t('placeholder.delete.title')"
-            icon="mdi-label"
+            @confirm="deleteTask"
+            :message="$t('task.delete.description', { name: task.name })"
+            :title="$t('task.delete.title')"
+            icon="mdi-checkbox-marked-circle-outline"
             iconColor="error"
         />
     </IconBtn>
@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-    placeholder: PlaceholderContract;
+    task: TaskContract;
 }>();
 
 const notify = useNotify();
@@ -26,21 +26,21 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-const placeholderDelete = async () => {
+const deleteTask = async () => {
     isLoading.value = true;
 
-    const deleteResult = await commands.placeholderDeleteOne(props.placeholder.id);
+    const deleteResult = await commands.taskDeleteOne(props.task.id);
 
     isLoading.value = false;
 
     if (deleteResult.status == "error") {
-        notify.error(t("placeholder.delete.error"));
+        notify.error(t("task.delete.error"));
         return;
     }
 
-    notify.success(t("placeholder.delete.success", { placeholderName: props.placeholder.name }));
+    notify.success(t("task.delete.success", { name: props.task.name }));
 
-    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+    navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
 
     isDialogOpen.value = false;
 };

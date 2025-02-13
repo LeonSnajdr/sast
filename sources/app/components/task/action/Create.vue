@@ -9,8 +9,14 @@
                 </VCardTitle>
                 <VCardText>
                     <VForm v-model="isFormValid">
-                        <TaskFieldName v-model="task.name" />
-                        <TaskFieldBlocking v-model="task.blocking" />
+                        <VRow>
+                            <VCol cols="8">
+                                <TaskFieldName v-model="task.name" />
+                            </VCol>
+                            <VCol cols="4">
+                                <TaskFieldBlocking v-model="task.blocking" />
+                            </VCol>
+                        </VRow>
                         <TaskFieldCommandTiles v-model="task.workingDirTiles" />
                         <TaskFieldWorkingDirTiles v-model="task.commandTiles" />
                     </VForm>

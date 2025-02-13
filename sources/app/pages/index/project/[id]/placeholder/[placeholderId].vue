@@ -1,7 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.edit.title") }}</VAppBarTitle>
-        <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" />
+        <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" class="mr-2" />
         <PlaceholderActionSave v-if="placeholder" :disabled="!isFormValid" :placeholder="placeholder" />
     </VAppBar>
     <VContainer>

@@ -4,6 +4,7 @@
             <VListItem v-for="placeholder in placeholders" :key="placeholder.id" @click="addInsert(placeholder)">
                 {{ placeholder.name }}
             </VListItem>
+            <VListItem v-if="placeholders?.length === 0">{{ $t("search.noResults") }}</VListItem>
         </VList>
     </VMenu>
 </template>
