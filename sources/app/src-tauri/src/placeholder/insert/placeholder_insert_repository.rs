@@ -1,6 +1,7 @@
 use uuid::Uuid;
 
 use crate::db;
+use crate::placeholder::placeholder_enums::PlaceholderVisibility;
 use crate::placeholder::insert::placeholder_insert_enums::PlaceholderInsertTileKind;
 use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileFilterModel, PlaceholderInsertTileModel, PlaceholderInsertTileResultModel};
 use crate::prelude::*;
@@ -13,7 +14,9 @@ pub async fn placeholder_insert_tile_update_many(create_models: Vec<PlaceholderI
 		r#"--sql
 			delete
 			from placeholder_insert_tile
-			where task_command_id = $1 and task_working_dir_id = $2
+			where
+				task_command_id is $1 and
+				task_working_dir_id is $2
 		"#,
 		delete_filter.task_command_id,
 		delete_filter.task_working_dir_id
@@ -27,7 +30,7 @@ pub async fn placeholder_insert_tile_update_many(create_models: Vec<PlaceholderI
 			r#"--sql
 				insert into placeholder_insert_tile
 					(id, placeholder_id, task_command_id, task_working_dir_id, kind, position, text_value)
-					values
+				values
 					($1, $2, $3, $4, $5, $6, $7)
 			"#,
 			create_model.id,
@@ -57,7 +60,8 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
             	pit.position,
             	pit.text_value,
             	pit.placeholder_id as "placeholder_id: Uuid",
-            	p.name as placeholder_name
+            	p.name as placeholder_name,
+            	p.visibility as "placeholder_visibility: PlaceholderVisibility"
             from placeholder_insert_tile as pit
             left join placeholder as p on p.id = pit.placeholder_id
             where

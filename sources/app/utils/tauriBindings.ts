@@ -229,7 +229,7 @@ ptySessionSpawnedEvent: "pty-session-spawned-event"
 export type Error = "Db" | "AlreadyExists" | "NotExists" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
-export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null }
+export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
 export type PlaceholderInsertTileKind = "Text" | "Placeholder"
 export type PlaceholderKind = "Text" | "Select"
 export type PlaceholderSource = "Static"

@@ -9,6 +9,7 @@ impl PlaceholderInsertTileContract {
             text_value: value.text_value,
             placeholder_id: value.placeholder_id,
             placeholder_name: value.placeholder_name,
+            placeholder_visibility: value.placeholder_visibility
         }
     }
 }
