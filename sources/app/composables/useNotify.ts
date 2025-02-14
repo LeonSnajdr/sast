@@ -1,31 +1,29 @@
-const notifications = ref<{ text: string; color: string }[]>([]);
+const notifications = ref<{ active: boolean; text: string; type: string; timeout: number; id: string }[]>([]);
 
 export default function useNotify() {
     const success = (text: string) => {
-        notifications.value.push({
-            text: text,
-            color: "success"
-        });
-    };
-
-    const warning = (text: string) => {
-        notifications.value.push({
-            text: text,
-            color: "warning"
-        });
-    };
-
-    const error = (text: string) => {
-        notifications.value.push({
-            text: text,
-            color: "error"
-        });
+        addNotification(text, "success", 5000);
     };
 
     const info = (text: string) => {
+        addNotification(text, "info", 5000);
+    };
+
+    const warning = (text: string) => {
+        addNotification(text, "warning", 5000);
+    };
+
+    const error = (text: string) => {
+        addNotification(text, "error", 10000);
+    };
+
+    const addNotification = (text: string, type: string, timeout: number) => {
         notifications.value.push({
+            active: true,
+            id: crypto.randomUUID(),
+            timeout: timeout,
             text: text,
-            color: "info"
+            type: type
         });
     };
 

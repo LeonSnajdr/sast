@@ -8,7 +8,6 @@ export default withNuxt()
             "vue/attribute-hyphenation": ["error", "never"],
             "vue/component-name-in-template-casing": ["error", "PascalCase", { registeredComponentsOnly: false }],
             "vue/component-api-style": ["error", ["script-setup"]],
-            "vue/html-self-closing": ["error", "always"],
             "vue/define-macros-order": [
                 "error",
                 {
