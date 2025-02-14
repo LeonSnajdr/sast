@@ -109,7 +109,7 @@ const restoreHistory = async () => {
     const readHistoryResult = await commands.ptySessionGetReadHistory(route.params.sessionId);
 
     if (readHistoryResult.status === "error") {
-        notify.error(t("ptySession.open.error"));
+        notify.error(t("ptySession.open.error"), readHistoryResult.error);
         return;
     }
 

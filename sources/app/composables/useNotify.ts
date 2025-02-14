@@ -18,12 +18,18 @@ export default function useNotify() {
     };
 
     const getCommandError = (error?: unknown) => {
+        if (!error) {
+            return undefined;
+        }
+
         if (error && typeof error === "object") {
             if ("Db" in error) {
                 const dbError = error as { Db: string };
                 return dbError.Db;
             }
         }
+
+        return JSON.stringify(error);
     };
 
     const addNotification = (type: string, text: string, timeout: number, expandableText?: string) => {
@@ -33,7 +39,7 @@ export default function useNotify() {
             lodRemove(notifications.value, (x) => x.id === id);
         };
 
-        notifications.value.push({
+        notifications.value.unshift({
             id,
             active: true,
             expanded: false,

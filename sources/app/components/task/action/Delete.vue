@@ -34,8 +34,7 @@ const deleteTask = async () => {
     isLoading.value = false;
 
     if (deleteResult.status == "error") {
-        notify.error(t("action.delete.error", { type: t("task.singular"), name: props.task.name }));
-        console.error(deleteResult);
+        notify.error(t("action.delete.error", { type: t("task.singular"), name: props.task.name }), deleteResult.error);
         return;
     }
 

@@ -37,7 +37,7 @@ const placeholderSave = async () => {
     isLoading.value = false;
 
     if (saveResult.status == "error") {
-        notify.error(t("action.save.error", { type: t("placeholder.singular"), name: props.placeholder.name }));
+        notify.error(t("action.save.error", { type: t("placeholder.singular"), name: props.placeholder.name }), saveResult.error);
         return;
     }
 

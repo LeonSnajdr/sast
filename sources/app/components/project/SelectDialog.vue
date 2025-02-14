@@ -53,7 +53,7 @@ const loadProjects = async () => {
     isLoading.value = false;
 
     if (projectsResult.status == "error") {
-        notify.error(t("project.load.failed"));
+        notify.error(t("project.load.failed"), projectsResult.error);
         return;
     }
 

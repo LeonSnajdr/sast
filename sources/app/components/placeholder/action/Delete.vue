@@ -34,8 +34,7 @@ const placeholderDelete = async () => {
     isLoading.value = false;
 
     if (deleteResult.status == "error") {
-        notify.error(t("action.delete.error", { type: t("placeholder.singular"), name: props.placeholder.name }));
-        console.error(deleteResult);
+        notify.error(t("action.delete.error", { type: t("placeholder.singular"), name: props.placeholder.name }), deleteResult.error);
         return;
     }
 

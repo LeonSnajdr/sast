@@ -28,7 +28,7 @@ const finish = async () => {
 
     if (initializeResult.status == "error") {
         if (initializeResult.error === "AlreadyExists") {
-            notify.error(t("initialize.error.alreadyExists"));
+            notify.error(t("initialize.error.alreadyExists"), initializeResult.error);
         }
         return;
     }

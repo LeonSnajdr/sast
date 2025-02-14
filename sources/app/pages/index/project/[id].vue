@@ -42,7 +42,7 @@ const loadProject = async () => {
     if (projectResult.status == "error") {
         console.log(projectResult);
 
-        notify.error(i18n.t("project.load.failed"));
+        notify.error(i18n.t("project.load.failed"), projectResult.error);
         return;
     }
 

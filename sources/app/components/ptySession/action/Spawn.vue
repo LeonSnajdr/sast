@@ -17,13 +17,13 @@ const ptySpawn = async () => {
         taskSetId: null,
         command: "dotnet build",
         noExit: true,
-        workingDirectory: "C:\\Repos\\metis\\sources\\ControlCenter.Api"
+        workingDir: "C:\\Repos\\metis\\sources\\ControlCenter.Api"
     };
 
     const spawnResult = await commands.ptySessionSpawn(spawnContract);
 
     if (spawnResult.status === "error") {
-        notify.error(t("ptySession.spawn.error"));
+        notify.error(t("ptySession.spawn.error"), spawnResult.error);
         return;
     }
 };
