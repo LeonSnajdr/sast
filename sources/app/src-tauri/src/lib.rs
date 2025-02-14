@@ -8,6 +8,7 @@ mod setting;
 mod task;
 
 use specta_typescript::Typescript;
+use tauri::Manager;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
 use crate::placeholder::placeholder_commands;
@@ -58,7 +59,9 @@ pub fn run() {
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()
-		.plugin(tauri_plugin_single_instance::init())
+		.plugin(tauri_plugin_single_instance::init(|app, _, _| {
+			let _ = app.get_webview_window("main").expect("no main window").set_focus();
+		}))
 		.plugin(tauri_plugin_shell::init())
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
