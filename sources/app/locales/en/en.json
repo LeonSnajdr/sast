@@ -88,6 +88,7 @@
   "task.title": "Tasks",
   "taskset.title": "Tasksets",
   "validation.rule.required": "{field} is required",
+  "validation.rule.validName": "{field} can only contain letters, numbers, hyphens (-), underscores (_) and single spaces",
   "vueUse.timeAgo.ago": "{0} ago",
   "vueUse.timeAgo.day": "day | days",
   "vueUse.timeAgo.hour": "hour | hours",

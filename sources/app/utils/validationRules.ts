@@ -49,3 +49,8 @@ export function hasItems(message: string): ValidationRule {
         return valid || message;
     };
 }
+
+export function validName(message: string): ValidationRule {
+    const namePattern = /^(?!.* {2})[0-9a-zA-ZÄÖÜäöüß\-_ ]+$/;
+    return regex(namePattern, message);
+}

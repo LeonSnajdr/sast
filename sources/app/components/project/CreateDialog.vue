@@ -11,7 +11,10 @@
                         id="input"
                         v-model.trim="project.name"
                         :label="$t('project.field.name')"
-                        :rules="[required($t('validation.rule.required', { field: $t('project.field.name') }))]"
+                        :rules="[
+                            required($t('validation.rule.required', { field: $t('project.field.name') })),
+                            validName($t('validation.rule.validName', { field: $t('placeholder.field.name') }))
+                        ]"
                     />
                 </VForm>
             </VCardText>
