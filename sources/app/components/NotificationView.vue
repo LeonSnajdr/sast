@@ -6,7 +6,7 @@
             :contentProps="{ class: notification.type }"
             :style="{ 'padding-bottom': index * 60 + 'px' }"
             :timeout="notification.timeout"
-            color="background"
+            color="surface"
             minWidth="500"
         >
             <template #default>
