@@ -1,6 +1,6 @@
 <template>
     <VAppBar>
-        <VAppBarTitle>{{ $t("taskset.title") }}</VAppBarTitle>
+        <VAppBarTitle>{{ $t("taskset.singular") }}</VAppBarTitle>
     </VAppBar>
     <div class="fill-height d-flex flex-column">
         <VContainer>

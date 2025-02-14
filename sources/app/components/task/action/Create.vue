@@ -5,7 +5,7 @@
             <VCard>
                 <VCardTitle>
                     <VIcon color="success" icon="mdi-label" />
-                    {{ $t("task.create.title") }}
+                    {{ $t("action.create.title", { type: $t("task.singular") }) }}
                 </VCardTitle>
                 <VCardText>
                     <VForm v-model="isFormValid">
@@ -68,12 +68,12 @@ const createTask = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(t("task.create.error"));
+        notify.error(t("action.create.error", { type: t("task.singular"), name: task.value.name }));
         console.error(createResult);
         return;
     }
 
-    notify.success(t("task.create.success", { name: task.value.name }));
+    notify.success(t("action.create.success", { type: t("task.singular"), name: task.value.name }));
 
     isDialogOpen.value = false;
 

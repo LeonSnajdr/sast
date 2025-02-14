@@ -1,6 +1,6 @@
 <template>
     <VAppBar>
-        <VAppBarTitle>{{ $t("task.title") }}</VAppBarTitle>
+        <VAppBarTitle>{{ $t("task.plural") }}</VAppBarTitle>
         <TaskActionCreate @created="loadTasks()" />
     </VAppBar>
 

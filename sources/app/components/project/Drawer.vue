@@ -51,17 +51,17 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         },
         {
             icon: "mdi-label-outline",
-            name: t("placeholder.title"),
+            name: t("placeholder.plural"),
             to: { name: "index-project-id-placeholder", params: { id: selectedProject.value.id } }
         },
         {
             icon: "mdi-checkbox-marked-circle-outline",
-            name: t("task.title"),
+            name: t("task.plural"),
             to: { name: "index-project-id-task", params: { id: selectedProject.value.id } }
         },
         {
             icon: "mdi-checkbox-multiple-marked-circle-outline",
-            name: t("taskset.title"),
+            name: t("taskset.plural"),
             to: { name: "index-project-id-taskset", params: { id: selectedProject.value.id } }
         }
     ];

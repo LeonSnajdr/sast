@@ -3,7 +3,7 @@
         <VCard>
             <VCardTitle>
                 <VIcon color="success" icon="mdi-folder-plus" />
-                {{ $t("project.create.title") }}
+                {{ $t("action.create.title", { type: $t("project.singular") }) }}
             </VCardTitle>
             <VCardText>
                 <VForm ref="form" v-model="isFormValid">
@@ -29,6 +29,7 @@
 <script setup lang="ts">
 const i18n = useI18n();
 const notify = useNotify();
+const { t } = useI18n();
 
 const form = ref();
 
@@ -46,12 +47,12 @@ const createProject = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(i18n.t("project.create.error"));
-
+        notify.error(i18n.t("action.create.error", { type: t("project.singular"), name: project.value.name }));
+        console.error(createResult);
         return;
     }
 
-    notify.success(i18n.t("project.create.success", { projectName: createResult.data.name }));
+    notify.success(i18n.t("action.create.success", { type: t("project.singular"), name: project.value.name }));
 
     isDialogOpen.value = false;
 

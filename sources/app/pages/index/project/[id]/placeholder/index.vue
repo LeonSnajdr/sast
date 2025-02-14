@@ -1,6 +1,6 @@
 <template>
     <VAppBar>
-        <VAppBarTitle>{{ $t("placeholder.title") }}</VAppBarTitle>
+        <VAppBarTitle>{{ $t("placeholder.plural") }}</VAppBarTitle>
         <PlaceholderActionCreate @created="loadPlaceholders()" />
     </VAppBar>
 

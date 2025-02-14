@@ -5,7 +5,7 @@
             <VCard>
                 <VCardTitle>
                     <VIcon color="success" icon="mdi-label" />
-                    {{ $t("placeholder.create.title") }}
+                    {{ $t("action.create.title", { type: $t("placeholder.singular") }) }}
                 </VCardTitle>
                 <VCardText>
                     <VForm ref="form" v-model="isFormValid">
@@ -48,11 +48,11 @@ const createPlaceholder = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(t("placeholder.create.error"));
+        notify.error(t("action.create.error", { type: t("placeholder.singular"), name: placeholder.value.name }));
         return;
     }
 
-    notify.success(t("placeholder.create.success", { placeholderName: createResult.data.name }));
+    notify.success(t("action.create.success", { type: t("placeholder.singular"), name: placeholder.value.name }));
 
     isDialogOpen.value = false;
 

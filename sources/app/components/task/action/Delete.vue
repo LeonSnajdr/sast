@@ -3,8 +3,8 @@
         {{ $t("action.delete") }}
         <ConfirmationDialog
             @confirm="deleteTask"
-            :message="$t('action.delete.description', { type: $t('task.title'), name: task.name })"
-            :title="$t('action.delete.title', { type: $t('task.title') })"
+            :message="$t('action.delete.description', { type: $t('task.singular'), name: task.name })"
+            :title="$t('action.delete.title', { type: $t('task.singular') })"
             icon="mdi-checkbox-marked-circle-outline"
             iconColor="error"
         />
@@ -34,12 +34,12 @@ const deleteTask = async () => {
     isLoading.value = false;
 
     if (deleteResult.status == "error") {
-        notify.error(t("action.delete.error", { type: t("task.title"), name: props.task.name }));
+        notify.error(t("action.delete.error", { type: t("task.singular"), name: props.task.name }));
         console.error(deleteResult);
         return;
     }
 
-    notify.success(t("action.delete.success", { type: t("task.title"), name: props.task.name }));
+    notify.success(t("action.delete.success", { type: t("task.singular"), name: props.task.name }));
 
     navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
 

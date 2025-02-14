@@ -37,11 +37,11 @@ const placeholderSave = async () => {
     isLoading.value = false;
 
     if (saveResult.status == "error") {
-        notify.error(t("action.save.error", { type: t("placeholder.title"), name: props.placeholder.name }));
+        notify.error(t("action.save.error", { type: t("placeholder.singular"), name: props.placeholder.name }));
         return;
     }
 
-    notify.success(t("action.save.success", { type: t("placeholder.title"), name: props.placeholder.name }));
+    notify.success(t("action.save.success", { type: t("placeholder.singular"), name: props.placeholder.name }));
 
     navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 
