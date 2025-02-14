@@ -3,8 +3,8 @@
         {{ $t("action.delete") }}
         <ConfirmationDialog
             @confirm="placeholderDelete"
-            :message="$t('placeholder.delete.description', { placeholderName: placeholder.name })"
-            :title="$t('placeholder.delete.title')"
+            :message="$t('action.delete.description', { type: $t('placeholder.title'), name: placeholder.name })"
+            :title="$t('action.delete.title', { type: $t('placeholder.title') })"
             icon="mdi-label"
             iconColor="error"
         />
@@ -34,11 +34,12 @@ const placeholderDelete = async () => {
     isLoading.value = false;
 
     if (deleteResult.status == "error") {
-        notify.error(t("placeholder.delete.error"));
+        notify.error(t("action.delete.error", { type: t("placeholder.title"), name: props.placeholder.name }));
+        console.error(deleteResult);
         return;
     }
 
-    notify.success(t("placeholder.delete.success", { placeholderName: props.placeholder.name }));
+    notify.success(t("action.delete.success", { type: t("placeholder.title"), name: props.placeholder.name }));
 
     navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 
