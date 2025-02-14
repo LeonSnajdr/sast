@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_specta::Event;
 use uuid::Uuid;
@@ -15,6 +15,6 @@ pub struct PtySessionReadEvent(pub PtySessionReadEventData);
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionReadEventData {
-    pub session_id: Uuid,
-    pub data: String,
+	pub session_id: Uuid,
+	pub data: String,
 }

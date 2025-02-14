@@ -1,8 +1,8 @@
 use uuid::Uuid;
 
 use crate::prelude::*;
+use crate::project::project_contracts::{ProjectContract, ProjectCreateContract};
 use crate::project::project_service;
-use crate::project::project_contracts::{ProjectCreateContract, ProjectContract};
 
 #[tauri::command]
 #[specta::specta]

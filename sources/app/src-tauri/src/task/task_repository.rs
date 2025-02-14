@@ -2,11 +2,11 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::db;
-use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
 use crate::prelude::*;
+use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
 
 pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
-    let task = sqlx::query_as!(
+	let task = sqlx::query_as!(
 		TaskModel,
 		r#"--sql
             insert into task
@@ -25,14 +25,14 @@ pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
 		create_model.project_id,
 		create_model.name,
 		create_model.blocking,
-        create_model.date_created,
-        create_model.date_last_updated
+		create_model.date_created,
+		create_model.date_last_updated
 	)
-        .fetch_one(db::get_pool())
-        .await
-        .map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(task)
+	Ok(task)
 }
 
 pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
@@ -52,9 +52,9 @@ pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoM
         "#,
 		project_id
 	)
-		.fetch_all(db::get_pool())
-		.await
-		.map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(tasks)
 }
@@ -75,9 +75,9 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskModel> {
         "#,
 		id
 	)
-		.fetch_one(db::get_pool())
-		.await
-		.map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(task)
 }
@@ -97,15 +97,15 @@ pub async fn task_update_one(update_container: TaskUpdateModel) -> Result<()> {
 		update_container.blocking,
 		update_container.date_last_updated,
 	)
-		.execute(db::get_pool())
-		.await
-		.map_err(|err| Error::Db(err.to_string()))?;
+	.execute(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(())
 }
 
 pub async fn task_delete_one(id: Uuid) -> Result<()> {
-    sqlx::query!(
+	sqlx::query!(
 		r#"--sql
             delete
             from task
@@ -113,9 +113,9 @@ pub async fn task_delete_one(id: Uuid) -> Result<()> {
         "#,
 		id
 	)
-        .execute(db::get_pool())
-        .await
-        .map_err(|err| Error::Db(err.to_string()))?;
+	.execute(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(())
+	Ok(())
 }

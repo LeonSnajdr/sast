@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use crate::setting::setting_contracts::{SettingInitializeContract, SettingContract, SettingUpdateContract};
+use crate::setting::setting_contracts::{SettingContract, SettingInitializeContract, SettingUpdateContract};
 use crate::setting::setting_service;
 
 #[tauri::command]

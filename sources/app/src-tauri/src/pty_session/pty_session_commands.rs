@@ -1,5 +1,5 @@
-use uuid::Uuid;
 use tauri::AppHandle;
+use uuid::Uuid;
 
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};

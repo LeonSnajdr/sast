@@ -1,14 +1,14 @@
-use std::io::{Read, Write};
-use once_cell::sync::Lazy;
-use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
-use std::sync::Arc;
-use tokio::sync::{oneshot, Mutex, RwLock};
-use uuid::Uuid;
-use tauri::AppHandle;
-use tauri_specta::Event;
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
 use crate::pty_session::pty_session_events::{PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent};
+use once_cell::sync::Lazy;
+use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
+use std::io::{Read, Write};
+use std::sync::Arc;
+use tauri::AppHandle;
+use tauri_specta::Event;
+use tokio::sync::{oneshot, Mutex, RwLock};
+use uuid::Uuid;
 
 static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	sessions: RwLock::new(Vec::new()),
@@ -33,9 +33,7 @@ struct PtySession {
 
 pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
-	let pair = pty_system
-		.openpty(PtySize::default())
-		.map_err(|_| Error::Failed)?;
+	let pair = pty_system.openpty(PtySize::default()).map_err(|_| Error::Failed)?;
 
 	let writer = pair.master.take_writer().map_err(|_| Error::Failed)?;
 	let reader = pair.master.try_clone_reader().map_err(|_| Error::Failed)?;
@@ -85,12 +83,8 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 
 fn build_pty_session_name(name: Option<String>) -> String {
 	match name {
-		Some(ref name) => {
-			name.clone()
-		},
-		None => {
-			"PowerShell".to_string()
-		}
+		Some(ref name) => name.clone(),
+		None => "PowerShell".to_string(),
 	}
 }
 
@@ -180,12 +174,7 @@ fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 pub async fn pty_session_write(session_id: &Uuid, data: &String) -> Result<()> {
 	let session = pty_session_get_one(session_id).await?;
 
-	session
-		.writer
-		.lock()
-		.await
-		.write_all(data.as_bytes())
-		.map_err(|_| Error::Failed)?;
+	session.writer.lock().await.write_all(data.as_bytes()).map_err(|_| Error::Failed)?;
 	Ok(())
 }
 
@@ -231,13 +220,7 @@ pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 pub async fn pty_session_get_exitstatus(session_id: &Uuid) -> Result<u32> {
 	let session = pty_session_get_one(session_id).await?;
 
-	let exitstatus = session
-		.child
-		.lock()
-		.await
-		.wait()
-		.map_err(|_| Error::Failed)?
-		.exit_code();
+	let exitstatus = session.child.lock().await.wait().map_err(|_| Error::Failed)?.exit_code();
 
 	Ok(exitstatus)
 }
@@ -245,11 +228,7 @@ pub async fn pty_session_get_exitstatus(session_id: &Uuid) -> Result<u32> {
 async fn pty_session_get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
-	let session = sessions
-		.iter()
-		.find(|&s| s.session_id == *session_id)
-		.ok_or(Error::NotExists)?
-		.clone();
+	let session = sessions.iter().find(|&s| s.session_id == *session_id).ok_or(Error::NotExists)?.clone();
 
 	drop(sessions);
 

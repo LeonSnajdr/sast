@@ -1,53 +1,53 @@
 use uuid::Uuid;
 
-use crate::prelude::*;
+use crate::placeholder::placeholder_contracts::{PlaceholderContract, PlaceholderCreateContract, PlaceholderUpdateContract};
 use crate::placeholder::placeholder_service;
-use crate::placeholder::placeholder_contracts::{PlaceholderCreateContract, PlaceholderContract, PlaceholderUpdateContract};
+use crate::prelude::*;
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_create(placeholder_create_contract: PlaceholderCreateContract) -> Result<PlaceholderContract> {
-    let placeholder = placeholder_service::placeholder_create(placeholder_create_contract).await?;
+	let placeholder = placeholder_service::placeholder_create(placeholder_create_contract).await?;
 
-    Ok(placeholder)
+	Ok(placeholder)
 }
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderContract>> {
-    let placeholders = placeholder_service::placeholder_get_all_global().await?;
+	let placeholders = placeholder_service::placeholder_get_all_global().await?;
 
-    Ok(placeholders)
+	Ok(placeholders)
 }
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<PlaceholderContract>> {
-    let placeholders = placeholder_service::placeholder_get_all_project(project_id).await?;
+	let placeholders = placeholder_service::placeholder_get_all_project(project_id).await?;
 
-    Ok(placeholders)
+	Ok(placeholders)
 }
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderContract> {
-    let placeholder = placeholder_service::placeholder_get_one(id).await?;
+	let placeholder = placeholder_service::placeholder_get_one(id).await?;
 
-    Ok(placeholder)
+	Ok(placeholder)
 }
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_update_one(placeholder_update_contract: PlaceholderUpdateContract) -> Result<()> {
-    placeholder_service::placeholder_update_one(placeholder_update_contract).await?;
+	placeholder_service::placeholder_update_one(placeholder_update_contract).await?;
 
-    Ok(())
+	Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
 pub async fn placeholder_delete_one(id: Uuid) -> Result<()> {
-    placeholder_service::placeholder_delete_one(id).await?;
+	placeholder_service::placeholder_delete_one(id).await?;
 
-    Ok(())
+	Ok(())
 }

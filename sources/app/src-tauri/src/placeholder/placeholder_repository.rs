@@ -2,12 +2,12 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::db;
+use crate::placeholder::placeholder_enums::{PlaceholderKind, PlaceholderSource, PlaceholderVisibility};
 use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateModel};
-use crate::placeholder::placeholder_enums::{PlaceholderVisibility, PlaceholderKind, PlaceholderSource};
 use crate::prelude::*;
 
 pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<PlaceholderModel> {
-    let placeholder = sqlx::query_as!(
+	let placeholder = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
             insert into placeholder
@@ -39,11 +39,11 @@ pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<Placeh
 	.await
 	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(placeholder)
+	Ok(placeholder)
 }
 
 pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
-    let placeholders = sqlx::query_as!(
+	let placeholders = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
             select
@@ -67,7 +67,7 @@ pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<Placeho
 	.await
 	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(placeholders)
+	Ok(placeholders)
 }
 
 pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderModel>> {
@@ -98,7 +98,7 @@ pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderModel>> {
 }
 
 pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
-    let placeholder = sqlx::query_as!(
+	let placeholder = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
             select
@@ -120,7 +120,7 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
 	.await
 	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(placeholder)
+	Ok(placeholder)
 }
 
 pub async fn placeholder_update_one(update_container: PlaceholderUpdateModel) -> Result<()> {

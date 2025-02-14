@@ -1,8 +1,8 @@
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
-use crate::prelude::*;
 use crate::db;
+use crate::prelude::*;
 use crate::setting::setting_models::SettingModel;
 
 pub async fn setting_initialize(meta_date_updated: &DateTime<Utc>, presentation_language: &String, presentation_theme: &String) -> Result<SettingModel> {

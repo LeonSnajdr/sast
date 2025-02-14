@@ -1,13 +1,15 @@
 use uuid::Uuid;
 
 use crate::db;
-use crate::placeholder::placeholder_enums::PlaceholderVisibility;
 use crate::placeholder::insert::placeholder_insert_enums::PlaceholderInsertTileKind;
 use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileFilterModel, PlaceholderInsertTileModel, PlaceholderInsertTileResultModel};
+use crate::placeholder::placeholder_enums::PlaceholderVisibility;
 use crate::prelude::*;
 
-pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<PlaceholderInsertTileModel>, delete_filter: PlaceholderInsertTileFilterModel) -> Result<()> {
-
+pub async fn placeholder_insert_tile_create_or_replace(
+	create_models: Vec<PlaceholderInsertTileModel>,
+	delete_filter: PlaceholderInsertTileFilterModel,
+) -> Result<()> {
 	let mut tx = db::get_pool().begin().await.map_err(|err| Error::Db(err.to_string()))?;
 
 	sqlx::query!(
@@ -48,7 +50,7 @@ pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<Placeh
 
 	tx.commit().await.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(())
+	Ok(())
 }
 
 pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilterModel) -> Result<Vec<PlaceholderInsertTileResultModel>> {
@@ -72,9 +74,9 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
 		filter.task_command_id,
 		filter.task_working_dir_id
 	)
-		.fetch_all(db::get_pool())
-		.await
-		.map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(placeholder_insert_tiles)
 }

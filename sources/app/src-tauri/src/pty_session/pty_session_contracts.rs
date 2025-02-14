@@ -10,7 +10,7 @@ pub struct PtySessionSpawnContract {
 	pub name: Option<String>,
 	pub working_dir: Option<String>,
 	pub command: Option<String>,
-	pub no_exit: bool
+	pub no_exit: bool,
 }
 
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]

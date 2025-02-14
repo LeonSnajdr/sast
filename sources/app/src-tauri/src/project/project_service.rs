@@ -2,7 +2,7 @@ use chrono::Utc;
 use uuid::Uuid;
 
 use crate::prelude::*;
-use crate::project::project_contracts::{ProjectCreateContract, ProjectContract};
+use crate::project::project_contracts::{ProjectContract, ProjectCreateContract};
 use crate::project::project_repository;
 
 pub async fn project_create(project_create_contract: &ProjectCreateContract) -> Result<ProjectContract> {
