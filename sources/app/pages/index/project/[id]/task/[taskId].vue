@@ -1,8 +1,8 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("task.edit.title") }}</VAppBarTitle>
-        <TaskActionDelete v-if="task" :disabled="!isFormValid" :task="task" class="mr-2"></TaskActionDelete>
-        <TaskActionSave v-if="task" :disabled="!isFormValid" :task="task"></TaskActionSave>
+        <TaskActionDelete v-if="task" :disabled="!isFormValid" :task="task" class="mr-2" />
+        <TaskActionSave v-if="task" :disabled="!isFormValid" :task="task" />
     </VAppBar>
     <VContainer>
         <VCard :loading="isLoading">

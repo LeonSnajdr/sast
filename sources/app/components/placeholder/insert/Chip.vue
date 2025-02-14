@@ -1,10 +1,10 @@
 <template>
     <VChip
         @click:close.prevent="props.destroy()"
-        :prependIcon="iconMap[props.item.placeholderVisibility!]"
         :color="''"
-        size="small"
+        :prependIcon="iconMap[props.item.placeholderVisibility!]"
         class="mx-1"
+        size="small"
         variant="tonal"
         closable
     >

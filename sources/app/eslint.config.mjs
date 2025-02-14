@@ -1,6 +1,6 @@
 import withNuxt from "./.nuxt/eslint.config.mjs";
 
-export default withNuxt()
+export default withNuxt({ ignores: ["utils/tauriBindings.ts"] })
     .override("nuxt/vue/rules", {
         rules: {
             "vue/multi-word-component-names": "off",
@@ -8,6 +8,18 @@ export default withNuxt()
             "vue/attribute-hyphenation": ["error", "never"],
             "vue/component-name-in-template-casing": ["error", "PascalCase", { registeredComponentsOnly: false }],
             "vue/component-api-style": ["error", ["script-setup"]],
+            "vue/html-self-closing": [
+                "error",
+                {
+                    html: {
+                        void: "always",
+                        normal: "always",
+                        component: "always"
+                    },
+                    svg: "always",
+                    math: "always"
+                }
+            ],
             "vue/define-macros-order": [
                 "error",
                 {

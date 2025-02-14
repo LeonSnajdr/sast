@@ -1,5 +1,5 @@
 <template>
-    <IconBtn :loading="isLoading" variant="flat" icon="mdi-delete">
+    <IconBtn :loading="isLoading" icon="mdi-delete" variant="flat">
         {{ $t("action.delete") }}
         <ConfirmationDialog
             @confirm="deleteTask"
