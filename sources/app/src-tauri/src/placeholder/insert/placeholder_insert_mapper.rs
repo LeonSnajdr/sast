@@ -1,6 +1,6 @@
 use uuid::Uuid;
-use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileContract;
-use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileModel, PlaceholderInsertTileResultModel};
+use crate::placeholder::insert::placeholder_insert_contracts::{PlaceholderInsertTileContract, PlaceholderInsertTileFilterContract};
+use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileFilterModel, PlaceholderInsertTileModel, PlaceholderInsertTileResultModel};
 
 impl PlaceholderInsertTileContract {
     pub fn from(value: PlaceholderInsertTileResultModel) -> Self {
@@ -24,6 +24,15 @@ impl PlaceholderInsertTileModel {
             kind: value.kind,
             position,
             text_value: value.text_value,
+        }
+    }
+}
+
+impl PlaceholderInsertTileFilterModel {
+    pub fn from(value: PlaceholderInsertTileFilterContract) -> Self {
+        Self {
+            task_command_id: value.task_command_id,
+            task_working_dir_id: value.task_working_dir_id
         }
     }
 }

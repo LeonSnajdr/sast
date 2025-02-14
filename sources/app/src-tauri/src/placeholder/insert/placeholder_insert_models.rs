@@ -29,12 +29,3 @@ pub struct PlaceholderInsertTileFilterModel {
     pub task_command_id: Option<Uuid>,
     pub task_working_dir_id: Option<Uuid>
 }
-
-impl Default for PlaceholderInsertTileFilterModel {
-    fn default() -> Self {
-        Self {
-            task_command_id: None,
-            task_working_dir_id: None,
-        }
-    }
-}

@@ -6,7 +6,7 @@ use crate::placeholder::insert::placeholder_insert_enums::PlaceholderInsertTileK
 use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileFilterModel, PlaceholderInsertTileModel, PlaceholderInsertTileResultModel};
 use crate::prelude::*;
 
-pub async fn placeholder_insert_tile_update_many(create_models: Vec<PlaceholderInsertTileModel>, delete_filter: PlaceholderInsertTileFilterModel) -> Result<()> {
+pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<PlaceholderInsertTileModel>, delete_filter: PlaceholderInsertTileFilterModel) -> Result<()> {
 
 	let mut tx = db::get_pool().begin().await.map_err(|_| Error::Db)?;
 
@@ -67,6 +67,7 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
             where
             	pit.task_command_id is $1 and
             	pit.task_working_dir_id is $2
+			order by position asc
         "#,
 		filter.task_command_id,
 		filter.task_working_dir_id

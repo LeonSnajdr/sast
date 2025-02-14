@@ -5,7 +5,11 @@
     </VAppBar>
 
     <VContainer class="h-100">
-        <TaskTable :tasks="tasks" />
+        <VCard>
+            <VCardText>
+                <TaskTable :tasks="tasks" />
+            </VCardText>
+        </VCard>
     </VContainer>
 </template>
 
