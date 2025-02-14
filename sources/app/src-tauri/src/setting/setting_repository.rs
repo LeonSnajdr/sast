@@ -28,7 +28,7 @@ pub async fn setting_initialize(meta_date_updated: &DateTime<Utc>, presentation_
 	)
 	.fetch_one(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(setting)
 }
@@ -41,7 +41,7 @@ pub async fn setting_get_is_initialized() -> Result<bool> {
 	)
 	.fetch_one(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	let is_setting_initialized = setting_count > 0;
 
@@ -52,7 +52,7 @@ pub async fn setting_get_default() -> Result<Option<SettingModel>> {
 	let setting = sqlx::query_as!(
 		SettingModel,
 		r#"--sql
-            select 
+            select
                 id as "id: Uuid",
                 meta_date_updated as "meta_date_updated: DateTime<Utc>",
                 presentation_language,
@@ -63,7 +63,7 @@ pub async fn setting_get_default() -> Result<Option<SettingModel>> {
 	)
 	.fetch_optional(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(setting)
 }
@@ -73,7 +73,7 @@ pub async fn setting_update_one(id: &Uuid, presentation_language: &String, prese
 
 	sqlx::query!(
 		r#"--sql
-            update setting 
+            update setting
             set
                 meta_date_updated = $1,
                 presentation_language = $2,
@@ -87,7 +87,7 @@ pub async fn setting_update_one(id: &Uuid, presentation_language: &String, prese
 	)
 	.execute(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(())
 }

@@ -8,7 +8,7 @@ use crate::prelude::*;
 
 pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<PlaceholderInsertTileModel>, delete_filter: PlaceholderInsertTileFilterModel) -> Result<()> {
 
-	let mut tx = db::get_pool().begin().await.map_err(|_| Error::Db)?;
+	let mut tx = db::get_pool().begin().await.map_err(|err| Error::Db(err.to_string()))?;
 
 	sqlx::query!(
 		r#"--sql
@@ -23,7 +23,7 @@ pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<Placeh
 	)
 	.execute(&mut *tx)
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	for create_model in create_models.iter() {
 		sqlx::query!(
@@ -43,10 +43,10 @@ pub async fn placeholder_insert_tile_create_or_replace(create_models: Vec<Placeh
 		)
 		.execute(&mut *tx)
 		.await
-		.map_err(|_| Error::Db)?;
+		.map_err(|err| Error::Db(err.to_string()))?;
 	}
 
-	tx.commit().await.map_err(|_| Error::Db)?;
+	tx.commit().await.map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(())
 }
@@ -74,7 +74,7 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
 	)
 		.fetch_all(db::get_pool())
 		.await
-		.map_err(|_| Error::Db)?;
+		.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(placeholder_insert_tiles)
 }

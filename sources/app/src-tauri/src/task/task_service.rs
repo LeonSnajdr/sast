@@ -24,7 +24,7 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
     placeholder_insert_service::placeholder_insert_tile_create_or_replace(command_tiles, delete_command_tiles_filter).await?;
 
     let delete_working_dir_tiles_filter = PlaceholderInsertTileFilterContract {
-        task_working_dir_id: Some(id),
+        task_working_dir_id: Some(Uuid::new_v4()),
         ..PlaceholderInsertTileFilterContract::default()
     };
 

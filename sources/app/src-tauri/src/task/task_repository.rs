@@ -30,7 +30,7 @@ pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
 	)
         .fetch_one(db::get_pool())
         .await
-        .map_err(|_| Error::Db)?;
+        .map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(task)
 }
@@ -54,7 +54,7 @@ pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoM
 	)
 		.fetch_all(db::get_pool())
 		.await
-		.map_err(|_| Error::Db)?;
+		.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(tasks)
 }
@@ -77,7 +77,7 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskModel> {
 	)
 		.fetch_one(db::get_pool())
 		.await
-		.map_err(|_| Error::Db)?;
+		.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(task)
 }
@@ -99,7 +99,7 @@ pub async fn task_update_one(update_container: TaskUpdateModel) -> Result<()> {
 	)
 		.execute(db::get_pool())
 		.await
-		.map_err(|_| Error::Db)?;
+		.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(())
 }
@@ -115,7 +115,7 @@ pub async fn task_delete_one(id: Uuid) -> Result<()> {
 	)
         .execute(db::get_pool())
         .await
-        .map_err(|_| Error::Db)?;
+        .map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(())
 }

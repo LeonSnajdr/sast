@@ -37,7 +37,7 @@ pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<Placeh
 	)
 	.fetch_one(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(placeholder)
 }
@@ -65,7 +65,7 @@ pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<Placeho
 	)
 	.fetch_all(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(placeholders)
 }
@@ -92,7 +92,7 @@ pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderModel>> {
 	)
 	.fetch_all(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(placeholders)
 }
@@ -118,7 +118,7 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
 	)
 	.fetch_one(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
     Ok(placeholder)
 }
@@ -148,7 +148,7 @@ pub async fn placeholder_update_one(update_container: PlaceholderUpdateModel) ->
 	)
 	.execute(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(())
 }
@@ -164,7 +164,7 @@ pub async fn placeholder_delete_one(id: Uuid) -> Result<()> {
 	)
 	.execute(db::get_pool())
 	.await
-	.map_err(|_| Error::Db)?;
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(())
 }
