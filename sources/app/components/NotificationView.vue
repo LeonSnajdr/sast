@@ -1,7 +1,8 @@
 <template>
-    <template v-for="(notification, index) in activeNotifications" :key="notification.id">
+    <template v-for="(notification, index) in notifications" :key="notification.id">
         <VSnackbar
             v-model="notification.active"
+            @update:modelValue="removeNotification(notification.id)"
             :contentProps="{ class: notification.type }"
             :style="{ 'padding-bottom': index * 60 + 'px' }"
             :timeout="notification.timeout"
@@ -12,7 +13,7 @@
                 <span>{{ notification.text }}</span>
             </template>
             <template #actions>
-                <IconBtn @click="notification.active = false" icon="mdi-close" />
+                <IconBtn @click="removeNotification(notification.id)" icon="mdi-close" />
             </template>
         </VSnackbar>
     </template>
@@ -21,27 +22,17 @@
 <script setup lang="ts">
 const { notifications } = useNotify();
 
-const activeNotifications = computed(() => {
-    return notifications.value.filter((x) => x.active);
-});
+const removeNotification = (id: string) => {
+    lodRemove(notifications.value, (x) => x.id === id);
+};
 </script>
 
 <style lang="scss">
 .v-snackbar__wrapper {
-    &.success {
-        border-left: 3px solid rgb(var(--v-theme-success));
-    }
-
-    &.info {
-        border-left: 3px solid rgb(var(--v-theme-info));
-    }
-
-    &.warning {
-        border-left: 3px solid rgb(var(--v-theme-warning));
-    }
-
-    &.error {
-        border-left: 3px solid rgb(var(--v-theme-error));
+    @each $type in success, info, warning, error {
+        &.#{$type} {
+            border-left: 3px solid rgb(var(--v-theme-#{$type}));
+        }
     }
 }
 </style>
