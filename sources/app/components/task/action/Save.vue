@@ -35,11 +35,11 @@ const taskSave = async () => {
     isLoading.value = false;
 
     if (saveResult.status == "error") {
-        notify.error(t("task.save.error", { placeholderName: props.task.name }));
+        notify.error(t("action.save.error", { type: t("task.title"), name: props.task.name }));
         return;
     }
 
-    notify.success(t("task.save.success", { placeholderName: props.task.name }));
+    notify.success(t("action.save.success", { type: t("task.title"), name: props.task.name }));
 
     navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
 
