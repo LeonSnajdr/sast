@@ -31,8 +31,8 @@ pub async fn pty_session_get_read_history(session_id: Uuid) -> Result<String> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn pty_session_info_get_all(project_id: Uuid) -> Result<Vec<PtySessionInfoContract>> {
-	let result: Vec<PtySessionInfoContract> = pty_session_service::pty_session_info_get_all(&project_id).await?;
+pub async fn pty_session_info_get_many(project_id: Uuid) -> Result<Vec<PtySessionInfoContract>> {
+	let result: Vec<PtySessionInfoContract> = pty_session_service::pty_session_info_get_many(&project_id).await?;
 
 	Ok(result)
 }

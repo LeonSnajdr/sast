@@ -85,9 +85,9 @@ async ptySessionGetReadHistory(sessionId: string) : Promise<Result<string, Error
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionInfoGetAll(projectId: string) : Promise<Result<PtySessionInfoContract[], Error>> {
+async ptySessionInfoGetMany(projectId: string) : Promise<Result<PtySessionInfoContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_info_get_all", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_info_get_many", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
