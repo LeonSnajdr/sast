@@ -1,10 +1,10 @@
 <template>
     <VMenu v-model="open" :target="menu.value.position">
         <VList>
-            <VListItem v-for="placeholder in placeholders" :key="placeholder.id" @click="addInsert(placeholder)">
+            <VListItem v-for="placeholder in filteredPlaceholders" :key="placeholder.id" @click="addInsert(placeholder)">
                 {{ placeholder.name }}
             </VListItem>
-            <VListItem v-if="placeholders?.length === 0">{{ $t("search.noResults") }}</VListItem>
+            <VListItem v-if="filteredPlaceholders?.length === 0">{{ $t("search.noResults") }}</VListItem>
         </VList>
     </VMenu>
 </template>
@@ -13,6 +13,10 @@
 import type { MenuProps } from "vue-text-insert";
 
 const props = defineProps<MenuProps<PlaceholderInsertTileContract>>();
+
+const placeholderStore = usePlaceholderStore();
+
+const { placeholders } = storeToRefs(placeholderStore);
 
 const open = ref(true);
 
@@ -32,13 +36,7 @@ const addInsert = (placeholder: PlaceholderContract) => {
     });
 };
 
-const placeholders = asyncComputed(async () => {
-    const placeholderResult = await commands.placeholderGetAllGlobal();
-
-    if (placeholderResult.status === "error") {
-        return;
-    }
-
-    return placeholderResult.data;
-}, []);
+const filteredPlaceholders = computed(() => {
+    return placeholders.value;
+});
 </script>

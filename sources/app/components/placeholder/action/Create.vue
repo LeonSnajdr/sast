@@ -24,12 +24,11 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["created"]);
-
 const notify = useNotify();
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
@@ -56,7 +55,7 @@ const createPlaceholder = async () => {
 
     isDialogOpen.value = false;
 
-    emit("created");
+    placeholderStore.loadAll();
 };
 
 watch(isDialogOpen, () => {

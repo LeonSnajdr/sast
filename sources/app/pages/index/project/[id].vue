@@ -13,6 +13,7 @@ const i18n = useI18n();
 const notify = useNotify();
 
 const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 const ptySessionStore = usePtySessionStore();
 
 const { isLoading, selectedProject } = storeToRefs(projectStore);
@@ -22,6 +23,7 @@ let unlistenPtySpawnedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     await loadProject();
+    await loadPlaceholders();
     await loadPtySessions();
 });
 
@@ -47,6 +49,10 @@ const loadProject = async () => {
     }
 
     selectedProject.value = projectResult.data;
+};
+
+const loadPlaceholders = async () => {
+    await placeholderStore.loadAll();
 };
 
 const loadPtySessions = async () => {

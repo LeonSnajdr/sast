@@ -1,7 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.plural") }}</VAppBarTitle>
-        <PlaceholderActionCreate @created="loadPlaceholders()" />
+        <PlaceholderActionCreate />
     </VAppBar>
 
     <div class="fill-height d-flex flex-column">
@@ -29,40 +29,15 @@
 </template>
 
 <script setup lang="ts">
-const projectStore = useProjectStore();
+const projectStore = usePlaceholderStore();
 
-const notify = useNotify();
-const { t } = useI18n();
-
-const { selectedProject } = storeToRefs(projectStore);
-
-const isLoading = ref(false);
-const availablePlaceholders = ref<PlaceholderContract[]>([]);
-
-onBeforeMount(() => {
-    loadPlaceholders();
-});
-
-const loadPlaceholders = async () => {
-    isLoading.value = true;
-
-    const availablePlaceholdersResult = await commands.placeholderGetMany(selectedProject.value.id);
-
-    isLoading.value = false;
-
-    if (availablePlaceholdersResult.status === "error") {
-        notify.error(t("placeholder.load.error"));
-        return;
-    }
-
-    availablePlaceholders.value = availablePlaceholdersResult.data;
-};
+const { isLoading, placeholders } = storeToRefs(projectStore);
 
 const globalPlaceholders = computed(() => {
-    return availablePlaceholders.value.filter((x) => x.visibility === "Global");
+    return placeholders.value.filter((x) => x.visibility === "Global");
 });
 
 const projectPlaceholders = computed(() => {
-    return availablePlaceholders.value.filter((x) => x.visibility === "Project");
+    return placeholders.value.filter((x) => x.visibility === "Project");
 });
 </script>
