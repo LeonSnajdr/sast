@@ -1,15 +1,19 @@
 <template>
     <VMenu v-model="open" :target="menu.value.position">
         <VList>
-            <VListItem v-for="placeholder in filteredPlaceholders" :key="placeholder.id" @click="addInsert(placeholder)">
-                {{ placeholder.name }}
+            <VListItem v-for="placeholderResult in placeholderResults" :key="placeholderResult.item.id" @click="addInsert(placeholderResult.item)">
+                <template #prepend>
+                    <PlaceholderIcon :visibility="placeholderResult.item.visibility" size="small" />
+                </template>
+                {{ placeholderResult.item.name }}
             </VListItem>
-            <VListItem v-if="filteredPlaceholders?.length === 0">{{ $t("search.noResults") }}</VListItem>
+            <VListItem v-if="placeholderResults?.length === 0">{{ $t("search.noResults") }}</VListItem>
         </VList>
     </VMenu>
 </template>
 
 <script setup lang="ts">
+import { useFuse, type UseFuseOptions } from "@vueuse/integrations/useFuse";
 import type { MenuProps } from "vue-text-insert";
 
 const props = defineProps<MenuProps<PlaceholderInsertTileContract>>();
@@ -36,7 +40,13 @@ const addInsert = (placeholder: PlaceholderContract) => {
     });
 };
 
-const filteredPlaceholders = computed(() => {
-    return placeholders.value;
-});
+const fuseOptions = computed<UseFuseOptions<PlaceholderContract>>(() => ({
+    fuseOptions: {
+        keys: ["name"],
+        isCaseSensitive: false
+    },
+    matchAllWhenSearchEmpty: true
+}));
+
+const { results: placeholderResults } = useFuse(() => props.menu.value.query, placeholders, fuseOptions);
 </script>

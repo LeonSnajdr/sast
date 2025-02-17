@@ -8,7 +8,7 @@
         <VContainer class="flex-grow-1 d-flex flex-column ga-4">
             <VCard>
                 <VCardTitle>
-                    <VIcon color="info" icon="mdi-web" />
+                    <PlaceholderIcon visibility="Global" />
                     {{ $t("placeholder.card.global.title") }}
                 </VCardTitle>
                 <VCardText>
@@ -17,7 +17,7 @@
             </VCard>
             <VCard>
                 <VCardTitle>
-                    <VIcon color="success" icon="mdi-map-marker-radius" />
+                    <PlaceholderIcon visibility="Project" />
                     {{ $t("placeholder.card.global.project") }}
                 </VCardTitle>
                 <VCardText>

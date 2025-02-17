@@ -1,13 +1,8 @@
 <template>
-    <VChip
-        @click:close.prevent="props.destroy()"
-        :color="''"
-        :prependIcon="iconMap[props.item.placeholderVisibility!]"
-        class="mx-1"
-        size="small"
-        variant="tonal"
-        closable
-    >
+    <VChip @click:close.prevent="props.destroy()" :color="''" class="mx-1" density="comfortable" variant="tonal" closable>
+        <template #prepend>
+            <PlaceholderIcon :visibility="props.item.placeholderVisibility!" class="ml-n1 mr-1" />
+        </template>
         {{ props.item.placeholderName }}
     </VChip>
 </template>
@@ -16,9 +11,4 @@
 import type { InsertProps } from "vue-text-insert";
 
 const props = defineProps<InsertProps<PlaceholderInsertTileContract>>();
-
-const iconMap: Record<PlaceholderVisibility, string> = {
-    Global: "mdi-web",
-    Project: "mdi-map-marker-radius"
-};
 </script>
