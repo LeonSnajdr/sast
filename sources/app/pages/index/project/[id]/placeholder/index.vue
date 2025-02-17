@@ -37,8 +37,7 @@ const { t } = useI18n();
 const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
-const globalPlaceholders = ref<PlaceholderContract[]>([]);
-const projectPlaceholders = ref<PlaceholderContract[]>([]);
+const availablePlaceholders = ref<PlaceholderContract[]>([]);
 
 onBeforeMount(() => {
     loadPlaceholders();
@@ -47,17 +46,23 @@ onBeforeMount(() => {
 const loadPlaceholders = async () => {
     isLoading.value = true;
 
-    const globalPlaceholdersResult = await commands.placeholderGetAllGlobal();
-    const projectPlaceholdersResult = await commands.placeholderGetAllProject(selectedProject.value.id);
+    const availablePlaceholdersResult = await commands.placeholderGetMany(selectedProject.value.id);
 
     isLoading.value = false;
 
-    if (globalPlaceholdersResult.status === "error" || projectPlaceholdersResult.status === "error") {
+    if (availablePlaceholdersResult.status === "error") {
         notify.error(t("placeholder.load.error"));
         return;
     }
 
-    globalPlaceholders.value = globalPlaceholdersResult.data;
-    projectPlaceholders.value = projectPlaceholdersResult.data;
+    availablePlaceholders.value = availablePlaceholdersResult.data;
 };
+
+const globalPlaceholders = computed(() => {
+    return availablePlaceholders.value.filter((x) => x.visibility === "Global");
+});
+
+const projectPlaceholders = computed(() => {
+    return availablePlaceholders.value.filter((x) => x.visibility === "Project");
+});
 </script>

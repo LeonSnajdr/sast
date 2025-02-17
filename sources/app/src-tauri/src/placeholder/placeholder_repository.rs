@@ -42,7 +42,7 @@ pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<Placeh
 	Ok(placeholder)
 }
 
-pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
+pub async fn placeholder_get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
 	let placeholders = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -57,37 +57,12 @@ pub async fn placeholder_get_all_project(project_id: Uuid) -> Result<Vec<Placeho
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from placeholder
-            where project_id is $1 and visibility is not $2
+            where
+            	project_id is $1 or
+            	(project_id is not $1 and visibility is $2)
             order by name desc
         "#,
 		project_id,
-		PlaceholderVisibility::Global
-	)
-	.fetch_all(db::get_pool())
-	.await
-	.map_err(|err| Error::Db(err.to_string()))?;
-
-	Ok(placeholders)
-}
-
-pub async fn placeholder_get_all_global() -> Result<Vec<PlaceholderModel>> {
-	let placeholders = sqlx::query_as!(
-		PlaceholderModel,
-		r#"--sql
-            select
-                id as "id: Uuid",
-                project_id as "project_id: Uuid",
-                name,
-                value,
-                visibility as "visibility: PlaceholderVisibility",
-                kind as "kind: PlaceholderKind",
-                source as "source: PlaceholderSource",
-                date_created as "date_created: DateTime<Utc>",
-                date_last_updated as "date_last_updated: DateTime<Utc>"
-            from placeholder
-            where visibility is $1
-            order by name desc
-        "#,
 		PlaceholderVisibility::Global
 	)
 	.fetch_all(db::get_pool())

@@ -125,17 +125,9 @@ async placeholderCreate(placeholderCreateContract: PlaceholderCreateContract) : 
     else return { status: "error", error: e  as any };
 }
 },
-async placeholderGetAllGlobal() : Promise<Result<PlaceholderContract[], Error>> {
+async placeholderGetMany(projectId: string) : Promise<Result<PlaceholderContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("placeholder_get_all_global") };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-async placeholderGetAllProject(projectId: string) : Promise<Result<PlaceholderContract[], Error>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("placeholder_get_all_project", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("placeholder_get_many", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
