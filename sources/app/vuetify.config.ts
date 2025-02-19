@@ -129,6 +129,10 @@ export default defineVuetifyConfiguration({
             color: "primary",
             hideDetails: "auto"
         },
+        VCheckbox: {
+            color: "primary",
+            hideDetails: "auto"
+        },
         VTextField: {
             variant: "outlined",
             hideDetails: "auto",

@@ -1,3 +1,4 @@
+use tauri::AppHandle;
 use uuid::Uuid;
 
 use crate::prelude::*;
@@ -40,6 +41,14 @@ pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result
 #[specta::specta]
 pub async fn task_delete_one(id: Uuid) -> Result<()> {
 	task_service::task_delete_one(id).await?;
+
+	Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
+pub async fn task_start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	task_service::task_start_one(app_handle, project_id, task_id).await?;
 
 	Ok(())
 }

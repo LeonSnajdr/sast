@@ -1,6 +1,7 @@
 use uuid::Uuid;
 
 use crate::placeholder::insert::placeholder_insert_contracts::{PlaceholderInsertTileContract, PlaceholderInsertTileFilterContract};
+use crate::placeholder::insert::placeholder_insert_enums::PlaceholderInsertTileKind;
 use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTileFilterModel, PlaceholderInsertTileModel};
 use crate::placeholder::insert::placeholder_insert_repository;
 use crate::prelude::*;
@@ -33,4 +34,25 @@ pub async fn placeholder_insert_tile_get_many(filter_contract: PlaceholderInsert
 	let tile_contracts = tile_models.into_iter().map(PlaceholderInsertTileContract::from).collect();
 
 	Ok(tile_contracts)
+}
+
+pub async fn placeholder_insert_get_rendered_tiles(filter_contract: PlaceholderInsertTileFilterContract) -> Result<String> {
+	let filter_model = PlaceholderInsertTileFilterModel::from(filter_contract);
+
+	let tile_models = placeholder_insert_repository::placeholder_insert_tile_get_many(filter_model).await?;
+
+	let mut result = String::new();
+
+	for tile_model in tile_models {
+		let value = match tile_model.kind {
+			PlaceholderInsertTileKind::Text => tile_model.text_value,
+			PlaceholderInsertTileKind::Placeholder => tile_model.placeholder_value,
+		};
+
+		if let Some(val) = value {
+			result += &val;
+		}
+	}
+
+	Ok(result)
 }

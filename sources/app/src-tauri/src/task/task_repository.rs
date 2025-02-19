@@ -10,21 +10,25 @@ pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
 		TaskModel,
 		r#"--sql
             insert into task
-                (id, project_id, name, blocking, date_created, date_last_updated)
+                (id, project_id, name, tab_name, blocking, no_exit, date_created, date_last_updated)
                 values
-                ($1, $2, $3, $4, $5, $6)
+                ($1, $2, $3, $4, $5, $6, $7, $8)
 			returning
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                tab_name,
                 blocking,
+                no_exit,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
         "#,
 		create_model.id,
 		create_model.project_id,
 		create_model.name,
+		create_model.tab_name,
 		create_model.blocking,
+		create_model.no_exit,
 		create_model.date_created,
 		create_model.date_last_updated
 	)
@@ -67,7 +71,9 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskModel> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                tab_name,
                 blocking,
+                no_exit,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
@@ -88,13 +94,17 @@ pub async fn task_update_one(update_container: TaskUpdateModel) -> Result<()> {
             update task
             set
                 name = $2,
-                blocking = $3,
-                date_last_updated = $4
+                tab_name = $3,
+                blocking = $4,
+                no_exit = $5,
+                date_last_updated = $6
             where id = $1
         "#,
 		update_container.id,
 		update_container.name,
+		update_container.tab_name,
 		update_container.blocking,
+		update_container.no_exit,
 		update_container.date_last_updated,
 	)
 	.execute(db::get_pool())

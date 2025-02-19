@@ -25,7 +25,9 @@ const taskSave = async () => {
     const updateContract: TaskUpdateContract = {
         id: props.task.id,
         name: props.task.name,
+        tabName: props.task.tabName,
         blocking: props.task.blocking,
+        noExit: props.task.noExit,
         commandTiles: props.task.commandTiles,
         workingDirTiles: props.task.workingDirTiles
     };

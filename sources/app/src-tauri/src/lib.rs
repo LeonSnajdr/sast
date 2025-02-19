@@ -45,6 +45,7 @@ pub fn run() {
 			task_commands::task_get_info_all_project,
 			task_commands::task_update_one,
 			task_commands::task_delete_one,
+			task_commands::task_start_one,
 		])
 		.events(collect_events![
 			pty_session_events::PtySessionReadEvent,

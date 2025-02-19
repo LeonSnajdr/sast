@@ -7,17 +7,22 @@
     <VContainer>
         <VCard :loading="isLoading">
             <VCardText v-if="task">
+                <VBtn @click="startTask()">Start</VBtn>
                 <VForm v-model="isFormValid">
+                    <TaskFieldName v-model="task.name" />
                     <VRow>
-                        <VCol cols="8">
-                            <TaskFieldName v-model="task.name" />
+                        <VCol cols="6">
+                            <TaskFieldTabName v-model="task.tabName" />
                         </VCol>
-                        <VCol cols="4">
+                        <VCol cols="3">
                             <TaskFieldBlocking v-model="task.blocking" />
                         </VCol>
+                        <VCol cols="3">
+                            <TaskFieldNoExit v-model="task.noExit" />
+                        </VCol>
                     </VRow>
-                    <TaskFieldCommandTiles v-model="task.workingDirTiles" />
-                    <TaskFieldWorkingDirTiles v-model="task.commandTiles" />
+                    <TaskFieldCommandTiles v-model="task.commandTiles" />
+                    <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
                 </VForm>
             </VCardText>
         </VCard>
@@ -34,6 +39,10 @@ const task = ref<TaskContract>();
 onBeforeMount(() => {
     loadTask();
 });
+
+const startTask = async () => {
+    await commands.taskStartOne(route.params.id, route.params.taskId);
+};
 
 const loadTask = async () => {
     isLoading.value = true;

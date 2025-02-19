@@ -11,7 +11,9 @@ pub struct TaskContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
+	pub tab_name: Option<String>,
 	pub blocking: bool,
+	pub no_exit: bool,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 	pub date_created: DateTime<Utc>,
@@ -34,7 +36,9 @@ pub struct TaskInfoContract {
 pub struct TaskCreateContract {
 	pub project_id: Uuid,
 	pub name: String,
+	pub tab_name: Option<String>,
 	pub blocking: bool,
+	pub no_exit: bool,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 }
@@ -44,7 +48,9 @@ pub struct TaskCreateContract {
 pub struct TaskUpdateContract {
 	pub id: Uuid,
 	pub name: String,
+	pub tab_name: Option<String>,
 	pub blocking: bool,
+	pub no_exit: bool,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 }

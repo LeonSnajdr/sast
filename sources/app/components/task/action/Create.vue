@@ -9,16 +9,20 @@
                 </VCardTitle>
                 <VCardText>
                     <VForm v-model="isFormValid">
+                        <TaskFieldName v-model="task.name" />
                         <VRow>
-                            <VCol cols="8">
-                                <TaskFieldName v-model="task.name" />
+                            <VCol cols="6">
+                                <TaskFieldTabName v-model="task.tabName" />
                             </VCol>
-                            <VCol cols="4">
+                            <VCol cols="3">
                                 <TaskFieldBlocking v-model="task.blocking" />
                             </VCol>
+                            <VCol cols="3">
+                                <TaskFieldNoExit v-model="task.noExit" />
+                            </VCol>
                         </VRow>
-                        <TaskFieldCommandTiles v-model="task.workingDirTiles" />
-                        <TaskFieldWorkingDirTiles v-model="task.commandTiles" />
+                        <TaskFieldCommandTiles v-model="task.commandTiles" />
+                        <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
                     </VForm>
                 </VCardText>
                 <VCardActions>
@@ -54,7 +58,9 @@ const setEmptyTask = () => {
     task.value = {
         projectId: selectedProject.value.id,
         name: "",
+        tabName: null,
         blocking: false,
+        noExit: true,
         workingDirTiles: [] as PlaceholderInsertTileContract[],
         commandTiles: [] as PlaceholderInsertTileContract[]
     };

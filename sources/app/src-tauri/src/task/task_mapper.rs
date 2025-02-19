@@ -11,7 +11,9 @@ impl TaskContract {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
+			tab_name: value.tab_name,
 			blocking: value.blocking,
+			no_exit: value.no_exit,
 			command_tiles,
 			working_dir_tiles,
 			date_created: value.date_created,
@@ -43,7 +45,9 @@ impl TaskModel {
 		let TaskCreateContract {
 			project_id,
 			name,
+			tab_name,
 			blocking,
+			no_exit,
 			command_tiles,
 			working_dir_tiles,
 		} = value;
@@ -52,7 +56,9 @@ impl TaskModel {
 			id,
 			project_id,
 			name,
+			tab_name,
 			blocking,
+			no_exit,
 			date_created,
 			date_last_updated,
 		};
@@ -66,7 +72,9 @@ impl TaskUpdateModel {
 		let TaskUpdateContract {
 			id,
 			name,
+			tab_name,
 			blocking,
+			no_exit,
 			command_tiles,
 			working_dir_tiles,
 		} = value;
@@ -74,7 +82,9 @@ impl TaskUpdateModel {
 		let task_update_model = Self {
 			id,
 			name,
+			tab_name,
 			blocking,
+			no_exit,
 			date_last_updated,
 		};
 

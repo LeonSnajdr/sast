@@ -1,6 +1,6 @@
 <template>
     <VRowSingle>
-        <VSwitch v-model="blocking" :label="$t('task.field.blocking')" />
+        <VCheckbox v-model="blocking" :label="$t('task.field.blocking')" />
     </VRowSingle>
 </template>
 

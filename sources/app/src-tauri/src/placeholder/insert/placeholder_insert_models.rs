@@ -22,6 +22,7 @@ pub struct PlaceholderInsertTileResultModel {
 	pub placeholder_id: Option<Uuid>,
 	pub placeholder_name: Option<String>,
 	pub placeholder_visibility: Option<PlaceholderVisibility>,
+	pub placeholder_value: Option<String>,
 }
 
 #[derive(Debug)]

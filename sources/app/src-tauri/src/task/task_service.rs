@@ -1,10 +1,13 @@
 use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileFilterContract;
 use crate::placeholder::insert::placeholder_insert_service;
 use crate::prelude::*;
+use crate::pty_session::pty_session_contracts::PtySessionSpawnContract;
+use crate::pty_session::pty_session_service;
 use crate::task::task_contracts::{TaskContract, TaskCreateContract, TaskInfoContract, TaskUpdateContract};
 use crate::task::task_models::{TaskModel, TaskUpdateModel};
 use crate::task::task_repository;
 use chrono::Utc;
+use tauri::AppHandle;
 use uuid::Uuid;
 
 pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uuid> {
@@ -89,6 +92,35 @@ pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result
 
 pub async fn task_delete_one(id: Uuid) -> Result<()> {
 	task_repository::task_delete_one(id).await?;
+
+	Ok(())
+}
+
+pub async fn task_start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let command_tiles_filter = PlaceholderInsertTileFilterContract {
+		task_command_id: Some(task_id),
+		..PlaceholderInsertTileFilterContract::default()
+	};
+
+	let working_dir_tiles_filter = PlaceholderInsertTileFilterContract {
+		task_working_dir_id: Some(task_id),
+		..PlaceholderInsertTileFilterContract::default()
+	};
+
+	let task = task_repository::task_get_one(task_id).await?;
+	let command = placeholder_insert_service::placeholder_insert_get_rendered_tiles(command_tiles_filter).await?;
+	let working_dir = placeholder_insert_service::placeholder_insert_get_rendered_tiles(working_dir_tiles_filter).await?;
+
+	let pty_spawn_contract = PtySessionSpawnContract {
+		project_id,
+		task_set_id: None,
+		name: task.tab_name,
+		command: Some(command),
+		working_dir: Some(working_dir),
+		no_exit: task.no_exit,
+	};
+
+	pty_session_service::pty_session_spawn(app_handle, pty_spawn_contract).await?;
 
 	Ok(())
 }

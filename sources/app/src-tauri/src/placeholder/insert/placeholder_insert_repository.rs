@@ -63,7 +63,8 @@ pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilte
             	pit.text_value,
             	pit.placeholder_id as "placeholder_id: Uuid",
             	p.name as placeholder_name,
-            	p.visibility as "placeholder_visibility: PlaceholderVisibility"
+            	p.visibility as "placeholder_visibility: PlaceholderVisibility",
+            	p.value as placeholder_value
             from placeholder_insert_tile as pit
             left join placeholder as p on p.id = pit.placeholder_id
             where
