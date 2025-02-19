@@ -47,7 +47,7 @@ const createProject = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(i18n.t("action.create.error", { type: t("project.singular"), name: project.value.name }), createResult.error);
+        notify.error(i18n.t("action.create.error", { type: t("project.singular"), name: project.value.name }), { error: createResult.error });
         return;
     }
 

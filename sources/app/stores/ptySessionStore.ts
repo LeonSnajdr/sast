@@ -15,7 +15,7 @@ export const usePtySessionStore = defineStore("ptySession", () => {
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
-            notify.error(t("action.load.error", { name: t("ptySession.plural") }), sessionInfoResult.error);
+            notify.error(t("action.load.error", { name: t("ptySession.plural") }), { error: sessionInfoResult.error });
             return;
         }
 

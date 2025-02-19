@@ -23,7 +23,7 @@ const ptySpawn = async () => {
     const spawnResult = await commands.ptySessionSpawn(spawnContract);
 
     if (spawnResult.status === "error") {
-        notify.error(t("ptySession.spawn.error"), spawnResult.error);
+        notify.error(t("ptySession.spawn.error"), { error: spawnResult.error });
         return;
     }
 };

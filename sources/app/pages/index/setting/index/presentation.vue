@@ -25,9 +25,7 @@ watch(
         });
 
         if (updateResult.status === "error") {
-            notify.error(t("error.default"));
-            console.log(updateResult);
-
+            notify.error(t("error.default"), { error: updateResult.error });
             return;
         }
     },

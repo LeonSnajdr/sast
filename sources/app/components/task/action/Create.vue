@@ -74,7 +74,7 @@ const createTask = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(t("action.create.error", { type: t("task.singular"), name: task.value.name }), createResult.error);
+        notify.error(t("action.create.error", { type: t("task.singular"), name: task.value.name }), { error: createResult.error });
         return;
     }
 

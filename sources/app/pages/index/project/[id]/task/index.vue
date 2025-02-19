@@ -36,7 +36,7 @@ const loadTasks = async () => {
     isLoading.value = false;
 
     if (taskResult.status === "error") {
-        notify.error(t("action.load.error", { type: t("task.plural") }), taskResult.error);
+        notify.error(t("action.load.error", { type: t("task.plural") }), { error: taskResult.error });
         return;
     }
 

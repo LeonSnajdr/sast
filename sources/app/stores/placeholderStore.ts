@@ -15,7 +15,7 @@ export const usePlaceholderStore = defineStore("placeholder", () => {
         isLoading.value = false;
 
         if (placeholderResult.status === "error") {
-            notify.error(t("action.load.error", { name: t("placeholder.plural") }), placeholderResult.error);
+            notify.error(t("action.load.error", { name: t("placeholder.plural") }), { error: placeholderResult.error });
             return;
         }
 

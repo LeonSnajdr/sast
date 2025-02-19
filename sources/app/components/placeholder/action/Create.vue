@@ -47,7 +47,7 @@ const createPlaceholder = async () => {
     isLoading.value = false;
 
     if (createResult.status == "error") {
-        notify.error(t("action.create.error", { type: t("placeholder.singular"), name: placeholder.value.name }), createResult.error);
+        notify.error(t("action.create.error", { type: t("placeholder.singular"), name: placeholder.value.name }), { error: createResult.error });
         return;
     }
 

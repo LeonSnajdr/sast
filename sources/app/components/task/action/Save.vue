@@ -37,7 +37,7 @@ const taskSave = async () => {
     isLoading.value = false;
 
     if (saveResult.status == "error") {
-        notify.error(t("action.save.error", { type: t("task.singular"), name: props.task.name }), saveResult.error);
+        notify.error(t("action.save.error", { type: t("task.singular"), name: props.task.name }), { error: saveResult.error });
         return;
     }
 

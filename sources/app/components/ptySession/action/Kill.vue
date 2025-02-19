@@ -16,7 +16,7 @@ const killSession = async () => {
     const killResult = await commands.ptySessionKill(props.sessionId);
 
     if (killResult.status === "error") {
-        notify.error(t("ptySession.kill.error"), killResult.error);
+        notify.error(t("ptySession.kill.error"), { error: killResult.error });
     }
 };
 </script>

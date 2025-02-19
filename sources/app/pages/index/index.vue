@@ -70,7 +70,7 @@ const loadLastOpenedProject = async () => {
     const lastOpenedProjectIdResult = await commands.projectGetIdLastOpened();
 
     if (lastOpenedProjectIdResult.status == "error") {
-        notify.error(t("project.load.failed"), lastOpenedProjectIdResult.error);
+        notify.error(t("project.load.failed"), { error: lastOpenedProjectIdResult.error });
         return;
     }
 
