@@ -8,15 +8,15 @@ use crate::task::task_service;
 #[tauri::command]
 #[specta::specta]
 pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uuid> {
-	let task_id = task_service::task_create(task_create_contract).await?;
+	let task_id = task_service::create(task_create_contract).await?;
 
 	Ok(task_id)
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoContract>> {
-	let tasks = task_service::task_get_info_all_project(project_id).await?;
+pub async fn task_get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoContract>> {
+	let tasks = task_service::get_many_info(project_id).await?;
 
 	Ok(tasks)
 }
@@ -24,7 +24,7 @@ pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoC
 #[tauri::command]
 #[specta::specta]
 pub async fn task_get_one(id: Uuid) -> Result<TaskContract> {
-	let task = task_service::task_get_one(id).await?;
+	let task = task_service::get_one(id).await?;
 
 	Ok(task)
 }
@@ -32,7 +32,7 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskContract> {
 #[tauri::command]
 #[specta::specta]
 pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result<()> {
-	task_service::task_update_one(task_update_contract).await?;
+	task_service::update_one(task_update_contract).await?;
 
 	Ok(())
 }
@@ -40,7 +40,7 @@ pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result
 #[tauri::command]
 #[specta::specta]
 pub async fn task_delete_one(id: Uuid) -> Result<()> {
-	task_service::task_delete_one(id).await?;
+	task_service::delete_one(id).await?;
 
 	Ok(())
 }
@@ -48,7 +48,7 @@ pub async fn task_delete_one(id: Uuid) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub async fn task_start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	task_service::task_start_one(app_handle, project_id, task_id).await?;
+	task_service::start_one(app_handle, project_id, task_id).await?;
 
 	Ok(())
 }

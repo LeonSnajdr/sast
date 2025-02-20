@@ -165,9 +165,9 @@ async taskGetOne(id: string) : Promise<Result<TaskContract, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async taskGetInfoAllProject(projectId: string) : Promise<Result<TaskInfoContract[], Error>> {
+async taskGetManyInfo(projectId: string) : Promise<Result<TaskInfoContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("task_get_info_all_project", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("task_get_many_info", { projectId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };

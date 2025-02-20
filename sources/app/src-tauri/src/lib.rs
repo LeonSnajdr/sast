@@ -41,7 +41,7 @@ pub fn run() {
 			placeholder_commands::placeholder_delete_one,
 			task_commands::task_create,
 			task_commands::task_get_one,
-			task_commands::task_get_info_all_project,
+			task_commands::task_get_many_info,
 			task_commands::task_update_one,
 			task_commands::task_delete_one,
 			task_commands::task_start_one,

@@ -31,7 +31,7 @@ onBeforeMount(() => {
 const loadTasks = async () => {
     isLoading.value = true;
 
-    const taskResult = await commands.taskGetInfoAllProject(selectedProject.value.id);
+    const taskResult = await commands.taskGetManyInfo(selectedProject.value.id);
 
     isLoading.value = false;
 

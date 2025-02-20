@@ -5,7 +5,7 @@ use crate::db;
 use crate::prelude::*;
 use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
 
-pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
+pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 	let task = sqlx::query_as!(
 		TaskModel,
 		r#"--sql
@@ -39,7 +39,7 @@ pub async fn task_create(create_model: TaskModel) -> Result<TaskModel> {
 	Ok(task)
 }
 
-pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
+pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
 	let tasks = sqlx::query_as!(
 		TaskInfoModel,
 		r#"--sql
@@ -63,7 +63,7 @@ pub async fn task_get_info_all_project(project_id: Uuid) -> Result<Vec<TaskInfoM
 	Ok(tasks)
 }
 
-pub async fn task_get_one(id: Uuid) -> Result<TaskModel> {
+pub async fn get_one(id: Uuid) -> Result<TaskModel> {
 	let task = sqlx::query_as!(
 		TaskModel,
 		r#"--sql
@@ -88,7 +88,7 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskModel> {
 	Ok(task)
 }
 
-pub async fn task_update_one(update_container: TaskUpdateModel) -> Result<()> {
+pub async fn update_one(update_container: TaskUpdateModel) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             update task
@@ -114,7 +114,7 @@ pub async fn task_update_one(update_container: TaskUpdateModel) -> Result<()> {
 	Ok(())
 }
 
-pub async fn task_delete_one(id: Uuid) -> Result<()> {
+pub async fn delete_one(id: Uuid) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             delete
