@@ -120,7 +120,11 @@ pub async fn task_start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uu
 		no_exit: task.no_exit,
 	};
 
-	pty_session_service::pty_session_spawn(app_handle, pty_spawn_contract).await?;
+	if task.blocking {
+		pty_session_service::spawn_blocking(app_handle, pty_spawn_contract).await?;
+	} else {
+		pty_session_service::spawn(app_handle, pty_spawn_contract).await?;
+	}
 
 	Ok(())
 }

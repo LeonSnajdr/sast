@@ -60,10 +60,12 @@ const loadPtySessions = async () => {
 
     unlistenPtyKilledEvent = await events.ptySessionKilledEvent.listen(() => {
         ptySessionStore.loadAll();
+        notify.info("Task killed");
     });
 
     unlistenPtySpawnedEvent = await events.ptySessionSpawnedEvent.listen(() => {
         ptySessionStore.loadAll();
+        notify.info("Task spawned");
     });
 };
 </script>

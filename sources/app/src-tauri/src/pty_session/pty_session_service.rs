@@ -31,38 +31,42 @@ struct PtySession {
 	read_history: Mutex<String>,
 }
 
-pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+pub async fn spawn_blocking(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<()> {
+	let session_id = build_and_spawn(&app_handle, spawn_contract).await?;
+
+	start_handle_threads(&app_handle, &session_id).await;
+
+	println!("threads finished");
+
+	Ok(())
+}
+
+pub async fn spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+	let session_id = build_and_spawn(&app_handle, spawn_contract).await?;
+
+	tauri::async_runtime::spawn(async move { start_handle_threads(&app_handle, &session_id).await });
+
+	Ok(session_id)
+}
+
+async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
 	let pty_system = native_pty_system();
 	let pair = pty_system.openpty(PtySize::default()).map_err(|_| Error::Failed)?;
 
 	let writer = pair.master.take_writer().map_err(|_| Error::Failed)?;
 	let reader = pair.master.try_clone_reader().map_err(|_| Error::Failed)?;
 
-	let mut cmd = CommandBuilder::new("pwsh.exe");
-
-	if let Some(working_dir) = spawn_contract.working_dir {
-		cmd.args(["-WorkingDirectory", working_dir.as_str()]);
-	}
-
-	if spawn_contract.no_exit {
-		cmd.args(["-NoExit"]);
-	}
-
-	if let Some(command) = spawn_contract.command {
-		cmd.args(["-Command", command.as_str()]);
-	}
+	let cmd = build_command(&spawn_contract);
 
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
-
 	let child_killer = child.clone_killer();
 
 	let session_id = Uuid::new_v4();
-
 	let session = Arc::new(PtySession {
 		session_id,
 		project_id: spawn_contract.project_id,
 		task_set_id: spawn_contract.task_set_id,
-		name: build_pty_session_name(spawn_contract.name),
+		name: build_name(spawn_contract.name),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
@@ -71,43 +75,61 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 		read_history: Mutex::new(String::new()),
 	});
 
-	let mut sessions = PTY_STATE.sessions.write().await;
-	sessions.push(session);
+	PTY_STATE.sessions.write().await.push(session);
 
-	PtySessionSpawnedEvent(session_id).emit(&app_handle).map_err(|_| Error::Failed)?;
-
-	start_pty_session_handle_threads(&app_handle, &session_id);
+	PtySessionSpawnedEvent(session_id).emit(app_handle).map_err(|_| Error::Failed)?;
 
 	Ok(session_id)
 }
 
-fn build_pty_session_name(name: Option<String>) -> String {
+fn build_command(spawn_contract: &PtySessionSpawnContract) -> CommandBuilder {
+	let mut cmd = CommandBuilder::new("pwsh.exe");
+
+	if let Some(working_dir) = &spawn_contract.working_dir {
+		cmd.args(["-WorkingDirectory", working_dir.as_str()]);
+	}
+
+	if spawn_contract.no_exit {
+		cmd.args(["-NoExit"]);
+	}
+
+	if let Some(command) = &spawn_contract.command {
+		cmd.args(["-Command", command.as_str()]);
+	}
+
+	cmd
+}
+
+fn build_name(name: Option<String>) -> String {
 	match name {
 		Some(ref name) => name.clone(),
 		None => "PowerShell".to_string(),
 	}
 }
 
-fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
-	let (tx, mut rx) = oneshot::channel();
+async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
+	let (session_kill_sender, mut session_kill_receiver) = oneshot::channel();
+	let (session_finished_sender, mut session_finished_receiver) = oneshot::channel();
 
 	let kill_app_handle = app_handle.clone();
 	let kill_session_id = session_id.clone();
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_get_one(&kill_session_id).await.unwrap();
+		let session = get_one(&kill_session_id).await.unwrap();
 
 		session.child.lock().await.wait().unwrap();
 
-		tx.send(()).unwrap();
+		session_kill_sender.send(()).unwrap();
 
 		session.pair.lock().await.slave.spawn_command(CommandBuilder::new("whoami")).unwrap();
 
 		drop(session.writer.lock().await);
 		drop(session.pair.lock().await);
 
-		let mut sessions = PTY_STATE.sessions.write().await;
-		if let Some(pos) = sessions.iter().position(|s| s.session_id == kill_session_id) {
-			sessions.remove(pos);
+		{
+			let mut sessions = PTY_STATE.sessions.write().await;
+			if let Some(pos) = sessions.iter().position(|s| s.session_id == kill_session_id) {
+				sessions.remove(pos);
+			}
 		}
 
 		PtySessionKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
@@ -118,14 +140,14 @@ fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 	let read_app_handle = app_handle.clone();
 	let read_session_id = session_id.clone();
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_get_one(&read_session_id).await.unwrap();
+		let session = get_one(&read_session_id).await.unwrap();
 
 		println!("Starting pty session thread {}", read_session_id);
 
 		let mut buf = [0u8; 1024];
 
 		loop {
-			if let Ok(()) = rx.try_recv() {
+			if let Ok(()) = session_kill_receiver.try_recv() {
 				println!("Received stop signal for session {}", read_session_id);
 				break;
 			}
@@ -138,7 +160,7 @@ fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 				}
 			};
 
-			if let Ok(()) = rx.try_recv() {
+			if let Ok(()) = session_kill_receiver.try_recv() {
 				println!("Received stop signal for session {}", read_session_id);
 				break;
 			}
@@ -163,29 +185,31 @@ fn start_pty_session_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 			}
 		}
 
-		session.child_killer.lock().await.kill().ok();
+		drop(read_app_handle);
 
 		println!("Finished pty session thread {}", read_session_id);
 
-		drop(read_app_handle);
+		session_finished_sender.send(()).unwrap();
 	});
+
+	session_finished_receiver.await.unwrap();
 }
 
-pub async fn pty_session_write(session_id: &Uuid, data: &String) -> Result<()> {
-	let session = pty_session_get_one(session_id).await?;
+pub async fn write(session_id: &Uuid, data: &String) -> Result<()> {
+	let session = get_one(session_id).await?;
 
 	session.writer.lock().await.write_all(data.as_bytes()).map_err(|_| Error::Failed)?;
 	Ok(())
 }
 
-pub async fn pty_session_get_read_history(session_id: &Uuid) -> Result<String> {
-	let session = pty_session_get_one(session_id).await?;
+pub async fn get_read_history(session_id: &Uuid) -> Result<String> {
+	let session = get_one(session_id).await?;
 	let history = session.read_history.lock().await.clone();
 	Ok(history)
 }
 
-pub async fn pty_session_resize(session_id: &Uuid, resize_contract: &PtySessionResizeContract) -> Result<()> {
-	let session = pty_session_get_one(session_id).await?;
+pub async fn resize(session_id: &Uuid, resize_contract: &PtySessionResizeContract) -> Result<()> {
+	let session = get_one(session_id).await?;
 
 	session
 		.pair
@@ -202,8 +226,8 @@ pub async fn pty_session_resize(session_id: &Uuid, resize_contract: &PtySessionR
 	Ok(())
 }
 
-pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
-	let session = pty_session_get_one(session_id).await?;
+pub async fn kill(session_id: &Uuid) -> Result<()> {
+	let session = get_one(session_id).await?;
 
 	let mut writer = session.writer.lock().await;
 	let mut child_killer = session.child_killer.lock().await;
@@ -217,15 +241,7 @@ pub async fn pty_session_kill(session_id: &Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn pty_session_get_exitstatus(session_id: &Uuid) -> Result<u32> {
-	let session = pty_session_get_one(session_id).await?;
-
-	let exitstatus = session.child.lock().await.wait().map_err(|_| Error::Failed)?.exit_code();
-
-	Ok(exitstatus)
-}
-
-async fn pty_session_get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
+async fn get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let session = sessions.iter().find(|&s| s.session_id == *session_id).ok_or(Error::NotExists)?.clone();
@@ -235,7 +251,7 @@ async fn pty_session_get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	Ok(session)
 }
 
-pub async fn pty_session_info_get_many(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
+pub async fn info_get_many(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let info_list = sessions

@@ -7,7 +7,7 @@
     <VContainer>
         <VCard :loading="isLoading">
             <VCardText v-if="task">
-                <VBtn @click="startTask()">Start</VBtn>
+                <VBtn @click="startTask()" :loading="isLoading">Start</VBtn>
                 <VForm v-model="isFormValid">
                     <TaskFieldName v-model="task.name" />
                     <VRow>
@@ -41,7 +41,9 @@ onBeforeMount(() => {
 });
 
 const startTask = async () => {
+    isLoading.value = true;
     await commands.taskStartOne(route.params.id, route.params.taskId);
+    isLoading.value = false;
 };
 
 const loadTask = async () => {

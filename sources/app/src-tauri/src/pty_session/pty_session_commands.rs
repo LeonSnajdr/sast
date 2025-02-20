@@ -8,7 +8,7 @@ use crate::pty_session::pty_session_service;
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
-	let session_id = pty_session_service::pty_session_spawn(app_handle, spawn_contract).await?;
+	let session_id = pty_session_service::spawn(app_handle, spawn_contract).await?;
 
 	Ok(session_id)
 }
@@ -16,7 +16,7 @@ pub async fn pty_session_spawn(app_handle: AppHandle, spawn_contract: PtySession
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_write(session_id: Uuid, data: String) -> Result<()> {
-	pty_session_service::pty_session_write(&session_id, &data).await?;
+	pty_session_service::write(&session_id, &data).await?;
 
 	Ok(())
 }
@@ -24,7 +24,7 @@ pub async fn pty_session_write(session_id: Uuid, data: String) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_get_read_history(session_id: Uuid) -> Result<String> {
-	let result = pty_session_service::pty_session_get_read_history(&session_id).await?;
+	let result = pty_session_service::get_read_history(&session_id).await?;
 
 	Ok(result)
 }
@@ -32,7 +32,7 @@ pub async fn pty_session_get_read_history(session_id: Uuid) -> Result<String> {
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_info_get_many(project_id: Uuid) -> Result<Vec<PtySessionInfoContract>> {
-	let result: Vec<PtySessionInfoContract> = pty_session_service::pty_session_info_get_many(&project_id).await?;
+	let result: Vec<PtySessionInfoContract> = pty_session_service::info_get_many(&project_id).await?;
 
 	Ok(result)
 }
@@ -40,7 +40,7 @@ pub async fn pty_session_info_get_many(project_id: Uuid) -> Result<Vec<PtySessio
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_resize(session_id: Uuid, resize_contract: PtySessionResizeContract) -> Result<()> {
-	pty_session_service::pty_session_resize(&session_id, &resize_contract).await?;
+	pty_session_service::resize(&session_id, &resize_contract).await?;
 
 	Ok(())
 }
@@ -48,15 +48,7 @@ pub async fn pty_session_resize(session_id: Uuid, resize_contract: PtySessionRes
 #[tauri::command]
 #[specta::specta]
 pub async fn pty_session_kill(session_id: Uuid) -> Result<()> {
-	pty_session_service::pty_session_kill(&session_id).await?;
+	pty_session_service::kill(&session_id).await?;
 
 	Ok(())
-}
-
-#[tauri::command]
-#[specta::specta]
-pub async fn pty_session_get_exitstatus(session_id: Uuid) -> Result<u32> {
-	let exitstatus = pty_session_service::pty_session_get_exitstatus(&session_id).await?;
-
-	Ok(exitstatus)
 }

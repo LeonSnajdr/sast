@@ -109,14 +109,6 @@ async ptySessionKill(sessionId: string) : Promise<Result<null, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionGetExitstatus(sessionId: string) : Promise<Result<number, Error>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_exitstatus", { sessionId }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
 async placeholderCreate(placeholderCreateContract: PlaceholderCreateContract) : Promise<Result<PlaceholderContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("placeholder_create", { placeholderCreateContract }) };
