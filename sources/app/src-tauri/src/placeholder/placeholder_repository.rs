@@ -6,7 +6,7 @@ use crate::placeholder::placeholder_enums::{PlaceholderKind, PlaceholderSource, 
 use crate::placeholder::placeholder_models::{PlaceholderModel, PlaceholderUpdateModel};
 use crate::prelude::*;
 
-pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<PlaceholderModel> {
+pub async fn create(create_model: PlaceholderModel) -> Result<PlaceholderModel> {
 	let placeholder = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -42,7 +42,7 @@ pub async fn placeholder_create(create_model: PlaceholderModel) -> Result<Placeh
 	Ok(placeholder)
 }
 
-pub async fn placeholder_get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
+pub async fn get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
 	let placeholders = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -72,7 +72,7 @@ pub async fn placeholder_get_many(project_id: Uuid) -> Result<Vec<PlaceholderMod
 	Ok(placeholders)
 }
 
-pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
+pub async fn get_one(id: Uuid) -> Result<PlaceholderModel> {
 	let placeholder = sqlx::query_as!(
 		PlaceholderModel,
 		r#"--sql
@@ -98,7 +98,7 @@ pub async fn placeholder_get_one(id: Uuid) -> Result<PlaceholderModel> {
 	Ok(placeholder)
 }
 
-pub async fn placeholder_update_one(update_container: PlaceholderUpdateModel) -> Result<()> {
+pub async fn update_one(update_container: PlaceholderUpdateModel) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             update placeholder
@@ -128,7 +128,7 @@ pub async fn placeholder_update_one(update_container: PlaceholderUpdateModel) ->
 	Ok(())
 }
 
-pub async fn placeholder_delete_one(id: Uuid) -> Result<()> {
+pub async fn delete_one(id: Uuid) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             delete
