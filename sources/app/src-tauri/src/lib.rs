@@ -31,7 +31,7 @@ pub fn run() {
 			pty_session_commands::pty_session_spawn,
 			pty_session_commands::pty_session_write,
 			pty_session_commands::pty_session_get_read_history,
-			pty_session_commands::pty_session_info_get_many,
+			pty_session_commands::pty_session_get_many_info,
 			pty_session_commands::pty_session_resize,
 			pty_session_commands::pty_session_kill,
 			placeholder_commands::placeholder_create,

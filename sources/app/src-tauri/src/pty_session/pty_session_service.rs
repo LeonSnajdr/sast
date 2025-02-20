@@ -251,7 +251,7 @@ async fn get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	Ok(session)
 }
 
-pub async fn info_get_many(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
+pub async fn get_many_info(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let info_list = sessions

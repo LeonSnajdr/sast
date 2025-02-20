@@ -11,7 +11,7 @@ export const usePtySessionStore = defineStore("ptySession", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.ptySessionInfoGetMany(selectedProject.value.id);
+        const sessionInfoResult = await commands.ptySessionGetManyInfo(selectedProject.value.id);
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
