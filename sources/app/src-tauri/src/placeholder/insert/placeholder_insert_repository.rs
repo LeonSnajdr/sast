@@ -6,10 +6,7 @@ use crate::placeholder::insert::placeholder_insert_models::{PlaceholderInsertTil
 use crate::placeholder::placeholder_enums::PlaceholderVisibility;
 use crate::prelude::*;
 
-pub async fn placeholder_insert_tile_create_or_replace(
-	create_models: Vec<PlaceholderInsertTileModel>,
-	delete_filter: PlaceholderInsertTileFilterModel,
-) -> Result<()> {
+pub async fn create_or_replace(create_models: Vec<PlaceholderInsertTileModel>, delete_filter: PlaceholderInsertTileFilterModel) -> Result<()> {
 	let mut tx = db::get_pool().begin().await.map_err(|err| Error::Db(err.to_string()))?;
 
 	sqlx::query!(
@@ -53,7 +50,7 @@ pub async fn placeholder_insert_tile_create_or_replace(
 	Ok(())
 }
 
-pub async fn placeholder_insert_tile_get_many(filter: PlaceholderInsertTileFilterModel) -> Result<Vec<PlaceholderInsertTileResultModel>> {
+pub async fn get_many(filter: PlaceholderInsertTileFilterModel) -> Result<Vec<PlaceholderInsertTileResultModel>> {
 	let placeholder_insert_tiles = sqlx::query_as!(
 		PlaceholderInsertTileResultModel,
 		r#"--sql

@@ -24,14 +24,14 @@ pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uui
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	placeholder_insert_service::placeholder_insert_tile_create_or_replace(command_tiles, delete_command_tiles_filter).await?;
+	placeholder_insert_service::create_or_replace(command_tiles, delete_command_tiles_filter).await?;
 
 	let delete_working_dir_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_working_dir_id: Some(id),
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	placeholder_insert_service::placeholder_insert_tile_create_or_replace(working_dir_tiles, delete_working_dir_tiles_filter).await?;
+	placeholder_insert_service::create_or_replace(working_dir_tiles, delete_working_dir_tiles_filter).await?;
 
 	Ok(id)
 }
@@ -44,14 +44,14 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskContract> {
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	let command_tile_contracts = placeholder_insert_service::placeholder_insert_tile_get_many(command_tile_filter).await?;
+	let command_tile_contracts = placeholder_insert_service::get_many(command_tile_filter).await?;
 
 	let working_dir_tile_filter = PlaceholderInsertTileFilterContract {
 		task_working_dir_id: Some(id),
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	let working_dir_tile_contracts = placeholder_insert_service::placeholder_insert_tile_get_many(working_dir_tile_filter).await?;
+	let working_dir_tile_contracts = placeholder_insert_service::get_many(working_dir_tile_filter).await?;
 
 	let task_contract = TaskContract::from(command_tile_contracts, working_dir_tile_contracts, task_model);
 
@@ -76,14 +76,14 @@ pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	placeholder_insert_service::placeholder_insert_tile_create_or_replace(command_tiles, delete_command_tiles_filter).await?;
+	placeholder_insert_service::create_or_replace(command_tiles, delete_command_tiles_filter).await?;
 
 	let delete_working_dir_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_working_dir_id: Some(task_update_model.id),
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
-	placeholder_insert_service::placeholder_insert_tile_create_or_replace(working_dir_tiles, delete_working_dir_tiles_filter).await?;
+	placeholder_insert_service::create_or_replace(working_dir_tiles, delete_working_dir_tiles_filter).await?;
 
 	task_repository::task_update_one(task_update_model).await?;
 
@@ -108,8 +108,8 @@ pub async fn task_start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uu
 	};
 
 	let task = task_repository::task_get_one(task_id).await?;
-	let command = placeholder_insert_service::placeholder_insert_get_rendered_tiles(command_tiles_filter).await?;
-	let working_dir = placeholder_insert_service::placeholder_insert_get_rendered_tiles(working_dir_tiles_filter).await?;
+	let command = placeholder_insert_service::get_rendered_tiles(command_tiles_filter).await?;
+	let working_dir = placeholder_insert_service::get_rendered_tiles(working_dir_tiles_filter).await?;
 
 	let pty_spawn_contract = PtySessionSpawnContract {
 		project_id,
