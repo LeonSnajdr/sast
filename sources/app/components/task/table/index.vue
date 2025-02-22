@@ -1,14 +1,15 @@
 <template>
     <VDataTableVirtual :headers="headers" :items="tasks" :rowProps="getRowProps" hideDefaultFooter>
+        <template #[`item.actions`]="{ item }">
+            <TaskTableColumnActions :task="item" />
+        </template>
         <template #[`item.dateCreated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateCreated) }}
         </template>
         <template #[`item.dateLastUpdated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateLastUpdated) }}
         </template>
-        <template #[`item.actions`]>
-            <IconBtn icon="mdi-pencil" />
-        </template>
+
         <template #loading>
             <VSkeletonLoader type="table-row" />
         </template>
@@ -31,6 +32,11 @@ const { selectedProject } = storeToRefs(projectStore);
 
 const headers: DataTableHeader[] = [
     {
+        title: t("task.table.column.actions") as string,
+        key: "actions",
+        width: 200
+    },
+    {
         title: t("task.table.column.name") as string,
         key: "name"
     },
@@ -45,11 +51,6 @@ const headers: DataTableHeader[] = [
     {
         title: t("task.table.column.dateLastUpdated") as string,
         key: "dateLastUpdated"
-    },
-    {
-        title: t("task.table.column.actions") as string,
-        key: "actions",
-        width: 50
     }
 ];
 

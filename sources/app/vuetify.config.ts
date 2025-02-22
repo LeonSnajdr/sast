@@ -181,6 +181,10 @@ export default defineVuetifyConfiguration({
             density: "comfortable",
             hover: true
         },
+        VDataTableVirtual: {
+            density: "comfortable",
+            hover: true
+        },
         VChip: {
             color: "primary",
             variant: "flat"

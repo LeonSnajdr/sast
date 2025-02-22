@@ -37,7 +37,7 @@ const isDialogOpen = ref(false);
 const isFormValid = ref(false);
 const isLoading = ref(false);
 
-const placeholder = ref({ projectId: selectedProject.value.id, visibility: "Global", kind: "Text", source: "Static" } as PlaceholderCreateContract);
+const placeholder = ref({ projectId: selectedProject.value.id, visibility: "Project", kind: "Text", source: "Static" } as PlaceholderCreateContract);
 
 const createPlaceholder = async () => {
     isLoading.value = true;
