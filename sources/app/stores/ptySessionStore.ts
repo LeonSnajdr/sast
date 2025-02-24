@@ -11,11 +11,11 @@ export const usePtySessionStore = defineStore("ptySession", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.ptySessionGetManyInfo(selectedProject.value.id);
+        const sessionInfoResult = await commands.ptySessionGetManyInfo({ projectId: selectedProject.value.id, taskId: null, taskSetId: null });
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
-            notify.error(t("action.load.error", { name: t("ptySession.plural") }), { error: sessionInfoResult.error });
+            notify.error(t("action.load.error", { type: t("ptySession.plural") }), { error: sessionInfoResult.error });
             return;
         }
 

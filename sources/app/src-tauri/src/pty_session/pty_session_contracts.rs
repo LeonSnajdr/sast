@@ -1,3 +1,4 @@
+use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileFilterContract;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use uuid::Uuid;
@@ -6,6 +7,7 @@ use uuid::Uuid;
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionSpawnContract {
 	pub project_id: Uuid,
+	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: Option<String>,
 	pub working_dir: Option<String>,
@@ -18,6 +20,8 @@ pub struct PtySessionSpawnContract {
 pub struct PtySessionInfoContract {
 	pub session_id: Uuid,
 	pub project_id: Uuid,
+	pub task_id: Option<Uuid>,
+	pub task_set_id: Option<Uuid>,
 	pub name: String,
 }
 
@@ -26,4 +30,21 @@ pub struct PtySessionInfoContract {
 pub struct PtySessionResizeContract {
 	pub cols: u16,
 	pub rows: u16,
+}
+
+#[derive(Debug, Type, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PtySessionFilterContract {
+	pub project_id: Option<Uuid>,
+	pub task_id: Option<Uuid>,
+	pub task_set_id: Option<Uuid>,
+}
+impl Default for PtySessionFilterContract {
+	fn default() -> Self {
+		Self {
+			project_id: None,
+			task_id: None,
+			task_set_id: None,
+		}
+	}
 }

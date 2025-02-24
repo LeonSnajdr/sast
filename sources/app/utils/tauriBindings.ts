@@ -85,9 +85,9 @@ async ptySessionGetReadHistory(sessionId: string) : Promise<Result<string, Error
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionGetManyInfo(projectId: string) : Promise<Result<PtySessionInfoContract[], Error>> {
+async ptySessionGetManyInfo(filter: PtySessionFilterContract) : Promise<Result<PtySessionInfoContract[], Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_many_info", { projectId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_many_info", { filter }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -196,6 +196,22 @@ async taskStartOne(projectId: string, taskId: string) : Promise<Result<null, Err
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async taskRestartOne(projectId: string, taskId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_restart_one", { projectId, taskId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskStopOne(taskId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_stop_one", { taskId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -229,12 +245,13 @@ export type PlaceholderUpdateContract = { id: string; projectId: string; name: s
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
-export type PtySessionInfoContract = { sessionId: string; projectId: string; name: string }
+export type PtySessionFilterContract = { projectId: string | null; taskId: string | null; taskSetId: string | null }
+export type PtySessionInfoContract = { sessionId: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string }
 export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
 export type PtySessionReadEventData = { sessionId: string; data: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
-export type PtySessionSpawnContract = { projectId: string; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean }
+export type PtySessionSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean }
 export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }

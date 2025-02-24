@@ -1,5 +1,5 @@
 use crate::prelude::*;
-use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
+use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
 use crate::pty_session::pty_session_events::{PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent};
 use once_cell::sync::Lazy;
 use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtyPair, PtySize};
@@ -21,6 +21,7 @@ struct PtyState {
 struct PtySession {
 	session_id: Uuid,
 	project_id: Uuid,
+	task_id: Option<Uuid>,
 	task_set_id: Option<Uuid>,
 	name: String,
 	pair: Mutex<PtyPair>,
@@ -65,6 +66,7 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawn
 	let session = Arc::new(PtySession {
 		session_id,
 		project_id: spawn_contract.project_id,
+		task_id: spawn_contract.task_id,
 		task_set_id: spawn_contract.task_set_id,
 		name: build_name(spawn_contract.name),
 		pair: Mutex::new(pair),
@@ -251,18 +253,43 @@ async fn get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	Ok(session)
 }
 
-pub async fn get_many_info(project_id: &Uuid) -> Result<Vec<PtySessionInfoContract>> {
+pub async fn get_many_info(filter: PtySessionFilterContract) -> Result<Vec<PtySessionInfoContract>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let info_list = sessions
 		.iter()
-		.filter(|s| s.project_id == *project_id)
-		.map(|session| PtySessionInfoContract {
-			session_id: session.session_id,
-			project_id: session.project_id,
-			name: session.name.clone(),
-		})
+		.filter(|session| matches_filter(session, &filter))
+		.map(|session| map_to_info_contract(session))
 		.collect::<Vec<PtySessionInfoContract>>();
 
 	Ok(info_list)
+}
+
+pub async fn get_first_info(filter: PtySessionFilterContract) -> Result<Option<PtySessionInfoContract>> {
+	let sessions = PTY_STATE.sessions.read().await;
+
+	let first_info = sessions
+		.iter()
+		.find(|session| matches_filter(session, &filter))
+		.map(|session| map_to_info_contract(session));
+
+	Ok(first_info)
+}
+
+fn matches_filter(session: &PtySession, filter: &PtySessionFilterContract) -> bool {
+	let matches_project_id = filter.project_id.map_or(true, |id| session.project_id == id);
+	let matches_task_id = filter.task_id.map_or(true, |id| session.task_id == Some(id));
+	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.task_set_id == Some(id));
+
+	matches_project_id && matches_task_id && matches_task_set_id
+}
+
+fn map_to_info_contract(session: &PtySession) -> PtySessionInfoContract {
+	PtySessionInfoContract {
+		session_id: session.session_id,
+		name: session.name.clone(),
+		project_id: session.project_id,
+		task_id: session.task_id,
+		task_set_id: session.task_set_id,
+	}
 }

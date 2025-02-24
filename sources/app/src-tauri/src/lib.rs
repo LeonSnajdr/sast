@@ -45,6 +45,8 @@ pub fn run() {
 			task_commands::task_update_one,
 			task_commands::task_delete_one,
 			task_commands::task_start_one,
+			task_commands::task_restart_one,
+			task_commands::task_stop_one,
 		])
 		.events(collect_events![
 			pty_session_events::PtySessionReadEvent,

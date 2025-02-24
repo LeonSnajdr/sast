@@ -1,7 +1,7 @@
 use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileFilterContract;
 use crate::placeholder::insert::placeholder_insert_service;
 use crate::prelude::*;
-use crate::pty_session::pty_session_contracts::PtySessionSpawnContract;
+use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionSpawnContract};
 use crate::pty_session::pty_session_service;
 use crate::task::task_contracts::{TaskContract, TaskCreateContract, TaskInfoContract, TaskUpdateContract};
 use crate::task::task_models::{TaskModel, TaskUpdateModel};
@@ -97,6 +97,22 @@ pub async fn delete_one(id: Uuid) -> Result<()> {
 }
 
 pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let pty_spawn_contract = build_pty_spawn_contract(project_id, task_id).await?;
+
+	pty_session_service::spawn(app_handle, pty_spawn_contract).await?;
+
+	Ok(())
+}
+
+pub async fn start_one_blocking(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let pty_spawn_contract = build_pty_spawn_contract(project_id, task_id).await?;
+
+	pty_session_service::spawn_blocking(app_handle, pty_spawn_contract).await?;
+
+	Ok(())
+}
+
+async fn build_pty_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<PtySessionSpawnContract> {
 	let command_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_command_id: Some(task_id),
 		..PlaceholderInsertTileFilterContract::default()
@@ -113,6 +129,7 @@ pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -
 
 	let pty_spawn_contract = PtySessionSpawnContract {
 		project_id,
+		task_id: Some(task_id),
 		task_set_id: None,
 		name: task.tab_name,
 		command: Some(command),
@@ -120,10 +137,28 @@ pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -
 		no_exit: task.no_exit,
 	};
 
-	if task.blocking {
-		pty_session_service::spawn_blocking(app_handle, pty_spawn_contract).await?;
+	Ok(pty_spawn_contract)
+}
+
+pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	stop_one(task_id).await?;
+	start_one(app_handle, project_id, task_id).await?;
+
+	Ok(())
+}
+
+pub async fn stop_one(task_id: Uuid) -> Result<()> {
+	let filter = PtySessionFilterContract {
+		task_id: Some(task_id),
+		..PtySessionFilterContract::default()
+	};
+
+	let pty_session_option = pty_session_service::get_first_info(filter).await?;
+
+	if let Some(pty_session) = pty_session_option {
+		pty_session_service::kill(&pty_session.session_id).await?;
 	} else {
-		pty_session_service::spawn(app_handle, pty_spawn_contract).await?;
+		return Err(Error::NotExists);
 	}
 
 	Ok(())

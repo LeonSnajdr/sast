@@ -2,7 +2,7 @@ use tauri::AppHandle;
 use uuid::Uuid;
 
 use crate::prelude::*;
-use crate::pty_session::pty_session_contracts::{PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
+use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
 use crate::pty_session::pty_session_service;
 
 #[tauri::command]
@@ -31,8 +31,8 @@ pub async fn pty_session_get_read_history(session_id: Uuid) -> Result<String> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn pty_session_get_many_info(project_id: Uuid) -> Result<Vec<PtySessionInfoContract>> {
-	let result: Vec<PtySessionInfoContract> = pty_session_service::get_many_info(&project_id).await?;
+pub async fn pty_session_get_many_info(filter: PtySessionFilterContract) -> Result<Vec<PtySessionInfoContract>> {
+	let result: Vec<PtySessionInfoContract> = pty_session_service::get_many_info(filter).await?;
 
 	Ok(result)
 }
