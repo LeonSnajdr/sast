@@ -10,14 +10,11 @@
                 <VForm v-model="isFormValid">
                     <TaskFieldName v-model="task.name" />
                     <VRow>
-                        <VCol cols="6">
+                        <VCol cols="9">
                             <TaskFieldTabName v-model="task.tabName" />
                         </VCol>
                         <VCol cols="3">
                             <TaskFieldBlocking v-model="task.blocking" />
-                        </VCol>
-                        <VCol cols="3">
-                            <TaskFieldNoExit v-model="task.noExit" />
                         </VCol>
                     </VRow>
                     <TaskFieldCommandTiles v-model="task.commandTiles" />

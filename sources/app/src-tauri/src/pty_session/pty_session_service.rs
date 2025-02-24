@@ -118,7 +118,9 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 	tauri::async_runtime::spawn(async move {
 		let session = get_one(&kill_session_id).await.unwrap();
 
-		session.child.lock().await.wait().unwrap();
+		let exit_code = session.child.lock().await.wait().unwrap().exit_code();
+
+		println!("Session exited with code {}", exit_code);
 
 		session_kill_sender.send(()).unwrap();
 

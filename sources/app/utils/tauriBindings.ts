@@ -256,10 +256,10 @@ export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string }
-export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; blocking: boolean; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
-export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; blocking: boolean; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
-export type TaskInfoContract = { id: string; projectId: string; name: string; blocking: boolean; dateCreated: string; dateLastUpdated: string }
-export type TaskUpdateContract = { id: string; name: string; tabName: string | null; blocking: boolean; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
+export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 
 /** tauri-specta globals **/
 

@@ -10,15 +10,14 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		TaskModel,
 		r#"--sql
             insert into task
-                (id, project_id, name, tab_name, blocking, no_exit, date_created, date_last_updated)
+                (id, project_id, name, tab_name, no_exit, date_created, date_last_updated)
                 values
-                ($1, $2, $3, $4, $5, $6, $7, $8)
+                ($1, $2, $3, $4, $5, $6, $7)
 			returning
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
                 tab_name,
-                blocking,
                 no_exit,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
@@ -27,7 +26,6 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		create_model.project_id,
 		create_model.name,
 		create_model.tab_name,
-		create_model.blocking,
 		create_model.no_exit,
 		create_model.date_created,
 		create_model.date_last_updated
@@ -47,7 +45,6 @@ pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
-                blocking,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
@@ -72,7 +69,6 @@ pub async fn get_one(id: Uuid) -> Result<TaskModel> {
                 project_id as "project_id: Uuid",
                 name,
                 tab_name,
-                blocking,
                 no_exit,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
@@ -95,15 +91,13 @@ pub async fn update_one(update_container: TaskUpdateModel) -> Result<()> {
             set
                 name = $2,
                 tab_name = $3,
-                blocking = $4,
-                no_exit = $5,
-                date_last_updated = $6
+                no_exit = $4,
+                date_last_updated = $5
             where id = $1
         "#,
 		update_container.id,
 		update_container.name,
 		update_container.tab_name,
-		update_container.blocking,
 		update_container.no_exit,
 		update_container.date_last_updated,
 	)

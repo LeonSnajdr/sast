@@ -56,7 +56,6 @@ create table if not exists task
     project_id        blob    not null,
     name              text    not null,
     tab_name          text,
-    blocking          boolean not null,
     no_exit           boolean not null,
     date_created      text    not null,
     date_last_updated text    not null,
