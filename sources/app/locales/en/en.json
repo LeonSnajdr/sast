@@ -79,7 +79,6 @@
   "task.plural": "Tasks",
   "task.singular": "Task",
   "task.table.column.actions": "Actions",
-  "task.table.column.blocking": "Blocking",
   "task.table.column.dateCreated": "Created",
   "task.table.column.dateLastUpdated": "Updated",
   "task.table.column.name": "Name",

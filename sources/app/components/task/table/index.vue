@@ -41,10 +41,6 @@ const headers: DataTableHeader[] = [
         key: "name"
     },
     {
-        title: t("task.table.column.blocking") as string,
-        key: "blocking"
-    },
-    {
         title: t("task.table.column.dateCreated") as string,
         key: "dateCreated"
     },
