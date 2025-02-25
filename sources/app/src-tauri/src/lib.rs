@@ -6,6 +6,7 @@ mod project;
 mod pty_session;
 mod setting;
 mod task;
+mod task_set;
 
 use specta_typescript::Typescript;
 use tauri::Manager;
@@ -16,6 +17,7 @@ use crate::project::project_commands;
 use crate::pty_session::{pty_session_commands, pty_session_events};
 use crate::setting::setting_commands;
 use crate::task::task_commands;
+use crate::task_set::task_set_commands;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -47,6 +49,14 @@ pub fn run() {
 			task_commands::task_start_one,
 			task_commands::task_restart_one,
 			task_commands::task_stop_one,
+			task_set_commands::task_set_create,
+			task_set_commands::task_set_get_one,
+			task_set_commands::task_set_get_many_info,
+			task_set_commands::task_set_update_one,
+			task_set_commands::task_set_delete_one,
+			task_set_commands::task_set_start_one,
+			task_set_commands::task_set_restart_one,
+			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
 			pty_session_events::PtySessionReadEvent,

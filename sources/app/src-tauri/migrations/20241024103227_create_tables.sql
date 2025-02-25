@@ -65,6 +65,32 @@ create table if not exists task
 
 create unique index uidx_task_project_id_name on task (project_id, name);
 
+create table if not exists task_set
+(
+    id                blob not null,
+    project_id        blob not null,
+    name              text not null,
+    date_created      text not null,
+    date_last_updated text not null,
+    primary key (id),
+    foreign key (project_id) references project (id) on delete cascade
+);
+
+create unique index uidx_task_set_project_id_name on task (project_id, name);
+
+create table if not exists task_set_task
+(
+    id          blob    not null,
+    task_id     blob    not null,
+    task_set_id blob    not null,
+    position    integer not null,
+    blocking    boolean not null,
+    primary key (id),
+    foreign key (task_id) references task (id) on delete cascade,
+    foreign key (task_set_id) references task_set (id) on delete cascade
+);
+
+
 
 
 

@@ -212,6 +212,70 @@ async taskStopOne(taskId: string) : Promise<Result<null, Error>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async taskSetCreate(taskSetCreateContract: TaskSetCreateContract) : Promise<Result<string, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_create", { taskSetCreateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetGetOne(id: string) : Promise<Result<TaskSetContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_get_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetGetManyInfo(projectId: string) : Promise<Result<TaskSetInfoContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_get_many_info", { projectId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetUpdateOne(taskSetUpdateContract: TaskSetUpdateContract) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_update_one", { taskSetUpdateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetDeleteOne(id: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_delete_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetStartOne(projectId: string, taskSetId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_start_one", { projectId, taskSetId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetRestartOne(projectId: string, taskSetId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_restart_one", { projectId, taskSetId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_stop_one", { taskSetId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -259,6 +323,10 @@ export type SettingUpdateContract = { id: string; presentationLanguage: string; 
 export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
 export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskSetCreateContract = { projectId: string; name: string }
+export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskSetUpdateContract = { id: string; name: string }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 
 /** tauri-specta globals **/

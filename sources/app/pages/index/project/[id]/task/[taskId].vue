@@ -14,7 +14,7 @@
                             <TaskFieldTabName v-model="task.tabName" />
                         </VCol>
                         <VCol cols="3">
-                            <TaskFieldBlocking v-model="task.blocking" />
+                            <TaskFieldNoExit v-model="task.noExit" />
                         </VCol>
                     </VRow>
                     <TaskFieldCommandTiles v-model="task.commandTiles" />
