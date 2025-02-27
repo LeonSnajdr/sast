@@ -203,7 +203,9 @@ export default defineVuetifyConfiguration({
         VNavigationDrawer: {
             railWidth: "72",
             width: "210",
-
+            VList: {
+                class: "mt-n2"
+            },
             VListItem: {
                 VListItemTitle: {
                     class: "text-caption"

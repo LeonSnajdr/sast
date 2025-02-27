@@ -1,6 +1,6 @@
 <template>
     <VNavigationDrawer location="left" permanent>
-        <VList class="mt-n2">
+        <VList>
             <VListItem height="48">
                 <template #prepend>
                     <VHover v-slot="{ isHovering, props }">
@@ -61,8 +61,8 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         },
         {
             icon: "mdi-checkbox-multiple-marked-circle-outline",
-            name: t("taskset.plural"),
-            to: { name: "index-project-id-taskset", params: { id: selectedProject.value.id } }
+            name: t("taskSet.plural"),
+            to: { name: "index-project-id-taskSet", params: { id: selectedProject.value.id } }
         }
     ];
 });

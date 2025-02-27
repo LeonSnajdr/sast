@@ -28,6 +28,9 @@
 <script setup lang="ts">
 const route = useRoute("index-project-id-task-taskId");
 
+const notify = useNotify();
+const { t } = useI18n();
+
 const isLoading = ref(false);
 const isFormValid = ref(false);
 const task = ref<TaskContract>();
@@ -44,6 +47,7 @@ const loadTask = async () => {
     isLoading.value = false;
 
     if (taskResult.status === "error") {
+        notify.error(t("action.load.error", { type: t("task.singular") }), { error: taskResult.error });
         return;
     }
 

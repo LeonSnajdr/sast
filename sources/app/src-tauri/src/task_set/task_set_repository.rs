@@ -84,7 +84,7 @@ pub async fn update_one(update_container: TaskSetUpdateModel) -> Result<()> {
             update task_set
             set
                 name = $2,
-                date_last_updated = $5
+                date_last_updated = $3
             where id = $1
         "#,
 		update_container.id,
