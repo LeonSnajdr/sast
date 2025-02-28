@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n            \tpit.kind as \"kind: PlaceholderInsertTileKind\",\n            \tpit.position,\n            \tpit.text_value,\n            \tpit.placeholder_id as \"placeholder_id: Uuid\",\n            \tp.name as placeholder_name,\n            \tp.visibility as \"placeholder_visibility: PlaceholderVisibility\",\n            \tp.value as placeholder_value\n            from placeholder_insert_tile as pit\n            left join placeholder as p on p.id = pit.placeholder_id\n            where\n            \tpit.task_command_id is $1 and\n            \tpit.task_working_dir_id is $2\n\t\t\torder by position asc\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "kind: PlaceholderInsertTileKind",
+        "ordinal": 0,
+        "type_info": "Text"
+      },
+      {
+        "name": "position",
+        "ordinal": 1,
+        "type_info": "Integer"
+      },
+      {
+        "name": "text_value",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "placeholder_id: Uuid",
+        "ordinal": 3,
+        "type_info": "Blob"
+      },
+      {
+        "name": "placeholder_name",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "placeholder_visibility: PlaceholderVisibility",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "placeholder_value",
+        "ordinal": 6,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      false,
+      true,
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "0364424756e8d0a06bbe53e2e25c9b14e8e4b73d3ed1f9aa7f5659aa3806ba8b"
+}

@@ -1,0 +1,44 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            insert into task_set\n                (id, project_id, name, date_created, date_last_updated)\n                values\n                ($1, $2, $3, $4, $5)\n\t\t\treturning\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "project_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 4,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "2dc3239d1090be230fe0f687717a941c87c60fc46614a674f1bf5937bfaf6424"
+}

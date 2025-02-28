@@ -1,0 +1,38 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                meta_date_updated as \"meta_date_updated: DateTime<Utc>\",\n                presentation_language,\n                presentation_theme\n            from setting\n            limit 1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "meta_date_updated: DateTime<Utc>",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "presentation_language",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "presentation_theme",
+        "ordinal": 3,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f35bf6779fa9e67f1b7ad7bf5ddbb1fdc92ee9704fd4b307f6f19145fcf3c427"
+}

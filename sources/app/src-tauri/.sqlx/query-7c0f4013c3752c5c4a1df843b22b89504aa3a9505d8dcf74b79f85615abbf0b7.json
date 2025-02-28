@@ -1,0 +1,68 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                value,\n                visibility as \"visibility: PlaceholderVisibility\",\n                kind as \"kind: PlaceholderKind\",\n                source as \"source: PlaceholderSource\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from placeholder\n            where id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "project_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "value",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "visibility: PlaceholderVisibility",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "kind: PlaceholderKind",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "source: PlaceholderSource",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 8,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "7c0f4013c3752c5c4a1df843b22b89504aa3a9505d8dcf74b79f85615abbf0b7"
+}

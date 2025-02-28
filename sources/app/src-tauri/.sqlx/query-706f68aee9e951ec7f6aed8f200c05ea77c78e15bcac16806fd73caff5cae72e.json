@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            delete\n            from placeholder\n            where id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": []
+  },
+  "hash": "706f68aee9e951ec7f6aed8f200c05ea77c78e15bcac16806fd73caff5cae72e"
+}

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n\t\t\t\tinsert into placeholder_insert_tile\n\t\t\t\t\t(id, placeholder_id, task_command_id, task_working_dir_id, kind, position, text_value)\n\t\t\t\tvalues\n\t\t\t\t\t($1, $2, $3, $4, $5, $6, $7)\n\t\t\t",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "7f7c8ad9ba2fe40430fae684852634832589a320851c6ae09ece09e88d94c363"
+}

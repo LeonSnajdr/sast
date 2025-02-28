@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n           select count(id) from setting\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "count(id)",
+        "ordinal": 0,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "097b4e7cb70a60dd1ec3baec5d21b58a5299301a638ffbdb490abebd1d0305ce"
+}

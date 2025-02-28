@@ -1,0 +1,38 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            insert into setting \n                (id, meta_date_updated, presentation_language, presentation_theme) \n                values \n                ($1, $2, $3, $4) \n            returning\n                id as \"id: Uuid\",\n                meta_date_updated as \"meta_date_updated: DateTime<Utc>\",\n                presentation_language,\n                presentation_theme\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "meta_date_updated: DateTime<Utc>",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "presentation_language",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "presentation_theme",
+        "ordinal": 3,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "e83310b9c33c93baa298a18ece49b3f048e7378e53340fd7f656765f8662127a"
+}

@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n        select id as \"id: Uuid\"\n        from project\n        order by date_last_opened desc\n        limit 1\n    ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      }
+    ],
+    "parameters": {
+      "Right": 0
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "6291360bcb674bb8dce5f8f31246285626c3b2330568f969cddabfd459993bc8"
+}
