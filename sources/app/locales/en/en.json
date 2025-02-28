@@ -15,7 +15,7 @@
   "action.restart.success": "{type} '{name}' successfully restarted",
   "action.save": "Save",
   "action.save.error": "{type} '{name}' couldn't be saved",
-  "action.save.success": "{type} '{name}' successfully deleted",
+  "action.save.success": "{type} '{name}' successfully saved",
   "action.start.error": "{type} '{name}' couldn't be started",
   "action.start.success": "{type} '{name}' successfully started",
   "action.stop.error": "{type} '{name}' couldn't be stopped",

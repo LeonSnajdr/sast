@@ -1,11 +1,11 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("task.singular") }) }}</VAppBarTitle>
-        <TaskActionDelete v-if="task" :disabled="!isFormValid" :task="task" class="mr-2" />
-        <TaskActionSave v-if="task" :disabled="!isFormValid" :task="task" />
+        <TaskActionDelete v-if="task" :disabled="!isFormValid" :task class="mr-2" />
+        <TaskActionSave v-if="task" @saved="taskSaved()" :disabled="!isFormValid" :task />
     </VAppBar>
     <VContainer>
-        <VCard :loading="isLoading">
+        <VCard :loading="isTaskLoading">
             <VCardText v-if="task">
                 <VForm v-model="isFormValid">
                     <TaskFieldName v-model="task.name" />
@@ -28,29 +28,15 @@
 <script setup lang="ts">
 const route = useRoute("index-project-id-task-taskId");
 
-const notify = useNotify();
-const { t } = useI18n();
+const { isTaskLoading, task, loadTask } = useTask();
 
-const isLoading = ref(false);
 const isFormValid = ref(false);
-const task = ref<TaskContract>();
 
 onBeforeMount(() => {
-    loadTask();
+    loadTask(route.params.taskId);
 });
 
-const loadTask = async () => {
-    isLoading.value = true;
-
-    const taskResult = await commands.taskGetOne(route.params.taskId);
-
-    isLoading.value = false;
-
-    if (taskResult.status === "error") {
-        notify.error(t("action.load.error", { type: t("task.singular") }), { error: taskResult.error });
-        return;
-    }
-
-    task.value = taskResult.data;
+const taskSaved = () => {
+    navigateTo({ name: "index-project-id-task", params: { id: route.params.id } });
 };
 </script>

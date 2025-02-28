@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits(["saved"]);
+
 const props = defineProps<{
     task: TaskContract;
 }>();
@@ -12,11 +14,6 @@ const props = defineProps<{
 const notify = useNotify();
 const { t } = useI18n();
 
-const projectStore = useProjectStore();
-
-const { selectedProject } = storeToRefs(projectStore);
-
-const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
 const taskSave = async () => {
@@ -42,8 +39,6 @@ const taskSave = async () => {
 
     notify.success(t("action.save.success", { type: t("task.singular"), name: props.task.name }));
 
-    navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
-
-    isDialogOpen.value = false;
+    emit("saved");
 };
 </script>

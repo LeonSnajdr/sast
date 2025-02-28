@@ -1,24 +1,6 @@
 <template>
     <TaskDrawerCreate v-model="isTaskCreateDrawerOpen" />
-
-    <VNavigationDrawer v-model="isTaskEditDrawerOpen" location="right" width="400" disableResizeWatcher>
-        <VList>
-            <VListItem height="48">
-                Task - Edit {{ selectedTaskId }}
-                <template #append>
-                    <BaseBtnIcon icon="mdi-content-save">Save</BaseBtnIcon>
-                </template>
-            </VListItem>
-
-            <VDivider />
-
-            <VContainer>
-                <VRowSingle v-for="i in 5" :key="i">
-                    <VTextField />
-                </VRowSingle>
-            </VContainer>
-        </VList>
-    </VNavigationDrawer>
+    <TaskDrawerEdit v-model="isTaskEditDrawerOpen" :taskId="selectedTaskId" />
 
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
@@ -113,7 +95,7 @@ const toggleTaskEditDrawer = (taskId: string) => {
 };
 
 const taskSetTasks = ref([
-    { id: "taskId1", name: "test", blocking: false },
+    { id: "c375779c-f530-44de-8b4c-4b27f422c258", name: "test", blocking: false },
     { id: "taskId2", name: "test2", blocking: true }
 ]);
 
