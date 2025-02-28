@@ -1,0 +1,33 @@
+$schema: https://raw.githubusercontent.com/streetsidesoftware/cspell/main/cspell.schema.json
+import: ["@cspell/dict-de-de"]
+enabled: true
+
+files:
+  - src/translations/en.json
+  - src/translations/de.json
+
+dictionaryDefinitions:
+  - name: custom.de
+    addWords: true
+    path: .cspell/custom.de.dict
+
+  - name: custom.en
+    addWords: true
+    path: .cspell/custom.en.dict
+
+patterns:
+  - name: translationKey
+    pattern: '/"([0-9A-Za-z-]+[.])+([0-9A-Za-z-])+"/'
+  - name: placeholder
+    pattern: "/{.*?}/"
+
+overrides:
+  - filename: src/translations/en.json
+    language: en
+    dictionaries: [custom.en]
+    ignoreRegExpList: [translationKey, placeholder]
+
+  - filename: src/translations/de.json
+    language: de
+    dictionaries: [custom.de]
+    ignoreRegExpList: [translationKey, placeholder]
