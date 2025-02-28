@@ -73,7 +73,7 @@
                             <p class="text-caption text-medium-emphasis">erstellt vor 12Stunden</p>
                         </div>
                         <VSpacer />
-                        <ChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent>Blocking</ChipSwitch>
+                        <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent>Blocking</BaseChipSwitch>
                         <div>
                             <IconBtn
                                 @click.stop.prevent="toggleTaskEditDrawer(taskSetTask.id)"
