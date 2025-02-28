@@ -16,7 +16,6 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
 const saveTaskSet = async () => {
@@ -39,7 +38,5 @@ const saveTaskSet = async () => {
     notify.success(t("action.save.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 
     navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
-
-    isDialogOpen.value = false;
 };
 </script>

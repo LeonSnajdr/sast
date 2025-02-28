@@ -1,27 +1,10 @@
 <template>
-    <VNavigationDrawer v-model="isTaskCreateDrawerOpen" location="right" width="400" disableResizeWatcher>
-        <VList>
-            <VListItem height="48">
-                Task - Create
-                <template #append>
-                    <BaseBtnIcon icon="mdi-content-save">Save</BaseBtnIcon>
-                </template>
-            </VListItem>
-
-            <VDivider />
-
-            <VContainer>
-                <VRowSingle v-for="i in 5" :key="i">
-                    <VTextField />
-                </VRowSingle>
-            </VContainer>
-        </VList>
-    </VNavigationDrawer>
+    <TaskDrawerCreate v-model="isTaskCreateDrawerOpen" />
 
     <VNavigationDrawer v-model="isTaskEditDrawerOpen" location="right" width="400" disableResizeWatcher>
         <VList>
             <VListItem height="48">
-                Task - Edit{{ selectedTaskId }}
+                Task - Edit {{ selectedTaskId }}
                 <template #append>
                     <BaseBtnIcon icon="mdi-content-save">Save</BaseBtnIcon>
                 </template>
@@ -38,8 +21,8 @@
     </VNavigationDrawer>
 
     <VAppBar>
-        <VAppBarTitle>{{ $t("taskSet.plural") }} - {{ isTaskCreateDrawerOpen }} - {{ isTaskEditDrawerOpen }}</VAppBarTitle>
-        <TaskSetActionDelete v-if="taskSet" :disabled="!isFormValid" :taskSet class="mr-2" />
+        <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
+        <TaskSetActionDelete v-if="taskSet" :taskSet class="mr-2" />
         <TaskSetActionSave v-if="taskSet" :disabled="!isFormValid" :taskSet />
     </VAppBar>
 

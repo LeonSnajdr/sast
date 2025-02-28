@@ -1,6 +1,6 @@
 <template>
     <VRowSingle>
-        <BaseBaseChipSwitch v-model="visibility" :items="items" itemText="translation" itemValue="visibility" />
+        <BaseChipSelect v-model="visibility" :items="items" itemText="translation" itemValue="visibility" />
     </VRowSingle>
 </template>
 

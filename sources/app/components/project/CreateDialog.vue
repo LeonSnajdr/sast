@@ -3,7 +3,7 @@
         <VCard>
             <VCardTitle>
                 <VIcon color="success" icon="mdi-folder-plus" />
-                {{ $t("action.create.title", { type: $t("project.singular") }) }}
+                {{ $t("title.create", { type: $t("project.singular") }) }}
             </VCardTitle>
             <VCardText>
                 <VForm ref="form" v-model="isFormValid">

@@ -1,7 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("task.plural") }}</VAppBarTitle>
-        <TaskActionCreate @created="loadTasks()" />
+        <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
+            {{ $t("action.create") }}
+            <TaskDialogCreate v-model="isCreateDialogOpen" @created="loadTasks()" />
+        </BaseBtnIcon>
     </VAppBar>
 
     <VContainer class="h-100">
@@ -22,6 +25,8 @@ const { t } = useI18n();
 const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
+const isCreateDialogOpen = ref(false);
+
 const tasks = ref<TaskInfoContract[]>([]);
 
 onBeforeMount(() => {

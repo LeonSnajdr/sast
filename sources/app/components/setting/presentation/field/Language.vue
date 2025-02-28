@@ -6,7 +6,7 @@
                 {{ $t("setting.presentation.language.title") }}
             </VCardTitle>
             <VCardText>
-                <BaseBaseChipSwitch v-model="selectedLangauge" :items="laguageItems" itemText="translation" itemValue="language" />
+                <BaseChipSelect v-model="selectedLangauge" :items="laguageItems" itemText="translation" itemValue="language" />
             </VCardText>
         </VCard>
     </VRowSingle>

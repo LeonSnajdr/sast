@@ -5,7 +5,7 @@
             <VCard>
                 <VCardTitle>
                     <VIcon color="success" icon="mdi-label" />
-                    {{ $t("action.create.title", { type: $t("placeholder.singular") }) }}
+                    {{ $t("title.create", { type: $t("placeholder.singular") }) }}
                 </VCardTitle>
                 <VCardText>
                     <VForm ref="form" v-model="isFormValid">
