@@ -1,9 +1,9 @@
 <template>
     <div @click.prevent.stop class="d-flex">
-        <IconBtn @click="start()" :disabled="hasRunningPtySession" :loading="isStarting" color="success" icon="mdi-play" />
-        <IconBtn @click="restart()" :disabled="!hasRunningPtySession" :loading="isRestarting" color="info" icon="mdi-autorenew" />
-        <IconBtn @click="stop()" :disabled="!hasRunningPtySession" :loading="isStopping" color="error" icon="mdi-stop" />
-        <IconBtn @click="navigateToTab()" :disabled="!hasRunningPtySession" color="secondary" icon="mdi-tab" />
+        <BaseBtnIcon @click="start()" :disabled="hasRunningPtySession" :loading="isStarting" color="success" icon="mdi-play" />
+        <BaseBtnIcon @click="restart()" :disabled="!hasRunningPtySession" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        <BaseBtnIcon @click="stop()" :disabled="!hasRunningPtySession" :loading="isStopping" color="error" icon="mdi-stop" />
+        <BaseBtnIcon @click="navigateToTab()" :disabled="!hasRunningPtySession" color="secondary" icon="mdi-tab" />
     </div>
 </template>
 

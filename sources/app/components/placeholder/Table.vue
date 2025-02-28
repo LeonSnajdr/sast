@@ -7,7 +7,7 @@
             {{ useLocaleTimeAgo(item.dateLastUpdated) }}
         </template>
         <template #[`item.actions`]>
-            <IconBtn icon="mdi-pencil" />
+            <BaseBtnIcon icon="mdi-pencil" />
         </template>
         <template #loading>
             <VSkeletonLoader type="table-row" />

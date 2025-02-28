@@ -1,5 +1,5 @@
 <template>
-    <IconBtn color="secondary" icon="mdi-plus" variant="flat">
+    <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
         {{ $t("action.create") }}
         <VDialog v-model="isDialogOpen" activator="parent" width="800" eager>
             <VCard>
@@ -20,7 +20,7 @@
                 </VCardActions>
             </VCard>
         </VDialog>
-    </IconBtn>
+    </BaseBtnIcon>
 </template>
 
 <script setup lang="ts">

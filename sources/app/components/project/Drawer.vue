@@ -12,10 +12,10 @@
                     <span class="font-weight-regular text-body-1">{{ selectedProject.name }}</span>
                 </VListItemTitle>
                 <template #append>
-                    <IconBtn icon="mdi-swap-horizontal">
+                    <BaseBtnIcon icon="mdi-swap-horizontal">
                         <ProjectSelectDialog />
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
-                    </IconBtn>
+                    </BaseBtnIcon>
                 </template>
             </VListItem>
             <VDivider />

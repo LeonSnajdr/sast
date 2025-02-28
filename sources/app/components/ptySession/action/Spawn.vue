@@ -1,5 +1,5 @@
 <template>
-    <IconBtn @click="ptySpawn()" color="secondary" icon="mdi-plus" variant="flat" />
+    <BaseBtnIcon @click="ptySpawn()" color="secondary" icon="mdi-plus" variant="flat" />
 </template>
 
 <script setup lang="ts">

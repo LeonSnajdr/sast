@@ -1,14 +1,14 @@
 <template>
-    <IconBtn :loading="isLoading" icon="mdi-delete" variant="flat">
+    <BaseBtnIcon :loading="isLoading" icon="mdi-delete" variant="flat">
         {{ $t("action.delete") }}
-        <ConfirmationDialog
+        <BaseDialogConfirm
             @confirm="placeholderDelete"
             :message="$t('action.delete.description', { type: $t('placeholder.singular'), name: placeholder.name })"
             :title="$t('action.delete.title', { type: $t('placeholder.singular') })"
             icon="mdi-label"
             iconColor="error"
         />
-    </IconBtn>
+    </BaseBtnIcon>
 </template>
 
 <script setup lang="ts">

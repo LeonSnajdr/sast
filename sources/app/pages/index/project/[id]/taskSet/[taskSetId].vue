@@ -4,7 +4,7 @@
             <VListItem height="48">
                 Task - Create
                 <template #append>
-                    <IconBtn icon="mdi-content-save">Save</IconBtn>
+                    <BaseBtnIcon icon="mdi-content-save">Save</BaseBtnIcon>
                 </template>
             </VListItem>
 
@@ -23,7 +23,7 @@
             <VListItem height="48">
                 Task - Edit{{ selectedTaskId }}
                 <template #append>
-                    <IconBtn icon="mdi-content-save">Save</IconBtn>
+                    <BaseBtnIcon icon="mdi-content-save">Save</BaseBtnIcon>
                 </template>
             </VListItem>
 
@@ -55,9 +55,9 @@
         <VCard class="overflow-visible">
             <VCardText class="d-flex ga-2 align-center">
                 <VAutocomplete :persistentPlaceholder="false" label="Task suche" />
-                <IconBtn icon="mdi-plus">Add</IconBtn>
+                <BaseBtnIcon icon="mdi-plus">Add</BaseBtnIcon>
                 <VDivider vertical />
-                <IconBtn @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">Create</IconBtn>
+                <BaseBtnIcon @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">Create</BaseBtnIcon>
             </VCardText>
         </VCard>
 
@@ -75,12 +75,12 @@
                         <VSpacer />
                         <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent>Blocking</BaseChipSwitch>
                         <div>
-                            <IconBtn
+                            <BaseBtnIcon
                                 @click.stop.prevent="toggleTaskEditDrawer(taskSetTask.id)"
                                 :active="taskSetTask.id === selectedTaskId"
                                 icon="mdi-dock-right"
                             />
-                            <IconBtn @click.stop.prevent icon="mdi-close" />
+                            <BaseBtnIcon @click.stop.prevent icon="mdi-close" />
                         </div>
                     </div>
                 </VListItem>

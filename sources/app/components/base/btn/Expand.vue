@@ -1,5 +1,5 @@
 <template>
-    <IconBtn @click="expanded = !expanded" :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
+    <BaseBtnIcon @click="expanded = !expanded" :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'" />
 </template>
 
 <script setup lang="ts">

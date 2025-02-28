@@ -10,8 +10,8 @@
                     </span>
                 </p>
                 <template #append>
-                    <ExpandBtn v-if="notification.expandableText" v-model="notification.expanded" />
-                    <IconBtn @click="notification.remove()" icon="mdi-close" />
+                    <BaseBtnExpand v-if="notification.expandableText" v-model="notification.expanded" />
+                    <BaseBtnIcon @click="notification.remove()" icon="mdi-close" />
                 </template>
             </VAlert>
         </template>

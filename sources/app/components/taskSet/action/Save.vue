@@ -1,7 +1,7 @@
 <template>
-    <IconBtn @click="saveTaskSet()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon @click="saveTaskSet()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
         {{ $t("action.save") }}
-    </IconBtn>
+    </BaseBtnIcon>
 </template>
 
 <script setup lang="ts">

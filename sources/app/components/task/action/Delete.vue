@@ -1,14 +1,14 @@
 <template>
-    <IconBtn :loading="isLoading" icon="mdi-delete" variant="flat">
+    <BaseBtnIcon :loading="isLoading" icon="mdi-delete" variant="flat">
         {{ $t("action.delete") }}
-        <ConfirmationDialog
+        <BaseDialogConfirm
             @confirm="deleteTask"
             :message="$t('action.delete.description', { type: $t('task.singular'), name: task.name })"
             :title="$t('action.delete.title', { type: $t('task.singular') })"
             icon="mdi-checkbox-marked-circle-outline"
             iconColor="error"
         />
-    </IconBtn>
+    </BaseBtnIcon>
 </template>
 
 <script setup lang="ts">
