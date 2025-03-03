@@ -19,6 +19,7 @@ const props = defineProps<{
 const notify = useNotify();
 const { t } = useI18n();
 
+const placeholderStore = usePlaceholderStore();
 const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
@@ -40,8 +41,10 @@ const placeholderDelete = async () => {
 
     notify.success(t("action.delete.success", { type: t("placeholder.singular"), name: props.placeholder.name }));
 
-    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+    placeholderStore.loadAll();
 
     isDialogOpen.value = false;
+
+    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 };
 </script>

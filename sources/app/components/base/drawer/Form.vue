@@ -1,5 +1,5 @@
 <template>
-    <VNavigationDrawer v-model="isDrawerOpen" location="right" width="400" disableResizeWatcher>
+    <VNavigationDrawer v-model="isDrawerOpen" location="right" width="450" disableResizeWatcher>
         <VList>
             <VListItem height="48">
                 <slot :isFormValid name="title" />

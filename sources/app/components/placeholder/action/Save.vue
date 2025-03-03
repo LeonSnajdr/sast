@@ -13,6 +13,7 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
+const placeholderStore = usePlaceholderStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
@@ -43,8 +44,10 @@ const placeholderSave = async () => {
 
     notify.success(t("action.save.success", { type: t("placeholder.singular"), name: props.placeholder.name }));
 
-    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
-
     isDialogOpen.value = false;
+
+    placeholderStore.loadAll();
+
+    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 };
 </script>

@@ -20,6 +20,7 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
+const taskStore = useTaskStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
@@ -40,8 +41,10 @@ const deleteTask = async () => {
 
     notify.success(t("action.delete.success", { type: t("task.singular"), name: props.task.name }));
 
-    navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
+    taskStore.loadAll();
 
     isDialogOpen.value = false;
+
+    navigateTo({ name: "index-project-id-task", params: { id: selectedProject.value.id } });
 };
 </script>

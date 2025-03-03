@@ -1,6 +1,6 @@
 <template>
     <TaskDrawerCreate v-model="isTaskCreateDrawerOpen" @created="addTask" />
-    <TaskDrawerEdit v-model="isTaskEditDrawerOpen" @saved="savedTask" :taskId="selectedTaskId" />
+    <TaskDrawerEdit v-model="isTaskEditDrawerOpen" @saved="savedTask" :taskId="editTaskId" />
 
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
@@ -19,10 +19,11 @@
 
         <VCard class="overflow-visible">
             <VCardText class="d-flex ga-2 align-center">
-                <VAutocomplete :persistentPlaceholder="false" label="Task suche" />
-                <BaseBtnIcon icon="mdi-plus">Add</BaseBtnIcon>
+                <TaskSetTaskSearch @add="addTask" :taskSetTasks="taskSet.tasks" />
                 <VDivider vertical />
-                <BaseBtnIcon @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">Create</BaseBtnIcon>
+                <BaseBtnIcon @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">
+                    {{ $t("action.create") }} & {{ $t("action.add") }}
+                </BaseBtnIcon>
             </VCardText>
         </VCard>
 
@@ -36,18 +37,22 @@
                         <div>
                             <p>{{ taskSetTask.taskName }}</p>
                             <p class="text-caption text-medium-emphasis">
-                                {{ useLocaleTimeAgo(taskSetTask.taskDateCreated) }} &bull; {{ useLocaleTimeAgo(taskSetTask.taskDateLastUpdated) }}
+                                {{ $t("task.table.column.dateLastUpdated") }} {{ useLocaleTimeAgo(taskSetTask.taskDateLastUpdated) }}
                             </p>
                         </div>
                         <VSpacer />
-                        <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent>Blocking</BaseChipSwitch>
+                        <div>
+                            <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
+                                {{ $t("taskSetTask.field.blocking") }}
+                            </BaseChipSwitch>
+                        </div>
                         <div>
                             <BaseBtnIcon
                                 @click.stop.prevent="toggleTaskEditDrawer(taskSetTask.taskId)"
-                                :active="taskSetTask.taskId === selectedTaskId"
+                                :active="taskSetTask.taskId === editTaskId"
                                 icon="mdi-dock-right"
                             />
-                            <BaseBtnIcon @click.stop.prevent icon="mdi-close" />
+                            <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
                     </div>
                 </VListItem>
@@ -67,15 +72,14 @@ const { t } = useI18n();
 const isLoading = ref(false);
 const isFormValid = ref(false);
 const taskSet = ref<TaskSetContract>();
-
-const selectedTaskId = ref();
+const editTaskId = ref<string>();
 
 const isTaskEditDrawerOpen = computed({
     get() {
-        return selectedTaskId.value != undefined;
+        return editTaskId.value != undefined;
     },
     set() {
-        selectedTaskId.value = undefined;
+        editTaskId.value = undefined;
     }
 });
 
@@ -87,13 +91,13 @@ const toggleTaskCreateDrawer = () => {
 };
 
 const toggleTaskEditDrawer = (taskId: string) => {
-    if (selectedTaskId.value === taskId) {
-        selectedTaskId.value = undefined;
+    if (editTaskId.value === taskId) {
+        editTaskId.value = undefined;
         return;
     }
 
     isTaskCreateDrawerOpen.value = false;
-    selectedTaskId.value = taskId;
+    editTaskId.value = taskId;
 };
 
 onBeforeMount(() => {
@@ -115,7 +119,7 @@ const loadTaskSet = async () => {
     taskSet.value = taskSetResult.data;
 };
 
-const savedTask = (task: TaskContract) => {
+const savedTask = (task: { id: string; name: string; dateLastUpdated: string }) => {
     if (!taskSet.value) return;
 
     const taskSetTask = taskSet.value.tasks.find((x) => x.taskId === task.id);
@@ -126,7 +130,7 @@ const savedTask = (task: TaskContract) => {
     taskSetTask.taskDateLastUpdated = task.dateLastUpdated;
 };
 
-const addTask = (task: TaskContract) => {
+const addTask = (task: { id: string; name: string; dateCreated: string; dateLastUpdated: string }) => {
     if (!taskSet.value) return;
 
     taskSet.value.tasks.push({
@@ -136,6 +140,12 @@ const addTask = (task: TaskContract) => {
         taskDateLastUpdated: task.dateLastUpdated,
         blocking: false
     });
+};
+
+const removeTask = (taskId: string) => {
+    if (!taskSet.value) return;
+
+    taskSet.value.tasks = taskSet.value.tasks.filter((x) => x.taskId !== taskId);
 };
 </script>
 

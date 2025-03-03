@@ -16,6 +16,8 @@ const props = defineProps<{
 const notify = useNotify();
 const { t } = useI18n();
 
+const taskStore = useTaskStore();
+
 const isLoading = ref(false);
 
 const createTask = async () => {
@@ -31,6 +33,8 @@ const createTask = async () => {
     }
 
     notify.success(t("action.create.success", { type: t("task.singular"), name: props.task.name }));
+
+    taskStore.loadAll();
 
     emit("created", createResult.data);
 };

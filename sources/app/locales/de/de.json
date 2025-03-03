@@ -1,4 +1,5 @@
 {
+  "action.add": "Hinzufügen",
   "action.cancel": "Abbrechen",
   "action.close": "Schließen",
   "action.confirm": "Bestätigen",
@@ -85,8 +86,11 @@
   "taskSet.table.column.dateCreated": "Erstellt",
   "taskSet.table.column.dateLastUpdated": "Geändert",
   "taskSet.table.column.name": "Name",
+  "taskSetTask.field.blocking": "Blockierend",
+  "taskSetTask.field.blocking.info": "Überschreibt 'Offen halten', um zu verhindern, dass Aufgaben unendlich lange laufen.",
+  "taskSetTask.search": "Aufgaben suche",
   "title.create": "{type} - Erstellen",
-  "title.edit": "{Type} - Bearbeiten",
+  "title.edit": "{type} - Bearbeiten",
   "validation.rule.required": " {field} ist erforderlich",
   "validation.rule.validName": "{field} darf nur Buchstaben, Zahlen, Bindestriche (-), Unterstriche (_) und Einzel-Leerzeichen enthalten",
   "vueUse.timeAgo.ago": "vor {0}",

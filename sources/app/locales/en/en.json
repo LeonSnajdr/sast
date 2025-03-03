@@ -1,4 +1,5 @@
 {
+  "action.add": "Add",
   "action.cancel": "Cancel",
   "action.close": "Close",
   "action.confirm": "Confirm",
@@ -85,6 +86,9 @@
   "taskSet.table.column.dateCreated": "Created",
   "taskSet.table.column.dateLastUpdated": "Updated",
   "taskSet.table.column.name": "Name",
+  "taskSetTask.field.blocking": "Blocking",
+  "taskSetTask.field.blocking.info": "Overwrites the 'no exit', to prevent infinite running tasks",
+  "taskSetTask.search": "Task search",
   "title.create": "{type} - Create",
   "title.edit": "{type} - Edit",
   "validation.rule.required": "{field} is required",
