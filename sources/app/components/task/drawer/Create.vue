@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-    created: [id: string];
+    created: [id: TaskContract];
 }>();
 
 const isDrawerOpen = defineModel<boolean>({ required: true });
@@ -39,8 +39,8 @@ const emptyElement: TaskCreateContract = {
     commandTiles: [] as PlaceholderInsertTileContract[]
 };
 
-const taskCreated = (id: string) => {
+const taskCreated = (task: TaskContract) => {
     isDrawerOpen.value = false;
-    emit("created", id);
+    emit("created", task);
 };
 </script>

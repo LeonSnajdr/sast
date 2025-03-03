@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n\t\t\t\tinsert into task_set_task\n\t\t\t\t\t(id, task_id, task_set_id, position, blocking)\n\t\t\t\tvalues\n\t\t\t\t\t($1, $2, $3, $4, $5)\n\t\t\t",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "20dc364834c799cea472131030018397768e1542b51aeb470a6e2690195efe5e"
+}

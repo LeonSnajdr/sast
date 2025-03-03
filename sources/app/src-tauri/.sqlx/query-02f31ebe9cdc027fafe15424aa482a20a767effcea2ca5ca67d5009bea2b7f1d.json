@@ -1,0 +1,62 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                tst.id as \"id: Uuid\",\n                tst.task_id as \"task_id: Uuid\",\n                t.name as task_name,\n                t.date_created as \"task_date_created: DateTime<Utc>\",\n                t.date_last_updated as \"task_date_last_updated: DateTime<Utc>\",\n            \ttst.task_set_id as \"task_set_id: Uuid\",\n            \ttst.blocking,\n            \ttst.position\n            from task_set_task as tst\n            join task as t on t.id = tst.task_id\n            where tst.task_set_id is $1\n\t\t\torder by position asc\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "task_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "task_name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "task_date_created: DateTime<Utc>",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "task_date_last_updated: DateTime<Utc>",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "task_set_id: Uuid",
+        "ordinal": 5,
+        "type_info": "Blob"
+      },
+      {
+        "name": "blocking",
+        "ordinal": 6,
+        "type_info": "Bool"
+      },
+      {
+        "name": "position",
+        "ordinal": 7,
+        "type_info": "Integer"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "02f31ebe9cdc027fafe15424aa482a20a767effcea2ca5ca67d5009bea2b7f1d"
+}

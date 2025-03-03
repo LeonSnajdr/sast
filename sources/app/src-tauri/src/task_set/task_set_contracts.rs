@@ -4,6 +4,7 @@ use specta::Type;
 use uuid::Uuid;
 
 use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileContract;
+use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -13,6 +14,7 @@ pub struct TaskSetContract {
 	pub name: String,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
+	pub tasks: Vec<TaskSetTaskInfoContract>
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
@@ -37,4 +39,5 @@ pub struct TaskSetCreateContract {
 pub struct TaskSetUpdateContract {
 	pub id: Uuid,
 	pub name: String,
+	pub tasks: Vec<TaskSetTaskInfoContract>
 }

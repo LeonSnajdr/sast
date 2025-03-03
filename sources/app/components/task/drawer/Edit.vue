@@ -1,7 +1,7 @@
 <template>
     <BaseDrawerEdit v-model="isDrawerOpen" :type="$t('task.singular')">
         <template v-if="task" #actions>
-            <TaskActionSave @saved="taskSaved()" :task />
+            <TaskActionSave @saved="taskSaved" :task />
         </template>
         <template v-if="task" #fields>
             <TaskFieldName v-model="task.name" />
@@ -20,6 +20,10 @@
 </template>
 
 <script setup lang="ts">
+const emit = defineEmits<{
+    saved: [task: TaskContract];
+}>();
+
 const props = defineProps<{
     taskId?: string;
 }>();
@@ -37,8 +41,8 @@ watch(
     }
 );
 
-const taskSaved = () => {
-    console.log("keckw");
+const taskSaved = (task: TaskContract) => {
     isDrawerOpen.value = false;
+    emit("saved", task);
 };
 </script>

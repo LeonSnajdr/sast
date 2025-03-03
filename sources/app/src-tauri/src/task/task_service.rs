@@ -10,7 +10,7 @@ use chrono::Utc;
 use tauri::AppHandle;
 use uuid::Uuid;
 
-pub async fn create(task_create_contract: TaskCreateContract) -> Result<Uuid> {
+pub async fn create(task_create_contract: TaskCreateContract) -> Result<TaskContract> {
 	let id = Uuid::new_v4();
 	let date_created = Utc::now();
 	let date_last_updated = Utc::now();
@@ -33,7 +33,9 @@ pub async fn create(task_create_contract: TaskCreateContract) -> Result<Uuid> {
 
 	placeholder_insert_service::create_or_replace(working_dir_tiles, delete_working_dir_tiles_filter).await?;
 
-	Ok(id)
+	let task = get_one(id).await?;
+
+	Ok(task)
 }
 
 pub async fn get_one(id: Uuid) -> Result<TaskContract> {
@@ -66,20 +68,22 @@ pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoContract>> {
 	Ok(task_info_contracts)
 }
 
-pub async fn update_one(task_update_contract: TaskUpdateContract) -> Result<()> {
+pub async fn update_one(task_update_contract: TaskUpdateContract) -> Result<TaskContract> {
+	let task_set_id = task_update_contract.id;
+
 	let date_last_updated = Utc::now();
 
 	let (task_update_model, command_tiles, working_dir_tiles) = TaskUpdateModel::from(date_last_updated, task_update_contract);
 
 	let delete_command_tiles_filter = PlaceholderInsertTileFilterContract {
-		task_command_id: Some(task_update_model.id),
+		task_command_id: Some(task_set_id),
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
 	placeholder_insert_service::create_or_replace(command_tiles, delete_command_tiles_filter).await?;
 
 	let delete_working_dir_tiles_filter = PlaceholderInsertTileFilterContract {
-		task_working_dir_id: Some(task_update_model.id),
+		task_working_dir_id: Some(task_set_id),
 		..PlaceholderInsertTileFilterContract::default()
 	};
 
@@ -87,7 +91,9 @@ pub async fn update_one(task_update_contract: TaskUpdateContract) -> Result<()> 
 
 	task_repository::update_one(task_update_model).await?;
 
-	Ok(())
+	let task = get_one(task_set_id).await?;
+
+	Ok(task)
 }
 
 pub async fn delete_one(id: Uuid) -> Result<()> {

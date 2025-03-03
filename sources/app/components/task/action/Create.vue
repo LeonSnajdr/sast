@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
 const emit = defineEmits<{
-    created: [id: string];
+    created: [task: TaskContract];
 }>();
 
 const props = defineProps<{

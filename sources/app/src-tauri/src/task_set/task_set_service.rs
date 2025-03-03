@@ -5,6 +5,7 @@ use crate::task_set::task_set_repository;
 use chrono::Utc;
 use tauri::AppHandle;
 use uuid::Uuid;
+use crate::task_set::task::task_set_task_service;
 
 pub async fn create(task_set_create_contract: TaskSetCreateContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
@@ -21,7 +22,9 @@ pub async fn create(task_set_create_contract: TaskSetCreateContract) -> Result<U
 pub async fn get_one(id: Uuid) -> Result<TaskSetContract> {
 	let task_set_model = task_set_repository::get_one(id).await?;
 
-	let task_set_contract = TaskSetContract::from(task_set_model);
+	let tasks = task_set_task_service::get_all_info(id).await?;
+
+	let task_set_contract = TaskSetContract::from(tasks, task_set_model);
 
 	Ok(task_set_contract)
 }
@@ -37,9 +40,12 @@ pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskSetInfoContract>>
 pub async fn update_one(task_set_update_contract: TaskSetUpdateContract) -> Result<()> {
 	let date_last_updated = Utc::now();
 
-	let task_set_update_model = TaskSetUpdateModel::from(date_last_updated, task_set_update_contract);
+	let (task_set_update_model, tasks) = TaskSetUpdateModel::from(date_last_updated, task_set_update_contract);
+
+	task_set_task_service::create_or_replace(task_set_update_model.id, tasks).await?;
 
 	task_set_repository::update_one(task_set_update_model).await?;
+
 
 	Ok(())
 }

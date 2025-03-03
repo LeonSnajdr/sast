@@ -1,17 +1,18 @@
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
-
+use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetInfoModel, TaskSetModel, TaskSetUpdateModel};
 
 impl TaskSetContract {
-	pub fn from(value: TaskSetModel) -> Self {
+	pub fn from(tasks: Vec<TaskSetTaskInfoContract>, value: TaskSetModel) -> Self {
 		Self {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
 			date_created: value.date_created,
 			date_last_updated: value.date_last_updated,
+			tasks
 		}
 	}
 }
@@ -41,11 +42,19 @@ impl TaskSetModel {
 }
 
 impl TaskSetUpdateModel {
-	pub fn from(date_last_updated: DateTime<Utc>, value: TaskSetUpdateContract) -> Self {
-		Self {
-			id: value.id,
-			name: value.name,
+	pub fn from(date_last_updated: DateTime<Utc>, value: TaskSetUpdateContract) -> (Self, Vec<TaskSetTaskInfoContract>) {
+		let TaskSetUpdateContract {
+			id,
+			name,
+			tasks
+		} = value;
+
+		let update_model = Self {
+			id,
+			name,
 			date_last_updated,
-		}
+		};
+
+		(update_model, tasks)
 	}
 }

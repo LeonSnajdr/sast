@@ -7,7 +7,7 @@ use crate::task::task_service;
 
 #[tauri::command]
 #[specta::specta]
-pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<Uuid> {
+pub async fn task_create(task_create_contract: TaskCreateContract) -> Result<TaskContract> {
 	let task_id = task_service::create(task_create_contract).await?;
 
 	Ok(task_id)
@@ -31,10 +31,10 @@ pub async fn task_get_one(id: Uuid) -> Result<TaskContract> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result<()> {
-	task_service::update_one(task_update_contract).await?;
+pub async fn task_update_one(task_update_contract: TaskUpdateContract) -> Result<TaskContract> {
+	let task = task_service::update_one(task_update_contract).await?;
 
-	Ok(())
+	Ok(task)
 }
 
 #[tauri::command]

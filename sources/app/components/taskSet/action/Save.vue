@@ -23,7 +23,8 @@ const saveTaskSet = async () => {
 
     const updateContract: TaskSetUpdateContract = {
         id: props.taskSet.id,
-        name: props.taskSet.name
+        name: props.taskSet.name,
+        tasks: props.taskSet.tasks
     };
 
     const saveResult = await commands.taskSetUpdateOne(updateContract);

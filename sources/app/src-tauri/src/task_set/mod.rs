@@ -1,3 +1,5 @@
+
+pub mod task;
 pub mod task_set_commands;
 pub mod task_set_contracts;
 pub mod task_set_mapper;

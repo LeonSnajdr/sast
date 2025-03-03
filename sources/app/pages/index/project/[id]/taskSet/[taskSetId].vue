@@ -1,6 +1,6 @@
 <template>
-    <TaskDrawerCreate v-model="isTaskCreateDrawerOpen" />
-    <TaskDrawerEdit v-model="isTaskEditDrawerOpen" :taskId="selectedTaskId" />
+    <TaskDrawerCreate v-model="isTaskCreateDrawerOpen" @created="addTask" />
+    <TaskDrawerEdit v-model="isTaskEditDrawerOpen" @saved="savedTask" :taskId="selectedTaskId" />
 
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
@@ -27,22 +27,24 @@
         </VCard>
 
         <div class="flex-grow-1 overflow-hidden">
-            <Draggable v-model="taskSetTasks" class="h-100 overflow-auto" handle=".drag-handle">
-                <VListItem v-for="taskSetTask in taskSetTasks" :key="taskSetTask.name">
+            <Draggable v-model="taskSet.tasks" class="h-100 overflow-auto" handle=".drag-handle">
+                <VListItem v-for="taskSetTask in taskSet.tasks" :key="taskSetTask.taskId">
                     <template #prepend>
                         <VIcon class="drag-handle" icon="mdi-drag" />
                     </template>
                     <div class="d-flex ga-4 align-center">
                         <div>
-                            <p>Hallo</p>
-                            <p class="text-caption text-medium-emphasis">erstellt vor 12Stunden</p>
+                            <p>{{ taskSetTask.taskName }}</p>
+                            <p class="text-caption text-medium-emphasis">
+                                {{ useLocaleTimeAgo(taskSetTask.taskDateCreated) }} &bull; {{ useLocaleTimeAgo(taskSetTask.taskDateLastUpdated) }}
+                            </p>
                         </div>
                         <VSpacer />
                         <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent>Blocking</BaseChipSwitch>
                         <div>
                             <BaseBtnIcon
-                                @click.stop.prevent="toggleTaskEditDrawer(taskSetTask.id)"
-                                :active="taskSetTask.id === selectedTaskId"
+                                @click.stop.prevent="toggleTaskEditDrawer(taskSetTask.taskId)"
+                                :active="taskSetTask.taskId === selectedTaskId"
                                 icon="mdi-dock-right"
                             />
                             <BaseBtnIcon @click.stop.prevent icon="mdi-close" />
@@ -94,11 +96,6 @@ const toggleTaskEditDrawer = (taskId: string) => {
     selectedTaskId.value = taskId;
 };
 
-const taskSetTasks = ref([
-    { id: "c375779c-f530-44de-8b4c-4b27f422c258", name: "test", blocking: false },
-    { id: "taskId2", name: "test2", blocking: true }
-]);
-
 onBeforeMount(() => {
     loadTaskSet();
 });
@@ -116,6 +113,29 @@ const loadTaskSet = async () => {
     }
 
     taskSet.value = taskSetResult.data;
+};
+
+const savedTask = (task: TaskContract) => {
+    if (!taskSet.value) return;
+
+    const taskSetTask = taskSet.value.tasks.find((x) => x.taskId === task.id);
+
+    if (!taskSetTask) return;
+
+    taskSetTask.taskName = task.name;
+    taskSetTask.taskDateLastUpdated = task.dateLastUpdated;
+};
+
+const addTask = (task: TaskContract) => {
+    if (!taskSet.value) return;
+
+    taskSet.value.tasks.push({
+        taskId: task.id,
+        taskName: task.name,
+        taskDateCreated: task.dateCreated,
+        taskDateLastUpdated: task.dateLastUpdated,
+        blocking: false
+    });
 };
 </script>
 

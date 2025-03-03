@@ -149,7 +149,7 @@ async placeholderDeleteOne(id: string) : Promise<Result<null, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async taskCreate(taskCreateContract: TaskCreateContract) : Promise<Result<string, Error>> {
+async taskCreate(taskCreateContract: TaskCreateContract) : Promise<Result<TaskContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("task_create", { taskCreateContract }) };
 } catch (e) {
@@ -173,7 +173,7 @@ async taskGetManyInfo(projectId: string) : Promise<Result<TaskInfoContract[], Er
     else return { status: "error", error: e  as any };
 }
 },
-async taskUpdateOne(taskUpdateContract: TaskUpdateContract) : Promise<Result<null, Error>> {
+async taskUpdateOne(taskUpdateContract: TaskUpdateContract) : Promise<Result<TaskContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("task_update_one", { taskUpdateContract }) };
 } catch (e) {
@@ -323,10 +323,11 @@ export type SettingUpdateContract = { id: string; presentationLanguage: string; 
 export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
 export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
-export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskSetCreateContract = { projectId: string; name: string }
 export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
-export type TaskSetUpdateContract = { id: string; name: string }
+export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
+export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 
 /** tauri-specta globals **/

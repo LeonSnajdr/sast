@@ -5,7 +5,9 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits(["saved"]);
+const emit = defineEmits<{
+    saved: [task: TaskContract];
+}>();
 
 const props = defineProps<{
     task: TaskContract;
@@ -39,6 +41,6 @@ const taskSave = async () => {
 
     notify.success(t("action.save.success", { type: t("task.singular"), name: props.task.name }));
 
-    emit("saved");
+    emit("saved", saveResult.data);
 };
 </script>
