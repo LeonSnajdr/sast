@@ -33,14 +33,15 @@
                     <template #prepend>
                         <VIcon class="drag-handle" icon="mdi-drag" />
                     </template>
-                    <div class="d-flex ga-4 align-center">
-                        <div>
-                            <p>{{ taskSetTask.taskName }}</p>
+                    <div class="d-flex">
+                        <div class="w-100">
+                            <p class="text-truncate">{{ taskSetTask.taskName }}</p>
                             <p class="text-caption text-medium-emphasis">
                                 {{ $t("task.table.column.dateLastUpdated") }} {{ useLocaleTimeAgo(taskSetTask.taskDateLastUpdated) }}
                             </p>
                         </div>
-                        <VSpacer />
+                    </div>
+                    <template #append>
                         <div>
                             <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
                                 {{ $t("taskSetTask.field.blocking") }}
@@ -54,7 +55,7 @@
                             />
                             <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
-                    </div>
+                    </template>
                 </VListItem>
             </Draggable>
         </div>
