@@ -6,9 +6,6 @@
         <template #[`item.dateLastUpdated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateLastUpdated) }}
         </template>
-        <template #[`item.actions`]>
-            <BaseBtnIcon icon="mdi-pencil" />
-        </template>
         <template #loading>
             <VSkeletonLoader type="table-row" />
         </template>
@@ -45,11 +42,6 @@ const headers: DataTableHeader[] = [
     {
         title: t("placeholder.table.column.dateLastUpdated") as string,
         key: "dateLastUpdated"
-    },
-    {
-        title: t("placeholder.table.column.actions") as string,
-        key: "actions",
-        width: 50
     }
 ];
 

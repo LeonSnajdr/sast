@@ -20,7 +20,7 @@
                 </VList>
             </VCardText>
             <VCardActions>
-                <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
+                <BaseBtnIcon @click="isDialogOpen = false">{{ $t("action.close") }}</BaseBtnIcon>
             </VCardActions>
         </VCard>
     </VDialog>

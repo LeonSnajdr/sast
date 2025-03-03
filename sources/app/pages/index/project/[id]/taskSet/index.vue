@@ -1,7 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("taskSet.plural") }}</VAppBarTitle>
-        <TaskSetDialogCreate />
+        <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
+            {{ $t("action.create") }}
+            <TaskSetDialogCreate @created="loadTaskSets()" />
+        </BaseBtnIcon>
     </VAppBar>
 
     <VContainer class="h-100">

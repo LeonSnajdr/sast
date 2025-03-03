@@ -1,7 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.plural") }}</VAppBarTitle>
-        <PlaceholderActionCreate />
+        <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
+            {{ $t("action.create") }}
+            <PlaceholderDialogCreate v-model="isDialogOpen" />
+        </BaseBtnIcon>
     </VAppBar>
 
     <div class="fill-height d-flex flex-column">
@@ -32,6 +35,8 @@
 const projectStore = usePlaceholderStore();
 
 const { isLoading, placeholders } = storeToRefs(projectStore);
+
+const isDialogOpen = ref(false);
 
 const globalPlaceholders = computed(() => {
     return placeholders.value.filter((x) => x.visibility === "Global");

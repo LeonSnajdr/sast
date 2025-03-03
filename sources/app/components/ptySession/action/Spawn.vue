@@ -14,10 +14,11 @@ const ptySpawn = async () => {
     const spawnContract: PtySessionSpawnContract = {
         name: null,
         projectId: selectedProject.value.id,
+        taskId: null,
         taskSetId: null,
-        command: "dotnet build",
+        command: null,
         noExit: true,
-        workingDir: "C:\\Repos\\metis\\sources\\ControlCenter.Api"
+        workingDir: null
     };
 
     const spawnResult = await commands.ptySessionSpawn(spawnContract);

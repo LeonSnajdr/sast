@@ -1,7 +1,7 @@
 <template>
-    <VBtn @click="createTaskSet()">
+    <BaseBtnIcon @click="createTaskSet()" color="success" icon="mdi-plus" variant="flat">
         {{ $t("action.create") }}
-    </VBtn>
+    </BaseBtnIcon>
 </template>
 
 <script setup lang="ts">

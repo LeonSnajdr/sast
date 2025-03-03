@@ -1,5 +1,8 @@
 <template>
     <BaseDialogCreate v-model="isDialogOpen" :emptyElement :type="$t('task.singular')" icon="mdi-checkbox-marked-circle-outline">
+        <template #actions="{ isFormValid, element }">
+            <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task="element" />
+        </template>
         <template #fields="{ element: task }">
             <TaskFieldName v-model="task.name" />
             <VRow>
@@ -12,9 +15,6 @@
             </VRow>
             <TaskFieldCommandTiles v-model="task.commandTiles" />
             <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
-        </template>
-        <template #actions="{ isFormValid, element }">
-            <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task="element" />
         </template>
     </BaseDialogCreate>
 </template>

@@ -9,8 +9,8 @@
                 {{ message }}
             </VCardText>
             <VCardActions>
-                <VBtn @click="isDialogOpen = false">{{ $t("action.cancel") }}</VBtn>
-                <VBtn @click="emit('confirm')">{{ $t("action.confirm") }}</VBtn>
+                <BaseBtnIcon @click="isDialogOpen = false">{{ $t("action.cancel") }}</BaseBtnIcon>
+                <BaseBtnIcon @click="emit('confirm')" color="error" icon="mdi-delete" variant="flat">{{ $t("action.confirm") }}</BaseBtnIcon>
             </VCardActions>
         </VCard>
     </VDialog>

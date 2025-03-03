@@ -11,7 +11,7 @@
                 </VForm>
             </VCardText>
             <VCardActions>
-                <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
+                <BaseBtnIcon @click="isDialogOpen = false" variant="flat" s>{{ $t("action.close") }}</BaseBtnIcon>
                 <slot :element :isFormValid name="actions" />
             </VCardActions>
         </VCard>
