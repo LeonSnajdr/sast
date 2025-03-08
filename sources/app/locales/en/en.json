@@ -71,7 +71,7 @@
   "task.field.commandTiles": "Command",
   "task.field.name": "Task name",
   "task.field.noExit": "No exit",
-  "task.field.tabName": "Tabname",
+  "task.field.tabName": "Tab name",
   "task.field.workingDirTiles": "Working directory",
   "task.plural": "Tasks",
   "task.singular": "Task",
