@@ -40,6 +40,7 @@
   "placeholder.table.column.name": "Name",
   "placeholder.table.column.value": "Wert",
   "project.create.description": "Erstelle eine neue leere Hülle",
+  "project.create.title": "Projekt erstellen",
   "project.drawer.close": "Projekt schließen",
   "project.drawer.select": "Anderes Projekt auswählen",
   "project.field.name": "Projektname",

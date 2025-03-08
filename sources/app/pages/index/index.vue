@@ -6,7 +6,8 @@
                     <VCard link>
                         <VCardTitle>
                             <VIcon color="success" icon="mdi-folder-plus" />
-                            {{ $t("title.create", { type: $t("project.singular") }) }}
+
+                            {{ $t("project.create.title") }}
                         </VCardTitle>
                         <VCardText>
                             {{ $t("project.create.description") }}
