@@ -32,20 +32,23 @@ struct PtySession {
 	read_history: Mutex<String>,
 }
 
-pub async fn spawn_blocking(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<()> {
-	let session_id = build_and_spawn(&app_handle, spawn_contract).await?;
+pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<()> {
+	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
 
-	start_handle_threads(&app_handle, &session_id).await;
+	start_handle_threads(app_handle, &session_id).await;
 
 	println!("threads finished");
 
 	Ok(())
 }
 
-pub async fn spawn(app_handle: AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
-	let session_id = build_and_spawn(&app_handle, spawn_contract).await?;
+pub async fn spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
+	let app_handle_clone = app_handle.clone();
 
-	tauri::async_runtime::spawn(async move { start_handle_threads(&app_handle, &session_id).await });
+	tauri::async_runtime::spawn(async move {
+		start_handle_threads(&app_handle_clone, &session_id).await
+	});
 
 	Ok(session_id)
 }

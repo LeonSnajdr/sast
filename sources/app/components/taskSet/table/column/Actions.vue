@@ -3,7 +3,6 @@
         <BaseBtnIcon @click="start()" :disabled="hasRunningPtySession" :loading="isStarting" color="success" icon="mdi-play" />
         <BaseBtnIcon @click="restart()" :disabled="!hasRunningPtySession" :loading="isRestarting" color="info" icon="mdi-autorenew" />
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningPtySession" :loading="isStopping" color="error" icon="mdi-stop" />
-        <BaseBtnIcon @click="navigateToTab()" :disabled="!hasRunningPtySession" color="secondary" icon="mdi-tab" />
     </div>
 </template>
 
@@ -25,10 +24,6 @@ const isRestarting = ref(false);
 
 const hasRunningPtySession = computed(() => {
     return ptySessions.value.some((x) => x.taskSetId === props.taskSet.id);
-});
-
-const openPtySessions = computed(() => {
-    return ptySessions.value.find((x) => x.taskSetId === props.taskSet.id);
 });
 
 const start = async () => {
@@ -74,13 +69,5 @@ const stop = async () => {
     notify.success(t("action.stop.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 
     isStopping.value = false;
-};
-
-const navigateToTab = () => {
-    if (!openPtySessions.value) {
-        return;
-    }
-
-    navigateTo({ name: "index-project-id-pty-sessionId", params: { id: openPtySessions.value.projectId, sessionId: openPtySessions.value.sessionId } });
 };
 </script>

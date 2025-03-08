@@ -1,6 +1,8 @@
 use uuid::Uuid;
 
 use crate::prelude::*;
+use crate::pty_session::pty_session_contracts::PtySessionSpawnContract;
+use crate::task::task_service;
 use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 use crate::task_set::task::task_set_task_models::TaskSetTaskModel;
 use crate::task_set::task::task_set_task_repository;
@@ -26,4 +28,21 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoContra
     let contracts = models.into_iter().map(TaskSetTaskInfoContract::from).collect();
 
     Ok(contracts)
+}
+
+pub async fn build_spawn_contract(project_id: Uuid, task_set_task: &TaskSetTaskModel) -> Result<PtySessionSpawnContract> {
+    let task_spawn_contract = task_service::build_spawn_contract(project_id, task_set_task.task_id).await?;
+
+    let no_exit = match task_set_task.blocking {
+        true => false,
+        false => task_spawn_contract.no_exit,
+    };
+
+    let spawn_contract = PtySessionSpawnContract {
+        task_set_id: Some(task_set_task.task_set_id),
+        no_exit,
+        ..task_spawn_contract
+    };
+
+    Ok(spawn_contract)
 }

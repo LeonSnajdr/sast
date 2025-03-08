@@ -102,23 +102,23 @@ pub async fn delete_one(id: Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	let pty_spawn_contract = build_pty_spawn_contract(project_id, task_id).await?;
+pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let pty_spawn_contract = build_spawn_contract(project_id, task_id).await?;
 
 	pty_session_service::spawn(app_handle, pty_spawn_contract).await?;
 
 	Ok(())
 }
 
-pub async fn start_one_blocking(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	let pty_spawn_contract = build_pty_spawn_contract(project_id, task_id).await?;
+pub async fn start_one_blocking(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let pty_spawn_contract = build_spawn_contract(project_id, task_id).await?;
 
 	pty_session_service::spawn_blocking(app_handle, pty_spawn_contract).await?;
 
 	Ok(())
 }
 
-async fn build_pty_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<PtySessionSpawnContract> {
+pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<PtySessionSpawnContract> {
 	let command_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_command_id: Some(task_id),
 		..PlaceholderInsertTileFilterContract::default()
@@ -146,7 +146,7 @@ async fn build_pty_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Pty
 	Ok(pty_spawn_contract)
 }
 
-pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
 	stop_one(task_id).await?;
 	start_one(app_handle, project_id, task_id).await?;
 
