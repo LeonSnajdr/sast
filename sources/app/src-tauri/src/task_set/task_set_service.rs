@@ -89,12 +89,7 @@ pub async fn stop_one(task_set_id: Uuid) -> Result<()> {
 		..PtySessionFilterContract::default()
 	};
 
-	// TODO: Maybe rework to only pass filter to pty_session_service to kill all matching this filter -> Rework also tasks
-	let pty_sessions = pty_session_service::get_many_info(filter).await?;
-
-	for pty_session in pty_sessions {
-		pty_session_service::kill(&pty_session.session_id).await?
-	}
+	pty_session_service::kill_many(filter).await?;
 
 	Ok(())
 }

@@ -159,13 +159,7 @@ pub async fn stop_one(task_id: Uuid) -> Result<()> {
 		..PtySessionFilterContract::default()
 	};
 
-	let pty_session_option = pty_session_service::get_first_info(filter).await?;
-
-	if let Some(pty_session) = pty_session_option {
-		pty_session_service::kill(&pty_session.session_id).await?;
-	} else {
-		return Err(Error::NotExists);
-	}
+	pty_session_service::kill_many(filter).await?;
 
 	Ok(())
 }

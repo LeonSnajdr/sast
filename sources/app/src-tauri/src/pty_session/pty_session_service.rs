@@ -248,6 +248,16 @@ pub async fn kill(session_id: &Uuid) -> Result<()> {
 	Ok(())
 }
 
+pub async fn kill_many(filter: PtySessionFilterContract) -> Result<()> {
+	let sessions = get_many_info(filter).await?;
+
+	for session in sessions {
+		kill(&session.session_id).await?;
+	}
+
+	Ok(())
+}
+
 async fn get_one(session_id: &Uuid) -> Result<Arc<PtySession>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
@@ -268,17 +278,6 @@ pub async fn get_many_info(filter: PtySessionFilterContract) -> Result<Vec<PtySe
 		.collect::<Vec<PtySessionInfoContract>>();
 
 	Ok(info_list)
-}
-
-pub async fn get_first_info(filter: PtySessionFilterContract) -> Result<Option<PtySessionInfoContract>> {
-	let sessions = PTY_STATE.sessions.read().await;
-
-	let first_info = sessions
-		.iter()
-		.find(|session| matches_filter(session, &filter))
-		.map(|session| map_to_info_contract(session));
-
-	Ok(first_info)
 }
 
 fn matches_filter(session: &PtySession, filter: &PtySessionFilterContract) -> bool {
