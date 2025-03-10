@@ -7,6 +7,7 @@
             required($t('validation.rule.required', { field: $t('project.field.name') })),
             validName($t('validation.rule.validName', { field: $t('placeholder.field.name') }))
         ]"
+        class="required"
     />
 </template>
 

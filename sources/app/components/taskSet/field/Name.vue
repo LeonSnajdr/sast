@@ -8,6 +8,7 @@
                 required($t('validation.rule.required', { field: $t('taskSet.field.name') })),
                 validName($t('validation.rule.validName', { field: $t('taskSet.field.name') }))
             ]"
+            class="required"
         />
     </VRowSingle>
 </template>
