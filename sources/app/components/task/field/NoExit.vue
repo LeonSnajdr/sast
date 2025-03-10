@@ -1,6 +1,6 @@
 <template>
     <VRowSingle>
-        <VCheckbox v-model="noExit" :label="$t('task.field.noExit')" />
+        <VCheckbox v-bind="$attrs" v-model="noExit" :label="$t('task.field.noExit')" />
     </VRowSingle>
 </template>
 

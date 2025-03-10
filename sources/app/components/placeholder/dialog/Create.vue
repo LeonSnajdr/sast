@@ -4,7 +4,7 @@
             <PlaceholderActionCreate @created="placeholderCreated" :disabled="!isFormValid" :placeholder="element" />
         </template>
         <template #fields="{ element: placeholder }">
-            <PlaceholderFieldName v-model="placeholder.name" />
+            <PlaceholderFieldName v-model="placeholder.name" autofocus />
             <PlaceholderFieldValue v-model="placeholder.value" />
             <PlaceholderFieldVisibility v-model="placeholder.visibility" />
         </template>

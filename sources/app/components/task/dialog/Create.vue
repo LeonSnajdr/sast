@@ -4,7 +4,7 @@
             <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task="element" />
         </template>
         <template #fields="{ element: task }">
-            <TaskFieldName v-model="task.name" />
+            <TaskFieldName v-model="task.name" autofocus />
             <VRow>
                 <VCol cols="9">
                     <TaskFieldTabName v-model="task.tabName" />

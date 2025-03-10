@@ -10,7 +10,7 @@
             </VListItem>
             <VDivider />
             <VContainer>
-                <VForm ref="form" v-model="isFormValid">
+                <VForm v-if="isDrawerOpen" ref="form" v-model="isFormValid">
                     <slot :isFormValid name="fields" />
                 </VForm>
             </VContainer>

@@ -1,6 +1,7 @@
 <template>
     <VRowSingle>
         <VTextField
+            v-bind="$attrs"
             v-model.trim="name"
             :label="$t('task.field.name')"
             :rules="[

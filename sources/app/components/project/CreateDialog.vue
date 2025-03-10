@@ -4,7 +4,7 @@
             <ProjectActionCreate @created="projectCreated" :disabled="!isFormValid" :project="element" />
         </template>
         <template #fields="{ element: project }">
-            <ProjectFieldName v-model="project.name" />
+            <ProjectFieldName v-model="project.name" autofocus />
         </template>
     </BaseDialogCreate>
 </template>

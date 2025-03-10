@@ -237,6 +237,7 @@ export default defineVuetifyConfiguration({
             }
         },
         VDialog: {
+            transition: false,
             VCardTitle: {
                 VIcon: {
                     class: "ml-n1"

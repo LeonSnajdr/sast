@@ -1,5 +1,6 @@
 <template>
     <VTextField
+        v-bind="$attrs"
         v-model.trim="name"
         :label="$t('project.field.name')"
         :rules="[
