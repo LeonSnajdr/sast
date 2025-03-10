@@ -1,9 +1,7 @@
 <template>
     <VBtn size="small" variant="text">
-        <span class="d-flex ga-1 align-center">
-            <VIcon v-if="icon" :color="iconColor" :icon="icon" size="large" />
-            <slot />
-        </span>
+        <VIcon v-if="icon" :color="iconColor" :icon="icon" size="large" />
+        <slot />
     </VBtn>
 </template>
 
@@ -13,3 +11,12 @@ defineProps<{
     iconColor?: string;
 }>();
 </script>
+
+<style lang="scss" scoped>
+@use "@/assets/styles/settings";
+
+:deep(.v-btn__content) {
+    display: flex;
+    gap: settings.$spacer;
+}
+</style>
