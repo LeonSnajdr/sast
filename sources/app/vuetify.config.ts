@@ -240,7 +240,7 @@ export default defineVuetifyConfiguration({
             transition: false,
             VCardTitle: {
                 VIcon: {
-                    class: "ml-n1"
+                    class: "ml-1"
                 }
             },
             VCardActions: {
