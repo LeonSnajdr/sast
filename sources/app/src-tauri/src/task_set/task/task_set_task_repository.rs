@@ -6,9 +6,9 @@ use crate::prelude::*;
 use crate::task_set::task::task_set_task_models::{TaskSetTaskInfoModel, TaskSetTaskModel};
 
 pub async fn create_or_replace(task_set_id: Uuid, create_models: Vec<TaskSetTaskModel>) -> Result<()> {
-    let mut tx = db::get_pool().begin().await.map_err(|err| Error::Db(err.to_string()))?;
+	let mut tx = db::get_pool().begin().await.map_err(|err| Error::Db(err.to_string()))?;
 
-    sqlx::query!(
+	sqlx::query!(
 		r#"--sql
 			delete
 			from task_set_task
@@ -17,12 +17,12 @@ pub async fn create_or_replace(task_set_id: Uuid, create_models: Vec<TaskSetTask
 		"#,
 		task_set_id
 	)
-    .execute(&mut *tx)
-    .await
-    .map_err(|err| Error::Db(err.to_string()))?;
+	.execute(&mut *tx)
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
-    for create_model in create_models.iter() {
-        sqlx::query!(
+	for create_model in create_models.iter() {
+		sqlx::query!(
 			r#"--sql
 				insert into task_set_task
 					(id, task_id, task_set_id, position, blocking)
@@ -31,18 +31,18 @@ pub async fn create_or_replace(task_set_id: Uuid, create_models: Vec<TaskSetTask
 			"#,
 			create_model.id,
 			create_model.task_id,
-            create_model.task_set_id,
-            create_model.position,
-            create_model.blocking,
+			create_model.task_set_id,
+			create_model.position,
+			create_model.blocking,
 		)
-        .execute(&mut *tx)
-        .await
-        .map_err(|err| Error::Db(err.to_string()))?;
-    }
+		.execute(&mut *tx)
+		.await
+		.map_err(|err| Error::Db(err.to_string()))?;
+	}
 
-    tx.commit().await.map_err(|err| Error::Db(err.to_string()))?;
+	tx.commit().await.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(())
+	Ok(())
 }
 
 pub async fn get_all(task_set_id: Uuid) -> Result<Vec<TaskSetTaskModel>> {
@@ -61,15 +61,15 @@ pub async fn get_all(task_set_id: Uuid) -> Result<Vec<TaskSetTaskModel>> {
         "#,
 		task_set_id
 	)
-		.fetch_all(db::get_pool())
-		.await
-		.map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
 	Ok(task_set_tasks)
 }
 
 pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoModel>> {
-    let task_set_tasks = sqlx::query_as!(
+	let task_set_tasks = sqlx::query_as!(
 		TaskSetTaskInfoModel,
 		r#"--sql
             select
@@ -85,9 +85,9 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoModel>
         "#,
 		task_set_id
 	)
-        .fetch_all(db::get_pool())
-        .await
-        .map_err(|err| Error::Db(err.to_string()))?;
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
 
-    Ok(task_set_tasks)
+	Ok(task_set_tasks)
 }

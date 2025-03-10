@@ -1,15 +1,13 @@
 use crate::prelude::*;
+use crate::pty_session::pty_session_contracts::PtySessionFilterContract;
+use crate::pty_session::pty_session_service;
+use crate::task_set::task::{task_set_task_repository, task_set_task_service};
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetModel, TaskSetUpdateModel};
 use crate::task_set::task_set_repository;
 use chrono::Utc;
 use tauri::AppHandle;
 use uuid::Uuid;
-use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionSpawnContract};
-use crate::pty_session::pty_session_service;
-use crate::task::task_service;
-use crate::task_set::task::{task_set_task_repository, task_set_task_service};
-use crate::task_set::task::task_set_task_models::TaskSetTaskModel;
 
 pub async fn create(task_set_create_contract: TaskSetCreateContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
@@ -50,7 +48,6 @@ pub async fn update_one(task_set_update_contract: TaskSetUpdateContract) -> Resu
 
 	task_set_repository::update_one(task_set_update_model).await?;
 
-
 	Ok(())
 }
 
@@ -66,7 +63,7 @@ pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: Uu
 	for task_set_task in task_set_tasks {
 		let spawn_contract = task_set_task_service::build_spawn_contract(project_id, &task_set_task).await?;
 
-		if(task_set_task.blocking) {
+		if task_set_task.blocking {
 			pty_session_service::spawn_blocking(app_handle, spawn_contract).await?;
 		} else {
 			pty_session_service::spawn(app_handle, spawn_contract).await?;

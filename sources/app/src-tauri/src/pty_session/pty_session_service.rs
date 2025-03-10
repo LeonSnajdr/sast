@@ -46,9 +46,7 @@ pub async fn spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContra
 	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
 	let app_handle_clone = app_handle.clone();
 
-	tauri::async_runtime::spawn(async move {
-		start_handle_threads(&app_handle_clone, &session_id).await
-	});
+	tauri::async_runtime::spawn(async move { start_handle_threads(&app_handle_clone, &session_id).await });
 
 	Ok(session_id)
 }
