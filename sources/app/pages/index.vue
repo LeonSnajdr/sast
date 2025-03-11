@@ -5,7 +5,10 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
 const presentation = usePresentation();
+const { current: pressedKeys } = useMagicKeys();
+
 const settingStore = useSettingStore();
 
 const { setting } = storeToRefs(settingStore);
@@ -33,4 +36,13 @@ const initialize = async () => {
 
     isInitialized.value = true;
 };
+
+whenever(
+    () => pressedKeys.has("control") && pressedKeys.has("+"),
+    () => {
+        if (route.name === "initialize") return;
+
+        return navigateTo({ name: "index-setting-index-presentation" });
+    }
+);
 </script>
