@@ -25,7 +25,7 @@ pub async fn get_all() -> Result<Vec<ProjectContract>> {
 }
 
 pub async fn open(id: &Uuid) -> Result<ProjectContract> {
-	let current_time = chrono::Utc::now();
+	let current_time = Utc::now();
 	project_repository::update_one(&id, &current_time).await?;
 
 	let project_model = project_repository::get_one(id).await?;
@@ -35,8 +35,13 @@ pub async fn open(id: &Uuid) -> Result<ProjectContract> {
 	Ok(project_contract)
 }
 
-pub async fn get_id_last_opened() -> Result<Option<Uuid>> {
-	let last_opened_project_id = project_repository::get_id_last_opened().await?;
+pub async fn get_last_opened() -> Result<Option<ProjectContract>> {
+	let project_model_option = project_repository::get_last_opened().await?;
 
-	Ok(last_opened_project_id)
+	if let Some(project_model) = project_model_option {
+		let project_contract = ProjectContract::from(project_model);
+		return Ok(Some(project_contract));
+	}
+
+	Ok(None)
 }

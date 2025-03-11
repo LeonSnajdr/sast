@@ -29,10 +29,11 @@
                 </VCol>
 
                 <VCol cols="12" sm="6">
-                    <VCard @click="openLastProject()" :disabled="!lastOpenedProjectId">
+                    <VCard @click="openLastProject()" :disabled="!lastOpenedProject">
                         <VCardTitle>
                             <VIcon color="info" icon="mdi-folder" />
-                            {{ $t("project.openLast.title") }}
+                            <span v-if="lastOpenedProject" class="text-truncate"> {{ $t("project.openLast.title", { name: lastOpenedProject.name }) }}</span>
+                            <span v-else>{{ $t("project.openLast.title.noProject") }}</span>
                         </VCardTitle>
                         <VCardText>
                             {{ $t("project.openLast.description") }}
@@ -60,25 +61,25 @@
 const { t } = useI18n();
 const notify = useNotify();
 
-const lastOpenedProjectId = ref<string | null>();
+const lastOpenedProject = ref<ProjectContract | null>();
 
 onBeforeMount(async () => {
     await loadLastOpenedProject();
 });
 
 const loadLastOpenedProject = async () => {
-    const lastOpenedProjectIdResult = await commands.projectGetIdLastOpened();
+    const lastOpenedProjectResult = await commands.projectGetLastOpened();
 
-    if (lastOpenedProjectIdResult.status == "error") {
-        notify.error(t("project.load.failed"), { error: lastOpenedProjectIdResult.error });
+    if (lastOpenedProjectResult.status == "error") {
+        notify.error(t("project.load.failed"), { error: lastOpenedProjectResult.error });
         return;
     }
 
-    lastOpenedProjectId.value = lastOpenedProjectIdResult.data;
+    lastOpenedProject.value = lastOpenedProjectResult.data;
 };
 
 const openLastProject = () => {
-    navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProjectId.value! } });
+    navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value!.id } });
 };
 
 const openSetting = () => {

@@ -30,8 +30,8 @@ pub async fn project_open(id: Uuid) -> Result<ProjectContract> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn project_get_id_last_opened() -> Result<Option<Uuid>> {
-	let project = project_service::get_id_last_opened().await?;
+pub async fn project_get_last_opened() -> Result<Option<ProjectContract>> {
+	let project = project_service::get_last_opened().await?;
 
 	Ok(project)
 }

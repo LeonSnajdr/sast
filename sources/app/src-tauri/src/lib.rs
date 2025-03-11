@@ -28,7 +28,7 @@ pub fn run() {
 			setting_commands::setting_update_one,
 			project_commands::project_create,
 			project_commands::project_get_all,
-			project_commands::project_get_id_last_opened,
+			project_commands::project_get_last_opened,
 			project_commands::project_open,
 			pty_session_commands::pty_session_spawn,
 			pty_session_commands::pty_session_write,
