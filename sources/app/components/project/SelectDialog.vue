@@ -3,7 +3,7 @@
         <VCard>
             <VCardTitle>
                 <VIcon color="warning" icon="mdi-folder-marker" />
-                {{ $t("project.select.title") }}
+                {{ $t("title.select", { type: $t("project.singular") }) }}
             </VCardTitle>
             <VCardText>
                 <VTextField
