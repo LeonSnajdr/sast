@@ -69,17 +69,17 @@ async ptySessionSpawn(spawnContract: PtySessionSpawnContract) : Promise<Result<s
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionWrite(sessionId: string, data: string) : Promise<Result<null, Error>> {
+async ptySessionWrite(id: string, data: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_write", { sessionId, data }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_write", { id, data }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionGetReadHistory(sessionId: string) : Promise<Result<string, Error>> {
+async ptySessionGetReadHistory(id: string) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_read_history", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_get_read_history", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -93,17 +93,17 @@ async ptySessionGetManyInfo(filter: PtySessionFilterContract) : Promise<Result<P
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionResize(sessionId: string, resizeContract: PtySessionResizeContract) : Promise<Result<null, Error>> {
+async ptySessionResize(id: string, resizeContract: PtySessionResizeContract) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_resize", { sessionId, resizeContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_resize", { id, resizeContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async ptySessionKill(sessionId: string) : Promise<Result<null, Error>> {
+async ptySessionKill(id: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("pty_session_kill", { sessionId }) };
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_kill", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -310,10 +310,10 @@ export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
 export type PtySessionFilterContract = { projectId: string | null; taskId: string | null; taskSetId: string | null }
-export type PtySessionInfoContract = { sessionId: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string }
+export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string }
 export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
-export type PtySessionReadEventData = { sessionId: string; data: string }
+export type PtySessionReadEventData = { id: string; data: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
 export type PtySessionSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean }
 export type PtySessionSpawnedEvent = string

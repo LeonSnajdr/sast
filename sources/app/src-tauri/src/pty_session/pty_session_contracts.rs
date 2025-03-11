@@ -18,7 +18,7 @@ pub struct PtySessionSpawnContract {
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionInfoContract {
-	pub session_id: Uuid,
+	pub id: Uuid,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,

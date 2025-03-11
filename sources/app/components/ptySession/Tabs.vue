@@ -1,8 +1,8 @@
 <template>
     <VSlideGroup showArrows>
-        <VSlideGroupItem v-for="ptySession in ptySessions" :key="ptySession.sessionId">
+        <VSlideGroupItem v-for="ptySession in ptySessions" :key="ptySession.id">
             <VBtn
-                :to="{ name: 'index-project-id-pty-sessionId', params: { id: route.params.id, sessionId: ptySession.sessionId } }"
+                :to="{ name: 'index-project-id-pty-sessionId', params: { id: route.params.id, sessionId: ptySession.id } }"
                 class="ml-2 px-2 text-body-2"
                 density="comfortable"
             >
@@ -11,7 +11,7 @@
                 </template>
                 <span class="text-truncate" style="max-width: 150px">{{ ptySession.name }}</span>
                 <template #append>
-                    <PtySessionActionKill :sessionId="ptySession.sessionId" />
+                    <PtySessionActionKill :id="ptySession.id" />
                 </template>
             </VBtn>
         </VSlideGroupItem>

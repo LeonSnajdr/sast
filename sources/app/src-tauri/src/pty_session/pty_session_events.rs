@@ -15,6 +15,6 @@ pub struct PtySessionReadEvent(pub PtySessionReadEventData);
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PtySessionReadEventData {
-	pub session_id: Uuid,
+	pub id: Uuid,
 	pub data: String,
 }

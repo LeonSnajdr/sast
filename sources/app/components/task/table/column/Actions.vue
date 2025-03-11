@@ -81,6 +81,6 @@ const navigateToTab = () => {
         return;
     }
 
-    navigateTo({ name: "index-project-id-pty-sessionId", params: { id: ptySession.value.projectId, sessionId: ptySession.value.sessionId } });
+    navigateTo({ name: "index-project-id-pty-sessionId", params: { id: ptySession.value.projectId, sessionId: ptySession.value.id } });
 };
 </script>

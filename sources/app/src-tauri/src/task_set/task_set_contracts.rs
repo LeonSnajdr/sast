@@ -3,7 +3,6 @@ use serde::{Deserialize, Serialize};
 use specta::Type;
 use uuid::Uuid;
 
-use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileContract;
 use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 
 #[derive(Debug, Type, Serialize, Deserialize)]

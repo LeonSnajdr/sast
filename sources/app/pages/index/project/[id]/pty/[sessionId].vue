@@ -77,7 +77,7 @@ onMounted(async () => {
     });
 
     const unlistenPtyReadEvent = await events.ptySessionReadEvent.listen((eventData) => {
-        if (eventData.payload.sessionId !== route.params.sessionId) return;
+        if (eventData.payload.id !== route.params.sessionId) return;
 
         terminal.write(eventData.payload.data);
     });
