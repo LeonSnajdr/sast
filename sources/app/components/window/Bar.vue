@@ -2,7 +2,6 @@
     <VSystemBar style="z-index: 10000" data-tauri-drag-region window>
         <BaseBtnIcon @click="$router.back()" icon="mdi-arrow-left" size="x-small" />
         <BaseBtnIcon @click="$router.forward()" icon="mdi-arrow-right" size="x-small" />
-
         <VSpacer />
         <BaseBtnIcon @click="appWindow.minimize()" icon="mdi-minus" size="x-small" />
         <BaseBtnIcon
@@ -29,9 +28,9 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 
 const appWindow = getCurrentWindow();
 
-let unListenResizedEvent: UnlistenFn;
-
 const isMaximized = ref(false);
+
+let unListenResizedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     unListenResizedEvent = await appWindow.onResized(async () => {

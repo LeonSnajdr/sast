@@ -42,6 +42,7 @@
   "project.create.description": "Create a new empty shell",
   "project.create.title": "Create project",
   "project.drawer.close": "Close project",
+  "project.drawer.create": "Create new project",
   "project.drawer.select": "Select other project",
   "project.field.name": "Project name",
   "project.home": "Home",

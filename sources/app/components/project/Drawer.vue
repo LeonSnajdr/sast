@@ -2,19 +2,20 @@
     <VNavigationDrawer location="left" permanent>
         <VList>
             <VListItem height="48">
-                <template #prepend>
-                    <VHover v-slot="{ isHovering, props }">
-                        <VIcon @click="closeProject()" v-bind="props" :icon="isHovering ? 'mdi-folder' : 'mdi-folder-open'" color="info" />
-                        <VTooltip activator="parent">{{ $t("project.drawer.close") }}</VTooltip>
-                    </VHover>
-                </template>
-                <VListItemTitle>
-                    <span class="font-weight-regular text-body-1">{{ selectedProject.name }}</span>
+                <VListItemTitle v-tooltip="selectedProject.name">
+                    <span class="text-body-1">{{ selectedProject.name }}</span>
                 </VListItemTitle>
                 <template #append>
-                    <BaseBtnIcon icon="mdi-swap-horizontal">
+                    <BaseBtnIcon icon="mdi-plus" size="x-small">
+                        <ProjectCreateDialog />
+                        <VTooltip activator="parent">{{ $t("project.drawer.create") }}</VTooltip>
+                    </BaseBtnIcon>
+                    <BaseBtnIcon icon="mdi-swap-horizontal" size="x-small">
                         <ProjectSelectDialog />
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
+                    </BaseBtnIcon>
+                    <BaseBtnIcon @click="closeProject()" icon="mdi-close" size="x-small">
+                        <VTooltip activator="parent">{{ $t("action.close") }}</VTooltip>
                     </BaseBtnIcon>
                 </template>
             </VListItem>

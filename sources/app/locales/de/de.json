@@ -42,6 +42,7 @@
   "project.create.description": "Erstelle eine neue leere Hülle",
   "project.create.title": "Projekt erstellen",
   "project.drawer.close": "Projekt schließen",
+  "project.drawer.create": "Neues Projekt erstellen",
   "project.drawer.select": "Anderes Projekt auswählen",
   "project.field.name": "Projektname",
   "project.home": "Home",
