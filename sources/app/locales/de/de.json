@@ -51,7 +51,7 @@
   "project.openLast.title": "Öffne '{name}'",
   "project.openLast.title.noProject": "Letztes Projekt öffnen",
   "project.select.description": "Wähle eines deiner Projekte aus",
-  "project.select.title": "Projekt auswählen",
+  "project.select.title": "Projekt - Auswählen",
   "project.singular": "Projekt",
   "ptySession.kill.error": "Pty session konnte nicht beendet werden",
   "ptySession.noSelected": "Kein Tab ausgewählt",

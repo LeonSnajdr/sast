@@ -51,7 +51,7 @@
   "project.openLast.title": "Open '{name}'",
   "project.openLast.title.noProject": "Open last project",
   "project.select.description": "Choose one of your projects",
-  "project.select.title": "Select project",
+  "project.select.title": "Project - Select",
   "project.singular": "Project",
   "ptySession.kill.error": "Could not kill pty session",
   "ptySession.noSelected": "No tab selected",
