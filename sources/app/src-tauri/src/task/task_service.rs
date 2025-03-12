@@ -110,14 +110,6 @@ pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) 
 	Ok(())
 }
 
-pub async fn start_one_blocking(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	let pty_spawn_contract = build_spawn_contract(project_id, task_id).await?;
-
-	pty_session_service::spawn_blocking(app_handle, pty_spawn_contract).await?;
-
-	Ok(())
-}
-
 pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<PtySessionSpawnContract> {
 	let command_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_command_id: Some(task_id),
