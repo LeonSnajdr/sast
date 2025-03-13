@@ -130,8 +130,8 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Pty
 		task_id: Some(task_id),
 		task_set_id: None,
 		name: task.tab_name,
-		command: Some(command),
-		working_dir: Some(working_dir),
+		command,
+		working_dir,
 		no_exit: task.no_exit,
 	};
 

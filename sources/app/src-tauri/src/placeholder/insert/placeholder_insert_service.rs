@@ -33,10 +33,14 @@ pub async fn get_many(filter_contract: PlaceholderInsertTileFilterContract) -> R
 	Ok(tile_contracts)
 }
 
-pub async fn get_rendered_tiles(filter_contract: PlaceholderInsertTileFilterContract) -> Result<String> {
+pub async fn get_rendered_tiles(filter_contract: PlaceholderInsertTileFilterContract) -> Result<Option<String>> {
 	let filter_model = PlaceholderInsertTileFilterModel::from(filter_contract);
 
 	let tile_models = placeholder_insert_repository::get_many(filter_model).await?;
+
+	if tile_models.len() == 0 {
+		return Ok(None);
+	}
 
 	let mut result = String::new();
 
@@ -51,5 +55,5 @@ pub async fn get_rendered_tiles(filter_contract: PlaceholderInsertTileFilterCont
 		}
 	}
 
-	Ok(result)
+	Ok(Some(result))
 }
