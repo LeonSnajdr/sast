@@ -9,8 +9,6 @@
 import type { UnlistenFn } from "@tauri-apps/api/event";
 
 const route = useRoute("index-project-id");
-const i18n = useI18n();
-const notify = useNotify();
 
 const projectStore = useProjectStore();
 const placeholderStore = usePlaceholderStore();
@@ -37,20 +35,7 @@ onBeforeUnmount(() => {
 });
 
 const loadProject = async () => {
-    isLoading.value = true;
-
-    const projectResult = await commands.projectOpen(route.params.id);
-
-    isLoading.value = false;
-
-    if (projectResult.status == "error") {
-        console.log(projectResult);
-
-        notify.error(i18n.t("project.load.failed"), { error: projectResult.error });
-        return;
-    }
-
-    selectedProject.value = projectResult.data;
+    await projectStore.loadProject(route.params.id);
 };
 
 const loadPlaceholders = async () => {

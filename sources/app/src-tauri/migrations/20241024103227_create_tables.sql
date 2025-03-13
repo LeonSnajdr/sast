@@ -1,9 +1,10 @@
 create table if not exists setting
 (
-    id                    blob not null,
-    meta_date_updated     text not null,
-    presentation_language text not null,
-    presentation_theme    text not null,
+    id                    blob    not null,
+    meta_date_updated     text    not null,
+    presentation_language text    not null,
+    presentation_theme    text    not null,
+    behavior_open_welcome boolean not null,
     primary key (id)
 );
 

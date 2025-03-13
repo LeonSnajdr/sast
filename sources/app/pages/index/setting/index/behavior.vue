@@ -1,11 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>
-            {{ t("setting.presentation") }}
+            {{ t("setting.behavior") }}
         </VAppBarTitle>
     </VAppBar>
-    <SettingPresentationFieldLanguage v-model="setting.presentationLanguage" />
-    <SettingPresentationFieldTheme v-model="setting.presentationTheme" />
+    <SettingBehaviorFieldOpenWelcome v-model="setting.behaviorOpenWelcome" />
 </template>
 
 <script setup lang="ts">

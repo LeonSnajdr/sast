@@ -16,6 +16,7 @@ pub struct SettingUpdateContract {
 	pub id: Uuid,
 	pub presentation_language: String,
 	pub presentation_theme: String,
+	pub behavior_open_welcome: bool,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
@@ -25,4 +26,5 @@ pub struct SettingContract {
 	pub meta_date_updated: DateTime<Utc>,
 	pub presentation_language: String,
 	pub presentation_theme: String,
+	pub behavior_open_welcome: bool,
 }

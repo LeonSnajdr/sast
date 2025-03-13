@@ -3,7 +3,7 @@ use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySes
 use crate::pty_session::pty_session_events::{PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent};
 use crate::pty_session::pty_session_models::{PtySessionFilterModel, PtySessionModel};
 use crate::pty_session::pty_session_repository;
-use portable_pty::{native_pty_system, Child, ChildKiller, CommandBuilder, PtySize};
+use portable_pty::{native_pty_system, CommandBuilder, PtySize};
 use std::io::{Read, Write};
 use tauri::AppHandle;
 use tauri_specta::Event;
@@ -90,7 +90,7 @@ fn build_name(name: Option<String>) -> String {
 
 async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 	let (session_kill_sender, mut session_kill_receiver) = oneshot::channel();
-	let (session_finished_sender, mut session_finished_receiver) = oneshot::channel();
+	let (session_finished_sender, session_finished_receiver) = oneshot::channel();
 
 	let kill_app_handle = app_handle.clone();
 	let kill_session_id = session_id.clone();

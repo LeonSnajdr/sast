@@ -58,25 +58,9 @@
 </template>
 
 <script setup lang="ts">
-const { t } = useI18n();
-const notify = useNotify();
+const projectStore = useProjectStore();
 
-const lastOpenedProject = ref<ProjectContract | null>();
-
-onBeforeMount(async () => {
-    await loadLastOpenedProject();
-});
-
-const loadLastOpenedProject = async () => {
-    const lastOpenedProjectResult = await commands.projectGetLastOpened();
-
-    if (lastOpenedProjectResult.status == "error") {
-        notify.error(t("project.load.failed"), { error: lastOpenedProjectResult.error });
-        return;
-    }
-
-    lastOpenedProject.value = lastOpenedProjectResult.data;
-};
+const { lastOpenedProject } = storeToRefs(projectStore);
 
 const openLastProject = () => {
     navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value!.id } });

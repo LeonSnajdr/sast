@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            insert into setting \n                (id, meta_date_updated, presentation_language, presentation_theme) \n                values \n                ($1, $2, $3, $4) \n            returning\n                id as \"id: Uuid\",\n                meta_date_updated as \"meta_date_updated: DateTime<Utc>\",\n                presentation_language,\n                presentation_theme\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                meta_date_updated as \"meta_date_updated: DateTime<Utc>\",\n                presentation_language,\n                presentation_theme,\n                behavior_open_welcome\n            from setting\n            limit 1\n        ",
   "describe": {
     "columns": [
       {
@@ -22,17 +22,23 @@
         "name": "presentation_theme",
         "ordinal": 3,
         "type_info": "Text"
+      },
+      {
+        "name": "behavior_open_welcome",
+        "ordinal": 4,
+        "type_info": "Bool"
       }
     ],
     "parameters": {
-      "Right": 4
+      "Right": 0
     },
     "nullable": [
+      false,
       false,
       false,
       false,
       false
     ]
   },
-  "hash": "e83310b9c33c93baa298a18ece49b3f048e7378e53340fd7f656765f8662127a"
+  "hash": "baee26eab91c17911df9e34c1c8c8e3c6857f75cfbdae05f0faf4d3c5ef436bc"
 }

@@ -55,6 +55,7 @@
                         </div>
                     </template>
                 </VListItem>
+                <VEmptyState v-if="taskSet.tasks.length === 0" :text="$t('taskSetTask.empty.text')" :title="$t('taskSetTask.empty.title')" />
             </Draggable>
         </div>
     </VContainer>

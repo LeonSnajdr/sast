@@ -15,7 +15,7 @@
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
                     </BaseBtnIcon>
                     <BaseBtnIcon @click="closeProject()" icon="mdi-close" size="x-small">
-                        <VTooltip activator="parent">{{ $t("project.drawer.close") }}</VTooltip>
+                        <VTooltip activator="parent">{{ $t("action.close") }}</VTooltip>
                     </BaseBtnIcon>
                 </template>
             </VListItem>
