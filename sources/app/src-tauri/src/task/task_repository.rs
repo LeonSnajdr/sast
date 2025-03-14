@@ -3,6 +3,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::prelude::*;
+use crate::pty_session::pty_session_enums::PtySessionHistoryPersistence;
 use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
 
 pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
@@ -10,15 +11,17 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		TaskModel,
 		r#"--sql
             insert into task
-                (id, project_id, name, tab_name, no_exit, date_created, date_last_updated)
+                (id, project_id, name, tab_name, no_exit, force_kill, history_persistence, date_created, date_last_updated)
                 values
-                ($1, $2, $3, $4, $5, $6, $7)
+                ($1, $2, $3, $4, $5, $6, $7, $8, $9)
 			returning
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
                 tab_name,
                 no_exit,
+                force_kill,
+                history_persistence as "history_persistence: PtySessionHistoryPersistence",
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
         "#,
@@ -27,6 +30,8 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		create_model.name,
 		create_model.tab_name,
 		create_model.no_exit,
+		create_model.force_kill,
+		create_model.history_persistence,
 		create_model.date_created,
 		create_model.date_last_updated
 	)
@@ -70,6 +75,8 @@ pub async fn get_one(id: Uuid) -> Result<TaskModel> {
                 name,
                 tab_name,
                 no_exit,
+                force_kill,
+                history_persistence as "history_persistence: PtySessionHistoryPersistence",
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
@@ -92,13 +99,17 @@ pub async fn update_one(update_container: TaskUpdateModel) -> Result<()> {
                 name = $2,
                 tab_name = $3,
                 no_exit = $4,
-                date_last_updated = $5
+                force_kill = $5,
+                history_persistence = $6,
+                date_last_updated = $7
             where id = $1
         "#,
 		update_container.id,
 		update_container.name,
 		update_container.tab_name,
 		update_container.no_exit,
+		update_container.force_kill,
+		update_container.history_persistence,
 		update_container.date_last_updated,
 	)
 	.execute(db::get_pool())

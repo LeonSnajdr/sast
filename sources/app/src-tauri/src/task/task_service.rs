@@ -133,14 +133,23 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Pty
 		command,
 		working_dir,
 		no_exit: task.no_exit,
+		force_kill: task.force_kill,
+		history_persistence: task.history_persistence,
 	};
 
 	Ok(pty_spawn_contract)
 }
 
 pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	stop_one(task_id).await?;
-	start_one(app_handle, project_id, task_id).await?;
+	/*stop_one(task_id).await?;
+	start_one(app_handle, project_id, task_id).await?;*/
+
+	let filter = PtySessionFilterContract {
+		task_id: Some(task_id),
+		..PtySessionFilterContract::default()
+	};
+
+	pty_session_service::restart_first(filter).await?;
 
 	Ok(())
 }

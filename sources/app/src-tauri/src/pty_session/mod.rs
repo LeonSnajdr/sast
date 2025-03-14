@@ -1,5 +1,6 @@
 pub mod pty_session_commands;
 pub mod pty_session_contracts;
+pub mod pty_session_enums;
 pub mod pty_session_events;
 pub mod pty_session_mapper;
 pub mod pty_session_models;

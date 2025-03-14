@@ -13,6 +13,8 @@ impl TaskContract {
 			name: value.name,
 			tab_name: value.tab_name,
 			no_exit: value.no_exit,
+			force_kill: value.force_kill,
+			history_persistence: value.history_persistence,
 			command_tiles,
 			working_dir_tiles,
 			date_created: value.date_created,
@@ -45,6 +47,8 @@ impl TaskModel {
 			name,
 			tab_name,
 			no_exit,
+			force_kill,
+			history_persistence,
 			command_tiles,
 			working_dir_tiles,
 		} = value;
@@ -55,6 +59,8 @@ impl TaskModel {
 			name,
 			tab_name,
 			no_exit,
+			force_kill,
+			history_persistence,
 			date_created,
 			date_last_updated,
 		};
@@ -70,6 +76,8 @@ impl TaskUpdateModel {
 			name,
 			tab_name,
 			no_exit,
+			force_kill,
+			history_persistence,
 			command_tiles,
 			working_dir_tiles,
 		} = value;
@@ -79,6 +87,8 @@ impl TaskUpdateModel {
 			name,
 			tab_name,
 			no_exit,
+			force_kill,
+			history_persistence,
 			date_last_updated,
 		};
 

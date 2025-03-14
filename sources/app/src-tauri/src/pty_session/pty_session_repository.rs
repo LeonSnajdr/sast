@@ -25,16 +25,28 @@ pub async fn get_one(id: &Uuid) -> Result<Arc<PtySessionModel>> {
 
 	let session = sessions.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
 
-	drop(sessions);
-
 	Ok(session)
 }
 
-pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessionInfoModel>> {
+pub async fn get_first(filter: PtySessionFilterModel) -> Option<Arc<PtySessionModel>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
-	let filtered_sessions = sessions
-		.iter()
+	sessions.iter().cloned().find(|session| matches_filter(session, &filter))
+}
+
+pub async fn get_many(filter: PtySessionFilterModel) -> Result<Vec<Arc<PtySessionModel>>> {
+	let sessions = PTY_STATE.sessions.read().await;
+
+	let filtered_sessions = sessions.iter().cloned().filter(|session| matches_filter(session, &filter)).collect();
+
+	Ok(filtered_sessions)
+}
+
+pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessionInfoModel>> {
+	let filtered_sessions = get_many(filter).await?;
+
+	let info_models = filtered_sessions
+		.into_iter()
 		.map(|session| PtySessionInfoModel {
 			id: session.id,
 			project_id: session.project_id,
@@ -42,10 +54,18 @@ pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessi
 			task_id: session.task_id,
 			task_set_id: session.task_set_id,
 		})
-		.filter(|session| matches_filter(session, &filter))
 		.collect();
 
-	Ok(filtered_sessions)
+	Ok(info_models)
+}
+
+fn matches_filter(session: &PtySessionModel, filter: &PtySessionFilterModel) -> bool {
+	let matches_id = filter.id.map_or(true, |id| session.id == id);
+	let matches_project_id = filter.project_id.map_or(true, |id| session.project_id == id);
+	let matches_task_id = filter.task_id.map_or(true, |id| session.task_id == Some(id));
+	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.task_set_id == Some(id));
+
+	matches_id && matches_project_id && matches_task_id && matches_task_set_id
 }
 
 pub async fn delete_one(id: Uuid) -> Result<()> {
@@ -55,12 +75,4 @@ pub async fn delete_one(id: Uuid) -> Result<()> {
 	}
 
 	Ok(())
-}
-
-fn matches_filter(session: &PtySessionInfoModel, filter: &PtySessionFilterModel) -> bool {
-	let matches_project_id = filter.project_id.map_or(true, |id| session.project_id == id);
-	let matches_task_id = filter.task_id.map_or(true, |id| session.task_id == Some(id));
-	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.task_set_id == Some(id));
-
-	matches_project_id && matches_task_id && matches_task_set_id
 }

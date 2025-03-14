@@ -4,6 +4,7 @@ use specta::Type;
 use uuid::Uuid;
 
 use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileContract;
+use crate::pty_session::pty_session_enums::PtySessionHistoryPersistence;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
@@ -13,6 +14,8 @@ pub struct TaskContract {
 	pub name: String,
 	pub tab_name: Option<String>,
 	pub no_exit: bool,
+	pub force_kill: bool,
+	pub history_persistence: PtySessionHistoryPersistence,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 	pub date_created: DateTime<Utc>,
@@ -36,6 +39,8 @@ pub struct TaskCreateContract {
 	pub name: String,
 	pub tab_name: Option<String>,
 	pub no_exit: bool,
+	pub force_kill: bool,
+	pub history_persistence: PtySessionHistoryPersistence,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 }
@@ -47,6 +52,8 @@ pub struct TaskUpdateContract {
 	pub name: String,
 	pub tab_name: Option<String>,
 	pub no_exit: bool,
+	pub force_kill: bool,
+	pub history_persistence: PtySessionHistoryPersistence,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
 }

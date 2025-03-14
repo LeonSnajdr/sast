@@ -1,5 +1,6 @@
 use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
+use crate::pty_session::pty_session_enums::{PtySessionHistoryPersistence, PtySessionShellStatus};
 use crate::pty_session::pty_session_events::{PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent};
 use crate::pty_session::pty_session_models::{PtySessionFilterModel, PtySessionModel};
 use crate::pty_session::pty_session_repository;
@@ -8,6 +9,7 @@ use std::io::{Read, Write};
 use tauri::AppHandle;
 use tauri_specta::Event;
 use tokio::sync::{oneshot, Mutex};
+use tokio::time::{sleep, Duration};
 use uuid::Uuid;
 
 pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<()> {
@@ -48,6 +50,9 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawn
 		task_id: spawn_contract.task_id,
 		task_set_id: spawn_contract.task_set_id,
 		name: build_name(spawn_contract.name),
+		force_kill: spawn_contract.force_kill,
+		history_persistence: spawn_contract.history_persistence,
+		shell_status: Mutex::new(PtySessionShellStatus::Running),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
@@ -94,25 +99,45 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) {
 
 	let kill_app_handle = app_handle.clone();
 	let kill_session_id = session_id.clone();
+
 	tauri::async_runtime::spawn(async move {
 		let session = pty_session_repository::get_one(&kill_session_id).await.unwrap();
 
-		let exit_code = session.child.lock().await.wait().unwrap().exit_code();
+		loop {
+			let exit_code = session.child.lock().await.wait().unwrap().exit_code();
 
-		println!("Session exited with code {}", exit_code);
+			if *session.shell_status.lock().await == PtySessionShellStatus::Restarting {
+				continue;
+			}
 
-		session_kill_sender.send(()).unwrap();
+			println!("Session exited with code {}", exit_code);
 
-		session.pair.lock().await.slave.spawn_command(CommandBuilder::new("whoami")).unwrap();
+			session_kill_sender.send(()).unwrap();
 
-		drop(session.writer.lock().await);
-		drop(session.pair.lock().await);
+			let mut read_unlock_cmd = CommandBuilder::new("pwsh.exe");
+			read_unlock_cmd.args(["-Command", "echo 'Session killed'"]);
+			session.pair.lock().await.slave.spawn_command(read_unlock_cmd).unwrap();
 
-		pty_session_repository::delete_one(kill_session_id).await.unwrap();
+			drop(session.writer.lock().await);
+			drop(session.pair.lock().await);
 
-		PtySessionKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
+			*session.shell_status.lock().await = PtySessionShellStatus::Killed;
 
-		drop(kill_app_handle);
+			let delete_session = match session.history_persistence {
+				PtySessionHistoryPersistence::Never => true,
+				PtySessionHistoryPersistence::OnError if exit_code != 0 => true,
+				PtySessionHistoryPersistence::OnSuccess if exit_code == 0 => true,
+				_ => false,
+			};
+
+			if delete_session {
+				pty_session_repository::delete_one(kill_session_id).await.unwrap();
+			}
+
+			PtySessionKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
+
+			break;
+		}
 	});
 
 	let read_app_handle = app_handle.clone();
@@ -208,12 +233,17 @@ pub async fn resize(id: &Uuid, resize_contract: &PtySessionResizeContract) -> Re
 pub async fn kill(id: &Uuid) -> Result<()> {
 	let session = pty_session_repository::get_one(id).await?;
 
-	let mut writer = session.writer.lock().await;
 	let mut child_killer = session.child_killer.lock().await;
 
-	// Send ctrl+c to child to terminate the currently running process and ensure read thread is finished
-	let ctrl_c: u8 = 3;
-	writer.write_all(&[ctrl_c]).map_err(|_| Error::Failed)?;
+	if session.force_kill {
+		let mut writer = session.writer.lock().await;
+
+		// Send ctrl+c to child to terminate the currently running process and ensure read thread is finished
+		let ctrl_c: u8 = 3;
+		writer.write_all(&[ctrl_c]).map_err(|_| Error::Failed)?;
+
+		sleep(Duration::from_millis(500)).await;
+	}
 
 	child_killer.kill().ok();
 
@@ -225,6 +255,44 @@ pub async fn kill_many(filter: PtySessionFilterContract) -> Result<()> {
 
 	for session in sessions {
 		kill(&session.id).await?;
+	}
+
+	Ok(())
+}
+
+pub async fn restart(id: Uuid) -> Result<()> {
+	let filter = PtySessionFilterContract {
+		id: Some(id),
+		..PtySessionFilterContract::default()
+	};
+
+	restart_first(filter).await?;
+
+	Ok(())
+}
+
+pub async fn restart_first(filter: PtySessionFilterContract) -> Result<()> {
+	let filter_model = PtySessionFilterModel::from(filter);
+
+	let session_option = pty_session_repository::get_first(filter_model).await;
+
+	if let Some(session) = session_option {
+		let mut cmd = CommandBuilder::new("pwsh.exe");
+		cmd.args(["-WorkingDirectory", "C:/Repos/metis/sources/ControlCenter.Api/ControlCenter.Api"]);
+		cmd.args(["-NoExit"]);
+		cmd.args(["-Command", "dotnet build"]);
+
+		// TODO: hold the lock somehow that the other method in thread blocks and checks afterwards
+		*session.shell_status.lock().await = PtySessionShellStatus::Restarting;
+
+		kill(&session.id).await?;
+
+		let child = session.pair.lock().await.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
+		let child_killer = child.clone_killer();
+
+		*session.child.lock().await = child;
+		*session.child_killer.lock().await = child_killer;
+		*session.shell_status.lock().await = PtySessionShellStatus::Running;
 	}
 
 	Ok(())

@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update task\n            set\n                name = $2,\n                tab_name = $3,\n                no_exit = $4,\n                force_kill = $5,\n                history_persistence = $6,\n                date_last_updated = $7\n            where id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 7
+    },
+    "nullable": []
+  },
+  "hash": "b6730d47e6c5f12ad69506666b1775a96068372aa97d96c7ce24e70a16b72707"
+}

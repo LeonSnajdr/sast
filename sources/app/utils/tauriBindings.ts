@@ -309,26 +309,27 @@ export type PlaceholderUpdateContract = { id: string; projectId: string; name: s
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
-export type PtySessionFilterContract = { projectId: string | null; taskId: string | null; taskSetId: string | null }
+export type PtySessionFilterContract = { id: string | null; projectId: string | null; taskId: string | null; taskSetId: string | null }
+export type PtySessionHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string }
 export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
 export type PtySessionReadEventData = { id: string; data: string }
 export type PtySessionResizeContract = { cols: number; rows: number }
-export type PtySessionSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean }
+export type PtySessionSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence }
 export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
-export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
-export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
+export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
 export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskSetCreateContract = { projectId: string; name: string }
 export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
-export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 
 /** tauri-specta globals **/
 

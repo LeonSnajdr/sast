@@ -53,13 +53,15 @@ create table if not exists placeholder_insert_tile
 
 create table if not exists task
 (
-    id                blob    not null,
-    project_id        blob    not null,
-    name              text    not null,
-    tab_name          text,
-    no_exit           boolean not null,
-    date_created      text    not null,
-    date_last_updated text    not null,
+    id                  blob    not null,
+    project_id          blob    not null,
+    name                text    not null,
+    tab_name            text,
+    no_exit             boolean not null,
+    history_persistence text    not null,
+    force_kill          boolean not null,
+    date_created        text    not null,
+    date_last_updated   text    not null,
     primary key (id),
     foreign key (project_id) references project (id) on delete cascade
 );
