@@ -59,6 +59,7 @@ pub fn run() {
 			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
+			pty_session_events::PtySessionDeletedEvent,
 			pty_session_events::PtySessionReadEvent,
 			pty_session_events::PtySessionSpawnedEvent,
 			pty_session_events::PtySessionKilledEvent,

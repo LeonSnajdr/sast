@@ -4,6 +4,9 @@ use tauri_specta::Event;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
+pub struct PtySessionDeletedEvent(pub Uuid);
+
+#[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
 pub struct PtySessionSpawnedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]

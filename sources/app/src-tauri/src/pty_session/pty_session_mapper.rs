@@ -9,6 +9,7 @@ impl PtySessionInfoContract {
 			project_id: value.project_id,
 			task_id: value.task_id,
 			task_set_id: value.task_set_id,
+			position: value.position,
 		}
 	}
 }

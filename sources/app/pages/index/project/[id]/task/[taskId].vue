@@ -8,13 +8,17 @@
         <VCard :loading="isTaskLoading">
             <VCardText v-if="task">
                 <VForm v-model="isFormValid">
-                    <TaskFieldName v-model="task.name" />
+                    <TaskFieldName v-model="task.name" autofocus />
+                    <TaskFieldTabName v-model="task.tabName" />
                     <VRow>
-                        <VCol cols="9">
-                            <TaskFieldTabName v-model="task.tabName" />
-                        </VCol>
-                        <VCol cols="3">
+                        <VCol>
                             <TaskFieldNoExit v-model="task.noExit" />
+                        </VCol>
+                        <VCol>
+                            <TaskFieldForceKill v-model="task.forceKill" />
+                        </VCol>
+                        <VCol>
+                            <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
                         </VCol>
                     </VRow>
                     <TaskFieldCommandTiles v-model="task.commandTiles" />

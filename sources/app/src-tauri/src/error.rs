@@ -6,5 +6,6 @@ pub enum Error {
 	Db(String),
 	AlreadyExists,
 	NotExists,
+	InvalidStatus,
 	Failed,
 }

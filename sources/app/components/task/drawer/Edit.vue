@@ -4,15 +4,17 @@
             <TaskActionSave @saved="taskSaved" :task />
         </template>
         <template v-if="task" #fields>
-            <TaskFieldName v-model="task.name" />
+            <TaskFieldName v-model="task.name" autofocus />
+            <TaskFieldTabName v-model="task.tabName" />
             <VRow>
-                <VCol cols="8">
-                    <TaskFieldTabName v-model="task.tabName" />
-                </VCol>
-                <VCol cols="4">
+                <VCol>
                     <TaskFieldNoExit v-model="task.noExit" />
                 </VCol>
+                <VCol>
+                    <TaskFieldForceKill v-model="task.forceKill" />
+                </VCol>
             </VRow>
+            <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
             <TaskFieldCommandTiles v-model="task.commandTiles" />
             <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
         </template>

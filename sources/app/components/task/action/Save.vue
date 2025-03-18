@@ -28,6 +28,8 @@ const taskSave = async () => {
         name: props.task.name,
         tabName: props.task.tabName,
         noExit: props.task.noExit,
+        forceKill: props.task.forceKill,
+        historyPersistence: props.task.historyPersistence,
         commandTiles: props.task.commandTiles,
         workingDirTiles: props.task.workingDirTiles
     };

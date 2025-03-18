@@ -16,9 +16,11 @@ const ptySpawn = async () => {
         projectId: selectedProject.value.id,
         taskId: null,
         taskSetId: null,
-        command: null,
-        noExit: true,
-        workingDir: null
+        command: "volta run yarn migrate-mongo up --brand cores",
+        noExit: false,
+        workingDir: "C:\\Repos\\selfserviceportal\\mongodb",
+        forceKill: false,
+        historyPersistence: "OnError"
     };
 
     const spawnResult = await commands.ptySessionSpawn(spawnContract);

@@ -141,15 +141,14 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Pty
 }
 
 pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	/*stop_one(task_id).await?;
-	start_one(app_handle, project_id, task_id).await?;*/
-
 	let filter = PtySessionFilterContract {
 		task_id: Some(task_id),
 		..PtySessionFilterContract::default()
 	};
 
-	pty_session_service::restart_first(filter).await?;
+	let spawn_contract = build_spawn_contract(project_id, task_id).await?;
+
+	pty_session_service::restart_first(app_handle, filter, spawn_contract).await?;
 
 	Ok(())
 }

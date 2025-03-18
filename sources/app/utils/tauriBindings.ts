@@ -283,10 +283,12 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
+ptySessionDeletedEvent: PtySessionDeletedEvent,
 ptySessionKilledEvent: PtySessionKilledEvent,
 ptySessionReadEvent: PtySessionReadEvent,
 ptySessionSpawnedEvent: PtySessionSpawnedEvent
 }>({
+ptySessionDeletedEvent: "pty-session-deleted-event",
 ptySessionKilledEvent: "pty-session-killed-event",
 ptySessionReadEvent: "pty-session-read-event",
 ptySessionSpawnedEvent: "pty-session-spawned-event"
@@ -298,7 +300,7 @@ ptySessionSpawnedEvent: "pty-session-spawned-event"
 
 /** user-defined types **/
 
-export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "Failed"
+export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "InvalidStatus" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
@@ -309,9 +311,10 @@ export type PlaceholderUpdateContract = { id: string; projectId: string; name: s
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
+export type PtySessionDeletedEvent = string
 export type PtySessionFilterContract = { id: string | null; projectId: string | null; taskId: string | null; taskSetId: string | null }
 export type PtySessionHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
-export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string }
+export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string; position: number }
 export type PtySessionKilledEvent = string
 export type PtySessionReadEvent = PtySessionReadEventData
 export type PtySessionReadEventData = { id: string; data: string }

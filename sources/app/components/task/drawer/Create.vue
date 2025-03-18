@@ -5,14 +5,16 @@
         </template>
         <template #fields="{ element: task }">
             <TaskFieldName v-model="task.name" autofocus />
+            <TaskFieldTabName v-model="task.tabName" />
             <VRow>
-                <VCol cols="8">
-                    <TaskFieldTabName v-model="task.tabName" />
-                </VCol>
-                <VCol cols="4">
+                <VCol>
                     <TaskFieldNoExit v-model="task.noExit" />
                 </VCol>
+                <VCol>
+                    <TaskFieldForceKill v-model="task.forceKill" />
+                </VCol>
             </VRow>
+            <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
             <TaskFieldCommandTiles v-model="task.commandTiles" />
             <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
         </template>
@@ -35,6 +37,8 @@ const emptyElement: TaskCreateContract = {
     name: "",
     tabName: null,
     noExit: true,
+    forceKill: false,
+    historyPersistence: "Never",
     workingDirTiles: [] as PlaceholderInsertTileContract[],
     commandTiles: [] as PlaceholderInsertTileContract[]
 };

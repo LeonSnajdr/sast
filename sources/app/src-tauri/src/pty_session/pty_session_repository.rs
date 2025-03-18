@@ -49,28 +49,39 @@ pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessi
 		.into_iter()
 		.map(|session| PtySessionInfoModel {
 			id: session.id,
-			project_id: session.project_id,
-			name: session.name.clone(),
-			task_id: session.task_id,
-			task_set_id: session.task_set_id,
+			project_id: session.meta.project_id,
+			name: session.meta.name.clone(),
+			task_id: session.meta.task_id,
+			task_set_id: session.meta.task_set_id,
+			position: session.meta.position,
 		})
 		.collect();
 
 	Ok(info_models)
 }
 
+pub async fn get_next_position() -> Result<i32> {
+	let sessions = PTY_STATE.sessions.read().await;
+
+	let max_position_option = sessions.iter().cloned().map(|session| session.meta.position).max();
+
+	let next_position = max_position_option.unwrap_or(0) + 1;
+
+	Ok(next_position)
+}
+
 fn matches_filter(session: &PtySessionModel, filter: &PtySessionFilterModel) -> bool {
 	let matches_id = filter.id.map_or(true, |id| session.id == id);
-	let matches_project_id = filter.project_id.map_or(true, |id| session.project_id == id);
-	let matches_task_id = filter.task_id.map_or(true, |id| session.task_id == Some(id));
-	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.task_set_id == Some(id));
+	let matches_project_id = filter.project_id.map_or(true, |id| session.meta.project_id == id);
+	let matches_task_id = filter.task_id.map_or(true, |id| session.meta.task_id == Some(id));
+	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.meta.task_set_id == Some(id));
 
 	matches_id && matches_project_id && matches_task_id && matches_task_set_id
 }
 
-pub async fn delete_one(id: Uuid) -> Result<()> {
+pub async fn delete_one(id: &Uuid) -> Result<()> {
 	let mut sessions = PTY_STATE.sessions.write().await;
-	if let Some(pos) = sessions.iter().position(|s| s.id == id) {
+	if let Some(pos) = sessions.iter().position(|s| s.id == *id) {
 		sessions.remove(pos);
 	}
 
