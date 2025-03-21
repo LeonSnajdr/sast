@@ -1,4 +1,4 @@
-use crate::pty_session::pty_session_enums::PtySessionHistoryPersistence;
+use crate::terminal::terminal_enums::TerminalHistoryPersistence;
 use chrono::{DateTime, Utc};
 use sqlx::FromRow;
 use uuid::Uuid;
@@ -11,7 +11,7 @@ pub struct TaskModel {
 	pub tab_name: Option<String>,
 	pub no_exit: bool,
 	pub force_kill: bool,
-	pub history_persistence: PtySessionHistoryPersistence,
+	pub history_persistence: TerminalHistoryPersistence,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
 }
@@ -32,6 +32,6 @@ pub struct TaskUpdateModel {
 	pub tab_name: Option<String>,
 	pub no_exit: bool,
 	pub force_kill: bool,
-	pub history_persistence: PtySessionHistoryPersistence,
+	pub history_persistence: TerminalHistoryPersistence,
 	pub date_last_updated: DateTime<Utc>,
 }

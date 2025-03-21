@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Eq, Clone, specta::Type, Serialize, Deserialize)]
-pub enum PtySessionShellStatus {
+pub enum TerminalShellStatus {
 	Creating,
 	Running,
 	Restarting,
@@ -10,7 +10,7 @@ pub enum PtySessionShellStatus {
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, sqlx::Type, specta::Type, Serialize, Deserialize)]
-pub enum PtySessionHistoryPersistence {
+pub enum TerminalHistoryPersistence {
 	Always,
 	Never,
 	OnError,

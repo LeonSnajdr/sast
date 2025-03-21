@@ -3,10 +3,10 @@ mod error;
 mod placeholder;
 mod prelude;
 mod project;
-mod pty_session;
 mod setting;
 mod task;
 mod task_set;
+mod terminal;
 
 use specta_typescript::Typescript;
 use tauri::Manager;
@@ -14,10 +14,10 @@ use tauri_specta::{collect_commands, collect_events, Builder};
 
 use crate::placeholder::placeholder_commands;
 use crate::project::project_commands;
-use crate::pty_session::{pty_session_commands, pty_session_events};
 use crate::setting::setting_commands;
 use crate::task::task_commands;
 use crate::task_set::task_set_commands;
+use crate::terminal::{terminal_commands, terminal_events};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -30,13 +30,13 @@ pub fn run() {
 			project_commands::project_get_all,
 			project_commands::project_get_last_opened,
 			project_commands::project_open,
-			pty_session_commands::pty_session_spawn,
-			pty_session_commands::pty_session_write,
-			pty_session_commands::pty_session_get_read_history,
-			pty_session_commands::pty_session_get_many_info,
-			pty_session_commands::pty_session_resize,
-			pty_session_commands::pty_session_kill,
-			pty_session_commands::pty_session_delete,
+			terminal_commands::terminal_spawn,
+			terminal_commands::terminal_write,
+			terminal_commands::terminal_get_read_history,
+			terminal_commands::terminal_get_many_info,
+			terminal_commands::terminal_resize,
+			terminal_commands::terminal_kill,
+			terminal_commands::terminal_delete,
 			placeholder_commands::placeholder_create,
 			placeholder_commands::placeholder_get_many,
 			placeholder_commands::placeholder_get_one,
@@ -60,11 +60,11 @@ pub fn run() {
 			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
-			pty_session_events::TerminalDeletedEvent,
-			pty_session_events::TerminalCreatedEvent,
-			pty_session_events::TerminalShellKilledEvent,
-			pty_session_events::TerminalShellSpawnedEvent,
-			pty_session_events::TerminalShellReadEvent,
+			terminal_events::TerminalDeletedEvent,
+			terminal_events::TerminalCreatedEvent,
+			terminal_events::TerminalShellKilledEvent,
+			terminal_events::TerminalShellSpawnedEvent,
+			terminal_events::TerminalShellReadEvent,
 		]);
 
 	#[cfg(debug_assertions)]

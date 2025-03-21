@@ -1,11 +1,11 @@
 use crate::prelude::*;
-use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
-use crate::pty_session::pty_session_enums::{PtySessionHistoryPersistence, PtySessionShellStatus};
-use crate::pty_session::pty_session_events::{
+use crate::terminal::terminal_contracts::{TerminalFilterContract, TerminalInfoContract, TerminalResizeContract, TerminalSpawnContract};
+use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
+use crate::terminal::terminal_events::{
 	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellKilledEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellSpawnedEvent,
 };
-use crate::pty_session::pty_session_models::{PtySessionBehaviorModel, PtySessionFilterModel, PtySessionMetaModel, PtySessionModel, PtySessionShellModel};
-use crate::pty_session::pty_session_repository;
+use crate::terminal::terminal_models::{TerminalBehaviorModel, TerminalFilterModel, TerminalMetaModel, TerminalModel, TerminalShellModel};
+use crate::terminal::terminal_repository;
 use portable_pty::{native_pty_system, CommandBuilder, PtySize};
 use std::io::{Read, Write};
 use tauri::AppHandle;
@@ -14,7 +14,7 @@ use tokio::sync::{oneshot, Mutex, RwLock};
 use tokio::time::{sleep, Duration};
 use uuid::Uuid;
 
-pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<()> {
+pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<()> {
 	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
 
 	start_handle_threads(app_handle, &session_id).await;
@@ -22,7 +22,7 @@ pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: PtySessionSp
 	Ok(())
 }
 
-pub async fn spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+pub async fn spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<Uuid> {
 	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
 	let app_handle_clone = app_handle.clone();
 
@@ -31,13 +31,13 @@ pub async fn spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContra
 	Ok(session_id)
 }
 
-async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
+async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
 	let meta = build_meta_model(&spawn_contract, None).await?;
 	let behavior = build_behavior_model(&spawn_contract);
 	let shell = build_shell_model(&spawn_contract)?;
 
-	let session = PtySessionModel {
+	let session = TerminalModel {
 		id,
 		concurrency_guard: Mutex::new(()),
 		behavior,
@@ -45,14 +45,14 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawn
 		shell: RwLock::new(shell),
 	};
 
-	pty_session_repository::create_one(session).await?;
+	terminal_repository::create_one(session).await?;
 
 	TerminalCreatedEvent(id).emit(app_handle).map_err(|_| Error::Failed)?;
 
 	Ok(id)
 }
 
-fn build_command(spawn_contract: &PtySessionSpawnContract) -> CommandBuilder {
+fn build_command(spawn_contract: &TerminalSpawnContract) -> CommandBuilder {
 	let mut cmd = CommandBuilder::new("pwsh.exe");
 
 	if let Some(working_dir) = &spawn_contract.working_dir {
@@ -70,7 +70,7 @@ fn build_command(spawn_contract: &PtySessionSpawnContract) -> CommandBuilder {
 	cmd
 }
 
-fn build_shell_model(spawn_contract: &PtySessionSpawnContract) -> Result<PtySessionShellModel> {
+fn build_shell_model(spawn_contract: &TerminalSpawnContract) -> Result<TerminalShellModel> {
 	let pty_system = native_pty_system();
 	let pair = pty_system.openpty(PtySize::default()).map_err(|_| Error::Failed)?;
 
@@ -82,8 +82,8 @@ fn build_shell_model(spawn_contract: &PtySessionSpawnContract) -> Result<PtySess
 	let child = pair.slave.spawn_command(cmd).map_err(|_| Error::Failed)?;
 	let child_killer = child.clone_killer();
 
-	let shell_model = PtySessionShellModel {
-		status: Mutex::new(PtySessionShellStatus::Creating),
+	let shell_model = TerminalShellModel {
+		status: Mutex::new(TerminalShellStatus::Creating),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
@@ -94,10 +94,10 @@ fn build_shell_model(spawn_contract: &PtySessionSpawnContract) -> Result<PtySess
 	Ok(shell_model)
 }
 
-async fn build_meta_model(spawn_contract: &PtySessionSpawnContract, existing_history: Option<String>) -> Result<PtySessionMetaModel> {
+async fn build_meta_model(spawn_contract: &TerminalSpawnContract, existing_history: Option<String>) -> Result<TerminalMetaModel> {
 	let history = existing_history.unwrap_or(String::new());
 
-	let meta_model = PtySessionMetaModel {
+	let meta_model = TerminalMetaModel {
 		project_id: spawn_contract.project_id,
 		task_id: spawn_contract.task_id,
 		task_set_id: spawn_contract.task_set_id,
@@ -108,8 +108,8 @@ async fn build_meta_model(spawn_contract: &PtySessionSpawnContract, existing_his
 	Ok(meta_model)
 }
 
-fn build_behavior_model(spawn_contract: &PtySessionSpawnContract) -> PtySessionBehaviorModel {
-	PtySessionBehaviorModel {
+fn build_behavior_model(spawn_contract: &TerminalSpawnContract) -> TerminalBehaviorModel {
+	TerminalBehaviorModel {
 		force_kill: spawn_contract.force_kill,
 		history_persistence: spawn_contract.history_persistence.clone(),
 	}
@@ -130,9 +130,9 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 	let kill_session_id = session_id.clone();
 
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_repository::get_one(&kill_session_id).await.unwrap();
+		let session = terminal_repository::get_one(&kill_session_id).await.unwrap();
 
-		*session.shell.read().await.status.lock().await = PtySessionShellStatus::Running;
+		*session.shell.read().await.status.lock().await = TerminalShellStatus::Running;
 
 		TerminalShellSpawnedEvent(kill_session_id).emit(&kill_app_handle).unwrap();
 
@@ -153,24 +153,24 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 		drop(session.shell.read().await.writer.lock().await);
 		drop(session.shell.read().await.pair.lock().await);
 
-		if *session.shell.read().await.status.lock().await == PtySessionShellStatus::Restarting {
+		if *session.shell.read().await.status.lock().await == TerminalShellStatus::Restarting {
 			println!("Child of session {} finished due to restart", session.id);
 			return;
 		}
 
 		let mut keep_session = match session.behavior.history_persistence {
-			PtySessionHistoryPersistence::Always => true,
-			PtySessionHistoryPersistence::Never => false,
-			PtySessionHistoryPersistence::OnError if exit_code != 0 => true,
-			PtySessionHistoryPersistence::OnSuccess if exit_code == 0 => true,
+			TerminalHistoryPersistence::Always => true,
+			TerminalHistoryPersistence::Never => false,
+			TerminalHistoryPersistence::OnError if exit_code != 0 => true,
+			TerminalHistoryPersistence::OnSuccess if exit_code == 0 => true,
 			_ => false,
 		};
 
-		if *session.shell.read().await.status.lock().await == PtySessionShellStatus::Killing {
+		if *session.shell.read().await.status.lock().await == TerminalShellStatus::Killing {
 			keep_session = false;
 		}
 
-		*session.shell.read().await.status.lock().await = PtySessionShellStatus::Killed;
+		*session.shell.read().await.status.lock().await = TerminalShellStatus::Killed;
 
 		if !keep_session {
 			delete(&kill_app_handle, kill_session_id).await.unwrap();
@@ -182,7 +182,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 	let read_app_handle = app_handle.clone();
 	let read_session_id = session_id.clone();
 	tauri::async_runtime::spawn(async move {
-		let session = pty_session_repository::get_one(&read_session_id).await.unwrap();
+		let session = terminal_repository::get_one(&read_session_id).await.unwrap();
 
 		let _guard = session.concurrency_guard.lock().await;
 
@@ -242,7 +242,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 }
 
 pub async fn write(id: Uuid, data: String) -> Result<()> {
-	let session = pty_session_repository::get_one(&id).await?;
+	let session = terminal_repository::get_one(&id).await?;
 
 	session
 		.shell
@@ -257,14 +257,14 @@ pub async fn write(id: Uuid, data: String) -> Result<()> {
 }
 
 pub async fn get_read_history(id: Uuid) -> Result<String> {
-	let session = pty_session_repository::get_one(&id).await?;
+	let session = terminal_repository::get_one(&id).await?;
 
 	let history = session.meta.history.lock().await.clone();
 	Ok(history)
 }
 
-pub async fn resize(id: Uuid, resize_contract: PtySessionResizeContract) -> Result<()> {
-	let session = pty_session_repository::get_one(&id).await?;
+pub async fn resize(id: Uuid, resize_contract: TerminalResizeContract) -> Result<()> {
+	let session = terminal_repository::get_one(&id).await?;
 
 	session
 		.shell
@@ -285,7 +285,7 @@ pub async fn resize(id: Uuid, resize_contract: PtySessionResizeContract) -> Resu
 }
 
 pub async fn kill(id: Uuid) -> Result<()> {
-	let session = pty_session_repository::get_one(&id).await?;
+	let session = terminal_repository::get_one(&id).await?;
 
 	let shell = session.shell.read().await;
 
@@ -294,12 +294,12 @@ pub async fn kill(id: Uuid) -> Result<()> {
 
 		println!("Killing pty session {} with status {:?}", id, current_status);
 
-		if *current_status != PtySessionShellStatus::Running && *current_status != PtySessionShellStatus::Restarting {
+		if *current_status != TerminalShellStatus::Running && *current_status != TerminalShellStatus::Restarting {
 			return Err(Error::InvalidStatus);
 		}
 
-		if *current_status == PtySessionShellStatus::Running {
-			*current_status = PtySessionShellStatus::Killing;
+		if *current_status == TerminalShellStatus::Running {
+			*current_status = TerminalShellStatus::Killing;
 		}
 	}
 
@@ -320,7 +320,7 @@ pub async fn kill(id: Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn kill_many(filter: PtySessionFilterContract) -> Result<()> {
+pub async fn kill_many(filter: TerminalFilterContract) -> Result<()> {
 	let sessions = get_many_info(filter).await?;
 
 	for session in sessions {
@@ -331,25 +331,25 @@ pub async fn kill_many(filter: PtySessionFilterContract) -> Result<()> {
 }
 
 pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
-	let session = pty_session_repository::get_one(&id).await?;
+	let session = terminal_repository::get_one(&id).await?;
 
-	if *session.shell.read().await.status.lock().await != PtySessionShellStatus::Killed {
+	if *session.shell.read().await.status.lock().await != TerminalShellStatus::Killed {
 		return Err(Error::InvalidStatus);
 	};
 
 	println!("Deleting session {}", id);
 
-	pty_session_repository::delete_one(&id).await?;
+	terminal_repository::delete_one(&id).await?;
 
 	TerminalDeletedEvent(id).emit(app_handle).unwrap();
 
 	Ok(())
 }
 
-pub async fn restart(app_handle: &AppHandle, id: Uuid, spawn_contract: PtySessionSpawnContract) -> Result<()> {
-	let filter = PtySessionFilterContract {
+pub async fn restart(app_handle: &AppHandle, id: Uuid, spawn_contract: TerminalSpawnContract) -> Result<()> {
+	let filter = TerminalFilterContract {
 		id: Some(id),
-		..PtySessionFilterContract::default()
+		..TerminalFilterContract::default()
 	};
 
 	restart_first(app_handle, filter, spawn_contract).await?;
@@ -357,13 +357,13 @@ pub async fn restart(app_handle: &AppHandle, id: Uuid, spawn_contract: PtySessio
 	Ok(())
 }
 
-pub async fn restart_first(app_handle: &AppHandle, filter: PtySessionFilterContract, spawn_contract: PtySessionSpawnContract) -> Result<()> {
-	let filter_model = PtySessionFilterModel::from(filter);
+pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
+	let filter_model = TerminalFilterModel::from(filter);
 
-	let session_option = pty_session_repository::get_first(filter_model).await;
+	let session_option = terminal_repository::get_first(filter_model).await;
 
 	if let Some(session) = session_option {
-		*session.shell.read().await.status.lock().await = PtySessionShellStatus::Restarting;
+		*session.shell.read().await.status.lock().await = TerminalShellStatus::Restarting;
 
 		kill(session.id).await?;
 
@@ -380,12 +380,12 @@ pub async fn restart_first(app_handle: &AppHandle, filter: PtySessionFilterContr
 	Ok(())
 }
 
-pub async fn get_many_info(filter: PtySessionFilterContract) -> Result<Vec<PtySessionInfoContract>> {
-	let filter_model = PtySessionFilterModel::from(filter);
+pub async fn get_many_info(filter: TerminalFilterContract) -> Result<Vec<TerminalInfoContract>> {
+	let filter_model = TerminalFilterModel::from(filter);
 
-	let session_models = pty_session_repository::get_many_info(filter_model).await?;
+	let session_models = terminal_repository::get_many_info(filter_model).await?;
 
-	let session_info_contracts = session_models.into_iter().map(PtySessionInfoContract::from).collect();
+	let session_info_contracts = session_models.into_iter().map(TerminalInfoContract::from).collect();
 
 	Ok(session_info_contracts)
 }

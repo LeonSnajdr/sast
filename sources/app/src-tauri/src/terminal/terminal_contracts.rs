@@ -1,11 +1,11 @@
-use crate::pty_session::pty_session_enums::{PtySessionHistoryPersistence, PtySessionShellStatus};
+use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySessionSpawnContract {
+pub struct TerminalSpawnContract {
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
@@ -14,36 +14,36 @@ pub struct PtySessionSpawnContract {
 	pub command: Option<String>,
 	pub no_exit: bool,
 	pub force_kill: bool,
-	pub history_persistence: PtySessionHistoryPersistence,
+	pub history_persistence: TerminalHistoryPersistence,
 }
 
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySessionInfoContract {
+pub struct TerminalInfoContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: String,
-	pub shell_status: PtySessionShellStatus,
+	pub shell_status: TerminalShellStatus,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySessionResizeContract {
+pub struct TerminalResizeContract {
 	pub cols: u16,
 	pub rows: u16,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySessionFilterContract {
+pub struct TerminalFilterContract {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 }
-impl Default for PtySessionFilterContract {
+impl Default for TerminalFilterContract {
 	fn default() -> Self {
 		Self {
 			id: None,

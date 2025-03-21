@@ -1,6 +1,6 @@
 use crate::error::Error;
 use crate::prelude::*;
-use crate::pty_session::pty_session_models::{PtySessionFilterModel, PtySessionInfoModel, PtySessionModel};
+use crate::terminal::terminal_models::{TerminalFilterModel, TerminalInfoModel, TerminalModel};
 use once_cell::sync::Lazy;
 use std::sync::Arc;
 use tokio::sync::RwLock;
@@ -11,16 +11,16 @@ static PTY_STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 });
 
 struct PtyState {
-	sessions: RwLock<Vec<Arc<PtySessionModel>>>,
+	sessions: RwLock<Vec<Arc<TerminalModel>>>,
 }
 
-pub async fn create_one(session: PtySessionModel) -> Result<()> {
+pub async fn create_one(session: TerminalModel) -> Result<()> {
 	PTY_STATE.sessions.write().await.push(Arc::new(session));
 
 	Ok(())
 }
 
-pub async fn get_one(id: &Uuid) -> Result<Arc<PtySessionModel>> {
+pub async fn get_one(id: &Uuid) -> Result<Arc<TerminalModel>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let session = sessions.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
@@ -28,13 +28,13 @@ pub async fn get_one(id: &Uuid) -> Result<Arc<PtySessionModel>> {
 	Ok(session)
 }
 
-pub async fn get_first(filter: PtySessionFilterModel) -> Option<Arc<PtySessionModel>> {
+pub async fn get_first(filter: TerminalFilterModel) -> Option<Arc<TerminalModel>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	sessions.iter().cloned().find(|session| matches_filter(session, &filter))
 }
 
-pub async fn get_many(filter: PtySessionFilterModel) -> Result<Vec<Arc<PtySessionModel>>> {
+pub async fn get_many(filter: TerminalFilterModel) -> Result<Vec<Arc<TerminalModel>>> {
 	let sessions = PTY_STATE.sessions.read().await;
 
 	let filtered_sessions = sessions.iter().cloned().filter(|session| matches_filter(session, &filter)).collect();
@@ -42,14 +42,14 @@ pub async fn get_many(filter: PtySessionFilterModel) -> Result<Vec<Arc<PtySessio
 	Ok(filtered_sessions)
 }
 
-pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessionInfoModel>> {
+pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalInfoModel>> {
 	let filtered_sessions = get_many(filter).await?;
 	let mut info_models = Vec::with_capacity(filtered_sessions.len());
 
 	for session in filtered_sessions {
 		let shell_guard = session.shell.read().await;
 
-		info_models.push(PtySessionInfoModel {
+		info_models.push(TerminalInfoModel {
 			id: session.id,
 			project_id: session.meta.project_id,
 			name: session.meta.name.clone(),
@@ -62,7 +62,7 @@ pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessi
 	Ok(info_models)
 }
 
-fn matches_filter(session: &PtySessionModel, filter: &PtySessionFilterModel) -> bool {
+fn matches_filter(session: &TerminalModel, filter: &TerminalFilterModel) -> bool {
 	let matches_id = filter.id.map_or(true, |id| session.id == id);
 	let matches_project_id = filter.project_id.map_or(true, |id| session.meta.project_id == id);
 	let matches_task_id = filter.task_id.map_or(true, |id| session.meta.task_id == Some(id));

@@ -1,10 +1,10 @@
 use crate::prelude::*;
-use crate::pty_session::pty_session_contracts::PtySessionFilterContract;
-use crate::pty_session::pty_session_service;
 use crate::task_set::task::{task_set_task_repository, task_set_task_service};
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetModel, TaskSetUpdateModel};
 use crate::task_set::task_set_repository;
+use crate::terminal::terminal_contracts::TerminalFilterContract;
+use crate::terminal::terminal_service;
 use chrono::Utc;
 use tauri::AppHandle;
 use uuid::Uuid;
@@ -64,9 +64,9 @@ pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: Uu
 		let spawn_contract = task_set_task_service::build_spawn_contract(project_id, &task_set_task).await?;
 
 		if task_set_task.blocking {
-			pty_session_service::spawn_blocking(app_handle, spawn_contract).await?;
+			terminal_service::spawn_blocking(app_handle, spawn_contract).await?;
 		} else {
-			pty_session_service::spawn(app_handle, spawn_contract).await?;
+			terminal_service::spawn(app_handle, spawn_contract).await?;
 		}
 	}
 
@@ -81,12 +81,12 @@ pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: 
 }
 
 pub async fn stop_one(task_set_id: Uuid) -> Result<()> {
-	let filter = PtySessionFilterContract {
+	let filter = TerminalFilterContract {
 		task_set_id: Some(task_set_id),
-		..PtySessionFilterContract::default()
+		..TerminalFilterContract::default()
 	};
 
-	pty_session_service::kill_many(filter).await?;
+	terminal_service::kill_many(filter).await?;
 
 	Ok(())
 }

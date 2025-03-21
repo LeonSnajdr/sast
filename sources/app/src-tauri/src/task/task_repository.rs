@@ -3,8 +3,8 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::prelude::*;
-use crate::pty_session::pty_session_enums::PtySessionHistoryPersistence;
 use crate::task::task_models::{TaskInfoModel, TaskModel, TaskUpdateModel};
+use crate::terminal::terminal_enums::TerminalHistoryPersistence;
 
 pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 	let task = sqlx::query_as!(
@@ -21,7 +21,7 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
                 tab_name,
                 no_exit,
                 force_kill,
-                history_persistence as "history_persistence: PtySessionHistoryPersistence",
+                history_persistence as "history_persistence: TerminalHistoryPersistence",
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
         "#,
@@ -76,7 +76,7 @@ pub async fn get_one(id: Uuid) -> Result<TaskModel> {
                 tab_name,
                 no_exit,
                 force_kill,
-                history_persistence as "history_persistence: PtySessionHistoryPersistence",
+                history_persistence as "history_persistence: TerminalHistoryPersistence",
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
