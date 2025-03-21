@@ -109,6 +109,14 @@ async ptySessionKill(id: string) : Promise<Result<null, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
+async ptySessionDelete(id: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("pty_session_delete", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async placeholderCreate(placeholderCreateContract: PlaceholderCreateContract) : Promise<Result<PlaceholderContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("placeholder_create", { placeholderCreateContract }) };
@@ -283,15 +291,17 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
-ptySessionDeletedEvent: PtySessionDeletedEvent,
-ptySessionKilledEvent: PtySessionKilledEvent,
-ptySessionReadEvent: PtySessionReadEvent,
-ptySessionSpawnedEvent: PtySessionSpawnedEvent
+terminalCreatedEvent: TerminalCreatedEvent,
+terminalDeletedEvent: TerminalDeletedEvent,
+terminalShellKilledEvent: TerminalShellKilledEvent,
+terminalShellReadEvent: TerminalShellReadEvent,
+terminalShellSpawnedEvent: TerminalShellSpawnedEvent
 }>({
-ptySessionDeletedEvent: "pty-session-deleted-event",
-ptySessionKilledEvent: "pty-session-killed-event",
-ptySessionReadEvent: "pty-session-read-event",
-ptySessionSpawnedEvent: "pty-session-spawned-event"
+terminalCreatedEvent: "terminal-created-event",
+terminalDeletedEvent: "terminal-deleted-event",
+terminalShellKilledEvent: "terminal-shell-killed-event",
+terminalShellReadEvent: "terminal-shell-read-event",
+terminalShellSpawnedEvent: "terminal-shell-spawned-event"
 })
 
 /** user-defined constants **/
@@ -311,16 +321,12 @@ export type PlaceholderUpdateContract = { id: string; projectId: string; name: s
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
-export type PtySessionDeletedEvent = string
 export type PtySessionFilterContract = { id: string | null; projectId: string | null; taskId: string | null; taskSetId: string | null }
 export type PtySessionHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
-export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string; position: number }
-export type PtySessionKilledEvent = string
-export type PtySessionReadEvent = PtySessionReadEventData
-export type PtySessionReadEventData = { id: string; data: string }
+export type PtySessionInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string; shellStatus: PtySessionShellStatus }
 export type PtySessionResizeContract = { cols: number; rows: number }
+export type PtySessionShellStatus = "Creating" | "Running" | "Restarting" | "Killing" | "Killed"
 export type PtySessionSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence }
-export type PtySessionSpawnedEvent = string
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
@@ -333,6 +339,12 @@ export type TaskSetInfoContract = { id: string; projectId: string; name: string;
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: PtySessionHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TerminalCreatedEvent = string
+export type TerminalDeletedEvent = string
+export type TerminalShellKilledEvent = string
+export type TerminalShellReadEvent = TerminalShellReadEventData
+export type TerminalShellReadEventData = { id: string; data: string }
+export type TerminalShellSpawnedEvent = string
 
 /** tauri-specta globals **/
 

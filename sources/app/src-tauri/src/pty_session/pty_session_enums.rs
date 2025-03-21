@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone, specta::Type, Serialize, Deserialize)]
 pub enum PtySessionShellStatus {
 	Creating,
 	Running,

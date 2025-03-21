@@ -36,6 +36,7 @@ pub fn run() {
 			pty_session_commands::pty_session_get_many_info,
 			pty_session_commands::pty_session_resize,
 			pty_session_commands::pty_session_kill,
+			pty_session_commands::pty_session_delete,
 			placeholder_commands::placeholder_create,
 			placeholder_commands::placeholder_get_many,
 			placeholder_commands::placeholder_get_one,
@@ -59,10 +60,11 @@ pub fn run() {
 			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
-			pty_session_events::PtySessionDeletedEvent,
-			pty_session_events::PtySessionReadEvent,
-			pty_session_events::PtySessionSpawnedEvent,
-			pty_session_events::PtySessionKilledEvent,
+			pty_session_events::TerminalDeletedEvent,
+			pty_session_events::TerminalCreatedEvent,
+			pty_session_events::TerminalShellKilledEvent,
+			pty_session_events::TerminalShellSpawnedEvent,
+			pty_session_events::TerminalShellReadEvent,
 		]);
 
 	#[cfg(debug_assertions)]

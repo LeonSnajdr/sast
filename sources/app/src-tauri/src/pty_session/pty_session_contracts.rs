@@ -1,4 +1,4 @@
-use crate::pty_session::pty_session_enums::PtySessionHistoryPersistence;
+use crate::pty_session::pty_session_enums::{PtySessionHistoryPersistence, PtySessionShellStatus};
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use uuid::Uuid;
@@ -25,7 +25,7 @@ pub struct PtySessionInfoContract {
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: String,
-	pub position: i32,
+	pub shell_status: PtySessionShellStatus,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]

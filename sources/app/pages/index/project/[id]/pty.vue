@@ -20,7 +20,7 @@ const { selectedProject } = storeToRefs(projectStore);
 let unlistenPtySpawnedEvent: UnlistenFn;
 
 onMounted(async () => {
-    unlistenPtySpawnedEvent = await events.ptySessionSpawnedEvent.listen((event) => {
+    unlistenPtySpawnedEvent = await events.terminalCreatedEvent.listen((event) => {
         navigateTo({ name: "index-project-id-pty-sessionId", params: { id: selectedProject.value.id, sessionId: event.payload } });
     });
 });

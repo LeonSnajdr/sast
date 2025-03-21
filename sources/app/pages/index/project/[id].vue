@@ -17,8 +17,10 @@ const ptySessionStore = usePtySessionStore();
 
 const { isLoading, selectedProject } = storeToRefs(projectStore);
 
-let unlistenPtyKilledEvent: UnlistenFn;
-let unlistenPtySpawnedEvent: UnlistenFn;
+let unlistenTerminalDeletedEvent: UnlistenFn;
+let unlistenTerminalCreatedEvent: UnlistenFn;
+let unlistenTerminalShellSpawnedEvent: UnlistenFn;
+let unlistenTerminalShellKilledEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     await loadProject();
@@ -30,8 +32,10 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     selectedProject.value = {} as ProjectContract;
 
-    unlistenPtyKilledEvent();
-    unlistenPtySpawnedEvent();
+    unlistenTerminalDeletedEvent();
+    unlistenTerminalCreatedEvent();
+    unlistenTerminalShellKilledEvent();
+    unlistenTerminalShellSpawnedEvent();
 });
 
 const loadProject = async () => {
@@ -49,11 +53,19 @@ const loadTasks = async () => {
 const loadPtySessions = async () => {
     await ptySessionStore.loadAll();
 
-    unlistenPtyKilledEvent = await events.ptySessionKilledEvent.listen(() => {
+    unlistenTerminalDeletedEvent = await events.terminalDeletedEvent.listen(() => {
         ptySessionStore.loadAll();
     });
 
-    unlistenPtySpawnedEvent = await events.ptySessionSpawnedEvent.listen(() => {
+    unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {
+        ptySessionStore.loadAll();
+    });
+
+    unlistenTerminalShellSpawnedEvent = await events.terminalShellSpawnedEvent.listen(() => {
+        ptySessionStore.loadAll();
+    });
+
+    unlistenTerminalShellKilledEvent = await events.terminalShellKilledEvent.listen(() => {
         ptySessionStore.loadAll();
     });
 };

@@ -44,30 +44,22 @@ pub async fn get_many(filter: PtySessionFilterModel) -> Result<Vec<Arc<PtySessio
 
 pub async fn get_many_info(filter: PtySessionFilterModel) -> Result<Vec<PtySessionInfoModel>> {
 	let filtered_sessions = get_many(filter).await?;
+	let mut info_models = Vec::with_capacity(filtered_sessions.len());
 
-	let info_models = filtered_sessions
-		.into_iter()
-		.map(|session| PtySessionInfoModel {
+	for session in filtered_sessions {
+		let shell_guard = session.shell.read().await;
+
+		info_models.push(PtySessionInfoModel {
 			id: session.id,
 			project_id: session.meta.project_id,
 			name: session.meta.name.clone(),
 			task_id: session.meta.task_id,
 			task_set_id: session.meta.task_set_id,
-			position: session.meta.position,
-		})
-		.collect();
+			shell_status: shell_guard.status.lock().await.clone(),
+		});
+	}
 
 	Ok(info_models)
-}
-
-pub async fn get_next_position() -> Result<i32> {
-	let sessions = PTY_STATE.sessions.read().await;
-
-	let max_position_option = sessions.iter().cloned().map(|session| session.meta.position).max();
-
-	let next_position = max_position_option.unwrap_or(0) + 1;
-
-	Ok(next_position)
 }
 
 fn matches_filter(session: &PtySessionModel, filter: &PtySessionFilterModel) -> bool {

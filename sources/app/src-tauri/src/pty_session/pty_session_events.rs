@@ -4,20 +4,23 @@ use tauri_specta::Event;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct PtySessionDeletedEvent(pub Uuid);
+pub struct TerminalDeletedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct PtySessionSpawnedEvent(pub Uuid);
+pub struct TerminalCreatedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct PtySessionKilledEvent(pub Uuid);
+pub struct TerminalShellKilledEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct PtySessionReadEvent(pub PtySessionReadEventData);
+pub struct TerminalShellSpawnedEvent(pub Uuid);
+
+#[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
+pub struct TerminalShellReadEvent(pub TerminalShellReadEventData);
 
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct PtySessionReadEventData {
+pub struct TerminalShellReadEventData {
 	pub id: Uuid,
 	pub data: String,
 }

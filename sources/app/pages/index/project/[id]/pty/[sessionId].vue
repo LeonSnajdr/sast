@@ -76,13 +76,13 @@ onMounted(async () => {
         fitAddon.fit();
     });
 
-    const unlistenPtyReadEvent = await events.ptySessionReadEvent.listen((eventData) => {
+    const unlistenPtyReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
         if (eventData.payload.id !== route.params.sessionId) return;
 
         terminal.write(eventData.payload.data);
     });
 
-    const unlistenPtyKilledEvent = await events.ptySessionKilledEvent.listen((event) => {
+    const unlistenPtyKilledEvent = await events.terminalDeletedEvent.listen((event) => {
         if (event.payload !== route.params.sessionId) return;
 
         navigateTo({ name: "index-project-id-pty" });

@@ -11,7 +11,8 @@
                 </template>
                 <span class="text-truncate" style="max-width: 150px">{{ ptySession.name }}</span>
                 <template #append>
-                    <PtySessionActionKill :id="ptySession.id" />
+                    <PtySessionActionKill v-if="ptySession.shellStatus === 'Running'" :id="ptySession.id" />
+                    <PtySessionActionDelete v-if="ptySession.shellStatus === 'Killed'" :id="ptySession.id" />
                 </template>
             </VBtn>
         </VSlideGroupItem>

@@ -22,7 +22,6 @@ pub struct PtySessionMetaModel {
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: String,
-	pub position: i32,
 	pub history: Mutex<String>,
 }
 
@@ -41,7 +40,7 @@ pub struct PtySessionInfoModel {
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: String,
-	pub position: i32,
+	pub shell_status: PtySessionShellStatus,
 }
 
 pub struct PtySessionFilterModel {

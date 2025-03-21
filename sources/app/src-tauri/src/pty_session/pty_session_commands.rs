@@ -52,3 +52,11 @@ pub async fn pty_session_kill(id: Uuid) -> Result<()> {
 
 	Ok(())
 }
+
+#[tauri::command]
+#[specta::specta]
+pub async fn pty_session_delete(app_handle: AppHandle, id: Uuid) -> Result<()> {
+	pty_session_service::delete(&app_handle, id).await?;
+
+	Ok(())
+}

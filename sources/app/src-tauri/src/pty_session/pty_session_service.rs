@@ -2,7 +2,7 @@ use crate::prelude::*;
 use crate::pty_session::pty_session_contracts::{PtySessionFilterContract, PtySessionInfoContract, PtySessionResizeContract, PtySessionSpawnContract};
 use crate::pty_session::pty_session_enums::{PtySessionHistoryPersistence, PtySessionShellStatus};
 use crate::pty_session::pty_session_events::{
-	PtySessionDeletedEvent, PtySessionKilledEvent, PtySessionReadEvent, PtySessionReadEventData, PtySessionSpawnedEvent,
+	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellKilledEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellSpawnedEvent,
 };
 use crate::pty_session::pty_session_models::{PtySessionBehaviorModel, PtySessionFilterModel, PtySessionMetaModel, PtySessionModel, PtySessionShellModel};
 use crate::pty_session::pty_session_repository;
@@ -33,7 +33,7 @@ pub async fn spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContra
 
 async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawnContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
-	let meta = build_meta_model(&spawn_contract, None, None).await?;
+	let meta = build_meta_model(&spawn_contract, None).await?;
 	let behavior = build_behavior_model(&spawn_contract);
 	let shell = build_shell_model(&spawn_contract)?;
 
@@ -47,7 +47,7 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: PtySessionSpawn
 
 	pty_session_repository::create_one(session).await?;
 
-	PtySessionSpawnedEvent(id).emit(app_handle).map_err(|_| Error::Failed)?;
+	TerminalCreatedEvent(id).emit(app_handle).map_err(|_| Error::Failed)?;
 
 	Ok(id)
 }
@@ -94,12 +94,7 @@ fn build_shell_model(spawn_contract: &PtySessionSpawnContract) -> Result<PtySess
 	Ok(shell_model)
 }
 
-async fn build_meta_model(
-	spawn_contract: &PtySessionSpawnContract,
-	existing_position: Option<i32>,
-	existing_history: Option<String>,
-) -> Result<PtySessionMetaModel> {
-	let position = existing_position.unwrap_or(pty_session_repository::get_next_position().await?);
+async fn build_meta_model(spawn_contract: &PtySessionSpawnContract, existing_history: Option<String>) -> Result<PtySessionMetaModel> {
 	let history = existing_history.unwrap_or(String::new());
 
 	let meta_model = PtySessionMetaModel {
@@ -107,7 +102,6 @@ async fn build_meta_model(
 		task_id: spawn_contract.task_id,
 		task_set_id: spawn_contract.task_set_id,
 		name: build_name(spawn_contract.name.clone()),
-		position,
 		history: Mutex::new(history),
 	};
 
@@ -140,6 +134,8 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 		*session.shell.read().await.status.lock().await = PtySessionShellStatus::Running;
 
+		TerminalShellSpawnedEvent(kill_session_id).emit(&kill_app_handle).unwrap();
+
 		let exit_code = session.shell.read().await.child.lock().await.wait().unwrap().exit_code();
 
 		session_kill_sender.send(()).unwrap();
@@ -162,7 +158,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			return;
 		}
 
-		let keep_session = match session.behavior.history_persistence {
+		let mut keep_session = match session.behavior.history_persistence {
 			PtySessionHistoryPersistence::Always => true,
 			PtySessionHistoryPersistence::Never => false,
 			PtySessionHistoryPersistence::OnError if exit_code != 0 => true,
@@ -170,13 +166,17 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			_ => false,
 		};
 
-		if !keep_session || *session.shell.read().await.status.lock().await == PtySessionShellStatus::Killing {
-			delete(&kill_app_handle, kill_session_id).await.unwrap();
+		if *session.shell.read().await.status.lock().await == PtySessionShellStatus::Killing {
+			keep_session = false;
 		}
 
 		*session.shell.read().await.status.lock().await = PtySessionShellStatus::Killed;
 
-		PtySessionKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
+		if !keep_session {
+			delete(&kill_app_handle, kill_session_id).await.unwrap();
+		}
+
+		TerminalShellKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
 	});
 
 	let read_app_handle = app_handle.clone();
@@ -218,12 +218,12 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 			session.meta.history.lock().await.push_str(&read_data);
 
-			let event_data = PtySessionReadEventData {
+			let event_data = TerminalShellReadEventData {
 				id: read_session_id.clone(),
 				data: read_data,
 			};
 
-			if let Err(e) = PtySessionReadEvent(event_data).emit(&read_app_handle) {
+			if let Err(e) = TerminalShellReadEvent(event_data).emit(&read_app_handle) {
 				println!("Emit failed for session {}: {}", read_session_id, e);
 				break;
 			}
@@ -333,7 +333,7 @@ pub async fn kill_many(filter: PtySessionFilterContract) -> Result<()> {
 pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	let session = pty_session_repository::get_one(&id).await?;
 
-	if *session.shell.read().await.status.lock().await != PtySessionShellStatus::Killing {
+	if *session.shell.read().await.status.lock().await != PtySessionShellStatus::Killed {
 		return Err(Error::InvalidStatus);
 	};
 
@@ -341,7 +341,7 @@ pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 
 	pty_session_repository::delete_one(&id).await?;
 
-	PtySessionDeletedEvent(id).emit(app_handle).unwrap();
+	TerminalDeletedEvent(id).emit(app_handle).unwrap();
 
 	Ok(())
 }
