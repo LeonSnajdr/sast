@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            insert into task\n                (id, project_id, name, tab_name, no_exit, force_kill, history_persistence, date_created, date_last_updated)\n                values\n                ($1, $2, $3, $4, $5, $6, $7, $8, $9)\n\t\t\treturning\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                tab_name,\n                no_exit,\n                force_kill,\n                history_persistence as \"history_persistence: PtySessionHistoryPersistence\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                tab_name,\n                no_exit,\n                force_kill,\n                history_persistence as \"history_persistence: TerminalHistoryPersistence\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from task\n            where id = $1\n        ",
   "describe": {
     "columns": [
       {
@@ -34,7 +34,7 @@
         "type_info": "Bool"
       },
       {
-        "name": "history_persistence: PtySessionHistoryPersistence",
+        "name": "history_persistence: TerminalHistoryPersistence",
         "ordinal": 6,
         "type_info": "Text"
       },
@@ -50,7 +50,7 @@
       }
     ],
     "parameters": {
-      "Right": 9
+      "Right": 1
     },
     "nullable": [
       false,
@@ -64,5 +64,5 @@
       false
     ]
   },
-  "hash": "07223ff9aefdd070079a1ac6c2e46d9e1f28b4cd9665422a8826d4f38c031066"
+  "hash": "a63846aa4feb170de5ed0a1b93fba4bcef676af431ed28684b52a679872eefc1"
 }

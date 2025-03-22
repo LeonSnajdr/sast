@@ -13,7 +13,7 @@ const route = useRoute("index-project-id");
 const projectStore = useProjectStore();
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
-const ptySessionStore = usePtySessionStore();
+const terminalStore = useTerminalStore();
 
 const { isLoading, selectedProject } = storeToRefs(projectStore);
 
@@ -26,7 +26,7 @@ onBeforeMount(async () => {
     await loadProject();
     await loadPlaceholders();
     await loadTasks();
-    await loadPtySessions();
+    await loadTerminals();
 });
 
 onBeforeUnmount(() => {
@@ -50,23 +50,23 @@ const loadTasks = async () => {
     await taskStore.loadAll();
 };
 
-const loadPtySessions = async () => {
-    await ptySessionStore.loadAll();
+const loadTerminals = async () => {
+    await terminalStore.loadAll();
 
     unlistenTerminalDeletedEvent = await events.terminalDeletedEvent.listen(() => {
-        ptySessionStore.loadAll();
+        terminalStore.loadAll();
     });
 
     unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {
-        ptySessionStore.loadAll();
+        terminalStore.loadAll();
     });
 
     unlistenTerminalShellSpawnedEvent = await events.terminalShellSpawnedEvent.listen(() => {
-        ptySessionStore.loadAll();
+        terminalStore.loadAll();
     });
 
     unlistenTerminalShellKilledEvent = await events.terminalShellKilledEvent.listen(() => {
-        ptySessionStore.loadAll();
+        terminalStore.loadAll();
     });
 };
 </script>

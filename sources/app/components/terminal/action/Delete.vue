@@ -13,11 +13,11 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const deleteTerminal = async () => {
-    const killResult = await commands.ptySessionDelete(props.id);
+    const killResult = await commands.terminalDelete(props.id);
 
     if (killResult.status === "error") {
         //TODO adjust error messag
-        notify.error(t("ptySession.kill.error"), { error: killResult.error });
+        notify.error(t("terminal.kill.error"), { error: killResult.error });
     }
 };
 </script>

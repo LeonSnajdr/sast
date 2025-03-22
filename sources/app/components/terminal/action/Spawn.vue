@@ -11,22 +11,22 @@ const projectService = useProjectStore();
 const { selectedProject } = storeToRefs(projectService);
 
 const ptySpawn = async () => {
-    const spawnContract: PtySessionSpawnContract = {
+    const spawnContract: TerminalSpawnContract = {
         name: null,
         projectId: selectedProject.value.id,
         taskId: null,
         taskSetId: null,
-        command: "volta run yarn migrate-mongo up --brand cores",
+        command: null,
         noExit: false,
-        workingDir: "C:\\Repos\\selfserviceportal\\mongodb",
+        workingDir: null,
         forceKill: false,
         historyPersistence: "OnError"
     };
 
-    const spawnResult = await commands.ptySessionSpawn(spawnContract);
+    const spawnResult = await commands.terminalSpawn(spawnContract);
 
     if (spawnResult.status === "error") {
-        notify.error(t("ptySession.spawn.error"), { error: spawnResult.error });
+        notify.error(t("terminal.spawn.error"), { error: spawnResult.error });
         return;
     }
 };

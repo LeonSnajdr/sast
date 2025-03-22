@@ -13,10 +13,10 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const killSession = async () => {
-    const killResult = await commands.ptySessionKill(props.id);
+    const killResult = await commands.terminalKill(props.id);
 
     if (killResult.status === "error") {
-        notify.error(t("ptySession.kill.error"), { error: killResult.error });
+        notify.error(t("terminal.kill.error"), { error: killResult.error });
     }
 };
 </script>

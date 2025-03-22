@@ -47,7 +47,7 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
         },
         {
             icon: "mdi-tab",
-            name: t("ptySession.plural"),
+            name: t("terminal.plural"),
             to: { name: "index-project-id-pty", params: { id: selectedProject.value.id } }
         },
         {

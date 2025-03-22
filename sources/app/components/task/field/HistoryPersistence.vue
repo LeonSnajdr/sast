@@ -15,11 +15,11 @@
 </template>
 
 <script setup lang="ts">
-const historyPersistence = defineModel<PtySessionHistoryPersistence>();
+const historyPersistence = defineModel<TerminalHistoryPersistence>();
 
 const { t } = useI18n();
 
-const items = computed((): { value: PtySessionHistoryPersistence; translation: string }[] => {
+const items = computed((): { value: TerminalHistoryPersistence; translation: string }[] => {
     return [
         {
             value: "Always",

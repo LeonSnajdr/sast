@@ -67,8 +67,8 @@ onMounted(async () => {
 
     await restoreHistory();
 
-    terminal.onData((data) => writeToPtySession(data));
-    terminal.onResize((data) => resizePtySession(data));
+    terminal.onData((data) => writeToTerminal(data));
+    terminal.onResize((data) => resizeTerminal(data));
 
     terminal.open(termElement.value!);
 
@@ -106,10 +106,10 @@ onBeforeUnmount(() => {
 });
 
 const restoreHistory = async () => {
-    const readHistoryResult = await commands.ptySessionGetReadHistory(route.params.sessionId);
+    const readHistoryResult = await commands.terminalGetReadHistory(route.params.sessionId);
 
     if (readHistoryResult.status === "error") {
-        notify.error(t("ptySession.open.error"), { error: readHistoryResult.error });
+        notify.error(t("terminal.open.error"), { error: readHistoryResult.error });
         return;
     }
 
@@ -120,15 +120,15 @@ const restoreHistory = async () => {
     terminal.write(readHistoryResult.data);
 };
 
-const writeToPtySession = async (data: string) => {
-    const writeResult = await commands.ptySessionWrite(route.params.sessionId, data);
+const writeToTerminal = async (data: string) => {
+    const writeResult = await commands.terminalWrite(route.params.sessionId, data);
     if (writeResult.status === "error") {
         console.error("failed to write data");
     }
 };
 
-async function resizePtySession(resizeContract: PtySessionResizeContract) {
-    const resizeResult = await commands.ptySessionResize(route.params.sessionId, resizeContract);
+async function resizeTerminal(resizeContract: TerminalResizeContract) {
+    const resizeResult = await commands.terminalResize(route.params.sessionId, resizeContract);
     if (resizeResult.status === "error") {
         console.error("Error while resizing pty");
     }

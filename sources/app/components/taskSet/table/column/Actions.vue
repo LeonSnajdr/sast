@@ -1,8 +1,8 @@
 <template>
     <div @click.prevent.stop class="d-flex">
-        <BaseBtnIcon @click="start()" :disabled="hasRunningPtySession" :loading="isStarting" color="success" icon="mdi-play" />
-        <BaseBtnIcon @click="restart()" :disabled="!hasRunningPtySession" :loading="isRestarting" color="info" icon="mdi-autorenew" />
-        <BaseBtnIcon @click="stop()" :disabled="!hasRunningPtySession" :loading="isStopping" color="error" icon="mdi-stop" />
+        <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal" :loading="isStarting" color="success" icon="mdi-play" />
+        <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
 </template>
 
@@ -14,16 +14,16 @@ const props = defineProps<{
 const notify = useNotify();
 const { t } = useI18n();
 
-const ptySessionStore = usePtySessionStore();
+const terminalStore = useTerminalStore();
 
-const { ptySessions } = storeToRefs(ptySessionStore);
+const { terminals } = storeToRefs(terminalStore);
 
 const isStarting = ref(false);
 const isStopping = ref(false);
 const isRestarting = ref(false);
 
-const hasRunningPtySession = computed(() => {
-    return ptySessions.value.some((x) => x.taskSetId === props.taskSet.id);
+const hasRunningTerminal = computed(() => {
+    return terminals.value.some((x) => x.taskSetId === props.taskSet.id);
 });
 
 const start = async () => {

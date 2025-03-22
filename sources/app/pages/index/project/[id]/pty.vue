@@ -1,8 +1,8 @@
 <template>
     <VAppBar>
-        <PtySessionTabs />
+        <TerminalTabs />
         <VSpacer />
-        <PtySessionActionSpawn />
+        <TerminalActionSpawn />
     </VAppBar>
 
     <div class="h-100">
