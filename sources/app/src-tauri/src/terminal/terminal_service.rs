@@ -33,13 +33,14 @@ pub async fn spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract
 
 async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
-	let meta = build_meta_model(&spawn_contract, None).await?;
+	let meta = build_meta_model(&spawn_contract).await?;
 	let behavior = build_behavior_model(&spawn_contract);
 	let shell = build_shell_model(&spawn_contract)?;
 
 	let session = TerminalModel {
 		id,
 		concurrency_guard: Mutex::new(()),
+		history: Mutex::new(String::new()),
 		behavior,
 		meta,
 		shell: RwLock::new(shell),
@@ -94,18 +95,13 @@ fn build_shell_model(spawn_contract: &TerminalSpawnContract) -> Result<TerminalS
 	Ok(shell_model)
 }
 
-async fn build_meta_model(spawn_contract: &TerminalSpawnContract, existing_history: Option<String>) -> Result<TerminalMetaModel> {
-	let history = existing_history.unwrap_or(String::new());
-
-	let meta_model = TerminalMetaModel {
+fn build_meta_model(spawn_contract: &TerminalSpawnContract) -> TerminalMetaModel {
+	TerminalMetaModel {
 		project_id: spawn_contract.project_id,
 		task_id: spawn_contract.task_id,
 		task_set_id: spawn_contract.task_set_id,
 		name: build_name(spawn_contract.name.clone()),
-		history: Mutex::new(history),
-	};
-
-	Ok(meta_model)
+	}
 }
 
 fn build_behavior_model(spawn_contract: &TerminalSpawnContract) -> TerminalBehaviorModel {
@@ -216,7 +212,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 			let read_data = String::from_utf8_lossy(&buf[..read_bytes]).to_string();
 
-			session.meta.history.lock().await.push_str(&read_data);
+			session.history.lock().await.push_str(&read_data);
 
 			let event_data = TerminalShellReadEventData {
 				id: read_session_id.clone(),
@@ -259,7 +255,7 @@ pub async fn write(id: Uuid, data: String) -> Result<()> {
 pub async fn get_read_history(id: Uuid) -> Result<String> {
 	let session = terminal_repository::get_one(&id).await?;
 
-	let history = session.meta.history.lock().await.clone();
+	let history = session.history.lock().await.clone();
 	Ok(history)
 }
 

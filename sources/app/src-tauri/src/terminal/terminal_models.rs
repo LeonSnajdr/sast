@@ -7,6 +7,7 @@ use uuid::Uuid;
 pub struct TerminalModel {
 	pub id: Uuid,
 	pub concurrency_guard: Mutex<()>,
+	pub history: Mutex<String>,
 	pub behavior: TerminalBehaviorModel,
 	pub meta: TerminalMetaModel,
 	pub shell: RwLock<TerminalShellModel>,
@@ -22,7 +23,6 @@ pub struct TerminalMetaModel {
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: String,
-	pub history: Mutex<String>,
 }
 
 pub struct TerminalShellModel {
