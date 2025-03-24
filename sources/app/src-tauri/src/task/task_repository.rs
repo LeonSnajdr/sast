@@ -65,6 +65,28 @@ pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
 	Ok(tasks)
 }
 
+pub async fn get_one_info(id: Uuid) -> Result<TaskInfoModel> {
+	let task = sqlx::query_as!(
+		TaskInfoModel,
+		r#"--sql
+            select
+                id as "id: Uuid",
+                project_id as "project_id: Uuid",
+                name,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_updated as "date_last_updated: DateTime<Utc>"
+            from task
+            where id is $1
+        "#,
+		id
+	)
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(task)
+}
+
 pub async fn get_one(id: Uuid) -> Result<TaskModel> {
 	let task = sqlx::query_as!(
 		TaskModel,

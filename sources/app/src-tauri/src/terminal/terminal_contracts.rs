@@ -1,3 +1,4 @@
+use crate::task::task_contracts::TaskInfoContract;
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use serde::{Deserialize, Serialize};
 use specta::Type;
@@ -21,7 +22,7 @@ pub struct TerminalSpawnContract {
 pub struct TerminalInfoContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
-	pub task_id: Option<Uuid>,
+	pub task: Option<TaskInfoContract>,
 	pub name: String,
 	pub shell_status: TerminalShellStatus,
 }

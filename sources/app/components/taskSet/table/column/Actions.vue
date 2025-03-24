@@ -23,7 +23,7 @@ const isStopping = ref(false);
 const isRestarting = ref(false);
 
 const hasRunningTerminal = computed(() => {
-    return terminals.value.some((x) => (x.taskId ? props.taskSet.taskIds.includes(x.taskId) : false));
+    return terminals.value.some((x) => (x.task ? props.taskSet.taskIds.includes(x.task.id) : false));
 });
 
 const start = async () => {

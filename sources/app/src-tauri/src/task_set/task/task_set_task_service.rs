@@ -30,12 +30,6 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoContra
 	Ok(contracts)
 }
 
-pub async fn get_all_task_ids(task_set_id: Uuid) -> Result<Vec<Uuid>> {
-	let task_ids = task_set_task_repository::get_all_task_ids(task_set_id).await?;
-
-	Ok(task_ids)
-}
-
 pub async fn build_spawn_contract(project_id: Uuid, task_set_task: &TaskSetTaskModel) -> Result<TerminalSpawnContract> {
 	let task_spawn_contract = task_service::build_spawn_contract(project_id, task_set_task.task_id).await?;
 

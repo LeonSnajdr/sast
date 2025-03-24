@@ -1,4 +1,5 @@
 use crate::prelude::*;
+use crate::task::task_service;
 use crate::terminal::terminal_contracts::{TerminalFilterContract, TerminalInfoContract, TerminalResizeContract, TerminalSpawnContract};
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use crate::terminal::terminal_events::{
@@ -389,9 +390,18 @@ pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContrac
 pub async fn get_many_info(filter: TerminalFilterContract) -> Result<Vec<TerminalInfoContract>> {
 	let filter_model = TerminalFilterModel::from(filter);
 
-	let session_models = terminal_repository::get_many_info(filter_model).await?;
+	let terminals = terminal_repository::get_many_info(filter_model).await?;
 
-	let session_info_contracts = session_models.into_iter().map(TerminalInfoContract::from).collect();
+	let mut terminal_infos = Vec::new();
 
-	Ok(session_info_contracts)
+	for terminal in terminals {
+		let task = match terminal.task_id {
+			Some(task_id) => Some(task_service::get_one_info(task_id).await?),
+			None => None,
+		};
+
+		terminal_infos.push(TerminalInfoContract::from(terminal, task));
+	}
+
+	Ok(terminal_infos)
 }

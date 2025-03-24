@@ -22,7 +22,7 @@ pub struct TaskContract {
 	pub date_last_updated: DateTime<Utc>,
 }
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TaskInfoContract {
 	pub id: Uuid,

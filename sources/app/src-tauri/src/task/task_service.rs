@@ -60,6 +60,13 @@ pub async fn get_one(id: Uuid) -> Result<TaskContract> {
 	Ok(task_contract)
 }
 
+pub async fn get_one_info(project_id: Uuid) -> Result<TaskInfoContract> {
+	let task_info_model = task_repository::get_one_info(project_id).await?;
+
+	let task_info_contract = TaskInfoContract::from(task_info_model);
+
+	Ok(task_info_contract)
+}
 pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoContract>> {
 	let task_info_models = task_repository::get_many_info(project_id).await?;
 
