@@ -329,22 +329,22 @@ export type TaskCreateContract = { projectId: string; name: string; tabName: str
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
 export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskSetCreateContract = { projectId: string; name: string }
-export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
+export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; taskIds: string[] }
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TerminalCreatedEvent = string
 export type TerminalDeletedEvent = string
-export type TerminalFilterContract = { id: string | null; projectId: string | null; taskId: string | null; taskSetId: string | null }
+export type TerminalFilterContract = { id: string | null; projectId: string | null; taskId: string | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
-export type TerminalInfoContract = { id: string; projectId: string; taskId: string | null; taskSetId: string | null; name: string; shellStatus: TerminalShellStatus }
+export type TerminalInfoContract = { id: string; projectId: string; taskId: string | null; name: string; shellStatus: TerminalShellStatus }
 export type TerminalResizeContract = { cols: number; rows: number }
 export type TerminalShellKilledEvent = string
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellSpawnedEvent = string
 export type TerminalShellStatus = "Creating" | "Running" | "Restarting" | "Killing" | "Killed"
-export type TerminalSpawnContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence }
+export type TerminalSpawnContract = { projectId: string; taskId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence }
 
 /** tauri-specta globals **/
 

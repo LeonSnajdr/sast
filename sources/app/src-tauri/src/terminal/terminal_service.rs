@@ -99,7 +99,6 @@ fn build_meta_model(spawn_contract: &TerminalSpawnContract) -> TerminalMetaModel
 	TerminalMetaModel {
 		project_id: spawn_contract.project_id,
 		task_id: spawn_contract.task_id,
-		task_set_id: spawn_contract.task_set_id,
 		name: build_name(spawn_contract.name.clone()),
 	}
 }
@@ -316,16 +315,6 @@ pub async fn kill(id: Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn kill_many(filter: TerminalFilterContract) -> Result<()> {
-	let sessions = get_many_info(filter).await?;
-
-	for session in sessions {
-		kill(session.id).await?;
-	}
-
-	Ok(())
-}
-
 pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
@@ -342,20 +331,31 @@ pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn restart(app_handle: &AppHandle, id: Uuid, spawn_contract: TerminalSpawnContract) -> Result<()> {
-	let filter = TerminalFilterContract {
-		id: Some(id),
-		..TerminalFilterContract::default()
-	};
+pub async fn kill_or_delete_first(app_handle: &AppHandle, filter: TerminalFilterContract) -> Result<()> {
+	let filter_model = TerminalFilterModel::from(filter);
+	let session_option = terminal_repository::get_first(filter_model).await;
 
-	restart_first(app_handle, filter, spawn_contract).await?;
+	if let Some(session) = session_option {
+		let status = session.shell.read().await.status.lock().await.clone();
+
+		match status {
+			TerminalShellStatus::Killed => {
+				delete(app_handle, session.id).await?;
+			}
+			TerminalShellStatus::Running => {
+				kill(session.id).await?;
+			}
+			_ => {
+				return Err(Error::InvalidStatus);
+			}
+		}
+	}
 
 	Ok(())
 }
 
-pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
+pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
 	let filter_model = TerminalFilterModel::from(filter);
-
 	let session_option = terminal_repository::get_first(filter_model).await;
 
 	if let Some(session) = session_option {
@@ -372,8 +372,16 @@ pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContrac
 		let id_clone = session.id.clone();
 		let app_handle_clone = app_handle.clone();
 
-		tauri::async_runtime::spawn(async move { start_handle_threads(&app_handle_clone, &id_clone).await });
+		let _ = start_handle_threads(&app_handle_clone, &id_clone).await?;
 	}
+
+	Ok(())
+}
+
+pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
+	let app_handle_clone = app_handle.clone();
+
+	tauri::async_runtime::spawn(async move { restart_first_blocking(&app_handle_clone, filter, spawn_contract).await });
 
 	Ok(())
 }

@@ -18,13 +18,14 @@ impl TaskSetContract {
 }
 
 impl TaskSetInfoContract {
-	pub fn from(value: TaskSetInfoModel) -> Self {
+	pub fn from(value: TaskSetInfoModel, task_ids: Vec<Uuid>) -> Self {
 		Self {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
 			date_created: value.date_created,
 			date_last_updated: value.date_last_updated,
+			task_ids,
 		}
 	}
 }

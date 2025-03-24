@@ -128,7 +128,6 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Ter
 	let pty_spawn_contract = TerminalSpawnContract {
 		project_id,
 		task_id: Some(task_id),
-		task_set_id: None,
 		name: task.tab_name,
 		command,
 		working_dir,
@@ -153,13 +152,13 @@ pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid
 	Ok(())
 }
 
-pub async fn stop_one(task_id: Uuid) -> Result<()> {
+pub async fn stop_one(app_handle: &AppHandle, task_id: Uuid) -> Result<()> {
 	let filter = TerminalFilterContract {
 		task_id: Some(task_id),
 		..TerminalFilterContract::default()
 	};
 
-	terminal_service::kill_many(filter).await?;
+	terminal_service::kill_or_delete_first(app_handle, filter).await?;
 
 	Ok(())
 }

@@ -8,7 +8,6 @@ use uuid::Uuid;
 pub struct TerminalSpawnContract {
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 	pub name: Option<String>,
 	pub working_dir: Option<String>,
 	pub command: Option<String>,
@@ -23,7 +22,6 @@ pub struct TerminalInfoContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 	pub name: String,
 	pub shell_status: TerminalShellStatus,
 }
@@ -41,7 +39,6 @@ pub struct TerminalFilterContract {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 }
 impl Default for TerminalFilterContract {
 	fn default() -> Self {
@@ -49,7 +46,6 @@ impl Default for TerminalFilterContract {
 			id: None,
 			project_id: None,
 			task_id: None,
-			task_set_id: None,
 		}
 	}
 }

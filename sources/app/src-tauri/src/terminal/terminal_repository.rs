@@ -59,7 +59,6 @@ pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalIn
 			project_id: meta_guard.project_id,
 			name: meta_guard.name.clone(),
 			task_id: meta_guard.task_id,
-			task_set_id: meta_guard.task_set_id,
 			shell_status: shell_guard.status.lock().await.clone(),
 		});
 	}
@@ -73,9 +72,8 @@ async fn matches_filter(session: &Arc<TerminalModel>, filter: &TerminalFilterMod
 	let matches_id = filter.id.map_or(true, |id| session.id == id);
 	let matches_project_id = filter.project_id.map_or(true, |id| meta_guard.project_id == id);
 	let matches_task_id = filter.task_id.map_or(true, |id| meta_guard.task_id == Some(id));
-	let matches_task_set_id = filter.task_set_id.map_or(true, |id| meta_guard.task_set_id == Some(id));
 
-	matches_id && matches_project_id && matches_task_id && matches_task_set_id
+	matches_id && matches_project_id && matches_task_id
 }
 
 pub async fn delete_one(id: &Uuid) -> Result<()> {

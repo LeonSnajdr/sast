@@ -34,7 +34,13 @@ pub async fn get_one(id: Uuid) -> Result<TaskSetContract> {
 pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskSetInfoContract>> {
 	let task_set_info_models = task_set_repository::get_many_info(project_id).await?;
 
-	let task_set_info_contracts = task_set_info_models.into_iter().map(TaskSetInfoContract::from).collect();
+	let mut task_set_info_contracts = Vec::new();
+
+	for task_set_info_model in task_set_info_models {
+		let task_ids = task_set_task_repository::get_all_task_ids(task_set_info_model.id).await?;
+
+		task_set_info_contracts.push(TaskSetInfoContract::from(task_set_info_model, task_ids));
+	}
 
 	Ok(task_set_info_contracts)
 }
@@ -74,19 +80,37 @@ pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: Uu
 }
 
 pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
-	stop_one(task_set_id).await?;
-	start_one(app_handle, project_id, task_set_id).await?;
+	let task_set_tasks = task_set_task_repository::get_all(task_set_id).await?;
+
+	for task_set_task in task_set_tasks {
+		let spawn_contract = task_set_task_service::build_spawn_contract(project_id, &task_set_task).await?;
+
+		let filter = TerminalFilterContract {
+			task_id: Some(task_set_task.task_id),
+			..TerminalFilterContract::default()
+		};
+
+		if task_set_task.blocking {
+			terminal_service::restart_first_blocking(app_handle, filter, spawn_contract).await?;
+		} else {
+			terminal_service::restart_first(app_handle, filter, spawn_contract).await?;
+		}
+	}
 
 	Ok(())
 }
 
-pub async fn stop_one(task_set_id: Uuid) -> Result<()> {
-	let filter = TerminalFilterContract {
-		task_set_id: Some(task_set_id),
-		..TerminalFilterContract::default()
-	};
+pub async fn stop_one(app_handle: &AppHandle, task_set_id: Uuid) -> Result<()> {
+	let task_set_tasks = task_set_task_repository::get_all(task_set_id).await?;
 
-	terminal_service::kill_many(filter).await?;
+	for task_set_task in task_set_tasks {
+		let filter = TerminalFilterContract {
+			task_id: Some(task_set_task.task_id),
+			..TerminalFilterContract::default()
+		};
+
+		terminal_service::kill_or_delete_first(app_handle, filter).await?
+	}
 
 	Ok(())
 }

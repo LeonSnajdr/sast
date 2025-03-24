@@ -24,6 +24,7 @@ pub struct TaskSetInfoContract {
 	pub name: String,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
+	pub task_ids: Vec<Uuid>,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]

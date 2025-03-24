@@ -15,7 +15,6 @@ const ptySpawn = async () => {
         name: null,
         projectId: selectedProject.value.id,
         taskId: null,
-        taskSetId: null,
         command: null,
         noExit: false,
         workingDir: null,

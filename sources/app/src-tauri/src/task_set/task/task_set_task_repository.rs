@@ -91,3 +91,20 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoModel>
 
 	Ok(task_set_tasks)
 }
+
+pub async fn get_all_task_ids(task_set_id: Uuid) -> Result<Vec<Uuid>> {
+	let task_ids = sqlx::query_scalar!(
+		r#"--sql
+            select
+            	task_id as "task_id: Uuid"
+            from task_set_task
+            where task_set_id is $1
+        "#,
+		task_set_id
+	)
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(task_ids)
+}

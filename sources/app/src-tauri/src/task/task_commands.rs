@@ -63,8 +63,8 @@ pub async fn task_restart_one(app_handle: AppHandle, project_id: Uuid, task_id: 
 
 #[tauri::command]
 #[specta::specta]
-pub async fn task_stop_one(task_id: Uuid) -> Result<()> {
-	task_service::stop_one(task_id).await?;
+pub async fn task_stop_one(app_handle: AppHandle, task_id: Uuid) -> Result<()> {
+	task_service::stop_one(&app_handle, task_id).await?;
 
 	Ok(())
 }

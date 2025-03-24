@@ -21,7 +21,6 @@ pub struct TerminalBehaviorModel {
 pub struct TerminalMetaModel {
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 	pub name: String,
 }
 
@@ -38,7 +37,6 @@ pub struct TerminalInfoModel {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 	pub name: String,
 	pub shell_status: TerminalShellStatus,
 }
@@ -47,5 +45,4 @@ pub struct TerminalFilterModel {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
 	pub task_id: Option<Uuid>,
-	pub task_set_id: Option<Uuid>,
 }
