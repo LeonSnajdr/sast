@@ -17,7 +17,7 @@ use uuid::Uuid;
 pub async fn spawn_blocking(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<()> {
 	let session_id = build_and_spawn(app_handle, spawn_contract).await?;
 
-	start_handle_threads(app_handle, &session_id).await;
+	let _ = start_handle_threads(app_handle, &session_id).await;
 
 	Ok(())
 }
@@ -33,7 +33,7 @@ pub async fn spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract
 
 async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnContract) -> Result<Uuid> {
 	let id = Uuid::new_v4();
-	let meta = build_meta_model(&spawn_contract).await?;
+	let meta = build_meta_model(&spawn_contract);
 	let behavior = build_behavior_model(&spawn_contract);
 	let shell = build_shell_model(&spawn_contract)?;
 
@@ -41,8 +41,8 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnCo
 		id,
 		concurrency_guard: Mutex::new(()),
 		history: Mutex::new(String::new()),
-		behavior,
-		meta,
+		behavior: RwLock::new(behavior),
+		meta: RwLock::new(meta),
 		shell: RwLock::new(shell),
 	};
 
@@ -154,7 +154,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			return;
 		}
 
-		let mut keep_session = match session.behavior.history_persistence {
+		let mut keep_session = match session.behavior.read().await.history_persistence {
 			TerminalHistoryPersistence::Always => true,
 			TerminalHistoryPersistence::Never => false,
 			TerminalHistoryPersistence::OnError if exit_code != 0 => true,
@@ -301,7 +301,7 @@ pub async fn kill(id: Uuid) -> Result<()> {
 
 	let mut child_killer = shell.child_killer.lock().await;
 
-	if session.behavior.force_kill {
+	if session.behavior.read().await.force_kill {
 		let mut writer = shell.writer.lock().await;
 
 		// Send ctrl+c to child to terminate the currently running process and ensure read thread is finished
@@ -366,6 +366,8 @@ pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContrac
 		let _ = session.concurrency_guard.lock().await;
 
 		*session.shell.write().await = build_shell_model(&spawn_contract)?;
+		*session.behavior.write().await = build_behavior_model(&spawn_contract);
+		*session.meta.write().await = build_meta_model(&spawn_contract);
 
 		let id_clone = session.id.clone();
 		let app_handle_clone = app_handle.clone();

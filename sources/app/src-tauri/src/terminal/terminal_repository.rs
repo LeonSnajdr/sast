@@ -16,29 +16,33 @@ struct PtyState {
 
 pub async fn create_one(session: TerminalModel) -> Result<()> {
 	PTY_STATE.sessions.write().await.push(Arc::new(session));
-
 	Ok(())
 }
 
 pub async fn get_one(id: &Uuid) -> Result<Arc<TerminalModel>> {
 	let sessions = PTY_STATE.sessions.read().await;
-
 	let session = sessions.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
-
 	Ok(session)
 }
 
 pub async fn get_first(filter: TerminalFilterModel) -> Option<Arc<TerminalModel>> {
 	let sessions = PTY_STATE.sessions.read().await;
-
-	sessions.iter().cloned().find(|session| matches_filter(session, &filter))
+	for session in sessions.iter().cloned() {
+		if matches_filter(&session, &filter).await {
+			return Some(session);
+		}
+	}
+	None
 }
 
 pub async fn get_many(filter: TerminalFilterModel) -> Result<Vec<Arc<TerminalModel>>> {
 	let sessions = PTY_STATE.sessions.read().await;
-
-	let filtered_sessions = sessions.iter().cloned().filter(|session| matches_filter(session, &filter)).collect();
-
+	let mut filtered_sessions = Vec::new();
+	for session in sessions.iter().cloned() {
+		if matches_filter(&session, &filter).await {
+			filtered_sessions.push(session);
+		}
+	}
 	Ok(filtered_sessions)
 }
 
@@ -48,13 +52,14 @@ pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalIn
 
 	for session in filtered_sessions {
 		let shell_guard = session.shell.read().await;
+		let meta_guard = session.meta.read().await;
 
 		info_models.push(TerminalInfoModel {
 			id: session.id,
-			project_id: session.meta.project_id,
-			name: session.meta.name.clone(),
-			task_id: session.meta.task_id,
-			task_set_id: session.meta.task_set_id,
+			project_id: meta_guard.project_id,
+			name: meta_guard.name.clone(),
+			task_id: meta_guard.task_id,
+			task_set_id: meta_guard.task_set_id,
 			shell_status: shell_guard.status.lock().await.clone(),
 		});
 	}
@@ -62,11 +67,13 @@ pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalIn
 	Ok(info_models)
 }
 
-fn matches_filter(session: &TerminalModel, filter: &TerminalFilterModel) -> bool {
+async fn matches_filter(session: &Arc<TerminalModel>, filter: &TerminalFilterModel) -> bool {
+	let meta_guard = session.meta.read().await;
+
 	let matches_id = filter.id.map_or(true, |id| session.id == id);
-	let matches_project_id = filter.project_id.map_or(true, |id| session.meta.project_id == id);
-	let matches_task_id = filter.task_id.map_or(true, |id| session.meta.task_id == Some(id));
-	let matches_task_set_id = filter.task_set_id.map_or(true, |id| session.meta.task_set_id == Some(id));
+	let matches_project_id = filter.project_id.map_or(true, |id| meta_guard.project_id == id);
+	let matches_task_id = filter.task_id.map_or(true, |id| meta_guard.task_id == Some(id));
+	let matches_task_set_id = filter.task_set_id.map_or(true, |id| meta_guard.task_set_id == Some(id));
 
 	matches_id && matches_project_id && matches_task_id && matches_task_set_id
 }
@@ -76,6 +83,5 @@ pub async fn delete_one(id: &Uuid) -> Result<()> {
 	if let Some(pos) = sessions.iter().position(|s| s.id == *id) {
 		sessions.remove(pos);
 	}
-
 	Ok(())
 }

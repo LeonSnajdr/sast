@@ -8,8 +8,8 @@ pub struct TerminalModel {
 	pub id: Uuid,
 	pub concurrency_guard: Mutex<()>,
 	pub history: Mutex<String>,
-	pub behavior: TerminalBehaviorModel,
-	pub meta: TerminalMetaModel,
+	pub behavior: RwLock<TerminalBehaviorModel>,
+	pub meta: RwLock<TerminalMetaModel>,
 	pub shell: RwLock<TerminalShellModel>,
 }
 
