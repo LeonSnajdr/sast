@@ -5,19 +5,23 @@
         density="comfortable"
     >
         <template #prepend>
-            <VIcon color="info" icon="mdi-powershell" />
-            <VBtn v-if="terminal.task" @click.prevent.stop color="success" size="20" variant="plain">
-                <VIcon icon="mdi-checkbox-marked-circle-outline" size="small" />
-                <VMenu activator="parent" openOnHover>
-                    <VList>
-                        <VListItem :subtitle="$t('action.restart.description', { name: terminal.task.name })" :title="$t('action.restart')">
-                            <template #prepend>
-                                <TaskActionRestart :task="terminal.task" />
-                            </template>
-                        </VListItem>
-                    </VList>
-                </VMenu>
-            </VBtn>
+            <div class="d-flex ga-1">
+                <VBadge :color="terminal.shellStatus === 'Running' ? 'success' : 'error'" location="bottom right" offsetX="-2" offsetY="-2" dot>
+                    <VIcon color="info" icon="mdi-powershell" />
+                </VBadge>
+                <VBtn v-if="terminal.task" @click.prevent.stop size="20" variant="plain">
+                    <VIcon icon="mdi-checkbox-marked-circle-outline" size="small" />
+                    <VMenu activator="parent" openOnHover>
+                        <VList>
+                            <VListItem :subtitle="$t('action.restart.description', { name: terminal.task.name })" :title="$t('action.restart')">
+                                <template #prepend>
+                                    <TaskActionRestart :task="terminal.task" />
+                                </template>
+                            </VListItem>
+                        </VList>
+                    </VMenu>
+                </VBtn>
+            </div>
         </template>
         <span class="text-truncate" style="max-width: 150px">{{ terminal.name }}</span>
         <template #append>
