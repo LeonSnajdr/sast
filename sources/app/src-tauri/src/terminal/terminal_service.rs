@@ -387,6 +387,12 @@ pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContrac
 	Ok(())
 }
 
+pub async fn get_is_existing(filter: TerminalFilterContract) -> bool {
+	let filter_model = TerminalFilterModel::from(filter);
+
+	terminal_repository::get_is_existing(filter_model).await
+}
+
 pub async fn get_many_info(filter: TerminalFilterContract) -> Result<Vec<TerminalInfoContract>> {
 	let filter_model = TerminalFilterModel::from(filter);
 

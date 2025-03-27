@@ -35,6 +35,17 @@ pub async fn get_first(filter: TerminalFilterModel) -> Option<Arc<TerminalModel>
 	None
 }
 
+pub async fn get_is_existing(filter: TerminalFilterModel) -> bool {
+	let sessions = PTY_STATE.sessions.read().await;
+	for session in sessions.iter().cloned() {
+		if matches_filter(&session, &filter).await {
+			return true;
+		}
+	}
+
+	false
+}
+
 pub async fn get_many(filter: TerminalFilterModel) -> Result<Vec<Arc<TerminalModel>>> {
 	let sessions = PTY_STATE.sessions.read().await;
 	let mut filtered_sessions = Vec::new();

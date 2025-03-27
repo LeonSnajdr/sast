@@ -90,11 +90,14 @@ pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_set_id: 
 			..TerminalFilterContract::default()
 		};
 
-		if task_set_task.blocking {
-			terminal_service::restart_first_blocking(app_handle, filter, spawn_contract).await?;
-		} else {
-			terminal_service::restart_first(app_handle, filter, spawn_contract).await?;
-		}
+		let is_terminal_existing = terminal_service::get_is_existing(filter.clone()).await;
+
+		match (is_terminal_existing, task_set_task.blocking) {
+			(true, false) => terminal_service::restart_first(app_handle, filter, spawn_contract).await?,
+			(true, true) => terminal_service::restart_first_blocking(app_handle, filter, spawn_contract).await?,
+			(false, false) => terminal_service::spawn(app_handle, spawn_contract).await.map(|_| ())?,
+			(false, true) => terminal_service::spawn_blocking(app_handle, spawn_contract).await?,
+		};
 	}
 
 	Ok(())

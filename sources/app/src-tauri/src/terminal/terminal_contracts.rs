@@ -34,7 +34,7 @@ pub struct TerminalResizeContract {
 	pub rows: u16,
 }
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminalFilterContract {
 	pub id: Option<Uuid>,
