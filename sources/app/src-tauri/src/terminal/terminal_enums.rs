@@ -7,6 +7,7 @@ pub enum TerminalShellStatus {
 	Restarting,
 	Killing,
 	Killed,
+	Failed,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, sqlx::Type, specta::Type, Serialize, Deserialize)]

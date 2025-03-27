@@ -343,7 +343,7 @@ export type TerminalShellKilledEvent = string
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellSpawnedEvent = string
-export type TerminalShellStatus = "Creating" | "Running" | "Restarting" | "Killing" | "Killed"
+export type TerminalShellStatus = "Creating" | "Running" | "Restarting" | "Killing" | "Killed" | "Failed"
 export type TerminalSpawnContract = { projectId: string; taskId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence }
 
 /** tauri-specta globals **/

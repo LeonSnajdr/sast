@@ -6,7 +6,7 @@
     >
         <template #prepend>
             <div class="d-flex ga-1">
-                <VBadge :color="terminal.shellStatus === 'Running' ? 'success' : 'error'" location="bottom right" offsetX="-2" offsetY="-2" dot>
+                <VBadge :color="indicatorColor" location="bottom right" offsetX="-2" offsetY="-2" dot>
                     <VIcon color="info" icon="mdi-powershell" />
                 </VBadge>
                 <VBtn v-if="terminal.task" @click.prevent.stop size="20" variant="plain">
@@ -25,16 +25,35 @@
         </template>
         <span class="text-truncate" style="max-width: 150px">{{ terminal.name }}</span>
         <template #append>
-            <TerminalActionKill v-if="terminal.shellStatus === 'Running'" :id="terminal.id" />
-            <TerminalActionDelete v-if="terminal.shellStatus === 'Killed'" :id="terminal.id" />
+            <TerminalActionKill v-if="isKillable" :id="terminal.id" />
+            <TerminalActionDelete v-if="isClosable" :id="terminal.id" />
         </template>
     </VBtn>
 </template>
 
 <script setup lang="ts">
-defineProps<{
+const props = defineProps<{
     terminal: TerminalInfoContract;
 }>();
 
 const route = useRoute("index-project-id-pty-sessionId");
+
+const isKillable = computed(() => {
+    return props.terminal.shellStatus === "Running";
+});
+
+const isClosable = computed(() => {
+    return props.terminal.shellStatus === "Killed" || props.terminal.shellStatus === "Failed";
+});
+
+const indicatorColor = computed(() => {
+    switch (props.terminal.shellStatus) {
+        case "Killed":
+            return "secondary";
+        case "Failed":
+            return "error";
+        default:
+            return "success";
+    }
+});
 </script>

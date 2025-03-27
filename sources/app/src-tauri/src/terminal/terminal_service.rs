@@ -154,11 +154,13 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			return;
 		}
 
+		let successful_exit_code = exit_code == 0;
+
 		let mut keep_session = match session.behavior.read().await.history_persistence {
 			TerminalHistoryPersistence::Always => true,
 			TerminalHistoryPersistence::Never => false,
-			TerminalHistoryPersistence::OnError if exit_code != 0 => true,
-			TerminalHistoryPersistence::OnSuccess if exit_code == 0 => true,
+			TerminalHistoryPersistence::OnError if !successful_exit_code => true,
+			TerminalHistoryPersistence::OnSuccess if successful_exit_code => true,
 			_ => false,
 		};
 
@@ -166,7 +168,11 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			keep_session = false;
 		}
 
-		*session.shell.read().await.status.lock().await = TerminalShellStatus::Killed;
+		*session.shell.read().await.status.lock().await = if successful_exit_code {
+			TerminalShellStatus::Killed
+		} else {
+			TerminalShellStatus::Failed
+		};
 
 		if !keep_session {
 			delete(&kill_app_handle, kill_session_id).await.unwrap();
@@ -319,9 +325,10 @@ pub async fn kill(id: Uuid) -> Result<()> {
 pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
-	if *session.shell.read().await.status.lock().await != TerminalShellStatus::Killed {
-		return Err(Error::InvalidStatus);
-	};
+	match *session.shell.read().await.status.lock().await {
+		TerminalShellStatus::Killed | TerminalShellStatus::Failed => {}
+		_ => return Err(Error::InvalidStatus),
+	}
 
 	println!("Deleting session {}", id);
 
