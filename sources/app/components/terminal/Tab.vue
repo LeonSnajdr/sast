@@ -49,7 +49,7 @@ const isClosable = computed(() => {
 const indicatorColor = computed(() => {
     switch (props.terminal.shellStatus) {
         case "Killed":
-            return "secondary";
+            return undefined;
         case "Failed":
             return "error";
         default:
