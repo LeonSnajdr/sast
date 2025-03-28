@@ -7,7 +7,7 @@ use uuid::Uuid;
 pub struct TerminalModel {
 	pub id: Uuid,
 	pub concurrency_guard: Mutex<()>,
-	pub history: Mutex<String>,
+	pub history: RwLock<String>,
 	pub behavior: RwLock<TerminalBehaviorModel>,
 	pub meta: RwLock<TerminalMetaModel>,
 	pub shell: RwLock<TerminalShellModel>,

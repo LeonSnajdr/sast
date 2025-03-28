@@ -41,7 +41,7 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnCo
 	let session = TerminalModel {
 		id,
 		concurrency_guard: Mutex::new(()),
-		history: Mutex::new(String::new()),
+		history: RwLock::new(String::new()),
 		behavior: RwLock::new(behavior),
 		meta: RwLock::new(meta),
 		shell: RwLock::new(shell),
@@ -218,7 +218,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 			let read_data = String::from_utf8_lossy(&buf[..read_bytes]).to_string();
 
-			session.history.lock().await.push_str(&read_data);
+			session.history.write().await.push_str(&read_data);
 
 			let event_data = TerminalShellReadEventData {
 				id: read_session_id.clone(),
@@ -261,7 +261,7 @@ pub async fn write(id: Uuid, data: String) -> Result<()> {
 pub async fn get_read_history(id: Uuid) -> Result<String> {
 	let session = terminal_repository::get_one(&id).await?;
 
-	let history = session.history.lock().await.clone();
+	let history = session.history.read().await.clone();
 	Ok(history)
 }
 
