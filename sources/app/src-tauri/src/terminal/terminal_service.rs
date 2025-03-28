@@ -347,7 +347,7 @@ pub async fn kill_or_delete_first(app_handle: &AppHandle, filter: TerminalFilter
 		let status = session.shell.read().await.status.lock().await.clone();
 
 		match status {
-			TerminalShellStatus::Killed => {
+			TerminalShellStatus::Killed | TerminalShellStatus::Failed => {
 				delete(app_handle, session.id).await?;
 			}
 			TerminalShellStatus::Running => {
