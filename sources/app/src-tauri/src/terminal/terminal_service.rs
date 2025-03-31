@@ -41,6 +41,7 @@ async fn build_and_spawn(app_handle: &AppHandle, spawn_contract: TerminalSpawnCo
 	let session = TerminalModel {
 		id,
 		concurrency_guard: Mutex::new(()),
+		status: RwLock::new(TerminalShellStatus::Creating),
 		history: RwLock::new(String::new()),
 		behavior: RwLock::new(behavior),
 		meta: RwLock::new(meta),
@@ -85,7 +86,6 @@ fn build_shell_model(spawn_contract: &TerminalSpawnContract) -> Result<TerminalS
 	let child_killer = child.clone_killer();
 
 	let shell_model = TerminalShellModel {
-		status: Mutex::new(TerminalShellStatus::Creating),
 		pair: Mutex::new(pair),
 		child: Mutex::new(child),
 		child_killer: Mutex::new(child_killer),
@@ -128,7 +128,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 	tauri::async_runtime::spawn(async move {
 		let session = terminal_repository::get_one(&kill_session_id).await.unwrap();
 
-		*session.shell.read().await.status.lock().await = TerminalShellStatus::Running;
+		*session.status.write().await = TerminalShellStatus::Running;
 
 		TerminalShellSpawnedEvent(kill_session_id).emit(&kill_app_handle).unwrap();
 
@@ -136,11 +136,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 		session_kill_sender.send(()).unwrap();
 
-		println!(
-			"Session exited with code {} in  {:?}",
-			exit_code,
-			*session.shell.read().await.status.lock().await
-		);
+		println!("Session exited with code {} in  {:?}", exit_code, *session.status.read().await);
 
 		let mut read_unlock_cmd = CommandBuilder::new("pwsh.exe");
 		read_unlock_cmd.args(["-Command", "echo 'Shell killed'"]);
@@ -149,7 +145,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 		drop(session.shell.read().await.writer.lock().await);
 		drop(session.shell.read().await.pair.lock().await);
 
-		if *session.shell.read().await.status.lock().await == TerminalShellStatus::Restarting {
+		if *session.status.read().await == TerminalShellStatus::Restarting {
 			println!("Child of session {} finished due to restart", session.id);
 			return;
 		}
@@ -164,11 +160,11 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			_ => false,
 		};
 
-		if *session.shell.read().await.status.lock().await == TerminalShellStatus::Killing {
+		if *session.status.read().await == TerminalShellStatus::Killing {
 			keep_session = false;
 		}
 
-		*session.shell.read().await.status.lock().await = if successful_exit_code {
+		*session.status.write().await = if successful_exit_code {
 			TerminalShellStatus::Killed
 		} else {
 			TerminalShellStatus::Failed
@@ -289,10 +285,8 @@ pub async fn resize(id: Uuid, resize_contract: TerminalResizeContract) -> Result
 pub async fn kill(id: Uuid) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
-	let shell = session.shell.read().await;
-
 	{
-		let mut current_status = shell.status.lock().await;
+		let mut current_status = session.status.write().await;
 
 		println!("Killing pty session {} with status {:?}", id, current_status);
 
@@ -304,6 +298,8 @@ pub async fn kill(id: Uuid) -> Result<()> {
 			*current_status = TerminalShellStatus::Killing;
 		}
 	}
+
+	let shell = session.shell.read().await;
 
 	let mut child_killer = shell.child_killer.lock().await;
 
@@ -325,7 +321,7 @@ pub async fn kill(id: Uuid) -> Result<()> {
 pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
-	match *session.shell.read().await.status.lock().await {
+	match *session.status.read().await {
 		TerminalShellStatus::Killed | TerminalShellStatus::Failed => {}
 		_ => return Err(Error::InvalidStatus),
 	}
@@ -344,7 +340,7 @@ pub async fn kill_or_delete_first(app_handle: &AppHandle, filter: TerminalFilter
 	let session_option = terminal_repository::get_first(filter_model).await;
 
 	if let Some(session) = session_option {
-		let status = session.shell.read().await.status.lock().await.clone();
+		let status = session.status.read().await.clone();
 
 		match status {
 			TerminalShellStatus::Killed | TerminalShellStatus::Failed => {
@@ -367,7 +363,7 @@ pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilt
 	let session_option = terminal_repository::get_first(filter_model).await;
 
 	if let Some(session) = session_option {
-		*session.shell.read().await.status.lock().await = TerminalShellStatus::Restarting;
+		*session.status.write().await = TerminalShellStatus::Restarting;
 
 		kill(session.id).await?;
 

@@ -7,6 +7,7 @@ use uuid::Uuid;
 pub struct TerminalModel {
 	pub id: Uuid,
 	pub concurrency_guard: Mutex<()>,
+	pub status: RwLock<TerminalShellStatus>,
 	pub history: RwLock<String>,
 	pub behavior: RwLock<TerminalBehaviorModel>,
 	pub meta: RwLock<TerminalMetaModel>,
@@ -25,7 +26,6 @@ pub struct TerminalMetaModel {
 }
 
 pub struct TerminalShellModel {
-	pub status: Mutex<TerminalShellStatus>,
 	pub pair: Mutex<PtyPair>,
 	pub child: Mutex<Box<dyn Child + Send + Sync>>,
 	pub child_killer: Mutex<Box<dyn ChildKiller + Send + Sync>>,

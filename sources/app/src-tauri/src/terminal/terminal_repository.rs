@@ -62,7 +62,7 @@ pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalIn
 	let mut info_models = Vec::with_capacity(filtered_sessions.len());
 
 	for session in filtered_sessions {
-		let shell_guard = session.shell.read().await;
+		let status = session.status.read().await.clone();
 		let meta_guard = session.meta.read().await;
 
 		info_models.push(TerminalInfoModel {
@@ -70,7 +70,7 @@ pub async fn get_many_info(filter: TerminalFilterModel) -> Result<Vec<TerminalIn
 			project_id: meta_guard.project_id,
 			name: meta_guard.name.clone(),
 			task_id: meta_guard.task_id,
-			shell_status: shell_guard.status.lock().await.clone(),
+			shell_status: status,
 		});
 	}
 
