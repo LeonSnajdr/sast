@@ -244,6 +244,10 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 pub async fn write(id: Uuid, data: String) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
+	if *session.status.read().await != TerminalShellStatus::Running {
+		return Err(Error::InvalidStatus);
+	}
+
 	session
 		.shell
 		.read()
