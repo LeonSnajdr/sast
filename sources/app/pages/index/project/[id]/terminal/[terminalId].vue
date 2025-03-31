@@ -12,7 +12,7 @@ import { WebLinksAddon } from "@xterm/addon-web-links";
 import { open } from "@tauri-apps/plugin-shell";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
-const route = useRoute("index-project-id-pty-sessionId");
+const route = useRoute("index-project-id-terminal-terminalId");
 
 const theme = useTheme();
 const notify = useNotify();
@@ -77,15 +77,15 @@ onMounted(async () => {
     });
 
     const unlistenPtyReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
-        if (eventData.payload.id !== route.params.sessionId) return;
+        if (eventData.payload.id !== route.params.terminalId) return;
 
         terminal.write(eventData.payload.data);
     });
 
     const unlistenPtyKilledEvent = await events.terminalDeletedEvent.listen((event) => {
-        if (event.payload !== route.params.sessionId) return;
+        if (event.payload !== route.params.terminalId) return;
 
-        navigateTo({ name: "index-project-id-pty" });
+        navigateTo({ name: "index-project-id-terminal" });
     });
 
     cleanup = () => {
@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
 });
 
 const restoreHistory = async () => {
-    const readHistoryResult = await commands.terminalGetReadHistory(route.params.sessionId);
+    const readHistoryResult = await commands.terminalGetReadHistory(route.params.terminalId);
 
     if (readHistoryResult.status === "error") {
         notify.error(t("terminal.open.error"), { error: readHistoryResult.error });
@@ -121,16 +121,16 @@ const restoreHistory = async () => {
 };
 
 const writeToTerminal = async (data: string) => {
-    const writeResult = await commands.terminalWrite(route.params.sessionId, data);
+    const writeResult = await commands.terminalWrite(route.params.terminalId, data);
     if (writeResult.status === "error") {
         console.error("failed to write data");
     }
 };
 
 async function resizeTerminal(resizeContract: TerminalResizeContract) {
-    const resizeResult = await commands.terminalResize(route.params.sessionId, resizeContract);
+    const resizeResult = await commands.terminalResize(route.params.terminalId, resizeContract);
     if (resizeResult.status === "error") {
-        console.error("Error while resizing pty");
+        console.error("Error while resizing terminal");
     }
 }
 </script>

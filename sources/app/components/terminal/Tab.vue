@@ -1,6 +1,6 @@
 <template>
     <VBtn
-        :to="{ name: 'index-project-id-pty-sessionId', params: { id: route.params.id, sessionId: terminal.id } }"
+        :to="{ name: 'index-project-id-terminal-terminalId', params: { id: route.params.id, terminalId: terminal.id } }"
         class="ml-2 px-2 text-body-2"
         density="comfortable"
     >
@@ -36,7 +36,7 @@ const props = defineProps<{
     terminal: TerminalInfoContract;
 }>();
 
-const route = useRoute("index-project-id-pty-sessionId");
+const route = useRoute("index-project-id-terminal-terminalId");
 
 const isKillable = computed(() => {
     return props.terminal.shellStatus === "Running";

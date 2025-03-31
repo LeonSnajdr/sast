@@ -186,7 +186,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 		let _guard = session.concurrency_guard.lock().await;
 
-		println!("Starting pty session thread {}", read_session_id);
+		println!("Starting terminal thread {}", read_session_id);
 
 		let mut buf = [0u8; 1024];
 
@@ -231,7 +231,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 
 		drop(read_app_handle);
 
-		println!("Finished pty session thread {}", read_session_id);
+		println!("Finished terminal thread {}", read_session_id);
 
 		session_finished_sender.send(()).unwrap();
 	});
@@ -290,7 +290,7 @@ pub async fn kill(id: Uuid) -> Result<()> {
 	{
 		let mut current_status = session.status.write().await;
 
-		println!("Killing pty session {} with status {:?}", id, current_status);
+		println!("Killing terminal {} with status {:?}", id, current_status);
 
 		if *current_status != TerminalShellStatus::Running && *current_status != TerminalShellStatus::RestartScheduled {
 			return Err(Error::InvalidStatus);

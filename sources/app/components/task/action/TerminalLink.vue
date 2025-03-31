@@ -20,6 +20,6 @@ const navigateToTerminal = () => {
         return;
     }
 
-    navigateTo({ name: "index-project-id-pty-sessionId", params: { id: terminal.value.projectId, sessionId: terminal.value.id } });
+    navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: terminal.value.projectId, terminalId: terminal.value.id } });
 };
 </script>

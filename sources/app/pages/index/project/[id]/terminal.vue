@@ -21,7 +21,7 @@ let unlistenPtySpawnedEvent: UnlistenFn;
 
 onMounted(async () => {
     unlistenPtySpawnedEvent = await events.terminalCreatedEvent.listen((event) => {
-        navigateTo({ name: "index-project-id-pty-sessionId", params: { id: selectedProject.value.id, sessionId: event.payload } });
+        navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: event.payload } });
     });
 });
 
