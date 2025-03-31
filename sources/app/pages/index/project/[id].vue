@@ -19,8 +19,7 @@ const { isLoading, selectedProject } = storeToRefs(projectStore);
 
 let unlistenTerminalDeletedEvent: UnlistenFn;
 let unlistenTerminalCreatedEvent: UnlistenFn;
-let unlistenTerminalShellSpawnedEvent: UnlistenFn;
-let unlistenTerminalShellKilledEvent: UnlistenFn;
+let unlistenTerminalStatusChangedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     await loadProject();
@@ -34,8 +33,7 @@ onBeforeUnmount(() => {
 
     unlistenTerminalDeletedEvent();
     unlistenTerminalCreatedEvent();
-    unlistenTerminalShellKilledEvent();
-    unlistenTerminalShellSpawnedEvent();
+    unlistenTerminalStatusChangedEvent();
 });
 
 const loadProject = async () => {
@@ -53,20 +51,16 @@ const loadTasks = async () => {
 const loadTerminals = async () => {
     await terminalStore.loadAll();
 
-    unlistenTerminalDeletedEvent = await events.terminalDeletedEvent.listen(() => {
-        terminalStore.loadAll();
-    });
-
     unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {
         terminalStore.loadAll();
     });
 
-    unlistenTerminalShellSpawnedEvent = await events.terminalShellSpawnedEvent.listen(() => {
-        terminalStore.loadAll();
+    unlistenTerminalStatusChangedEvent = await events.terminalStatusChangedEvent.listen((eventData) => {
+        terminalStore.statusChanged(eventData.payload.id, eventData.payload.status);
     });
 
-    unlistenTerminalShellKilledEvent = await events.terminalShellKilledEvent.listen(() => {
-        terminalStore.loadAll();
+    unlistenTerminalDeletedEvent = await events.terminalDeletedEvent.listen((eventData) => {
+        terminalStore.deleted(eventData.payload);
     });
 };
 </script>

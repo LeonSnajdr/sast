@@ -148,20 +148,21 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Ter
 
 pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
 	let filter = TerminalFilterContract {
-		task_id: Some(task_id),
+		task_ids: Some(vec![task_id]),
 		..TerminalFilterContract::default()
 	};
 
 	let spawn_contract = build_spawn_contract(project_id, task_id).await?;
 
-	terminal_service::restart_first(app_handle, filter, spawn_contract).await?;
+	terminal_service::restart_schedule(app_handle, filter.clone(), spawn_contract).await?;
+	terminal_service::restart_first(app_handle, filter).await?;
 
 	Ok(())
 }
 
 pub async fn stop_one(app_handle: &AppHandle, task_id: Uuid) -> Result<()> {
 	let filter = TerminalFilterContract {
-		task_id: Some(task_id),
+		task_ids: Some(vec![task_id]),
 		..TerminalFilterContract::default()
 	};
 

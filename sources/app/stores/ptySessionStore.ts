@@ -11,7 +11,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskId: null, taskSetId: null });
+        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskIds: null });
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
@@ -22,5 +22,17 @@ export const useTerminalStore = defineStore("terminal", () => {
         terminals.value = sessionInfoResult.data;
     };
 
-    return { isLoading, terminals, loadAll };
+    const statusChanged = async (id: string, status: TerminalShellStatus) => {
+        const terminal = terminals.value.find((x) => x.id === id);
+
+        if (terminal) {
+            terminal.shellStatus = status;
+        }
+    };
+
+    const deleted = async (id: string) => {
+        terminals.value = terminals.value.filter((x) => x.id !== id);
+    };
+
+    return { isLoading, terminals, loadAll, statusChanged, deleted };
 });

@@ -82,9 +82,12 @@ async fn matches_filter(session: &Arc<TerminalModel>, filter: &TerminalFilterMod
 
 	let matches_id = filter.id.map_or(true, |id| session.id == id);
 	let matches_project_id = filter.project_id.map_or(true, |id| meta_guard.project_id == id);
-	let matches_task_id = filter.task_id.map_or(true, |id| meta_guard.task_id == Some(id));
+	let matches_task_ids = filter
+		.task_ids
+		.as_ref()
+		.map_or(true, |task_ids| meta_guard.task_id.map_or(false, |tid| task_ids.contains(&tid)));
 
-	matches_id && matches_project_id && matches_task_id
+	matches_id && matches_project_id && matches_task_ids
 }
 
 pub async fn delete_one(id: &Uuid) -> Result<()> {

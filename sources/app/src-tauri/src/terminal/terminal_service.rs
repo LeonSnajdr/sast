@@ -3,7 +3,7 @@ use crate::task::task_service;
 use crate::terminal::terminal_contracts::{TerminalFilterContract, TerminalInfoContract, TerminalResizeContract, TerminalSpawnContract};
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use crate::terminal::terminal_events::{
-	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellKilledEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellSpawnedEvent,
+	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalStatusChangedEvent, TerminalStatusChangedEventData,
 };
 use crate::terminal::terminal_models::{TerminalBehaviorModel, TerminalFilterModel, TerminalMetaModel, TerminalModel, TerminalShellModel};
 use crate::terminal::terminal_repository;
@@ -128,9 +128,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 	tauri::async_runtime::spawn(async move {
 		let session = terminal_repository::get_one(&kill_session_id).await.unwrap();
 
-		*session.status.write().await = TerminalShellStatus::Running;
-
-		TerminalShellSpawnedEvent(kill_session_id).emit(&kill_app_handle).unwrap();
+		update_status(&kill_app_handle, kill_session_id, TerminalShellStatus::Running).await.unwrap();
 
 		let exit_code = session.shell.read().await.child.lock().await.wait().unwrap().exit_code();
 
@@ -145,7 +143,7 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 		drop(session.shell.read().await.writer.lock().await);
 		drop(session.shell.read().await.pair.lock().await);
 
-		if *session.status.read().await == TerminalShellStatus::Restarting {
+		if *session.status.read().await == TerminalShellStatus::RestartScheduled {
 			println!("Child of session {} finished due to restart", session.id);
 			return;
 		}
@@ -164,17 +162,21 @@ async fn start_handle_threads(app_handle: &AppHandle, session_id: &Uuid) -> Resu
 			keep_session = false;
 		}
 
-		*session.status.write().await = if successful_exit_code {
-			TerminalShellStatus::Killed
-		} else {
-			TerminalShellStatus::Failed
-		};
+		update_status(
+			&kill_app_handle,
+			kill_session_id,
+			if successful_exit_code {
+				TerminalShellStatus::Killed
+			} else {
+				TerminalShellStatus::Failed
+			},
+		)
+		.await
+		.unwrap();
 
 		if !keep_session {
 			delete(&kill_app_handle, kill_session_id).await.unwrap();
 		}
-
-		TerminalShellKilledEvent(kill_session_id).emit(&kill_app_handle).unwrap();
 	});
 
 	let read_app_handle = app_handle.clone();
@@ -290,7 +292,7 @@ pub async fn kill(id: Uuid) -> Result<()> {
 
 		println!("Killing pty session {} with status {:?}", id, current_status);
 
-		if *current_status != TerminalShellStatus::Running && *current_status != TerminalShellStatus::Restarting {
+		if *current_status != TerminalShellStatus::Running && *current_status != TerminalShellStatus::RestartScheduled {
 			return Err(Error::InvalidStatus);
 		}
 
@@ -322,7 +324,7 @@ pub async fn delete(app_handle: &AppHandle, id: Uuid) -> Result<()> {
 	let session = terminal_repository::get_one(&id).await?;
 
 	match *session.status.read().await {
-		TerminalShellStatus::Killed | TerminalShellStatus::Failed => {}
+		TerminalShellStatus::Killed | TerminalShellStatus::Failed | TerminalShellStatus::RestartScheduled => {}
 		_ => return Err(Error::InvalidStatus),
 	}
 
@@ -358,12 +360,12 @@ pub async fn kill_or_delete_first(app_handle: &AppHandle, filter: TerminalFilter
 	Ok(())
 }
 
-pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
+pub async fn restart_schedule(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
 	let filter_model = TerminalFilterModel::from(filter);
-	let session_option = terminal_repository::get_first(filter_model).await;
+	let sessions = terminal_repository::get_many(filter_model).await?;
 
-	if let Some(session) = session_option {
-		*session.status.write().await = TerminalShellStatus::Restarting;
+	for session in sessions {
+		update_status(app_handle, session.id, TerminalShellStatus::RestartScheduled).await?;
 
 		kill(session.id).await?;
 
@@ -372,6 +374,21 @@ pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilt
 		*session.shell.write().await = build_shell_model(&spawn_contract)?;
 		*session.behavior.write().await = build_behavior_model(&spawn_contract);
 		*session.meta.write().await = build_meta_model(&spawn_contract);
+	}
+
+	Ok(())
+}
+
+pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilterContract) -> Result<()> {
+	let filter_model = TerminalFilterModel::from(filter);
+	let session_option = terminal_repository::get_first(filter_model).await;
+
+	if let Some(session) = session_option {
+		if *session.status.read().await != TerminalShellStatus::RestartScheduled {
+			return Err(Error::InvalidStatus);
+		}
+
+		update_status(app_handle, session.id, TerminalShellStatus::Restarting).await?;
 
 		let id_clone = session.id.clone();
 		let app_handle_clone = app_handle.clone();
@@ -382,10 +399,22 @@ pub async fn restart_first_blocking(app_handle: &AppHandle, filter: TerminalFilt
 	Ok(())
 }
 
-pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContract, spawn_contract: TerminalSpawnContract) -> Result<()> {
+pub async fn restart_first(app_handle: &AppHandle, filter: TerminalFilterContract) -> Result<()> {
 	let app_handle_clone = app_handle.clone();
 
-	tauri::async_runtime::spawn(async move { restart_first_blocking(&app_handle_clone, filter, spawn_contract).await });
+	tauri::async_runtime::spawn(async move { restart_first_blocking(&app_handle_clone, filter).await });
+
+	Ok(())
+}
+
+async fn update_status(app_handle: &AppHandle, id: Uuid, status: TerminalShellStatus) -> Result<()> {
+	let session = terminal_repository::get_one(&id).await?;
+
+	*session.status.write().await = status.clone();
+
+	TerminalStatusChangedEvent(TerminalStatusChangedEventData { id, status })
+		.emit(app_handle)
+		.unwrap();
 
 	Ok(())
 }

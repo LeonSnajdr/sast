@@ -1,3 +1,4 @@
+use crate::terminal::terminal_enums::TerminalShellStatus;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use tauri_specta::Event;
@@ -10,10 +11,14 @@ pub struct TerminalDeletedEvent(pub Uuid);
 pub struct TerminalCreatedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalShellKilledEvent(pub Uuid);
+pub struct TerminalStatusChangedEvent(pub TerminalStatusChangedEventData);
 
-#[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalShellSpawnedEvent(pub Uuid);
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TerminalStatusChangedEventData {
+	pub id: Uuid,
+	pub status: TerminalShellStatus,
+}
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
 pub struct TerminalShellReadEvent(pub TerminalShellReadEventData);

@@ -62,8 +62,7 @@ pub fn run() {
 		.events(collect_events![
 			terminal_events::TerminalDeletedEvent,
 			terminal_events::TerminalCreatedEvent,
-			terminal_events::TerminalShellKilledEvent,
-			terminal_events::TerminalShellSpawnedEvent,
+			terminal_events::TerminalStatusChangedEvent,
 			terminal_events::TerminalShellReadEvent,
 		]);
 

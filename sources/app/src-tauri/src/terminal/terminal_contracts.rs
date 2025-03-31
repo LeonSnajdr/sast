@@ -39,14 +39,14 @@ pub struct TerminalResizeContract {
 pub struct TerminalFilterContract {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
-	pub task_id: Option<Uuid>,
+	pub task_ids: Option<Vec<Uuid>>,
 }
 impl Default for TerminalFilterContract {
 	fn default() -> Self {
 		Self {
 			id: None,
 			project_id: None,
-			task_id: None,
+			task_ids: None,
 		}
 	}
 }

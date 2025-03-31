@@ -44,5 +44,5 @@ pub struct TerminalInfoModel {
 pub struct TerminalFilterModel {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
-	pub task_id: Option<Uuid>,
+	pub task_ids: Option<Vec<Uuid>>,
 }

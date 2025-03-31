@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 pub enum TerminalShellStatus {
 	Creating,
 	Running,
+	RestartScheduled,
 	Restarting,
 	Killing,
 	Killed,

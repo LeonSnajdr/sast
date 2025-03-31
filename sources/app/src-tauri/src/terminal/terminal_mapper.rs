@@ -19,7 +19,7 @@ impl TerminalFilterModel {
 		Self {
 			id: value.id,
 			project_id: value.project_id,
-			task_id: value.task_id,
+			task_ids: value.task_ids,
 		}
 	}
 }

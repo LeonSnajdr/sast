@@ -43,7 +43,7 @@ const isKillable = computed(() => {
 });
 
 const isClosable = computed(() => {
-    return props.terminal.shellStatus === "Killed" || props.terminal.shellStatus === "Failed";
+    return props.terminal.shellStatus === "Killed" || props.terminal.shellStatus === "Failed" || props.terminal.shellStatus == "RestartScheduled";
 });
 
 const indicatorColor = computed(() => {
@@ -52,6 +52,9 @@ const indicatorColor = computed(() => {
             return undefined;
         case "Failed":
             return "error";
+        case "RestartScheduled":
+        case "Restarting":
+            return "warning";
         default:
             return "success";
     }
