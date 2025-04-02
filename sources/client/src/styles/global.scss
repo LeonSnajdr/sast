@@ -1,9 +1,0 @@
-@use "@/styles/settings";
-@import "v-drawer";
-@import "fonts";
-@import "scroll";
-
-html {
-  // Only show main scrollbar if the page is scrollable
-  overflow-y: auto !important;
-}

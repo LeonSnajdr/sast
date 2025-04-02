@@ -1,4 +1,0 @@
-[alias]
-prisma = "run -p prisma-cli --features specta,sqlite --"
-prisma-gen = "run -p prisma-cli --features specta,sqlite -- generate --schema=./sast-api/prisma/schema.prisma"
-prisma-mig = "run -p prisma-cli -- migrate dev --schema=./sast-api/prisma/schema.prisma"

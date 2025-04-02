@@ -1,9 +1,0 @@
-[*.js]
-[*.cjs]
-indent_size = 2
-
-[*.scss]
-indent_size = 2
-
-[*.sh]
-end_of_line = cr
