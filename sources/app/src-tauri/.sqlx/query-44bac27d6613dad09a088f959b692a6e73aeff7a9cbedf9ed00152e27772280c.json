@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update placeholder\n            set\n                project_id = $1,\n                name = $2,\n                value = $3,\n                visibility = $4,\n                kind = $5,\n                source = $6,\n                date_last_updated = $7\n            where id = $8\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 8
+    },
+    "nullable": []
+  },
+  "hash": "44bac27d6613dad09a088f959b692a6e73aeff7a9cbedf9ed00152e27772280c"
+}

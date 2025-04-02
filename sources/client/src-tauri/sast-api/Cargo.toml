@@ -25,7 +25,7 @@ prisma-client-rust = { git = "https://github.com/Brendonovich/prisma-client-rust
     "specta",
 ] }
 tokio = { version = "1.29.1", features = ["macros"] }
-specta = { version = "1.0.5", features = ["functions"] }
+specta = { version = "1.0.5", features = ["function"] }
 tauri-specta = { version = "1.0.2", features = ["typescript"] }
 run_script = "0.10.1"
 

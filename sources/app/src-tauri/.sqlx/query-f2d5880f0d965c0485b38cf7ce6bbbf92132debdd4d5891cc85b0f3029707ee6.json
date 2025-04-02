@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n\t\t\tdelete\n\t\t\tfrom placeholder_insert_tile\n\t\t\twhere\n\t\t\t\ttask_command_id is $1 and\n\t\t\t\ttask_working_dir_id is $2\n\t\t",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "f2d5880f0d965c0485b38cf7ce6bbbf92132debdd4d5891cc85b0f3029707ee6"
+}

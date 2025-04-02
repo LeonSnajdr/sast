@@ -1,0 +1,68 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            insert into placeholder\n                (id, project_id, name, value, visibility, kind, source, date_created, date_last_updated)\n                values\n                ($1, $2, $3, $4, $5, $6, $7, $8, $9)\n            returning\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                value,\n                visibility as \"visibility: PlaceholderVisibility\",\n                kind as \"kind: PlaceholderKind\",\n                source as \"source: PlaceholderSource\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "project_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "value",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "visibility: PlaceholderVisibility",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "kind: PlaceholderKind",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "source: PlaceholderSource",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 8,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 9
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "329c40e13d76a36b017621490f7826c6cb93f3124a2c785530d58d606e4dcf21"
+}

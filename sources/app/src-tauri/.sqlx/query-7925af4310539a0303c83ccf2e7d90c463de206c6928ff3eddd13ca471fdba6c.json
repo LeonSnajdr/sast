@@ -1,0 +1,38 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                name,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_opened as \"date_last_opened: DateTime<Utc>\"\n            from project\n            where id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_opened: DateTime<Utc>",
+        "ordinal": 3,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "7925af4310539a0303c83ccf2e7d90c463de206c6928ff3eddd13ca471fdba6c"
+}

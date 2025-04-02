@@ -1,0 +1,45 @@
+{
+  "name": "nuxt-app",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tauri dev",
+    "dev:nuxt": "nuxt dev",
+    "build": "tauri build",
+    "build:nuxt": "nuxi generate",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@nuxtjs/i18n": "^9.1.5",
+    "@pinia/nuxt": "^0.9.0",
+    "@tauri-apps/api": "^2.2.0",
+    "@tauri-apps/plugin-shell": "~2.2.0",
+    "@vueuse/core": "^12.5.0",
+    "@vueuse/integrations": "^12.7.0",
+    "@vueuse/nuxt": "^12.5.0",
+    "@xterm/addon-web-links": "^0.11.0",
+    "fuse.js": "^7.1.0",
+    "nuxt": "^3.15.4",
+    "nuxt-lodash": "^2.5.3",
+    "pinia": "^2.3.1",
+    "vue": "^3.5.13",
+    "vue-draggable-plus": "^0.6.0",
+    "vue-router": "^4.5.0",
+    "vue-text-insert": "^0.0.3",
+    "vuetify-nuxt-module": "^0.18.3",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.0.0",
+    "@tauri-apps/cli": "^2.2.7",
+    "eslint": "^9.19.0",
+    "sass": "^1.83.4",
+    "typescript": "^5.7.3"
+  },
+  "volta": {
+    "node": "20.18.0",
+    "yarn": "4.5.0"
+  },
+  "packageManager": "yarn@4.5.0"
+}

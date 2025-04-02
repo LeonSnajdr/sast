@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update setting\n            set\n                meta_date_updated = $2,\n                presentation_language = $3,\n                presentation_theme = $4,\n                behavior_open_welcome = $5\n            where id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 5
+    },
+    "nullable": []
+  },
+  "hash": "c33793ffb8453b23e3f6659097d95fc8074f720cf62d3dee5b202af8417c04e5"
+}

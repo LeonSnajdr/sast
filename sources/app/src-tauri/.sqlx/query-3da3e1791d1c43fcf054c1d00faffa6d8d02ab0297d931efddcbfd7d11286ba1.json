@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update project set date_last_opened = $1 where id = $2\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": []
+  },
+  "hash": "3da3e1791d1c43fcf054c1d00faffa6d8d02ab0297d931efddcbfd7d11286ba1"
+}
