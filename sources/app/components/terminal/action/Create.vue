@@ -19,9 +19,9 @@ const createTerminal = async () => {
     };
 
     const spawnContract: ShellSpawnContract = {
-        command: "dotnet run",
+        command: null,
         noExit: false,
-        workingDir: "C:\\Repos\\metis\\sources\\ControlCenter.Api\\ControlCenter.Api",
+        workingDir: null,
         forceKill: false
     };
 

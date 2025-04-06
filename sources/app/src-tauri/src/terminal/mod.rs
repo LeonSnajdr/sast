@@ -14,13 +14,13 @@ use crate::prelude::*;
 use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::shell::shell_events::ShellOutputEvent;
-use crate::terminal::shell::TerminalShell;
+use crate::terminal::shell::Shell;
 use crate::terminal::terminal_contracts::TerminalCreateContract;
 use crate::terminal::terminal_events::{
 	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalStatusChangedEvent, TerminalStatusChangedEventData,
 };
 
-use crate::terminal::terminal_enums::TerminalShellStatus;
+use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use std::sync::Arc;
 use tauri::AppHandle;
 use tauri_specta::Event;
@@ -32,12 +32,13 @@ use uuid::Uuid;
 pub struct Terminal {
 	pub id: Uuid,
 	pub meta: Arc<RwLock<TerminalMeta>>,
+	pub behavior: Arc<RwLock<TerminalBehavior>>,
 	pub history: Arc<RwLock<String>>,
 	pub shell_status: Arc<RwLock<TerminalShellStatus>>,
 	app_handle: Arc<AppHandle>,
 	handle: Arc<Mutex<Option<JoinHandle<()>>>>,
 	sender: Arc<Sender<ShellOutputEvent>>,
-	shell: Arc<RwLock<Option<TerminalShell>>>,
+	shell: Arc<RwLock<Option<Shell>>>,
 }
 
 pub struct TerminalMeta {
@@ -46,16 +47,24 @@ pub struct TerminalMeta {
 	pub task_id: Option<Uuid>,
 }
 
+pub struct TerminalBehavior {
+	pub history_persistence: TerminalHistoryPersistence,
+}
+
 impl Terminal {
 	pub async fn create(app_handle: AppHandle, spawn_contract: TerminalCreateContract) -> Result<Arc<Terminal>> {
 		let (sender, mut receiver) = mpsc::channel(100);
 		let id = Uuid::new_v4();
 		let app_handle = Arc::new(app_handle);
+		let behavior = Arc::new(RwLock::new(TerminalBehavior {
+			history_persistence: spawn_contract.history_persistence,
+		}));
 		let shell = Arc::new(RwLock::new(None));
 		let history = Arc::new(RwLock::new(String::new()));
 		let shell_status = Arc::new(RwLock::new(TerminalShellStatus::None));
 
 		let id_clone = id.clone();
+		let behavior_clone = Arc::clone(&behavior);
 		let app_handle_clone = Arc::clone(&app_handle);
 		let shell_clone = Arc::clone(&shell);
 		let history_clone = Arc::clone(&history);
@@ -81,18 +90,31 @@ impl Terminal {
 						println!("Terminal: Shell closed {:?}", reason);
 						*shell_clone.write().await = None;
 
-						*shell_status_clone.write().await = match reason {
-							ShellKillReason::Manually => TerminalShellStatus::Killed,
-							ShellKillReason::Success => TerminalShellStatus::Killed,
-							ShellKillReason::Restart => TerminalShellStatus::Restarting,
-							ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
+						let persist_terminal = match (behavior_clone.read().await.history_persistence.clone(), reason.clone()) {
+							(_, ShellKillReason::Restart) => true,
+							(TerminalHistoryPersistence::Always, _) => true,
+							(TerminalHistoryPersistence::OnSuccess, ShellKillReason::Success) => true,
+							(TerminalHistoryPersistence::OnError, ShellKillReason::Error { code: _, message: _ }) => true,
+							_ => false,
 						};
 
-						let _ = TerminalStatusChangedEvent(TerminalStatusChangedEventData {
-							id: id_clone,
-							status: shell_status_clone.read().await.clone(),
-						})
-						.emit(app_handle_clone.as_ref());
+						if persist_terminal {
+							*shell_status_clone.write().await = match reason {
+								ShellKillReason::Manually => TerminalShellStatus::Killed,
+								ShellKillReason::Success => TerminalShellStatus::Killed,
+								ShellKillReason::Restart => TerminalShellStatus::Restarting,
+								ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
+							};
+
+							let _ = TerminalStatusChangedEvent(TerminalStatusChangedEventData {
+								id: id_clone,
+								status: shell_status_clone.read().await.clone(),
+							})
+							.emit(app_handle_clone.as_ref());
+						} else {
+							let _ = terminal_repository::delete_one(&id_clone).await;
+							let _ = TerminalDeletedEvent(id_clone).emit(app_handle_clone.as_ref());
+						}
 					}
 				}
 			}
@@ -110,6 +132,7 @@ impl Terminal {
 		let terminal = Self {
 			id,
 			meta: Arc::new(RwLock::new(meta)),
+			behavior,
 			app_handle: app_handle_clone,
 			handle: Arc::new(Mutex::new(Some(handle))),
 			sender: Arc::new(sender),
@@ -148,7 +171,7 @@ impl Terminal {
 	}
 
 	pub async fn shell_spawn(&self, spawn_contract: ShellSpawnContract) {
-		let mut shell = TerminalShell::new(self.sender.clone()).await;
+		let mut shell = Shell::new(self.sender.clone()).await;
 		shell.run(spawn_contract).await;
 		*self.shell.write().await = Some(shell);
 	}

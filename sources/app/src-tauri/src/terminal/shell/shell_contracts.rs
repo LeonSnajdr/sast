@@ -1,7 +1,5 @@
-use crate::terminal::terminal_enums::TerminalHistoryPersistence;
 use serde::{Deserialize, Serialize};
 use specta::Type;
-use uuid::Uuid;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

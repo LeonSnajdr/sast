@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, specta::Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, specta::Type, Serialize, Deserialize)]
 pub enum ShellKillReason {
 	Manually,
 	Success,

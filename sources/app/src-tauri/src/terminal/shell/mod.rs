@@ -11,14 +11,14 @@ use tokio::sync::mpsc::{channel, Sender};
 use tokio::sync::Mutex;
 use tokio::time::{sleep, Duration};
 
-pub struct TerminalShell {
+pub struct Shell {
 	terminal_sender: Arc<Sender<ShellOutputEvent>>,
 	guard: Arc<Mutex<()>>,
 	shell_sender: Arc<Mutex<Option<Sender<ShellInputEvent>>>>,
 	kill_reason: Arc<Mutex<Option<ShellKillReason>>>,
 }
 
-impl TerminalShell {
+impl Shell {
 	pub async fn new(terminal_sender: Arc<Sender<ShellOutputEvent>>) -> Self {
 		Self {
 			terminal_sender,
@@ -40,15 +40,15 @@ impl TerminalShell {
 
 		drop(pair.slave);
 
-		let mut reader = Arc::new(std::sync::Mutex::new(pair.master.try_clone_reader().unwrap()));
+		let reader = Arc::new(std::sync::Mutex::new(pair.master.try_clone_reader().unwrap()));
 		let mut writer = pair.master.take_writer().unwrap();
 
-		let terminal_sender = self.terminal_sender.clone();
+		let terminal_sender = Arc::clone(&self.terminal_sender);
 		tokio::spawn(async move {
 			let _ = terminal_sender.send(ShellOutputEvent::Spawned).await;
 
 			loop {
-				let reader_clone = reader.clone();
+				let reader_clone = Arc::clone(&reader);
 				let result = tokio::task::spawn_blocking(move || {
 					let mut buffer = [0u8; 1024];
 					match reader_clone.lock().unwrap().read(&mut buffer) {
@@ -74,6 +74,7 @@ impl TerminalShell {
 		let (shell_sender, mut shell_receiver) = channel::<ShellInputEvent>(32);
 		*self.shell_sender.lock().await = Some(shell_sender);
 
+		let force_kill = spawn_contract.force_kill;
 		tokio::spawn(async move {
 			while let Some(event) = shell_receiver.recv().await {
 				match event {
@@ -93,6 +94,16 @@ impl TerminalShell {
 							.unwrap();
 					}
 					ShellInputEvent::Kill => {
+						if force_kill {
+							// Send ctrl+c to child to terminate the currently running process
+							let ctrl_c: u8 = 3;
+							if let Err(e) = writer.write_all(&[ctrl_c]) {
+								eprintln!("Force kill failed {}", e);
+							}
+
+							sleep(Duration::from_millis(500)).await;
+						}
+
 						killer.kill().ok();
 						break;
 					}
@@ -102,10 +113,10 @@ impl TerminalShell {
 			println!("Writing thread finished");
 		});
 
-		let terminal_sender = self.terminal_sender.clone();
-		let shell_sender = self.shell_sender.clone();
-		let guard = self.guard.clone();
-		let kill_reason = self.kill_reason.clone();
+		let terminal_sender = Arc::clone(&self.terminal_sender);
+		let shell_sender = Arc::clone(&self.shell_sender);
+		let guard = Arc::clone(&self.guard);
+		let kill_reason = Arc::clone(&self.kill_reason);
 		tokio::task::spawn(async move {
 			let _guard = guard.lock().await;
 
