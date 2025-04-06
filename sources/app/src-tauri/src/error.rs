@@ -7,5 +7,6 @@ pub enum Error {
 	AlreadyExists,
 	NotExists,
 	InvalidStatus,
+	EventEmit,
 	Failed,
 }

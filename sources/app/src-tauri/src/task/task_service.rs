@@ -4,7 +4,9 @@ use crate::prelude::*;
 use crate::task::task_contracts::{TaskContract, TaskCreateContract, TaskInfoContract, TaskUpdateContract};
 use crate::task::task_models::{TaskModel, TaskUpdateModel};
 use crate::task::task_repository;
-use crate::terminal::terminal_contracts::{TerminalFilterContract, TerminalSpawnContract};
+use crate::terminal::shell::shell_contracts::ShellSpawnContract;
+use crate::terminal::terminal_contracts::TerminalCreateContract;
+use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::terminal_service;
 use chrono::Utc;
 use tauri::AppHandle;
@@ -109,15 +111,29 @@ pub async fn delete_one(id: Uuid) -> Result<()> {
 	Ok(())
 }
 
-pub async fn start_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	let pty_spawn_contract = build_spawn_contract(project_id, task_id).await?;
+pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
+	let terminal_create_contract = build_terminal_create_contract(project_id, task_id).await?;
+	let shell_spawn_contract = build_shell_spawn_contract(task_id).await?;
 
-	terminal_service::spawn(app_handle, pty_spawn_contract).await?;
+	terminal_service::create(app_handle, terminal_create_contract, Some(shell_spawn_contract)).await?;
 
 	Ok(())
 }
 
-pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<TerminalSpawnContract> {
+pub async fn build_terminal_create_contract(project_id: Uuid, task_id: Uuid) -> Result<TerminalCreateContract> {
+	let task = task_repository::get_one(task_id).await?;
+
+	let pty_spawn_contract = TerminalCreateContract {
+		project_id,
+		task_id: Some(task_id),
+		name: task.tab_name,
+		history_persistence: task.history_persistence,
+	};
+
+	Ok(pty_spawn_contract)
+}
+
+pub async fn build_shell_spawn_contract(task_id: Uuid) -> Result<ShellSpawnContract> {
 	let command_tiles_filter = PlaceholderInsertTileFilterContract {
 		task_command_id: Some(task_id),
 		..PlaceholderInsertTileFilterContract::default()
@@ -132,41 +148,36 @@ pub async fn build_spawn_contract(project_id: Uuid, task_id: Uuid) -> Result<Ter
 	let command = placeholder_insert_service::get_rendered_tiles(command_tiles_filter).await?;
 	let working_dir = placeholder_insert_service::get_rendered_tiles(working_dir_tiles_filter).await?;
 
-	let pty_spawn_contract = TerminalSpawnContract {
-		project_id,
-		task_id: Some(task_id),
-		name: task.tab_name,
+	let shell_spawn_contract = ShellSpawnContract {
 		command,
 		working_dir,
 		no_exit: task.no_exit,
 		force_kill: task.force_kill,
-		history_persistence: task.history_persistence,
 	};
 
-	Ok(pty_spawn_contract)
+	Ok(shell_spawn_contract)
 }
 
-pub async fn restart_one(app_handle: &AppHandle, project_id: Uuid, task_id: Uuid) -> Result<()> {
-	let filter = TerminalFilterContract {
+pub async fn restart_one(task_id: Uuid) -> Result<()> {
+	let filter = TerminalFilter {
 		task_ids: Some(vec![task_id]),
-		..TerminalFilterContract::default()
+		..TerminalFilter::default()
 	};
 
-	let spawn_contract = build_spawn_contract(project_id, task_id).await?;
+	let spawn_contract = build_shell_spawn_contract(task_id).await?;
 
-	terminal_service::restart_schedule(app_handle, filter.clone(), spawn_contract).await?;
-	terminal_service::restart_first(app_handle, filter).await?;
+	terminal_service::shell_restart_first(&filter, spawn_contract).await?;
 
 	Ok(())
 }
 
-pub async fn stop_one(app_handle: &AppHandle, task_id: Uuid) -> Result<()> {
-	let filter = TerminalFilterContract {
+pub async fn stop_one(task_id: Uuid) -> Result<()> {
+	let filter = TerminalFilter {
 		task_ids: Some(vec![task_id]),
-		..TerminalFilterContract::default()
+		..TerminalFilter::default()
 	};
 
-	terminal_service::kill_or_delete_first(app_handle, filter).await?;
+	terminal_service::close_first(&filter).await?;
 
 	Ok(())
 }

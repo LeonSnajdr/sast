@@ -48,7 +48,7 @@ pub async fn task_set_delete_one(id: Uuid) -> Result<()> {
 #[tauri::command]
 #[specta::specta]
 pub async fn task_set_start_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
-	task_set_service::start_one(&app_handle, project_id, task_set_id).await?;
+	task_set_service::start_one(app_handle, project_id, task_set_id).await?;
 
 	Ok(())
 }
@@ -56,15 +56,15 @@ pub async fn task_set_start_one(app_handle: AppHandle, project_id: Uuid, task_se
 #[tauri::command]
 #[specta::specta]
 pub async fn task_set_restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
-	task_set_service::restart_one(&app_handle, project_id, task_set_id).await?;
+	task_set_service::restart_one(app_handle, project_id, task_set_id).await?;
 
 	Ok(())
 }
 
 #[tauri::command]
 #[specta::specta]
-pub async fn task_set_stop_one(app_handle: AppHandle, task_set_id: Uuid) -> Result<()> {
-	task_set_service::stop_one(&app_handle, task_set_id).await?;
+pub async fn task_set_stop_one(task_set_id: Uuid) -> Result<()> {
+	task_set_service::stop_one(task_set_id).await?;
 
 	Ok(())
 }

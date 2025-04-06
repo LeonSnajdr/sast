@@ -23,7 +23,7 @@ const hasRunningTerminal = computed(() => {
 const restart = async () => {
     isRestarting.value = true;
 
-    const restartResult = await commands.taskRestartOne(props.task.projectId, props.task.id);
+    const restartResult = await commands.taskRestartOne(props.task.id);
 
     if (restartResult.status === "error") {
         notify.error(t("action.restart.error", { type: t("task.singular"), name: props.task.name }), { error: restartResult.error });

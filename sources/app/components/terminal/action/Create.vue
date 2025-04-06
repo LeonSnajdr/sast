@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="ptySpawn()" color="secondary" icon="mdi-plus" variant="flat" />
+    <BaseBtnIcon @click="createTerminal()" color="secondary" icon="mdi-plus" variant="flat" />
 </template>
 
 <script setup lang="ts">
@@ -10,19 +10,22 @@ const projectService = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectService);
 
-const ptySpawn = async () => {
-    const spawnContract: TerminalSpawnContract = {
+const createTerminal = async () => {
+    const createContract: TerminalCreateContract = {
         name: null,
         projectId: selectedProject.value.id,
         taskId: null,
-        command: null,
-        noExit: false,
-        workingDir: null,
-        forceKill: false,
         historyPersistence: "OnError"
     };
 
-    const spawnResult = await commands.terminalSpawn(spawnContract);
+    const spawnContract: ShellSpawnContract = {
+        command: "dotnet run",
+        noExit: false,
+        workingDir: "C:\\Repos\\metis\\sources\\ControlCenter.Api\\ControlCenter.Api",
+        forceKill: false
+    };
+
+    const spawnResult = await commands.terminalCreate(createContract, spawnContract);
 
     if (spawnResult.status === "error") {
         notify.error(t("terminal.spawn.error"), { error: spawnResult.error });

@@ -5,7 +5,8 @@ use crate::task::task_service;
 use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 use crate::task_set::task::task_set_task_models::TaskSetTaskModel;
 use crate::task_set::task::task_set_task_repository;
-use crate::terminal::terminal_contracts::TerminalSpawnContract;
+use crate::terminal::shell::shell_contracts::ShellSpawnContract;
+use crate::terminal::terminal_contracts::TerminalCreateContract;
 
 pub async fn create_or_replace(task_set_id: Uuid, contracts: Vec<TaskSetTaskInfoContract>) -> Result<()> {
 	let models = contracts
@@ -30,15 +31,19 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoContra
 	Ok(contracts)
 }
 
-pub async fn build_spawn_contract(project_id: Uuid, task_set_task: &TaskSetTaskModel) -> Result<TerminalSpawnContract> {
-	let task_spawn_contract = task_service::build_spawn_contract(project_id, task_set_task.task_id).await?;
+pub async fn build_terminal_create_contract(project_id: Uuid, task_set_task: &TaskSetTaskModel) -> Result<TerminalCreateContract> {
+	task_service::build_terminal_create_contract(project_id, task_set_task.task_id).await
+}
+
+pub async fn build_shell_spawn_contract(task_set_task: &TaskSetTaskModel) -> Result<ShellSpawnContract> {
+	let task_spawn_contract = task_service::build_shell_spawn_contract(task_set_task.task_id).await?;
 
 	let no_exit = match task_set_task.blocking {
 		true => false,
 		false => task_spawn_contract.no_exit,
 	};
 
-	let spawn_contract = TerminalSpawnContract {
+	let spawn_contract = ShellSpawnContract {
 		no_exit,
 		..task_spawn_contract
 	};
