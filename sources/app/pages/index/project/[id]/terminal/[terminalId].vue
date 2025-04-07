@@ -76,13 +76,13 @@ onMounted(async () => {
         fitAddon.fit();
     });
 
-    const unlistenPtyReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
+    const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
 
         terminal.write(eventData.payload.data);
     });
 
-    const unlistenPtyKilledEvent = await events.terminalDeletedEvent.listen((event) => {
+    const unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((event) => {
         if (event.payload !== route.params.terminalId) return;
 
         navigateTo({ name: "index-project-id-terminal" });
@@ -90,8 +90,8 @@ onMounted(async () => {
 
     cleanup = () => {
         unlistenResize();
-        unlistenPtyReadEvent();
-        unlistenPtyKilledEvent();
+        unlistenTerminalShellReadEvent();
+        unlistenTerminalClosedEvent();
         terminal.dispose();
     };
 
@@ -128,6 +128,8 @@ const writeToTerminal = async (data: string) => {
 };
 
 async function resizeTerminal(resizeContract: ShellResizeContract) {
+    console.log("resize", resizeContract);
+
     const resizeResult = await commands.terminalShellResize(route.params.terminalId, resizeContract);
     if (resizeResult.status === "error") {
         console.error("Error while resizing terminal");

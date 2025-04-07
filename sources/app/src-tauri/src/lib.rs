@@ -59,9 +59,9 @@ pub fn run() {
 			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
-			terminal_events::TerminalDeletedEvent,
+			terminal_events::TerminalClosedEvent,
 			terminal_events::TerminalCreatedEvent,
-			terminal_events::TerminalStatusChangedEvent,
+			terminal_events::TerminalShellStatusChangedEvent,
 			terminal_events::TerminalShellReadEvent,
 		]);
 

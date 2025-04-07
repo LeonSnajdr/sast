@@ -283,15 +283,15 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
+terminalClosedEvent: TerminalClosedEvent,
 terminalCreatedEvent: TerminalCreatedEvent,
-terminalDeletedEvent: TerminalDeletedEvent,
 terminalShellReadEvent: TerminalShellReadEvent,
-terminalStatusChangedEvent: TerminalStatusChangedEvent
+terminalShellStatusChangedEvent: TerminalShellStatusChangedEvent
 }>({
+terminalClosedEvent: "terminal-closed-event",
 terminalCreatedEvent: "terminal-created-event",
-terminalDeletedEvent: "terminal-deleted-event",
 terminalShellReadEvent: "terminal-shell-read-event",
-terminalStatusChangedEvent: "terminal-status-changed-event"
+terminalShellStatusChangedEvent: "terminal-shell-status-changed-event"
 })
 
 /** user-defined constants **/
@@ -325,17 +325,17 @@ export type TaskSetInfoContract = { id: string; projectId: string; name: string;
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TerminalClosedEvent = string
 export type TerminalCreateContract = { projectId: string; taskId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
 export type TerminalCreatedEvent = string
-export type TerminalDeletedEvent = string
 export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; name: string; shellStatus: TerminalShellStatus }
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "Running" | "Restarting" | "Killed" | { Crashed: { code: number; message: string } }
-export type TerminalStatusChangedEvent = TerminalStatusChangedEventData
-export type TerminalStatusChangedEventData = { id: string; status: TerminalShellStatus }
+export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
+export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
 
 /** tauri-specta globals **/
 

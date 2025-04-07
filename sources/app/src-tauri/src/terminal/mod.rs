@@ -17,7 +17,8 @@ use crate::terminal::shell::shell_events::ShellOutputEvent;
 use crate::terminal::shell::Shell;
 use crate::terminal::terminal_contracts::TerminalCreateContract;
 use crate::terminal::terminal_events::{
-	TerminalCreatedEvent, TerminalDeletedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalStatusChangedEvent, TerminalStatusChangedEventData,
+	TerminalClosedEvent, TerminalCreatedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellStatusChangedEvent,
+	TerminalShellStatusChangedEventData,
 };
 
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
@@ -75,7 +76,7 @@ impl Terminal {
 					ShellOutputEvent::Spawned => {
 						println!("Terminal: Shell spawned.");
 						*shell_status_clone.write().await = TerminalShellStatus::Running;
-						let _ = TerminalStatusChangedEvent(TerminalStatusChangedEventData {
+						let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
 							id: id_clone,
 							status: shell_status_clone.read().await.clone(),
 						})
@@ -106,14 +107,14 @@ impl Terminal {
 								ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
 							};
 
-							let _ = TerminalStatusChangedEvent(TerminalStatusChangedEventData {
+							let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
 								id: id_clone,
 								status: shell_status_clone.read().await.clone(),
 							})
 							.emit(app_handle_clone.as_ref());
 						} else {
 							let _ = terminal_repository::delete_one(&id_clone).await;
-							let _ = TerminalDeletedEvent(id_clone).emit(app_handle_clone.as_ref());
+							let _ = TerminalClosedEvent(id_clone).emit(app_handle_clone.as_ref());
 						}
 					}
 				}
@@ -164,8 +165,7 @@ impl Terminal {
 
 		terminal_repository::delete_one(&self.id).await?;
 
-		// TODO: Rename event to closed
-		TerminalDeletedEvent(self.id).emit(self.app_handle.as_ref()).map_err(|_| Error::EventEmit)?;
+		TerminalClosedEvent(self.id).emit(self.app_handle.as_ref()).map_err(|_| Error::EventEmit)?;
 
 		Ok(())
 	}
