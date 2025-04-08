@@ -35,6 +35,9 @@ jobs:
           matrix:
               platform: [windows-latest]
       runs-on: ${{ matrix.platform }}
+      defaults:
+        run:
+          working-directory: sources/app
       steps:
           - name: Checkout repository
             uses: actions/checkout@v4
@@ -50,8 +53,6 @@ jobs:
 
           - name: Install node & yarn
             uses: volta-cli/action@v4
-            with:
-              package-json-path: sources/app/package.json
 
           - name: Node cache
             uses: actions/cache@v4
@@ -62,7 +63,6 @@ jobs:
               restore-keys: ${{ runner.os }}-sast-app-node_modules-
 
           - name: Install dependencies and lint
-            working-directory: sources/app
             run: |
                 node --version
                 yarn --version
