@@ -30,13 +30,12 @@ pub fn run() {
 			project_commands::project_get_all,
 			project_commands::project_get_last_opened,
 			project_commands::project_open,
-			terminal_commands::terminal_spawn,
-			terminal_commands::terminal_write,
-			terminal_commands::terminal_get_read_history,
+			terminal_commands::terminal_create,
+			terminal_commands::terminal_shell_write,
+			terminal_commands::terminal_get_history,
 			terminal_commands::terminal_get_many_info,
-			terminal_commands::terminal_resize,
-			terminal_commands::terminal_kill,
-			terminal_commands::terminal_delete,
+			terminal_commands::terminal_shell_resize,
+			terminal_commands::terminal_close,
 			placeholder_commands::placeholder_create,
 			placeholder_commands::placeholder_get_many,
 			placeholder_commands::placeholder_get_one,
@@ -60,9 +59,9 @@ pub fn run() {
 			task_set_commands::task_set_stop_one,
 		])
 		.events(collect_events![
-			terminal_events::TerminalDeletedEvent,
+			terminal_events::TerminalClosedEvent,
 			terminal_events::TerminalCreatedEvent,
-			terminal_events::TerminalStatusChangedEvent,
+			terminal_events::TerminalShellStatusChangedEvent,
 			terminal_events::TerminalShellReadEvent,
 		]);
 

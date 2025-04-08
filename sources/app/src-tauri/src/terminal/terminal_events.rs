@@ -5,17 +5,17 @@ use tauri_specta::Event;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalDeletedEvent(pub Uuid);
+pub struct TerminalClosedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
 pub struct TerminalCreatedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalStatusChangedEvent(pub TerminalStatusChangedEventData);
+pub struct TerminalShellStatusChangedEvent(pub TerminalShellStatusChangedEventData);
 
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct TerminalStatusChangedEventData {
+pub struct TerminalShellStatusChangedEventData {
 	pub id: Uuid,
 	pub status: TerminalShellStatus,
 }

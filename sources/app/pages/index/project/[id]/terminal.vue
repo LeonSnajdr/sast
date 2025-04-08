@@ -2,7 +2,7 @@
     <VAppBar>
         <TerminalTabs />
         <VSpacer />
-        <TerminalActionSpawn />
+        <TerminalActionCreate />
     </VAppBar>
 
     <div class="h-100">
@@ -17,15 +17,15 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-let unlistenPtySpawnedEvent: UnlistenFn;
+let unlistenTerminalCreatedEvent: UnlistenFn;
 
 onMounted(async () => {
-    unlistenPtySpawnedEvent = await events.terminalCreatedEvent.listen((event) => {
+    unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen((event) => {
         navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: event.payload } });
     });
 });
 
 onBeforeUnmount(() => {
-    unlistenPtySpawnedEvent();
+    unlistenTerminalCreatedEvent();
 });
 </script>

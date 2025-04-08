@@ -76,13 +76,13 @@ onMounted(async () => {
         fitAddon.fit();
     });
 
-    const unlistenPtyReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
+    const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
 
         terminal.write(eventData.payload.data);
     });
 
-    const unlistenPtyKilledEvent = await events.terminalDeletedEvent.listen((event) => {
+    const unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((event) => {
         if (event.payload !== route.params.terminalId) return;
 
         navigateTo({ name: "index-project-id-terminal" });
@@ -90,8 +90,8 @@ onMounted(async () => {
 
     cleanup = () => {
         unlistenResize();
-        unlistenPtyReadEvent();
-        unlistenPtyKilledEvent();
+        unlistenTerminalShellReadEvent();
+        unlistenTerminalClosedEvent();
         terminal.dispose();
     };
 
@@ -106,29 +106,31 @@ onBeforeUnmount(() => {
 });
 
 const restoreHistory = async () => {
-    const readHistoryResult = await commands.terminalGetReadHistory(route.params.terminalId);
+    const historyResult = await commands.terminalGetHistory(route.params.terminalId);
 
-    if (readHistoryResult.status === "error") {
-        notify.error(t("terminal.open.error"), { error: readHistoryResult.error });
+    if (historyResult.status === "error") {
+        notify.error(t("terminal.open.error"), { error: historyResult.error });
         return;
     }
 
-    if (!readHistoryResult.data) {
+    if (!historyResult.data) {
         return;
     }
 
-    terminal.write(readHistoryResult.data);
+    terminal.write(historyResult.data);
 };
 
 const writeToTerminal = async (data: string) => {
-    const writeResult = await commands.terminalWrite(route.params.terminalId, data);
+    const writeResult = await commands.terminalShellWrite(route.params.terminalId, data);
     if (writeResult.status === "error") {
         console.error("failed to write data");
     }
 };
 
-async function resizeTerminal(resizeContract: TerminalResizeContract) {
-    const resizeResult = await commands.terminalResize(route.params.terminalId, resizeContract);
+async function resizeTerminal(resizeContract: ShellResizeContract) {
+    console.log("resize", resizeContract);
+
+    const resizeResult = await commands.terminalShellResize(route.params.terminalId, resizeContract);
     if (resizeResult.status === "error") {
         console.error("Error while resizing terminal");
     }

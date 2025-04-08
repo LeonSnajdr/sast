@@ -61,31 +61,31 @@ async projectOpen(id: string) : Promise<Result<ProjectContract, Error>> {
     else return { status: "error", error: e  as any };
 }
 },
-async terminalSpawn(spawnContract: TerminalSpawnContract) : Promise<Result<string, Error>> {
+async terminalCreate(createContract: TerminalCreateContract, spawnContract: ShellSpawnContract | null) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_spawn", { spawnContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_create", { createContract, spawnContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async terminalWrite(id: string, data: string) : Promise<Result<null, Error>> {
+async terminalShellWrite(id: string, data: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_write", { id, data }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_shell_write", { id, data }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async terminalGetReadHistory(id: string) : Promise<Result<string, Error>> {
+async terminalGetHistory(id: string) : Promise<Result<string, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_get_read_history", { id }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_get_history", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async terminalGetManyInfo(filter: TerminalFilterContract) : Promise<Result<TerminalInfoContract[], Error>> {
+async terminalGetManyInfo(filter: TerminalFilter) : Promise<Result<TerminalInfoContract[], Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("terminal_get_many_info", { filter }) };
 } catch (e) {
@@ -93,25 +93,17 @@ async terminalGetManyInfo(filter: TerminalFilterContract) : Promise<Result<Termi
     else return { status: "error", error: e  as any };
 }
 },
-async terminalResize(id: string, resizeContract: TerminalResizeContract) : Promise<Result<null, Error>> {
+async terminalShellResize(id: string, resizeContract: ShellResizeContract) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_resize", { id, resizeContract }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_shell_resize", { id, resizeContract }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
 },
-async terminalKill(id: string) : Promise<Result<null, Error>> {
+async terminalClose(id: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_kill", { id }) };
-} catch (e) {
-    if(e instanceof Error) throw e;
-    else return { status: "error", error: e  as any };
-}
-},
-async terminalDelete(id: string) : Promise<Result<null, Error>> {
-    try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_delete", { id }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_close", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -205,9 +197,9 @@ async taskStartOne(projectId: string, taskId: string) : Promise<Result<null, Err
     else return { status: "error", error: e  as any };
 }
 },
-async taskRestartOne(projectId: string, taskId: string) : Promise<Result<null, Error>> {
+async taskRestartOne(taskId: string) : Promise<Result<null, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("task_restart_one", { projectId, taskId }) };
+    return { status: "ok", data: await TAURI_INVOKE("task_restart_one", { taskId }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -291,15 +283,15 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
+terminalClosedEvent: TerminalClosedEvent,
 terminalCreatedEvent: TerminalCreatedEvent,
-terminalDeletedEvent: TerminalDeletedEvent,
 terminalShellReadEvent: TerminalShellReadEvent,
-terminalStatusChangedEvent: TerminalStatusChangedEvent
+terminalShellStatusChangedEvent: TerminalShellStatusChangedEvent
 }>({
+terminalClosedEvent: "terminal-closed-event",
 terminalCreatedEvent: "terminal-created-event",
-terminalDeletedEvent: "terminal-deleted-event",
 terminalShellReadEvent: "terminal-shell-read-event",
-terminalStatusChangedEvent: "terminal-status-changed-event"
+terminalShellStatusChangedEvent: "terminal-shell-status-changed-event"
 })
 
 /** user-defined constants **/
@@ -308,7 +300,7 @@ terminalStatusChangedEvent: "terminal-status-changed-event"
 
 /** user-defined types **/
 
-export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "InvalidStatus" | "Failed"
+export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "InvalidStatus" | "EventEmit" | "Failed"
 export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
@@ -322,6 +314,8 @@ export type ProjectCreateContract = { name: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
+export type ShellResizeContract = { rows: number; cols: number }
+export type ShellSpawnContract = { workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean }
 export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
 export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }
@@ -331,18 +325,17 @@ export type TaskSetInfoContract = { id: string; projectId: string; name: string;
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
+export type TerminalClosedEvent = string
+export type TerminalCreateContract = { projectId: string; taskId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
 export type TerminalCreatedEvent = string
-export type TerminalDeletedEvent = string
-export type TerminalFilterContract = { id: string | null; projectId: string | null; taskIds: string[] | null }
+export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; name: string; shellStatus: TerminalShellStatus }
-export type TerminalResizeContract = { cols: number; rows: number }
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
-export type TerminalShellStatus = "Creating" | "Running" | "RestartScheduled" | "Restarting" | "Killing" | "Killed" | "Failed"
-export type TerminalSpawnContract = { projectId: string; taskId: string | null; name: string | null; workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence }
-export type TerminalStatusChangedEvent = TerminalStatusChangedEventData
-export type TerminalStatusChangedEventData = { id: string; status: TerminalShellStatus }
+export type TerminalShellStatus = "None" | "Running" | "Restarting" | "Killed" | { Crashed: { code: number; message: string } }
+export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
+export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
 
 /** tauri-specta globals **/
 

@@ -30,9 +30,9 @@ export const useTerminalStore = defineStore("terminal", () => {
         }
     };
 
-    const deleted = async (id: string) => {
+    const closed = async (id: string) => {
         terminals.value = terminals.value.filter((x) => x.id !== id);
     };
 
-    return { isLoading, terminals, loadAll, statusChanged, deleted };
+    return { isLoading, terminals, loadAll, statusChanged, closed };
 });

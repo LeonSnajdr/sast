@@ -6,8 +6,9 @@
     >
         <template #prepend>
             <div class="d-flex ga-1">
-                <VBadge :color="indicatorColor" location="bottom right" offsetX="-2" offsetY="-2" dot>
+                <VBadge :color="indicator.color" location="bottom right" offsetX="-2" offsetY="-2" dot>
                     <VIcon color="info" icon="mdi-powershell" />
+                    <VTooltip v-if="indicator.tooltip" :text="indicator.tooltip" activator="parent" location="left" />
                 </VBadge>
                 <VBtn v-if="terminal.task" @click.prevent.stop size="20" variant="plain">
                     <VIcon icon="mdi-checkbox-marked-circle-outline" size="small" />
@@ -25,8 +26,7 @@
         </template>
         <span class="text-truncate" style="max-width: 150px">{{ terminal.name }}</span>
         <template #append>
-            <TerminalActionKill v-if="isKillable" :id="terminal.id" />
-            <TerminalActionDelete v-if="isClosable" :id="terminal.id" />
+            <TerminalActionClose :id="terminal.id" />
         </template>
     </VBtn>
 </template>
@@ -38,25 +38,17 @@ const props = defineProps<{
 
 const route = useRoute("index-project-id-terminal-terminalId");
 
-const isKillable = computed(() => {
-    return props.terminal.shellStatus === "Running";
-});
+const indicator = computed(() => {
+    const status = props.terminal.shellStatus;
 
-const isClosable = computed(() => {
-    return props.terminal.shellStatus === "Killed" || props.terminal.shellStatus === "Failed" || props.terminal.shellStatus == "RestartScheduled";
-});
-
-const indicatorColor = computed(() => {
-    switch (props.terminal.shellStatus) {
-        case "Killed":
-            return undefined;
-        case "Failed":
-            return "error";
-        case "RestartScheduled":
-        case "Restarting":
-            return "warning";
-        default:
-            return "success";
+    if (typeof status === "object" && "Crashed" in status) {
+        return { color: "error", tooltip: `${status.Crashed.code} ${status.Crashed.message}` };
+    } else if (status == "Restarting") {
+        return { color: "warning" };
+    } else if (status == "Running") {
+        return { color: "success" };
     }
+
+    return { color: undefined };
 });
 </script>
