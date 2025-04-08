@@ -48,7 +48,7 @@ const initialize = async () => {
 };
 
 whenever(
-    () => pressedKeys.has("control") && pressedKeys.has("+"),
+    () => pressedKeys.has("control") && pressedKeys.has(","),
     () => {
         if (route.name === "initialize") return;
 
