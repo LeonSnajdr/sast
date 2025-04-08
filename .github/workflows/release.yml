@@ -53,7 +53,7 @@ jobs:
               restore-keys: ${{ runner.os }}-sast-app-node_modules-
 
           - name: Install dependencies and lint
-            working-directory: ./sources/client
+            working-directory: sources/app
             run: |
                 node --version
                 yarn --version
@@ -67,8 +67,8 @@ jobs:
                 TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
                 TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
             with:
-                projectPath: "./sources/app"
+                projectPath: sources/app
                 tagName: ${{ needs.prepare.outputs.app_version }}
                 args: '-c ''{"package":{"version": "${{ needs.prepare.outputs.app_version }}"}}'''
-                releaseName: "sast ${{ needs.prepare.outputs.app_version }}"
-                releaseBody: "See the assets to download and install this version."
+                releaseName: sast ${{ needs.prepare.outputs.app_version }}
+                releaseBody: See the assets to download and install this version.
