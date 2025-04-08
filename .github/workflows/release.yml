@@ -67,6 +67,7 @@ jobs:
                 node --version
                 yarn --version
                 yarn install --immutable
+                yarn build:nuxt
                 yarn lint
 
           - name: Build tauri app
