@@ -1,22 +1,10 @@
 <template>
     <BaseDrawerEdit v-model="isDrawerOpen" :type="$t('task.singular')">
         <template v-if="task" #actions>
-            <TaskActionSave @saved="taskSaved" :task />
+            <TaskActionSave @saved="taskSaved" :disabled="!isTaskValid" :task />
         </template>
-        <template v-if="task" #fields>
-            <TaskFieldName v-model="task.name" autofocus />
-            <TaskFieldTabName v-model="task.tabName" />
-            <VRow>
-                <VCol>
-                    <TaskFieldNoExit v-model="task.noExit" />
-                </VCol>
-                <VCol>
-                    <TaskFieldForceKill v-model="task.forceKill" />
-                </VCol>
-            </VRow>
-            <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
-            <TaskFieldCommandTiles v-model="task.commandTiles" />
-            <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
+        <template v-if="task" #content>
+            <TaskFieldContainer v-model="task" v-model:isValid="isTaskValid" />
         </template>
     </BaseDrawerEdit>
 </template>
@@ -31,6 +19,8 @@ const props = defineProps<{
 }>();
 
 const isDrawerOpen = defineModel<boolean>({ required: true });
+
+const isTaskValid = ref<boolean | null>(false);
 
 const { task, loadTask } = useTask();
 

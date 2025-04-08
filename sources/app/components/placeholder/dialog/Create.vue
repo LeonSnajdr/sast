@@ -1,12 +1,10 @@
 <template>
-    <BaseDialogCreate v-model="isDialogOpen" :emptyElement :type="$t('placeholder.singular')" icon="mdi-label">
-        <template #actions="{ isFormValid, element }">
-            <PlaceholderActionCreate @created="placeholderCreated" :disabled="!isFormValid" :placeholder="element" />
+    <BaseDialogCreate v-model="isDialogOpen" v-model:element="placeholder" :emptyElement :type="$t('placeholder.singular')" icon="mdi-label">
+        <template #content>
+            <PlaceholderFieldContainer v-model="placeholder" v-model:isValid="isPlaceholderValid" />
         </template>
-        <template #fields="{ element: placeholder }">
-            <PlaceholderFieldName v-model="placeholder.name" autofocus />
-            <PlaceholderFieldValue v-model="placeholder.value" />
-            <PlaceholderFieldVisibility v-model="placeholder.visibility" />
+        <template #actions>
+            <PlaceholderActionCreate @created="placeholderCreated" :disabled="!isPlaceholderValid" :placeholder />
         </template>
     </BaseDialogCreate>
 </template>
@@ -16,7 +14,9 @@ const emit = defineEmits<{
     created: [id: string];
 }>();
 
-const isDialogOpen = defineModel<boolean>({ required: true });
+const placeholder = ref({} as PlaceholderCreateContract);
+const isPlaceholderValid = ref<boolean | null>(false);
+const isDialogOpen = ref(false);
 
 const projectStore = useProjectStore();
 

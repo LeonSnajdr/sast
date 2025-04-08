@@ -65,6 +65,14 @@ onMounted(async () => {
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(webLinksAddon);
 
+    terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+        const isCtrlC = event.ctrlKey && event.code === "KeyC" && event.type === "keydown";
+        const isTextSelected = terminal.getSelection();
+        const isCopyAction = isCtrlC && isTextSelected;
+
+        return !isCopyAction;
+    });
+
     await restoreHistory();
 
     terminal.onData((data) => writeToTerminal(data));

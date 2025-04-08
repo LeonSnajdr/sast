@@ -1,15 +1,15 @@
 <template>
-    <BaseDrawerForm v-model="isDrawerOpen">
+    <BaseDrawer v-model="isDrawerOpen">
         <template #title>
             {{ $t("title.edit", { type }) }}
         </template>
-        <template #actions="{ isFormValid }">
-            <slot :isFormValid name="actions" />
+        <template #actions>
+            <slot name="actions" />
         </template>
-        <template #fields="{ isFormValid }">
-            <slot :isFormValid name="fields" />
+        <template #content>
+            <slot name="content" />
         </template>
-    </BaseDrawerForm>
+    </BaseDrawer>
 </template>
 
 <script setup lang="ts">

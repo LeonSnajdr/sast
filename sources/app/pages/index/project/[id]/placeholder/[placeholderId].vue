@@ -2,16 +2,12 @@
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("placeholder.singular") }) }}</VAppBarTitle>
         <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" class="mr-2" />
-        <PlaceholderActionSave v-if="placeholder" :disabled="!isFormValid" :placeholder="placeholder" />
+        <PlaceholderActionSave v-if="placeholder" :disabled="!isPlaceholderValid" :placeholder="placeholder" />
     </VAppBar>
     <VContainer>
         <VCard :loading="isLoading">
             <VCardText v-if="placeholder">
-                <VForm v-model="isFormValid">
-                    <PlaceholderFieldName v-model="placeholder.name" />
-                    <PlaceholderFieldValue v-model="placeholder.value" />
-                    <PlaceholderFieldVisibility v-model="placeholder.visibility" />
-                </VForm>
+                <PlaceholderFieldContainer v-model="placeholder" v-model:isValid="isPlaceholderValid" />
             </VCardText>
         </VCard>
     </VContainer>
@@ -21,7 +17,7 @@
 const route = useRoute("index-project-id-placeholder-placeholderId");
 
 const isLoading = ref(false);
-const isFormValid = ref(false);
+const isPlaceholderValid = ref<boolean | null>(false);
 const placeholder = ref<PlaceholderContract>();
 
 onBeforeMount(() => {

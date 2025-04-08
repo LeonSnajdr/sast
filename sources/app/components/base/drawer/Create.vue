@@ -1,32 +1,36 @@
 <template>
-    <BaseDrawerForm v-model="isDrawerOpen">
+    <BaseDrawer v-model="isDrawerOpen">
         <template #title>
             {{ $t("title.create", { type }) }}
         </template>
-        <template #actions="{ isFormValid }">
-            <slot :element :isFormValid name="actions" />
+        <template #actions>
+            <slot name="actions" />
         </template>
-        <template #fields="{ isFormValid }">
-            <slot :element :isFormValid name="fields" />
+        <template #content>
+            <slot name="content" />
         </template>
-    </BaseDrawerForm>
+    </BaseDrawer>
 </template>
 
 <script setup lang="ts" generic="T">
+import type { VForm } from "vuetify/components";
+
 const props = defineProps<{
     type: string;
     emptyElement: T;
 }>();
 
 const isDrawerOpen = defineModel<boolean>({ required: true });
+const element = defineModel<T>("element", { required: true });
 
-const element = ref<T>({} as T);
+const form = ref<VForm>();
 
 onBeforeMount(() => {
     resetDrawer();
 });
 
 const resetDrawer = () => {
+    form.value?.resetValidation();
     element.value = lodCloneDeep(props.emptyElement);
 };
 
