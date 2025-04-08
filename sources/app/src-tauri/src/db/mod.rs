@@ -3,8 +3,8 @@ use sqlx::{sqlite::SqliteConnectOptions, Pool, Sqlite, SqlitePool};
 use std::fs::create_dir_all;
 use std::str::FromStr;
 use tauri::{
-    plugin::{Builder as PluginBuilder, TauriPlugin},
-    Manager, Runtime,
+	plugin::{Builder as PluginBuilder, TauriPlugin},
+	Manager, Runtime,
 };
 
 static POOL: OnceCell<Pool<Sqlite>> = OnceCell::new();

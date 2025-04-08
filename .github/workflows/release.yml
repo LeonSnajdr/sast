@@ -1,67 +1,74 @@
 name: App Builder
 on:
-    push:
-        tags:
-            - "v*"
-    workflow_dispatch:
+  push:
+    branches:
+      - main
 
 jobs:
-    release:
-        permissions:
-            contents: write
-        strategy:
-            fail-fast: false
-            matrix:
-                platform: [macos-latest, ubuntu-20.04, windows-latest]
-        runs-on: ${{ matrix.platform }}
+  prepare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 1
+    outputs:
+      app_version: ${{ steps.version.outputs.app_version }}
+      date_created: ${{ steps.version.outputs.date_created }}
+    steps:
+    - uses: actions/checkout@v4
+    - id: version
+      run: |
+        echo "app_version=v$(date +'%Y.%m').${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
+        echo "date_created=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
-        steps:
-            - name: Checkout repository
-              uses: actions/checkout@v4
+  release:
+      needs: [prepare]
+      permissions:
+          contents: write
+      strategy:
+          fail-fast: false
+          matrix:
+              platform: [windows-latest]
+      runs-on: ${{ matrix.platform }}
 
-            - name: Install dependencies (ubuntu only)
-              if: matrix.platform == 'ubuntu-20.04'
-              run: |
-                  sudo apt-get update
-                  sudo apt-get install -y libgtk-3-dev libwebkit2gtk-4.0-dev librsvg2-dev
+      steps:
+          - name: Checkout repository
+            uses: actions/checkout@v4
 
-            - name: Rust setup
-              uses: dtolnay/rust-toolchain@stable
+          - name: Rust setup
+            uses: dtolnay/rust-toolchain@stable
 
-            - name: Rust cache
-              uses: swatinem/rust-cache@v2
-              with:
-                  workspaces: "./src-tauri -> target"
+          - name: Rust cache
+            uses: swatinem/rust-cache@v2
+            with:
+              shared-key: ${{ runner.os }}-sast-app-tauri-target-${{ hashFiles('sources/app/src/Cargo.lock') }}
+              workspaces: sources/app/src/src-tauri -> target
 
-            - name: Sync node version and setup cache
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "18.x"
+          - name: Install node & yarn
+            uses: volta-cli/action@v4
 
-            - name: Install dependencies and lint
-              working-directory: ./sources/client
-              run: |
-                  node --version
-                  yarn --version
-                  yarn install --frozen-lockfile
-                  yarn lint
-                  yarn lint:style
+          - name: Node cache
+            uses: actions/cache@v4
+            id: node_modules_cache
+            with:
+              path: sources/app/node_modules
+              key: ${{ runner.os }}-sast-app-node_modules-${{ hashFiles('sources/app/yarn.lock') }}
+              restore-keys: ${{ runner.os }}-sast-app-node_modules-
 
-            - name: Generate Prisma
-              working-directory: ./sources/client/src-tauri
-              run: |
-                  cargo prisma-gen
+          - name: Install dependencies and lint
+            working-directory: ./sources/client
+            run: |
+                node --version
+                yarn --version
+                yarn install --immutable
+                yarn lint
 
-            - name: Build tauri app
-              uses: tauri-apps/tauri-action@v0
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                  TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-                  TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
-              with:
-                  projectPath: "./sources/client"
-                  tagName: ${{ github.ref_name }}
-                  releaseName: "App Name v__VERSION__"
-                  releaseBody: "See the assets to download and install this version."
-                  releaseDraft: true
-                  prerelease: false
+          - name: Build tauri app
+            uses: tauri-apps/tauri-action@v0
+            env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+                TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+            with:
+                projectPath: "./sources/app"
+                tagName: ${{ needs.prepare.outputs.app_version }}
+                args: '-c ''{"package":{"version": "${{ needs.prepare.outputs.app_version }}"}}'''
+                releaseName: "sast ${{ needs.prepare.outputs.app_version }}"
+                releaseBody: "See the assets to download and install this version."

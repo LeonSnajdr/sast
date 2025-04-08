@@ -2879,6 +2879,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/plugin-updater@npm:~2":
+  version: 2.7.0
+  resolution: "@tauri-apps/plugin-updater@npm:2.7.0"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.0.0"
+  checksum: 10c0/d93bccc34b76a80152652e4825402ea9d9c77115693d7698017eae59e96a5febc426b359dea2aaa5b63cdce5bc5d89b82c53adf495134036a472ea00791e9948
+  languageName: node
+  linkType: hard
+
 "@trysound/sax@npm:0.2.0":
   version: 0.2.0
   resolution: "@trysound/sax@npm:0.2.0"
@@ -8046,6 +8055,7 @@ __metadata:
     "@tauri-apps/api": "npm:^2.2.0"
     "@tauri-apps/cli": "npm:^2.2.7"
     "@tauri-apps/plugin-shell": "npm:~2.2.0"
+    "@tauri-apps/plugin-updater": "npm:~2"
     "@vueuse/core": "npm:^12.5.0"
     "@vueuse/integrations": "npm:^12.7.0"
     "@vueuse/nuxt": "npm:^12.5.0"
