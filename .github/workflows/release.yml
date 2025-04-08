@@ -54,10 +54,6 @@ jobs:
           - name: Install node & yarn
             uses: volta-cli/action@v4
 
-          - name: Enable slqx offline mode
-            run: |
-              export SQLX_OFFLINE=true
-
           - name: Node cache
             uses: actions/cache@v4
             id: node_modules_cache
@@ -80,6 +76,7 @@ jobs:
                 GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                 TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
                 TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+                SQLX_OFFLINE: true
             with:
                 projectPath: sources/app
                 tagName: ${{ needs.prepare.outputs.app_version }}
