@@ -1,32 +1,23 @@
 <template>
-    <BaseDrawerCreate v-model="isDrawerOpen" :emptyElement :type="$t('task.singular')">
-        <template #actions="{ isFormValid, element }">
-            <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task="element" />
+    <BaseDrawerCreate v-model="isDrawerOpen" v-model:element="task" :emptyElement :type="$t('task.singular')">
+        <template #actions>
+            <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task />
         </template>
-        <template #fields="{ element: task }">
-            <TaskFieldName v-model="task.name" autofocus />
-            <TaskFieldTabName v-model="task.tabName" />
-            <VRow>
-                <VCol>
-                    <TaskFieldNoExit v-model="task.noExit" />
-                </VCol>
-                <VCol>
-                    <TaskFieldForceKill v-model="task.forceKill" />
-                </VCol>
-            </VRow>
-            <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
-            <TaskFieldCommandTiles v-model="task.commandTiles" />
-            <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
+        <template #content>
+            <TaskFieldContainer v-model="task" v-model:isValid="isFormValid" />
         </template>
     </BaseDrawerCreate>
 </template>
 
 <script setup lang="ts">
 const emit = defineEmits<{
-    created: [id: TaskContract];
+    created: [task: TaskContract];
 }>();
 
 const isDrawerOpen = defineModel<boolean>({ required: true });
+
+const task = ref({} as TaskCreateContract);
+const isFormValid = ref<boolean | null>(false);
 
 const projectStore = useProjectStore();
 

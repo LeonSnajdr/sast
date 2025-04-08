@@ -1,34 +1,22 @@
 <template>
-    <BaseDialogCreate v-model="isDialogOpen" :emptyElement :type="$t('task.singular')" icon="mdi-checkbox-marked-circle-outline">
-        <template #actions="{ isFormValid, element }">
-            <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task="element" />
+    <BaseDialogCreate v-model="isDialogOpen" v-model:element="task" :emptyElement :type="$t('task.singular')" icon="mdi-checkbox-marked-circle-outline">
+        <template #content>
+            <TaskFieldContainer v-model="task" v-model:isValid="isTaskValid" />
         </template>
-        <template #fields="{ element: task }">
-            <TaskFieldName v-model="task.name" autofocus />
-            <TaskFieldTabName v-model="task.tabName" />
-            <VRow>
-                <VCol>
-                    <TaskFieldNoExit v-model="task.noExit" />
-                </VCol>
-                <VCol>
-                    <TaskFieldForceKill v-model="task.forceKill" />
-                </VCol>
-                <VCol>
-                    <TaskFieldHistoryPersistence v-model="task.historyPersistence" />
-                </VCol>
-            </VRow>
-            <TaskFieldCommandTiles v-model="task.commandTiles" />
-            <TaskFieldWorkingDirTiles v-model="task.workingDirTiles" />
+        <template #actions>
+            <TaskActionCreate @created="taskCreated" :disabled="!isTaskValid" :task />
         </template>
     </BaseDialogCreate>
 </template>
 
 <script setup lang="ts">
 const emit = defineEmits<{
-    created: [id: TaskContract];
+    created: [task: TaskContract];
 }>();
 
-const isDialogOpen = defineModel<boolean>({ required: true });
+const task = ref({} as TaskCreateContract);
+const isTaskValid = ref<boolean | null>(false);
+const isDialogOpen = ref(false);
 
 const projectStore = useProjectStore();
 

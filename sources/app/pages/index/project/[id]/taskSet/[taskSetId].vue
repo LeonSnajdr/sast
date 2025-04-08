@@ -5,15 +5,13 @@
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
         <TaskSetActionDelete v-if="taskSet" :taskSet class="mr-2" />
-        <TaskSetActionSave v-if="taskSet" :disabled="!isFormValid" :taskSet />
+        <TaskSetActionSave v-if="taskSet" :disabled="!isTaskSetValid" :taskSet />
     </VAppBar>
 
     <VContainer v-if="taskSet" class="h-100 d-flex flex-column ga-4">
         <VCard :loading="isLoading" class="overflow-visible">
             <VCardText>
-                <VForm v-model="isFormValid">
-                    <TaskSetFieldName v-model="taskSet.name" />
-                </VForm>
+                <TaskSetFieldContainer v-model="taskSet" v-model:isValid="isTaskSetValid" />
             </VCardText>
         </VCard>
 
@@ -70,7 +68,7 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const isLoading = ref(false);
-const isFormValid = ref(false);
+const isTaskSetValid = ref(false);
 const taskSet = ref<TaskSetContract>();
 const editTaskId = ref<string>();
 

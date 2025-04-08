@@ -3,7 +3,7 @@
         <VAppBarTitle>{{ $t("task.plural") }}</VAppBarTitle>
         <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
             {{ $t("action.create") }}
-            <TaskDialogCreate v-model="isCreateDialogOpen" />
+            <TaskDialogCreate />
         </BaseBtnIcon>
     </VAppBar>
 
@@ -20,6 +20,4 @@
 const taskStore = useTaskStore();
 
 const { isLoading, tasks } = storeToRefs(taskStore);
-
-const isCreateDialogOpen = ref(false);
 </script>

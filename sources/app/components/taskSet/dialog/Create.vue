@@ -1,10 +1,16 @@
 <template>
-    <BaseDialogCreate v-model="isDialogOpen" :emptyElement :type="$t('taskSet.singular')" icon="mdi-checkbox-multiple-marked-circle-outline">
-        <template #fields="{ element }">
-            <TaskSetFieldName v-model="element.name" autofocus />
+    <BaseDialogCreate
+        v-model="isDialogOpen"
+        v-model:element="taskSet"
+        :emptyElement
+        :type="$t('taskSet.singular')"
+        icon="mdi-checkbox-multiple-marked-circle-outline"
+    >
+        <template #content>
+            <TaskSetFieldContainer v-model="taskSet" v-model:isValid="isTaskSetValid" />
         </template>
-        <template #actions="{ isFormValid, element }">
-            <TaskSetActionCreate @created="taskSetCreated" :disabled="!isFormValid" :taskSet="element" />
+        <template #actions>
+            <TaskSetActionCreate @created="taskSetCreated" :disabled="!isTaskSetValid" :taskSet />
         </template>
     </BaseDialogCreate>
 </template>
@@ -14,11 +20,13 @@ const emit = defineEmits<{
     created: [id: string];
 }>();
 
+const taskSet = ref({} as TaskSetCreateContract);
+const isDialogOpen = ref(false);
+const isTaskSetValid = ref<boolean | null>(false);
+
 const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
-
-const isDialogOpen = ref(false);
 
 const emptyElement: TaskSetCreateContract = {
     projectId: selectedProject.value.id,

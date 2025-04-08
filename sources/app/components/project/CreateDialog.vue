@@ -1,15 +1,17 @@
 <template>
-    <BaseDialogCreate v-model="isDialogOpen" :emptyElement :type="$t('project.singular')" icon="mdi-folder-plus">
-        <template #actions="{ isFormValid, element }">
-            <ProjectActionCreate @created="projectCreated" :disabled="!isFormValid" :project="element" />
+    <BaseDialogCreate v-model="isDialogOpen" v-model:element="project" :emptyElement :type="$t('project.singular')" icon="mdi-folder-plus">
+        <template #content>
+            <ProjectFieldContainer v-model="project" v-model:isValid="isProjectValid" />
         </template>
-        <template #fields="{ element: project }">
-            <ProjectFieldName v-model="project.name" autofocus />
+        <template #actions>
+            <ProjectActionCreate @created="projectCreated" :disabled="!isProjectValid" :project />
         </template>
     </BaseDialogCreate>
 </template>
 
 <script setup lang="ts">
+const project = ref({} as ProjectCreateContract);
+const isProjectValid = ref<boolean | null>(false);
 const isDialogOpen = ref(false);
 
 const emptyElement: ProjectCreateContract = {

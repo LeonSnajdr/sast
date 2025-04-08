@@ -6,20 +6,18 @@
                 {{ $t("title.create", { type }) }}
             </VCardTitle>
             <VCardText>
-                <VForm ref="form" v-model="isFormValid">
-                    <slot :element name="fields" />
-                </VForm>
+                <slot name="content" />
             </VCardText>
             <VCardActions>
-                <BaseBtnIcon @click="isDialogOpen = false" variant="flat" s>{{ $t("action.close") }}</BaseBtnIcon>
-                <slot :element :isFormValid name="actions" />
+                <BaseBtnIcon @click="isDialogOpen = false" variant="flat">{{ $t("action.close") }}</BaseBtnIcon>
+                <slot name="actions" />
             </VCardActions>
         </VCard>
     </VDialog>
 </template>
 
 <script setup lang="ts" generic="T">
-import { VForm } from "vuetify/components";
+import type { VForm } from "vuetify/components";
 
 const props = defineProps<{
     icon: string;
@@ -27,12 +25,10 @@ const props = defineProps<{
     emptyElement: T;
 }>();
 
-const isDialogOpen = defineModel<boolean>();
+const isDialogOpen = defineModel<boolean>({ required: true });
+const element = defineModel<T>("element", { required: true });
 
 const form = ref<VForm>();
-const isFormValid = ref(false);
-
-const element = ref<T>({} as T);
 
 onBeforeMount(() => {
     resetDialog();
