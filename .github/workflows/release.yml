@@ -54,6 +54,10 @@ jobs:
           - name: Install node & yarn
             uses: volta-cli/action@v4
 
+          - name: Enable slqx offline mode
+            run: |
+              export SQLX_OFFLINE=true
+
           - name: Node cache
             uses: actions/cache@v4
             id: node_modules_cache

@@ -1,0 +1,20 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n            \ttask_id as \"task_id: Uuid\"\n            from task_set_task\n            where task_set_id is $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "task_id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false
+    ]
+  },
+  "hash": "576dafcae5fed2b8bd52bf4f359c89b40c28fdfe4a12a23cb85774ade08addd3"
+}
