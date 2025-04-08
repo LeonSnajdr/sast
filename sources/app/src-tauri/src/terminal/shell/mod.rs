@@ -54,7 +54,7 @@ impl Shell {
 					match reader_clone.lock().unwrap().read(&mut buffer) {
 						Ok(0) => None,
 						Ok(n) => Some(String::from_utf8_lossy(&buffer[..n]).to_string()),
-						Err(e) => None,
+						Err(_error) => None,
 					}
 				})
 				.await
