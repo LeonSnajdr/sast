@@ -79,6 +79,6 @@ jobs:
             with:
                 projectPath: sources/app
                 tagName: ${{ needs.prepare.outputs.app_version }}
-                args: '-c ''{"package":{"version": "${{ needs.prepare.outputs.app_version }}"}}'''
+                args: '-c ''{"version": "${{ needs.prepare.outputs.app_version }}"}'''
                 releaseName: sast ${{ needs.prepare.outputs.app_version }}
                 releaseBody: See the assets to download and install this version.
