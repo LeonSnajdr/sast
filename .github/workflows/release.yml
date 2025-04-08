@@ -18,7 +18,7 @@ jobs:
     - name: Generate app_version
       id: version
       run: |
-        echo "app_version=$(date +'%Y.%-m').${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
+        echo "app_version=$(date +'%y.%-m').${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
         echo "date_created=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
 
     - name: Print app_version and date_created
