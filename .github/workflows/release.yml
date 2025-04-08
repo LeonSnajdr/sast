@@ -12,11 +12,19 @@ jobs:
       app_version: ${{ steps.version.outputs.app_version }}
       date_created: ${{ steps.version.outputs.date_created }}
     steps:
-    - uses: actions/checkout@v4
-    - id: version
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Generate app_version
+      id: version
       run: |
         echo "app_version=v$(date +'%Y.%m').${GITHUB_RUN_NUMBER}" >> $GITHUB_OUTPUT
         echo "date_created=$(date +'%Y.%m.%d')" >> $GITHUB_OUTPUT
+
+    - name: Print app_version and date_created
+      run: |
+        echo "app_version: ${{ steps.version.outputs.app_version }}"
+        echo "date_created: ${{ steps.version.outputs.date_created }}"
 
   release:
       needs: [prepare]
@@ -27,7 +35,6 @@ jobs:
           matrix:
               platform: [windows-latest]
       runs-on: ${{ matrix.platform }}
-
       steps:
           - name: Checkout repository
             uses: actions/checkout@v4
@@ -43,6 +50,8 @@ jobs:
 
           - name: Install node & yarn
             uses: volta-cli/action@v4
+            with:
+              package-json-path: sources/app/package.json
 
           - name: Node cache
             uses: actions/cache@v4
