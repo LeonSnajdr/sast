@@ -46,22 +46,8 @@ jobs:
           - name: Rust setup
             uses: dtolnay/rust-toolchain@stable
 
-          - name: Rust cache
-            uses: swatinem/rust-cache@v2
-            with:
-              shared-key: ${{ runner.os }}-sast-app-tauri-target
-              workspaces: sources/app/src/src-tauri -> target
-
           - name: Install node & yarn
             uses: volta-cli/action@v4
-
-          - name: Node cache
-            uses: actions/cache@v4
-            id: node_modules_cache
-            with:
-              path: sources/app/node_modules
-              key: ${{ runner.os }}-sast-app-node_modules-${{ hashFiles('sources/app/yarn.lock') }}
-              restore-keys: ${{ runner.os }}-sast-app-node_modules-
 
           - name: Install dependencies and lint
             run: |
@@ -84,3 +70,17 @@ jobs:
               args: '-c ''{"version": "${{ needs.prepare.outputs.app_version }}"}'''
               releaseName: sast ${{ needs.prepare.outputs.app_version }}
               releaseBody: See the assets to download and install this version.
+
+          - name: Node cache
+            uses: actions/cache@v4
+            id: node_modules_cache
+            with:
+              path: sources/app/node_modules
+              key: ${{ runner.os }}-sast-app-node_modules-${{ hashFiles('sources/app/yarn.lock') }}
+              restore-keys: ${{ runner.os }}-sast-app-node_modules-
+
+          - name: Rust cache
+            uses: swatinem/rust-cache@v2
+            with:
+              shared-key: ${{ runner.os }}-sast-app-tauri-target
+              workspaces: sources/app/src/src-tauri -> target
