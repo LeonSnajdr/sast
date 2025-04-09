@@ -33,7 +33,7 @@
   },
   "plugins": {
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEY2MkNDRkYwMTIxRTNBREIKUldUYk9oNFM4TThzOXNSQXJZOHZiZXZ3RFI4UnRWRFpibGhTK2xabjl6NjZQb1FGcFU3aVRUdWMK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRCOTU4RjYxQUVDNzUwQ0MKUldUTVVNZXVZWStWUzNaOVQ3L0l6S1JKZTczcFd5djByZ2xENGJkejJGdENRdEV5eHM3ZVVjeVcK",
       "endpoints": ["https://github.com/LeonSnajdr/sast/releases/latest/download/latest.json"]
     }
   }
