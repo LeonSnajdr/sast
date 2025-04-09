@@ -1,8 +1,6 @@
 <template>
     <SettingDrawer />
-    <VContainer class="h-100">
-        <NuxtPage />
-    </VContainer>
+    <NuxtPage />
 </template>
 
 <script setup lang="ts">

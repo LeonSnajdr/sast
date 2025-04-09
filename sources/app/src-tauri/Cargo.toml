@@ -1,12 +1,9 @@
 [package]
-name = "app"
+name = "sast"
 version = "0.1.0"
-description = "A Tauri App"
+description = "sast"
 authors = ["leonsnajdr"]
-license = ""
-repository = ""
 edition = "2021"
-rust-version = "1.77.2"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -21,8 +18,8 @@ tauri-build = { version = "2.0.5", features = [] }
 serde_json = "1.0.138"
 serde = { version = "1.0.217", features = ["derive"] }
 log = "0.4.25"
-tauri = { version = "2.2.5", features = [] }
-tauri-plugin-log = "2.2.1"
+tauri = { version = "2.4.1", features = [] }
+tauri-plugin-log = "2.3.1"
 tokio = { version = "1.43", features = ["macros"] }
 sqlx = { version = "0.8.3", features = [
     "sqlite",
@@ -40,7 +37,8 @@ specta-typescript = "0.0.9"
 uuid = { version = "1.13.1", features = ["serde", "v4"] }
 chrono = { version = "0.4.39", features = ["serde"] }
 portable-pty = { version = "0.8.1", features = ["serde_support"] }
+tauri-plugin-process = "2.2.1"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
-tauri-plugin-single-instance = "2"
-tauri-plugin-updater = "2"
+tauri-plugin-single-instance = "2.2.3"
+tauri-plugin-updater = "2.7.0"

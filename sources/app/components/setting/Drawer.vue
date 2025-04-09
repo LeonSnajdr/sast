@@ -37,6 +37,11 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
             icon: "mdi-gesture",
             name: t("setting.behavior"),
             to: { name: "index-setting-index-behavior" }
+        },
+        {
+            icon: "mdi-information-outline",
+            name: t("setting.about"),
+            to: { name: "index-setting-index-about" }
         }
     ];
 });

@@ -10,6 +10,7 @@ const presentation = usePresentation();
 const { current: pressedKeys } = useMagicKeys();
 
 const settingStore = useSettingStore();
+const updateStore = useUpdateStore();
 const projectStore = useProjectStore();
 
 const { setting } = storeToRefs(settingStore);
@@ -36,15 +37,20 @@ const initialize = async () => {
 
     presentation.applySetting();
 
-    await projectStore.loadLastOpenedProject();
+    checkForUpdate();
 
-    console.log(setting.value.behaviorOpenWelcome, lastOpenedProject.value);
+    await projectStore.loadLastOpenedProject();
 
     if (!setting.value.behaviorOpenWelcome && lastOpenedProject.value) {
         await navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value.id } });
     }
 
     isInitialized.value = true;
+};
+
+const checkForUpdate = async () => {
+    await updateStore.loadUpdate();
+    updateStore.notifyIfUpdateIsAvailable();
 };
 
 whenever(

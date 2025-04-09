@@ -5,7 +5,12 @@
                 <p>{{ notification.text }}</p>
                 <p v-if="notification.expanded" class="text-medium-emphasis text-caption">{{ notification.expandableText }}</p>
                 <p v-if="notification.actions" class="d-flex ga-1">
-                    <span v-for="action in notification.actions" :key="action.text" @click.stop="action.action" class="text-caption text-decoration-underline">
+                    <span
+                        v-for="action in notification.actions"
+                        :key="action.text"
+                        @click.stop="actionClicked(notification, action)"
+                        class="text-caption text-decoration-underline"
+                    >
                         {{ action.text }}
                     </span>
                 </p>
@@ -20,4 +25,12 @@
 
 <script setup lang="ts">
 const { notifications } = useNotify();
+
+const actionClicked = (notification: NotificationModel, action: NotificationActionModel) => {
+    if (action.closeOnClick) {
+        notification.remove();
+    }
+
+    action.action();
+};
 </script>

@@ -13,29 +13,35 @@ export interface NotificationModel {
 
 export interface NotificaionOptionsModel {
     actions?: NotificationActionModel[];
+    timeout?: number;
     error?: unknown;
 }
 
 export interface NotificationActionModel {
     text: string;
+    closeOnClick?: boolean;
     action: () => void;
 }
 
 export default function useNotify() {
     const success = (text: string, options?: NotificaionOptionsModel) => {
-        addNotification("success", text, 3000, options);
+        const timeout = options?.timeout ?? 3000;
+        addNotification("success", text, timeout, options);
     };
 
     const info = (text: string, options?: NotificaionOptionsModel) => {
-        addNotification("info", text, 5000, options);
+        const timeout = options?.timeout ?? 5000;
+        addNotification("info", text, timeout, options);
     };
 
     const warning = (text: string, options?: NotificaionOptionsModel) => {
-        addNotification("warning", text, 5000, options);
+        const timeout = options?.timeout ?? 5000;
+        addNotification("warning", text, timeout, options);
     };
 
     const error = (text: string, options?: NotificaionOptionsModel) => {
-        addNotification("error", text, -1, options);
+        const timeout = options?.timeout ?? -1;
+        addNotification("error", text, timeout, options);
     };
 
     const addNotification = (type: string, text: string, timeout: number, options?: NotificaionOptionsModel) => {

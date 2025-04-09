@@ -75,6 +75,7 @@ pub fn run() {
 		.plugin(tauri_plugin_single_instance::init(|app, _, _| {
 			let _ = app.get_webview_window("main").expect("no main window").set_focus();
 		}))
+		.plugin(tauri_plugin_process::init())
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
 			if cfg!(debug_assertions) {
