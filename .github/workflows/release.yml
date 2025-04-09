@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   prepare:
@@ -33,7 +34,7 @@ jobs:
       strategy:
           fail-fast: false
           matrix:
-              platform: [windows-latest]
+            platform: [windows-latest]
       runs-on: ${{ matrix.platform }}
       defaults:
         run:
@@ -48,7 +49,7 @@ jobs:
           - name: Rust cache
             uses: swatinem/rust-cache@v2
             with:
-              shared-key: ${{ runner.os }}-sast-app-tauri-target-${{ hashFiles('sources/app/src/Cargo.lock') }}
+              shared-key: ${{ runner.os }}-sast-app-tauri-target
               workspaces: sources/app/src/src-tauri -> target
 
           - name: Install node & yarn
@@ -64,22 +65,22 @@ jobs:
 
           - name: Install dependencies and lint
             run: |
-                node --version
-                yarn --version
-                yarn install --immutable
-                yarn build:nuxt
-                yarn lint
+              node --version
+              yarn --version
+              yarn install --immutable
+              yarn build:nuxt
+              yarn lint
 
           - name: Build tauri app
             uses: tauri-apps/tauri-action@v0
             env:
-                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-                TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
-                TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
-                SQLX_OFFLINE: true
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+              TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+              SQLX_OFFLINE: true
             with:
-                projectPath: sources/app
-                tagName: ${{ needs.prepare.outputs.app_version }}
-                args: '-c ''{"version": "${{ needs.prepare.outputs.app_version }}"}'''
-                releaseName: sast ${{ needs.prepare.outputs.app_version }}
-                releaseBody: See the assets to download and install this version.
+              projectPath: sources/app
+              tagName: ${{ needs.prepare.outputs.app_version }}
+              args: '-c ''{"version": "${{ needs.prepare.outputs.app_version }}"}'''
+              releaseName: sast ${{ needs.prepare.outputs.app_version }}
+              releaseBody: See the assets to download and install this version.
