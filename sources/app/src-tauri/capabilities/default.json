@@ -13,7 +13,6 @@
     "core:window:allow-is-maximized",
     "core:window:allow-internal-toggle-maximize",
     "core:event:allow-listen",
-    "core:event:allow-unlisten",
-    "shell:default"
+    "core:event:allow-unlisten"
   ]
 }
