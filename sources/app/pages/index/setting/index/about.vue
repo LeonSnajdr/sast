@@ -5,6 +5,7 @@
         </VAppBarTitle>
     </VAppBar>
     <VContainer>
+        <SettingAboutAppInfo />
         <SettingAboutUpdate />
     </VContainer>
 </template>

@@ -19,8 +19,8 @@
                             <VProgressLinear v-model="downloaded" :max="contentLength" color="primary" />
                         </VRowSingle>
                         <VRowSingle>
-                            <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps" class="ml-2">{{ $t("action.download") }}</BaseBtnIcon>
-                            <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps">{{ $t("action.install") }}</BaseBtnIcon>
+                            <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps">{{ $t("action.download") }}</BaseBtnIcon>
+                            <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps" class="ml-2">{{ $t("action.install") }}</BaseBtnIcon>
                         </VRowSingle>
                     </div>
                     <div v-else class="text-center">
