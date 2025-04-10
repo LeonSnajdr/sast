@@ -101,7 +101,7 @@ export const useUpdateStore = defineStore("update", () => {
 
         status.value = UpdateStatus.Installing;
 
-        update.install();
+        await update.install();
 
         await relaunch();
     };

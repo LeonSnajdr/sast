@@ -11,6 +11,8 @@
   "action.delete.error": "{type} '{name}' konnte nicht gelöscht werden",
   "action.delete.success": "{type} '{name}' erfolgreich gelöscht",
   "action.delete.title": "{type} löschen",
+  "action.download": "Herunterladen",
+  "action.install": "Installieren",
   "action.load.error": "{type} konnte(n) nicht geladen werden",
   "action.restart": "Neustarten",
   "action.restart.description": "Starte '{name}' mit der aktuellen Konfiguration neu",

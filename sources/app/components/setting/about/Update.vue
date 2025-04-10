@@ -19,8 +19,8 @@
                             <VProgressLinear v-model="downloaded" :max="contentLength" color="primary" />
                         </VRowSingle>
                         <VRowSingle>
-                            <BaseBtnIcon @click="updateStore.download()" v-bind="installButton">Download</BaseBtnIcon>
-                            <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButton" class="ml-2">Install</BaseBtnIcon>
+                            <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps" class="ml-2">{{ $t("action.download") }}</BaseBtnIcon>
+                            <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps">{{ $t("action.install") }}</BaseBtnIcon>
                         </VRowSingle>
                     </div>
                     <div v-else class="text-center">
@@ -38,18 +38,14 @@ const updateStore = useUpdateStore();
 
 const { updateInfo, status, downloaded, contentLength } = storeToRefs(updateStore);
 
-onMounted(() => {
-    updateStore.loadUpdate();
-});
-
-const installButton = computed(() => ({
+const downloadButtonProps = computed(() => ({
     color: status.value === UpdateStatus.UpdateAvailable ? "primary" : "",
     variant: status.value === UpdateStatus.UpdateAvailable ? "flat" : "text",
     loading: status.value === UpdateStatus.Downloading,
     disabled: status.value !== UpdateStatus.UpdateAvailable
 }));
 
-const downloadButton = computed(() => ({
+const installButtonProps = computed(() => ({
     color: status.value === UpdateStatus.Downloaded ? "primary" : "",
     variant: status.value === UpdateStatus.Downloaded ? "flat" : "text",
     loading: status.value === UpdateStatus.Installing,

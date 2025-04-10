@@ -11,6 +11,8 @@
   "action.delete.error": "{type} '{name}' couldn't be deleted",
   "action.delete.success": "{type} '{name}' successfully deleted",
   "action.delete.title": "Delete {type}",
+  "action.download": "Download",
+  "action.install": "Install",
   "action.load.error": "{type} could not be loaded",
   "action.restart": "Restart",
   "action.restart.description": "Restart '{name}' with the current configuration",
