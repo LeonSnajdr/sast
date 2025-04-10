@@ -2889,6 +2889,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/plugin-shell@npm:~2.2.1":
+  version: 2.2.1
+  resolution: "@tauri-apps/plugin-shell@npm:2.2.1"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.0.0"
+  checksum: 10c0/2136cd66a37c980a8adb1103e5a30cbcfcf02b7d3dfdcbe0ec9f2bc1cc695ca86731bde7119c9cf086217114cdfd5f569b43e076c7525964f162976ab9d12d8c
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/plugin-updater@npm:^2.7.0":
   version: 2.7.0
   resolution: "@tauri-apps/plugin-updater@npm:2.7.0"
@@ -8065,6 +8074,7 @@ __metadata:
     "@tauri-apps/api": "npm:^2.4.1"
     "@tauri-apps/cli": "npm:^2.4.1"
     "@tauri-apps/plugin-process": "npm:^2.2.1"
+    "@tauri-apps/plugin-shell": "npm:~2.2.1"
     "@tauri-apps/plugin-updater": "npm:^2.7.0"
     "@vueuse/core": "npm:^12.5.0"
     "@vueuse/integrations": "npm:^12.7.0"
