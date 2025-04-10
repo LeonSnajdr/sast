@@ -2880,7 +2880,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/plugin-process@npm:~2.2.1":
+"@tauri-apps/plugin-process@npm:^2.2.1":
   version: 2.2.1
   resolution: "@tauri-apps/plugin-process@npm:2.2.1"
   dependencies:
@@ -2889,7 +2889,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tauri-apps/plugin-updater@npm:~2.7.0":
+"@tauri-apps/plugin-updater@npm:^2.7.0":
   version: 2.7.0
   resolution: "@tauri-apps/plugin-updater@npm:2.7.0"
   dependencies:
@@ -8064,8 +8064,8 @@ __metadata:
     "@pinia/nuxt": "npm:^0.9.0"
     "@tauri-apps/api": "npm:^2.4.1"
     "@tauri-apps/cli": "npm:^2.4.1"
-    "@tauri-apps/plugin-process": "npm:~2.2.1"
-    "@tauri-apps/plugin-updater": "npm:~2.7.0"
+    "@tauri-apps/plugin-process": "npm:^2.2.1"
+    "@tauri-apps/plugin-updater": "npm:^2.7.0"
     "@vueuse/core": "npm:^12.5.0"
     "@vueuse/integrations": "npm:^12.7.0"
     "@vueuse/nuxt": "npm:^12.5.0"
