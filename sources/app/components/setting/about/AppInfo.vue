@@ -12,7 +12,9 @@
                     <VListItemTitle>
                         {{ $t("setting.about.appInfo.version.title") }}
                     </VListItemTitle>
-                    <VListItemSubtitle>{{ version }} </VListItemSubtitle>
+                    <VListItemSubtitle>
+                        {{ isDev ? $t("environment.dev") : version }}
+                    </VListItemSubtitle>
                 </VListItem>
                 <VListItem href="https://v2.tauri.app/" target="_blank">
                     <VListItemTitle>
@@ -27,6 +29,8 @@
 
 <script setup lang="ts">
 import { getVersion, getTauriVersion } from "@tauri-apps/api/app";
+
+const isDev = import.meta.dev;
 
 const version = computedAsync(async () => {
     return await getVersion();

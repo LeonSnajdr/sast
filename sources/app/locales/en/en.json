@@ -25,6 +25,7 @@
   "action.start.success": "{type} '{name}' successfully started",
   "action.stop.error": "{type} '{name}' couldn't be stopped",
   "action.stop.success": "{type} '{name}' successfully stopped",
+  "environment.dev": "Development",
   "error.button": "Reinitialize",
   "error.default": "An error occurred",
   "error.headline": "Error",

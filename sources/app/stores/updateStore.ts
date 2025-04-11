@@ -26,9 +26,13 @@ export const useUpdateStore = defineStore("update", () => {
     const downloaded = ref<number>();
     const contentLength = ref<number>();
 
+    const isDev = import.meta.dev;
+
     let update: Update | null = null;
 
     const loadUpdate = async () => {
+        if (isDev) return;
+
         try {
             status.value = UpdateStatus.Loading;
             downloaded.value = 0;
@@ -85,13 +89,14 @@ export const useUpdateStore = defineStore("update", () => {
                     break;
                 case "Progress":
                     downloaded.value! += event.data.chunkLength;
-                    console.log(`downloaded ${downloaded.value} from ${contentLength.value}`);
                     break;
                 case "Finished":
                     console.log("download finished");
                     break;
             }
         });
+
+        downloaded.value = contentLength.value;
 
         status.value = UpdateStatus.Downloaded;
     };
