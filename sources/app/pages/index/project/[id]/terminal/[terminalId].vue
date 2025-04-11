@@ -9,7 +9,7 @@ import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
 import { WebLinksAddon } from "@xterm/addon-web-links";
-import { open } from "@tauri-apps/plugin-shell";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 const route = useRoute("index-project-id-terminal-terminalId");
@@ -59,7 +59,7 @@ onMounted(async () => {
 
     fitAddon = new FitAddon();
     webLinksAddon = new WebLinksAddon((_, uri) => {
-        open(uri);
+        openUrl(uri);
     });
 
     terminal.loadAddon(fitAddon);

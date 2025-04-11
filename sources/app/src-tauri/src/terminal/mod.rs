@@ -74,7 +74,7 @@ impl Terminal {
 			while let Some(event) = receiver.recv().await {
 				match event {
 					ShellOutputEvent::Spawned => {
-						println!("Terminal: Shell spawned.");
+						log::info!("Terminal {} shell spawned", id_clone);
 						*shell_status_clone.write().await = TerminalShellStatus::Running;
 						let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
 							id: id_clone,
@@ -88,7 +88,7 @@ impl Terminal {
 						let _ = TerminalShellReadEvent(TerminalShellReadEventData { id: id_clone, data: text }).emit(app_handle_clone.as_ref());
 					}
 					ShellOutputEvent::Killed(reason) => {
-						println!("Terminal: Shell closed {:?}", reason);
+						log::info!("Terminal {} shell closed with reason {:?}", id_clone, reason);
 						*shell_clone.write().await = None;
 
 						let persist_terminal = match (behavior_clone.read().await.history_persistence.clone(), reason.clone()) {
@@ -120,7 +120,7 @@ impl Terminal {
 				}
 			}
 
-			println!("Terminal: Event channel closed. Listener exiting.");
+			log::info!("Terminal {} event channel closed", id);
 		});
 
 		let meta = TerminalMeta {
@@ -171,7 +171,7 @@ impl Terminal {
 	}
 
 	pub async fn shell_spawn(&self, spawn_contract: ShellSpawnContract) {
-		let mut shell = Shell::new(self.sender.clone()).await;
+		let shell = Shell::new(self.sender.clone()).await;
 		shell.run(spawn_contract).await;
 		*self.shell.write().await = Some(shell);
 	}

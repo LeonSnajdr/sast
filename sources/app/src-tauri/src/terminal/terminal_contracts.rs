@@ -1,5 +1,4 @@
 use crate::task::task_contracts::TaskInfoContract;
-use crate::terminal::shell::shell_contracts::ShellSpawnContract;
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
 use serde::{Deserialize, Serialize};
 use specta::Type;

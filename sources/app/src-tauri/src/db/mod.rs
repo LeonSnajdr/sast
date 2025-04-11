@@ -11,34 +11,83 @@ static POOL: OnceCell<Pool<Sqlite>> = OnceCell::new();
 
 fn build_data_dir<R: Runtime>(app: &tauri::AppHandle<R>) -> Option<String> {
 	if cfg!(debug_assertions) {
+		log::info!("Running in debug mode, using 'dev.db' as data directory");
 		return Some("dev.db".to_string());
 	}
 
-	let mut data_dir = app.path().app_data_dir().ok()?;
+	let mut data_dir = match app.path().app_data_dir().ok() {
+		Some(dir) => dir,
+		None => {
+			log::error!("Could not obtain application data directory, returning None");
+			return None;
+		}
+	};
 
-	create_dir_all(&data_dir).ok()?;
+	if let Err(err) = create_dir_all(&data_dir) {
+		log::error!("Failed to create application data directory: {}", err);
+		return None;
+	}
 
 	data_dir.push("sast.db");
+	let data_dir_str = match data_dir.to_str() {
+		Some(p) => p.to_string(),
+		None => {
+			log::error!("Failed to convert path to string for the database directory");
+			return None;
+		}
+	};
 
-	return Some(data_dir.to_str()?.to_string());
+	log::info!("Using database directory: {}", data_dir_str);
+	Some(data_dir_str)
 }
 
 pub fn init_sqlx<R: Runtime>() -> TauriPlugin<R> {
 	PluginBuilder::new("sqlx")
 		.setup(|app, _| {
 			tauri::async_runtime::block_on(async move {
-				let data_dir_str = build_data_dir(app).ok_or(tauri::Error::UnknownPath)?;
+				log::info!("Initializing database...");
 
-				println!("{}", data_dir_str);
+				let data_dir_str = match build_data_dir(app) {
+					Some(dir) => dir,
+					None => {
+						log::error!("Failed to build data directory for the database");
+						return Err("Unknown application data path")?;
+					}
+				};
 
-				let config = SqliteConnectOptions::from_str(&data_dir_str)?.create_if_missing(true);
+				log::debug!("Data directory for database is: {}", data_dir_str);
 
-				let pool = SqlitePool::connect_with(config).await?;
+				let config = match SqliteConnectOptions::from_str(&data_dir_str) {
+					Ok(opts) => opts.create_if_missing(true),
+					Err(err) => {
+						log::error!("Failed to parse SqliteConnectOptions: {}", err);
+						return Err("Invalid database configuration")?;
+					}
+				};
 
-				sqlx::migrate!().run(&pool).await?;
+				let pool = match SqlitePool::connect_with(config).await {
+					Ok(p) => p,
+					Err(err) => {
+						log::error!("Failed to connect to database: {}", err);
+						return Err("Could not connect to the database")?;
+					}
+				};
 
-				POOL.set(pool).unwrap();
+				log::info!("Successfully connected to the database. Running migrations...");
 
+				if let Err(err) = sqlx::migrate!().run(&pool).await {
+					log::error!("Failed to run database migrations: {}", err);
+					return Err("Database migration failed")?;
+				}
+
+				log::info!("Migrations completed successfully");
+
+				if POOL.set(pool).is_err() {
+					log::error!("Database pool was already set.");
+					return Err("Database pool initialization conflict")?;
+				}
+
+				log::info!("Database initialization completed successfully");
 				Ok(())
 			})
 		})
@@ -46,7 +95,5 @@ pub fn init_sqlx<R: Runtime>() -> TauriPlugin<R> {
 }
 
 pub fn get_pool() -> &'static Pool<Sqlite> {
-	let pool = POOL.get().expect("Database not initialized");
-
-	return pool;
+	POOL.get().expect("Database not initialized; call init_sqlx first")
 }

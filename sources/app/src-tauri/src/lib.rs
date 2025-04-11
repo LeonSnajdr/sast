@@ -10,6 +10,7 @@ mod terminal;
 
 use specta_typescript::Typescript;
 use tauri::Manager;
+use tauri_plugin_prevent_default::Flags;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
 use crate::placeholder::placeholder_commands;
@@ -71,19 +72,30 @@ pub fn run() {
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()
-		.plugin(tauri_plugin_shell::init())
+		.plugin(
+			tauri_plugin_log::Builder::new()
+				.clear_targets()
+				.level(log::LevelFilter::Debug)
+				.level_for("sqlx", log::LevelFilter::Warn)
+				.target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout))
+				.target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir {
+					file_name: Some("sast".to_string()),
+				}))
+				.build(),
+		)
 		.plugin(tauri_plugin_updater::Builder::new().build())
+		.plugin(
+			tauri_plugin_prevent_default::Builder::new()
+				.with_flags(Flags::all().difference(Flags::FIND | Flags::FOCUS_MOVE | Flags::RELOAD | Flags::DEV_TOOLS))
+				.build(),
+		)
 		.plugin(tauri_plugin_single_instance::init(|app, _, _| {
 			let _ = app.get_webview_window("main").expect("no main window").set_focus();
 		}))
 		.plugin(tauri_plugin_process::init())
+		.plugin(tauri_plugin_opener::init())
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
-			if cfg!(debug_assertions) {
-				app.handle()
-					.plugin(tauri_plugin_log::Builder::default().level(log::LevelFilter::Info).build())?;
-			}
-
 			builder.mount_events(app);
 
 			app.handle().plugin(db::init_sqlx())?;
