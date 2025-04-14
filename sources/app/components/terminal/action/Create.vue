@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="createTerminal()" color="secondary" icon="mdi-plus" variant="flat" />
+    <BaseBtnIcon @click="createTerminal()" :loading="isLoading" color="secondary" icon="mdi-plus" variant="flat" />
 </template>
 
 <script setup lang="ts">
@@ -9,6 +9,8 @@ const { t } = useI18n();
 const projectService = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectService);
+
+const isLoading = ref(false);
 
 const createTerminal = async () => {
     const createContract: TerminalCreateContract = {
@@ -25,11 +27,15 @@ const createTerminal = async () => {
         forceKill: false
     };
 
+    isLoading.value = true;
     const spawnResult = await commands.terminalCreate(createContract, spawnContract);
+    isLoading.value = false;
 
     if (spawnResult.status === "error") {
         notify.error(t("terminal.spawn.error"), { error: spawnResult.error });
         return;
     }
+
+    navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: spawnResult.data } });
 };
 </script>

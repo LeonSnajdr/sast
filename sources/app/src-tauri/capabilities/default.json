@@ -16,7 +16,12 @@
     "core:event:allow-unlisten",
     "core:app:allow-version",
     "core:app:allow-tauri-version",
+    "core:path:allow-resolve-directory",
+    "opener:allow-open-path",
+    "opener:allow-open-url",
+    "opener:allow-reveal-item-in-dir",
+    "opener:allow-default-urls",
     "process:default",
-    "shell:default"
+    "log:default"
   ]
 }

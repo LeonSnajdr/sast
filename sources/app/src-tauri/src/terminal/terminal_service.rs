@@ -1,8 +1,8 @@
 use crate::prelude::*;
 use crate::task::task_service;
-use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
+use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
-use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract};
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract, TerminalOpenContract};
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::{terminal_repository, Terminal};
 use tauri::AppHandle;
@@ -26,12 +26,12 @@ pub async fn create_blocking(app_handle: AppHandle, create_contract: TerminalCre
 	Ok(())
 }
 
-pub async fn get_history(id: Uuid) -> Result<String> {
-	let terminal = terminal_repository::get_one(&id).await?;
+pub async fn get_one_open(id: Uuid) -> Result<TerminalOpenContract> {
+	let open_model = terminal_repository::get_one_open(&id).await?;
 
-	let history = terminal.get_history().await;
+	let open_contract = TerminalOpenContract::from(open_model);
 
-	Ok(history)
+	Ok(open_contract)
 }
 
 pub async fn close(id: Uuid) -> Result<()> {
@@ -50,7 +50,7 @@ pub async fn shell_write(id: Uuid, data: String) -> Result<()> {
 	Ok(())
 }
 
-pub async fn shell_resize(id: Uuid, resize_contract: ShellResizeContract) -> Result<()> {
+pub async fn shell_resize(id: Uuid, resize_contract: ShellSizeContract) -> Result<()> {
 	let terminal = terminal_repository::get_one(&id).await?;
 
 	terminal.shell_resize(resize_contract).await;

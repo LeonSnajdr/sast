@@ -32,7 +32,7 @@ pub fn run() {
 			project_commands::project_open,
 			terminal_commands::terminal_create,
 			terminal_commands::terminal_shell_write,
-			terminal_commands::terminal_get_history,
+			terminal_commands::terminal_get_one_open,
 			terminal_commands::terminal_get_many_info,
 			terminal_commands::terminal_shell_resize,
 			terminal_commands::terminal_close,
@@ -71,19 +71,25 @@ pub fn run() {
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()
-		.plugin(tauri_plugin_shell::init())
+		.plugin(
+			tauri_plugin_log::Builder::new()
+				.clear_targets()
+				.level(log::LevelFilter::Debug)
+				.level_for("sqlx", log::LevelFilter::Warn)
+				.target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::Stdout))
+				.target(tauri_plugin_log::Target::new(tauri_plugin_log::TargetKind::LogDir {
+					file_name: Some("sast".to_string()),
+				}))
+				.build(),
+		)
 		.plugin(tauri_plugin_updater::Builder::new().build())
 		.plugin(tauri_plugin_single_instance::init(|app, _, _| {
 			let _ = app.get_webview_window("main").expect("no main window").set_focus();
 		}))
 		.plugin(tauri_plugin_process::init())
+		.plugin(tauri_plugin_opener::init())
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
-			if cfg!(debug_assertions) {
-				app.handle()
-					.plugin(tauri_plugin_log::Builder::default().level(log::LevelFilter::Info).build())?;
-			}
-
 			builder.mount_events(app);
 
 			app.handle().plugin(db::init_sqlx())?;

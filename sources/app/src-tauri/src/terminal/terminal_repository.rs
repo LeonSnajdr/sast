@@ -1,7 +1,7 @@
 use crate::error::Error;
 use crate::prelude::*;
 use crate::terminal::terminal_filters::TerminalFilter;
-use crate::terminal::terminal_models::TerminalInfoModel;
+use crate::terminal::terminal_models::{TerminalInfoModel, TerminalOpenModel};
 use crate::terminal::Terminal;
 use once_cell::sync::Lazy;
 use std::sync::Arc;
@@ -26,10 +26,22 @@ pub async fn create_one(terminal: Terminal) -> Result<Arc<Terminal>> {
 }
 
 pub async fn get_one(id: &Uuid) -> Result<Arc<Terminal>> {
-	let sessions = STATE.terminals.read().await;
-	let session = sessions.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
+	let terminals = STATE.terminals.read().await;
+	let terminal = terminals.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
 
-	Ok(session)
+	Ok(terminal)
+}
+
+pub async fn get_one_open(id: &Uuid) -> Result<TerminalOpenModel> {
+	let terminals = STATE.terminals.read().await;
+	let terminal = terminals.iter().find(|&s| s.id == *id).ok_or(Error::NotExists)?.clone();
+
+	let open_model = TerminalOpenModel {
+		history: terminal.history.read().await.clone(),
+		shell_size: terminal.meta.shell_size.read().await.clone(),
+	};
+
+	Ok(open_model)
 }
 
 pub async fn get_first(filter: &TerminalFilter) -> Option<Arc<Terminal>> {
@@ -65,13 +77,11 @@ pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoMo
 
 	let mut info_models = Vec::new();
 	for terminal in terminals.iter() {
-		let meta = terminal.meta.read().await;
-
 		info_models.push(TerminalInfoModel {
 			id: terminal.id,
-			name: meta.name.clone(),
-			project_id: meta.project_id,
-			task_id: meta.task_id,
+			name: terminal.meta.name.clone(),
+			project_id: terminal.meta.project_id,
+			task_id: terminal.meta.task_id,
 			shell_status: terminal.shell_status.read().await.clone(),
 		})
 	}
@@ -80,14 +90,12 @@ pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoMo
 }
 
 async fn matches_filter(terminal: &Arc<Terminal>, filter: &TerminalFilter) -> bool {
-	let meta_guard = terminal.meta.read().await;
-
 	let matches_id = filter.id.map_or(true, |id| terminal.id == id);
-	let matches_project_id = filter.project_id.map_or(true, |id| meta_guard.project_id == id);
+	let matches_project_id = filter.project_id.map_or(true, |id| terminal.meta.project_id == id);
 	let matches_task_ids = filter
 		.task_ids
 		.as_ref()
-		.map_or(true, |task_ids| meta_guard.task_id.map_or(false, |tid| task_ids.contains(&tid)));
+		.map_or(true, |task_ids| terminal.meta.task_id.map_or(false, |tid| task_ids.contains(&tid)));
 
 	matches_id && matches_project_id && matches_task_ids
 }

@@ -2,7 +2,7 @@ pub mod shell_contracts;
 pub mod shell_enums;
 pub mod shell_events;
 
-use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
+use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::shell::shell_events::{ShellInputEvent, ShellOutputEvent};
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
@@ -10,8 +10,10 @@ use std::sync::Arc;
 use tokio::sync::mpsc::{channel, Sender};
 use tokio::sync::Mutex;
 use tokio::time::{sleep, Duration};
+use uuid::Uuid;
 
 pub struct Shell {
+	id: Uuid,
 	terminal_sender: Arc<Sender<ShellOutputEvent>>,
 	guard: Arc<Mutex<()>>,
 	shell_sender: Arc<Mutex<Option<Sender<ShellInputEvent>>>>,
@@ -21,6 +23,7 @@ pub struct Shell {
 impl Shell {
 	pub async fn new(terminal_sender: Arc<Sender<ShellOutputEvent>>) -> Self {
 		Self {
+			id: Uuid::new_v4(),
 			terminal_sender,
 			guard: Arc::new(Mutex::new(())),
 			shell_sender: Arc::new(Mutex::new(None)),
@@ -43,6 +46,7 @@ impl Shell {
 		let reader = Arc::new(std::sync::Mutex::new(pair.master.try_clone_reader().unwrap()));
 		let mut writer = pair.master.take_writer().unwrap();
 
+		let id_clone = self.id.clone();
 		let terminal_sender = Arc::clone(&self.terminal_sender);
 		tokio::spawn(async move {
 			let _ = terminal_sender.send(ShellOutputEvent::Spawned).await;
@@ -68,19 +72,20 @@ impl Shell {
 				}
 			}
 
-			println!("Reading thread finished");
+			log::info!("Shell {} read thread closed", id_clone);
 		});
 
 		let (shell_sender, mut shell_receiver) = channel::<ShellInputEvent>(32);
 		*self.shell_sender.lock().await = Some(shell_sender);
 
+		let id_clone = self.id.clone();
 		let force_kill = spawn_contract.force_kill;
 		tokio::spawn(async move {
 			while let Some(event) = shell_receiver.recv().await {
 				match event {
 					ShellInputEvent::Write(text) => {
 						if let Err(e) = writer.write_all(text.as_bytes()) {
-							eprintln!("Error writing to PTY: {}", e);
+							log::error!("Shell {} failed writing to pty {:?}", id_clone, e);
 							break;
 						}
 					}
@@ -98,7 +103,7 @@ impl Shell {
 							// Send ctrl+c to child to terminate the currently running process
 							let ctrl_c: u8 = 3;
 							if let Err(e) = writer.write_all(&[ctrl_c]) {
-								eprintln!("Force kill failed {}", e);
+								log::error!("Shell {} force kill failed with error {:?}", id_clone, e);
 							}
 
 							sleep(Duration::from_millis(500)).await;
@@ -110,9 +115,10 @@ impl Shell {
 				}
 			}
 
-			println!("Writing thread finished");
+			log::info!("Shell {} writing thread closed", id_clone);
 		});
 
+		let id_clone = self.id.clone();
 		let terminal_sender = Arc::clone(&self.terminal_sender);
 		let shell_sender = Arc::clone(&self.shell_sender);
 		let guard = Arc::clone(&self.guard);
@@ -146,7 +152,7 @@ impl Shell {
 			// workaround, that the lock is hold until the killed event is consumed by the terminal
 			sleep(Duration::from_millis(100)).await;
 
-			println!("Waiting thread finished");
+			log::info!("Shell {} waiting thread closed", id_clone);
 		});
 
 		// workaround, that the lock of the guard is acquired in the thread before continue
@@ -175,7 +181,7 @@ impl Shell {
 		let _ = self.shell_sender.lock().await.as_mut().unwrap().send(ShellInputEvent::Write(data)).await;
 	}
 
-	pub async fn resize(&self, resize_contract: ShellResizeContract) {
+	pub async fn resize(&self, resize_contract: ShellSizeContract) {
 		let _ = self
 			.shell_sender
 			.lock()
