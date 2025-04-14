@@ -11,7 +11,7 @@ pub mod terminal_service;
 pub mod terminal_mapper;
 
 use crate::prelude::*;
-use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
+use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::shell::shell_events::ShellOutputEvent;
 use crate::terminal::shell::Shell;
@@ -32,7 +32,7 @@ use uuid::Uuid;
 
 pub struct Terminal {
 	pub id: Uuid,
-	pub meta: Arc<RwLock<TerminalMeta>>,
+	pub meta: Arc<TerminalMeta>,
 	pub behavior: Arc<RwLock<TerminalBehavior>>,
 	pub history: Arc<RwLock<String>>,
 	pub shell_status: Arc<RwLock<TerminalShellStatus>>,
@@ -46,6 +46,7 @@ pub struct TerminalMeta {
 	pub name: String,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
+	pub shell_size: RwLock<ShellSizeContract>,
 }
 
 pub struct TerminalBehavior {
@@ -127,12 +128,13 @@ impl Terminal {
 			name: spawn_contract.name.unwrap_or("PowerShell".to_string()),
 			project_id: spawn_contract.project_id,
 			task_id: spawn_contract.task_id,
+			shell_size: RwLock::new(ShellSizeContract { cols: 32, rows: 32 }),
 		};
 
 		let app_handle_clone = Arc::clone(&app_handle);
 		let terminal = Self {
 			id,
-			meta: Arc::new(RwLock::new(meta)),
+			meta: Arc::new(meta),
 			behavior,
 			app_handle: app_handle_clone,
 			handle: Arc::new(Mutex::new(Some(handle))),
@@ -203,7 +205,9 @@ impl Terminal {
 		}
 	}
 
-	pub async fn shell_resize(&self, resize_contract: ShellResizeContract) {
+	pub async fn shell_resize(&self, resize_contract: ShellSizeContract) {
+		*self.meta.shell_size.write().await = resize_contract.clone();
+
 		if let Some(shell) = self.shell.read().await.as_ref() {
 			shell.resize(resize_contract).await;
 		}

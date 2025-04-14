@@ -22,7 +22,6 @@
     "opener:allow-reveal-item-in-dir",
     "opener:allow-default-urls",
     "process:default",
-    "log:default",
-    "prevent-default:default"
+    "log:default"
   ]
 }

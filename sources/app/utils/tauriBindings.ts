@@ -77,9 +77,9 @@ async terminalShellWrite(id: string, data: string) : Promise<Result<null, Error>
     else return { status: "error", error: e  as any };
 }
 },
-async terminalGetHistory(id: string) : Promise<Result<string, Error>> {
+async terminalGetOneOpen(id: string) : Promise<Result<TerminalOpenContract, Error>> {
     try {
-    return { status: "ok", data: await TAURI_INVOKE("terminal_get_history", { id }) };
+    return { status: "ok", data: await TAURI_INVOKE("terminal_get_one_open", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -93,7 +93,7 @@ async terminalGetManyInfo(filter: TerminalFilter) : Promise<Result<TerminalInfoC
     else return { status: "error", error: e  as any };
 }
 },
-async terminalShellResize(id: string, resizeContract: ShellResizeContract) : Promise<Result<null, Error>> {
+async terminalShellResize(id: string, resizeContract: ShellSizeContract) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("terminal_shell_resize", { id, resizeContract }) };
 } catch (e) {
@@ -314,7 +314,7 @@ export type ProjectCreateContract = { name: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
-export type ShellResizeContract = { rows: number; cols: number }
+export type ShellSizeContract = { rows: number; cols: number }
 export type ShellSpawnContract = { workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean }
 export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
 export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
@@ -331,6 +331,7 @@ export type TerminalCreatedEvent = string
 export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; name: string; shellStatus: TerminalShellStatus }
+export type TerminalOpenContract = { history: string; shellSize: ShellSizeContract }
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "Running" | "Restarting" | "Killed" | { Crashed: { code: number; message: string } }

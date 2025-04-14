@@ -2,8 +2,8 @@ use tauri::AppHandle;
 use uuid::Uuid;
 
 use crate::prelude::*;
-use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
-use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract};
+use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract, TerminalOpenContract};
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::terminal_service;
 
@@ -25,8 +25,8 @@ pub async fn terminal_get_many_info(filter: TerminalFilter) -> Result<Vec<Termin
 
 #[tauri::command]
 #[specta::specta]
-pub async fn terminal_get_history(id: Uuid) -> Result<String> {
-	let result = terminal_service::get_history(id).await?;
+pub async fn terminal_get_one_open(id: Uuid) -> Result<TerminalOpenContract> {
+	let result = terminal_service::get_one_open(id).await?;
 
 	Ok(result)
 }
@@ -49,7 +49,7 @@ pub async fn terminal_shell_write(id: Uuid, data: String) -> Result<()> {
 
 #[tauri::command]
 #[specta::specta]
-pub async fn terminal_shell_resize(id: Uuid, resize_contract: ShellResizeContract) -> Result<()> {
+pub async fn terminal_shell_resize(id: Uuid, resize_contract: ShellSizeContract) -> Result<()> {
 	terminal_service::shell_resize(id, resize_contract).await?;
 
 	Ok(())

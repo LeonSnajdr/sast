@@ -73,16 +73,28 @@ onMounted(async () => {
         return !isCopyAction;
     });
 
-    await restoreHistory();
-
-    terminal.onData((data) => writeToTerminal(data));
-    terminal.onResize((data) => resizeTerminal(data));
+    const openContract = await loadOpenContract();
 
     terminal.open(termElement.value!);
 
-    const unlistenResize = await getCurrentWindow().onResized(() => {
+    terminal.onResize((data) => resizeTerminal(data));
+
+    // Fit the terminalElement into the available space without maniupulating (resizing) the data inside the terminal (has already correct size)
+    if (!openContract.sizeChanged) {
         fitAddon.fit();
-    });
+    }
+
+    terminal.write(openContract.history);
+
+    terminal.onData((data) => writeToTerminal(data));
+
+    const unlistenResize = await getCurrentWindow().onResized(
+        lodDebounce(() => {
+            terminal.focus();
+            fitAddon.fit();
+            terminal.scrollToBottom();
+        }, 500)
+    );
 
     const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
@@ -105,7 +117,11 @@ onMounted(async () => {
 
     nextTick(() => {
         terminal.focus();
-        fitAddon.fit();
+
+        // Fit the terminalElement into the available space maniupulating (resizing) the content inside the terminal
+        if (openContract.sizeChanged) {
+            fitAddon.fit();
+        }
     });
 });
 
@@ -113,19 +129,18 @@ onBeforeUnmount(() => {
     cleanup();
 });
 
-const restoreHistory = async () => {
-    const historyResult = await commands.terminalGetHistory(route.params.terminalId);
+const loadOpenContract = async () => {
+    const openResult = await commands.terminalGetOneOpen(route.params.terminalId);
 
-    if (historyResult.status === "error") {
-        notify.error(t("terminal.open.error"), { error: historyResult.error });
-        return;
+    if (openResult.status === "error") {
+        notify.error(t("terminal.open.error"), { error: openResult.error });
+        return { history: "", sizeChanged: false };
     }
 
-    if (!historyResult.data) {
-        return;
-    }
+    const dims = fitAddon.proposeDimensions();
+    const sizeChanged = dims?.cols != openResult.data.shellSize.cols || dims.rows != openResult.data.shellSize.rows;
 
-    terminal.write(historyResult.data);
+    return { history: openResult.data.history, sizeChanged };
 };
 
 const writeToTerminal = async (data: string) => {
@@ -135,9 +150,7 @@ const writeToTerminal = async (data: string) => {
     }
 };
 
-async function resizeTerminal(resizeContract: ShellResizeContract) {
-    console.log("resize", resizeContract);
-
+async function resizeTerminal(resizeContract: ShellSizeContract) {
     const resizeResult = await commands.terminalShellResize(route.params.terminalId, resizeContract);
     if (resizeResult.status === "error") {
         console.error("Error while resizing terminal");

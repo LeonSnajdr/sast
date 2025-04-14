@@ -1,4 +1,4 @@
-use crate::terminal::shell::shell_contracts::ShellResizeContract;
+use crate::terminal::shell::shell_contracts::ShellSizeContract;
 use crate::terminal::shell::shell_enums::ShellKillReason;
 
 #[derive(Debug)]
@@ -11,6 +11,6 @@ pub enum ShellOutputEvent {
 #[derive(Debug)]
 pub enum ShellInputEvent {
 	Write(String),
-	Resize(ShellResizeContract),
+	Resize(ShellSizeContract),
 	Kill,
 }

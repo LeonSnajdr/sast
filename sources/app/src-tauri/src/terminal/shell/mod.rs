@@ -2,7 +2,7 @@ pub mod shell_contracts;
 pub mod shell_enums;
 pub mod shell_events;
 
-use crate::terminal::shell::shell_contracts::{ShellResizeContract, ShellSpawnContract};
+use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::shell::shell_events::{ShellInputEvent, ShellOutputEvent};
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
@@ -181,7 +181,7 @@ impl Shell {
 		let _ = self.shell_sender.lock().await.as_mut().unwrap().send(ShellInputEvent::Write(data)).await;
 	}
 
-	pub async fn resize(&self, resize_contract: ShellResizeContract) {
+	pub async fn resize(&self, resize_contract: ShellSizeContract) {
 		let _ = self
 			.shell_sender
 			.lock()

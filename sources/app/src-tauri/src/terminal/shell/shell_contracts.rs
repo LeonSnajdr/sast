@@ -1,9 +1,9 @@
 use serde::{Deserialize, Serialize};
 use specta::Type;
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ShellResizeContract {
+pub struct ShellSizeContract {
 	pub rows: u16,
 	pub cols: u16,
 }

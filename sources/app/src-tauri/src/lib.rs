@@ -10,7 +10,6 @@ mod terminal;
 
 use specta_typescript::Typescript;
 use tauri::Manager;
-use tauri_plugin_prevent_default::Flags;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
 use crate::placeholder::placeholder_commands;
@@ -33,7 +32,7 @@ pub fn run() {
 			project_commands::project_open,
 			terminal_commands::terminal_create,
 			terminal_commands::terminal_shell_write,
-			terminal_commands::terminal_get_history,
+			terminal_commands::terminal_get_one_open,
 			terminal_commands::terminal_get_many_info,
 			terminal_commands::terminal_shell_resize,
 			terminal_commands::terminal_close,
@@ -84,11 +83,6 @@ pub fn run() {
 				.build(),
 		)
 		.plugin(tauri_plugin_updater::Builder::new().build())
-		.plugin(
-			tauri_plugin_prevent_default::Builder::new()
-				.with_flags(Flags::all().difference(Flags::FIND | Flags::FOCUS_MOVE | Flags::RELOAD | Flags::DEV_TOOLS))
-				.build(),
-		)
 		.plugin(tauri_plugin_single_instance::init(|app, _, _| {
 			let _ = app.get_webview_window("main").expect("no main window").set_focus();
 		}))
