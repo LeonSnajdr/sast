@@ -150,11 +150,6 @@ impl Terminal {
 		Ok(created_terminal)
 	}
 
-	pub async fn get_history(&self) -> String {
-		let history_guard = self.history.read().await;
-		history_guard.clone()
-	}
-
 	pub async fn close(&self) -> Result<()> {
 		self.shell_kill(ShellKillReason::Manually).await;
 

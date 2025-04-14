@@ -73,9 +73,9 @@ onMounted(async () => {
         return !isCopyAction;
     });
 
-    const openContract = await loadOpenContract();
-
     terminal.open(termElement.value!);
+
+    const openContract = await loadOpenContract();
 
     terminal.onResize((data) => resizeTerminal(data));
 
