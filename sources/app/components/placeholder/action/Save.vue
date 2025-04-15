@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="placeholderSave()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon @click="placeholderSave({ closeAfterSave: true })" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -7,6 +7,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     placeholder: PlaceholderContract;
+    disabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -20,7 +21,11 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-const placeholderSave = async () => {
+useKeybind(["control", "s"], () => placeholderSave({ closeAfterSave: false }));
+
+const placeholderSave = async (options: { closeAfterSave: boolean }) => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: PlaceholderUpdateContract = {
@@ -48,6 +53,8 @@ const placeholderSave = async () => {
 
     placeholderStore.loadAll();
 
-    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+    if (options.closeAfterSave) {
+        navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
+    }
 };
 </script>

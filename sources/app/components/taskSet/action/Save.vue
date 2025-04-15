@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="saveTaskSet()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon @click="saveTaskSet({ closeAfterSave: true })" :disabled :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -7,6 +7,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     taskSet: TaskSetContract;
+    disabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -18,7 +19,11 @@ const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 
-const saveTaskSet = async () => {
+useKeybind(["control", "s"], () => saveTaskSet({ closeAfterSave: false }));
+
+const saveTaskSet = async (options: { closeAfterSave: boolean }) => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: TaskSetUpdateContract = {
@@ -38,6 +43,8 @@ const saveTaskSet = async () => {
 
     notify.success(t("action.save.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 
-    navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
+    if (options.closeAfterSave) {
+        navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
+    }
 };
 </script>

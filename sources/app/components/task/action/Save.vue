@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="taskSave()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon @click="taskSave({ closeAfterSave: true })" :disabled :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -11,6 +11,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
     task: TaskContract;
+    disabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -20,7 +21,11 @@ const taskStore = useTaskStore();
 
 const isLoading = ref(false);
 
-const taskSave = async () => {
+useKeybind(["control", "s"], () => taskSave({ closeAfterSave: false }));
+
+const taskSave = async (options: { closeAfterSave: boolean }) => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: TaskUpdateContract = {
@@ -47,6 +52,8 @@ const taskSave = async () => {
 
     taskStore.loadAll();
 
-    emit("saved", saveResult.data);
+    if (options.closeAfterSave) {
+        emit("saved", saveResult.data);
+    }
 };
 </script>
