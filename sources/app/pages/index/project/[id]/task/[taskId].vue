@@ -1,6 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("task.singular") }) }}</VAppBarTitle>
+        <BaseActionBack />
         <TaskActionDelete v-if="task" :task class="mr-2" />
         <TaskActionSave v-if="task" @saved="taskSaved()" :disabled="!isTaskValid" :task />
     </VAppBar>

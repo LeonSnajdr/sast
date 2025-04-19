@@ -1,6 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("placeholder.singular") }) }}</VAppBarTitle>
+        <BaseActionBack />
         <PlaceholderActionDelete v-if="placeholder" :placeholder="placeholder" class="mr-2" />
         <PlaceholderActionSave v-if="placeholder" :disabled="!isPlaceholderValid" :placeholder="placeholder" />
     </VAppBar>

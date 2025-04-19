@@ -24,9 +24,13 @@ let terminal: Terminal;
 let fitAddon: FitAddon;
 let webLinksAddon: WebLinksAddon;
 
-let cleanup: () => void;
+let cleanup = () => {};
 
 onMounted(async () => {
+    const openContract = await loadOpenContract();
+
+    if (!openContract) return;
+
     terminal = new Terminal({
         cursorStyle: "bar",
         cursorInactiveStyle: "none",
@@ -54,7 +58,9 @@ onMounted(async () => {
             brightRed: theme.current.value.colors["terminal-brightRed"],
             yellow: theme.current.value.colors["terminal-yellow"],
             brightYellow: theme.current.value.colors["terminal-brightYellow"]
-        }
+        },
+        cols: openContract.size.cols,
+        rows: openContract.size.rows
     });
 
     fitAddon = new FitAddon();
@@ -66,26 +72,21 @@ onMounted(async () => {
     terminal.loadAddon(webLinksAddon);
 
     terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
+        const isNewTabAction = event.ctrlKey && event.code === "KeyT" && event.type === "keydown";
+        const isCloseTabAction = event.ctrlKey && event.code === "KeyW" && event.type === "keydown";
+
         const isCtrlC = event.ctrlKey && event.code === "KeyC" && event.type === "keydown";
         const isTextSelected = terminal.getSelection();
         const isCopyAction = isCtrlC && isTextSelected;
 
-        return !isCopyAction;
+        return !isCopyAction && !isNewTabAction && !isCloseTabAction;
     });
 
     terminal.open(termElement.value!);
 
-    const openContract = await loadOpenContract();
+    await write(openContract.history);
 
     terminal.onResize((data) => resizeTerminal(data));
-
-    // Fit the terminalElement into the available space without maniupulating (resizing) the data inside the terminal (has already correct size)
-    if (!openContract.sizeChanged) {
-        fitAddon.fit();
-    }
-
-    terminal.write(openContract.history);
-
     terminal.onData((data) => writeToTerminal(data));
 
     const unlistenResize = await getCurrentWindow().onResized(
@@ -96,10 +97,10 @@ onMounted(async () => {
         }, 500)
     );
 
-    const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen((eventData) => {
+    const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen(async (eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
 
-        terminal.write(eventData.payload.data);
+        await write(eventData.payload.data);
     });
 
     const unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((event) => {
@@ -118,8 +119,9 @@ onMounted(async () => {
     nextTick(() => {
         terminal.focus();
 
-        // Fit the terminalElement into the available space maniupulating (resizing) the content inside the terminal
-        if (openContract.sizeChanged) {
+        const dims = fitAddon.proposeDimensions();
+        const sizeChanged = dims?.cols != openContract.size.cols || dims.rows != openContract.size.rows;
+        if (sizeChanged) {
             fitAddon.fit();
         }
     });
@@ -129,18 +131,23 @@ onBeforeUnmount(() => {
     cleanup();
 });
 
+const write = async (data: string): Promise<void> => {
+    return new Promise((resolve, _) => {
+        terminal.write(data, () => {
+            resolve();
+        });
+    });
+};
+
 const loadOpenContract = async () => {
     const openResult = await commands.terminalGetOneOpen(route.params.terminalId);
 
     if (openResult.status === "error") {
         notify.error(t("terminal.open.error"), { error: openResult.error });
-        return { history: "", sizeChanged: false };
+        return;
     }
 
-    const dims = fitAddon.proposeDimensions();
-    const sizeChanged = dims?.cols != openResult.data.shellSize.cols || dims.rows != openResult.data.shellSize.rows;
-
-    return { history: openResult.data.history, sizeChanged };
+    return { history: openResult.data.history, size: openResult.data.shellSize };
 };
 
 const writeToTerminal = async (data: string) => {
@@ -155,5 +162,7 @@ async function resizeTerminal(resizeContract: ShellSizeContract) {
     if (resizeResult.status === "error") {
         console.error("Error while resizing terminal");
     }
+
+    console.debug("Resizing terminal", resizeContract);
 }
 </script>

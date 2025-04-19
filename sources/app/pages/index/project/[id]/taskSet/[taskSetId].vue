@@ -4,6 +4,7 @@
 
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
+        <BaseActionBack />
         <TaskSetActionDelete v-if="taskSet" :taskSet class="mr-2" />
         <TaskSetActionSave v-if="taskSet" :disabled="!isTaskSetValid" :taskSet />
     </VAppBar>

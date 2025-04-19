@@ -1,5 +1,12 @@
 <template>
-    <BaseBtnIcon @click="placeholderSave({ closeAfterSave: true })" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon
+        @click="placeholderSave({ closeAfterSave: true })"
+        :loading="isLoading"
+        color="success"
+        icon="mdi-content-save"
+        variant="flat"
+        v-tooltip="$t('keybind.controlS.tooltip')"
+    >
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
