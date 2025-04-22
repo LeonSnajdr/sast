@@ -90,14 +90,21 @@ pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoMo
 }
 
 async fn matches_filter(terminal: &Arc<Terminal>, filter: &TerminalFilter) -> bool {
+	let terminal_meta = terminal.meta.clone();
+	let terminal_shell_status = terminal.shell_status.read().await.clone();
+
 	let matches_id = filter.id.map_or(true, |id| terminal.id == id);
-	let matches_project_id = filter.project_id.map_or(true, |id| terminal.meta.project_id == id);
+	let matches_project_id = filter.project_id.map_or(true, |id| terminal_meta.project_id == id);
 	let matches_task_ids = filter
 		.task_ids
 		.as_ref()
-		.map_or(true, |task_ids| terminal.meta.task_id.map_or(false, |tid| task_ids.contains(&tid)));
+		.map_or(true, |task_ids| terminal_meta.task_id.map_or(false, |tid| task_ids.contains(&tid)));
+	let matches_shell_status = filter
+		.shell_status
+		.as_ref()
+		.map_or(true, |shell_status| shell_status.contains(&terminal_shell_status));
 
-	matches_id && matches_project_id && matches_task_ids
+	matches_id && matches_project_id && matches_task_ids && matches_shell_status
 }
 
 pub async fn delete_one(id: &Uuid) -> Result<()> {

@@ -6,6 +6,7 @@
     "main"
   ],
   "permissions": [
+    "core:webview:default",
     "core:window:allow-start-dragging",
     "core:window:allow-close",
     "core:window:allow-minimize",

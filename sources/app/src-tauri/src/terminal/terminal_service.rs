@@ -3,6 +3,7 @@ use crate::task::task_service;
 use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract, TerminalOpenContract};
+use crate::terminal::terminal_enums::TerminalShellStatus;
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::{terminal_repository, Terminal};
 use tauri::AppHandle;
@@ -18,12 +19,10 @@ pub async fn create(app_handle: AppHandle, create_contract: TerminalCreateContra
 	Ok(terminal.id)
 }
 
-pub async fn create_blocking(app_handle: AppHandle, create_contract: TerminalCreateContract, spawn_contract: ShellSpawnContract) -> Result<()> {
+pub async fn create_blocking(app_handle: AppHandle, create_contract: TerminalCreateContract, spawn_contract: ShellSpawnContract) -> Result<bool> {
 	let terminal = Terminal::create(app_handle, create_contract).await?;
 
-	terminal.shell_spawn_blocking(spawn_contract).await;
-
-	Ok(())
+	terminal.shell_spawn_blocking(spawn_contract).await
 }
 
 pub async fn get_one_open(id: Uuid) -> Result<TerminalOpenContract> {
@@ -68,24 +67,37 @@ pub async fn close_first(filter: &TerminalFilter) -> Result<()> {
 	Ok(())
 }
 
-pub async fn restart_schedule(filter: &TerminalFilter) -> Result<()> {
+pub async fn close_many(filter: &TerminalFilter) -> Result<()> {
 	let terminals = terminal_repository::get_many(filter).await?;
 
 	for terminal in terminals {
-		terminal.shell_kill(ShellKillReason::Restart).await;
+		terminal.close().await?;
 	}
 
 	Ok(())
 }
 
-pub async fn shell_restart_first_blocking(filter: &TerminalFilter, spawn_contract: ShellSpawnContract) -> Result<()> {
-	let terminal = terminal_repository::get_first(filter).await;
+pub async fn restart_schedule(filter: &TerminalFilter) -> Result<()> {
+	let terminals = terminal_repository::get_many(filter).await?;
 
-	if let Some(terminal) = terminal {
-		terminal.shell_restart_blocking(spawn_contract).await;
+	for terminal in terminals {
+		terminal.shell_kill(ShellKillReason::Restart).await;
+
+		// This is needed if the shell already crashed before the restart. This should be reworked but is fine for now.
+		*terminal.shell_status.write().await = TerminalShellStatus::Restarting;
 	}
 
 	Ok(())
+}
+
+pub async fn shell_restart_first_blocking(filter: &TerminalFilter, spawn_contract: ShellSpawnContract) -> Result<bool> {
+	let terminal = terminal_repository::get_first(filter).await;
+
+	if let Some(terminal) = terminal {
+		return terminal.shell_restart_blocking(spawn_contract).await;
+	}
+
+	Ok(true)
 }
 
 pub async fn shell_restart_first(filter: &TerminalFilter, spawn_contract: ShellSpawnContract) -> Result<()> {

@@ -1,5 +1,13 @@
 <template>
-    <BaseBtnIcon @click="saveTaskSet()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon
+        @click="saveTaskSet()"
+        :disabled
+        :loading="isLoading"
+        color="success"
+        icon="mdi-content-save"
+        variant="flat"
+        v-tooltip="$t('keybind.controlS.tooltip')"
+    >
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -7,6 +15,8 @@
 <script setup lang="ts">
 const props = defineProps<{
     taskSet: TaskSetContract;
+    disabled: boolean;
+    keybindDisabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -18,7 +28,15 @@ const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 
+useKeybind(["control", "s"], () => {
+    if (props.keybindDisabled) return;
+
+    saveTaskSet();
+});
+
 const saveTaskSet = async () => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: TaskSetUpdateContract = {

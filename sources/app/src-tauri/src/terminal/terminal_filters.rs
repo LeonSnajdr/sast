@@ -1,3 +1,4 @@
+use crate::terminal::terminal_enums::TerminalShellStatus;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 use uuid::Uuid;
@@ -8,6 +9,7 @@ pub struct TerminalFilter {
 	pub id: Option<Uuid>,
 	pub project_id: Option<Uuid>,
 	pub task_ids: Option<Vec<Uuid>>,
+	pub shell_status: Option<Vec<TerminalShellStatus>>,
 }
 impl Default for TerminalFilter {
 	fn default() -> Self {
@@ -15,6 +17,7 @@ impl Default for TerminalFilter {
 			id: None,
 			project_id: None,
 			task_ids: None,
+			shell_status: None,
 		}
 	}
 }

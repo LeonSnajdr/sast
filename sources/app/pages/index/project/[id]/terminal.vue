@@ -1,7 +1,6 @@
 <template>
     <VAppBar>
         <TerminalTabs />
-        <VSpacer />
         <TerminalActionCreate />
     </VAppBar>
 

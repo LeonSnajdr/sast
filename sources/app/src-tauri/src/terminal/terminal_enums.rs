@@ -3,9 +3,10 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, PartialEq, Eq, Clone, specta::Type, Serialize, Deserialize)]
 pub enum TerminalShellStatus {
 	None,
+	NoneManually,
+	NoneSuccessfully,
 	Running,
 	Restarting,
-	Killed,
 	Crashed { code: u32, message: String },
 }
 

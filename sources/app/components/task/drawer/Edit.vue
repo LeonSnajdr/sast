@@ -27,7 +27,10 @@ const { task, loadTask } = useTask();
 watch(
     () => props.taskId,
     () => {
-        if (!props.taskId) return;
+        if (!props.taskId) {
+            task.value = undefined;
+            return;
+        }
 
         loadTask(props.taskId);
     }

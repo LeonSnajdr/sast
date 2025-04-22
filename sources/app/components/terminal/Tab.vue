@@ -26,7 +26,7 @@
         </template>
         <span class="text-truncate" style="max-width: 150px">{{ terminal.name }}</span>
         <template #append>
-            <TerminalActionClose :id="terminal.id" />
+            <TerminalActionClose :terminal />
         </template>
     </VBtn>
 </template>

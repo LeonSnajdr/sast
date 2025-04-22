@@ -1,5 +1,13 @@
 <template>
-    <BaseBtnIcon @click="taskSave()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon
+        @click="taskSave()"
+        :disabled
+        :loading="isLoading"
+        color="success"
+        icon="mdi-content-save"
+        variant="flat"
+        v-tooltip="$t('keybind.controlS.tooltip')"
+    >
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -11,6 +19,7 @@ const emit = defineEmits<{
 
 const props = defineProps<{
     task: TaskContract;
+    disabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -20,7 +29,11 @@ const taskStore = useTaskStore();
 
 const isLoading = ref(false);
 
+useKeybind(["control", "s"], () => taskSave());
+
 const taskSave = async () => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: TaskUpdateContract = {

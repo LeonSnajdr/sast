@@ -1,5 +1,7 @@
 <template>
-    <BaseBtnIcon @click="createTerminal()" :loading="isLoading" color="secondary" icon="mdi-plus" variant="flat" />
+    <VBtn @click.prevent.stop="createTerminal()" class="ml-2" size="28" v-tooltip="$t('keybind.controlT.tooltip')">
+        <VIcon icon="mdi-plus" size="small" />
+    </VBtn>
 </template>
 
 <script setup lang="ts">
@@ -11,6 +13,8 @@ const projectService = useProjectStore();
 const { selectedProject } = storeToRefs(projectService);
 
 const isLoading = ref(false);
+
+useKeybind(["control", "t"], () => createTerminal());
 
 const createTerminal = async () => {
     const createContract: TerminalCreateContract = {
@@ -32,7 +36,7 @@ const createTerminal = async () => {
     isLoading.value = false;
 
     if (spawnResult.status === "error") {
-        notify.error(t("terminal.spawn.error"), { error: spawnResult.error });
+        notify.error(t("action.create.error", { type: t("terminal.singular") }), { error: spawnResult.error });
         return;
     }
 

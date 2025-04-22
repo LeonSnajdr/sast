@@ -1,5 +1,12 @@
 <template>
-    <BaseBtnIcon @click="placeholderSave()" :loading="isLoading" color="success" icon="mdi-content-save" variant="flat">
+    <BaseBtnIcon
+        @click="placeholderSave()"
+        :loading="isLoading"
+        color="success"
+        icon="mdi-content-save"
+        variant="flat"
+        v-tooltip="$t('keybind.controlS.tooltip')"
+    >
         {{ $t("action.save") }}
     </BaseBtnIcon>
 </template>
@@ -7,6 +14,7 @@
 <script setup lang="ts">
 const props = defineProps<{
     placeholder: PlaceholderContract;
+    disabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -20,7 +28,11 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
+useKeybind(["control", "s"], () => placeholderSave());
+
 const placeholderSave = async () => {
+    if (props.disabled) return;
+
     isLoading.value = true;
 
     const updateContract: PlaceholderUpdateContract = {

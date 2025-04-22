@@ -4,11 +4,11 @@ pub mod shell_events;
 
 use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
-use crate::terminal::shell::shell_events::{ShellInputEvent, ShellOutputEvent};
+use crate::terminal::shell::shell_events::{ShellInputEvent, ShellOutputEvent, ShellOutputEventData};
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
 use std::sync::Arc;
 use tokio::sync::mpsc::{channel, Sender};
-use tokio::sync::Mutex;
+use tokio::sync::{oneshot, Mutex};
 use tokio::time::{sleep, Duration};
 use uuid::Uuid;
 
@@ -49,7 +49,7 @@ impl Shell {
 		let id_clone = self.id.clone();
 		let terminal_sender = Arc::clone(&self.terminal_sender);
 		tokio::spawn(async move {
-			let _ = terminal_sender.send(ShellOutputEvent::Spawned).await;
+			Self::send_output_event(&terminal_sender, ShellOutputEventData::Spawned).await;
 
 			loop {
 				let reader_clone = Arc::clone(&reader);
@@ -66,7 +66,7 @@ impl Shell {
 
 				match result {
 					Some(output) => {
-						let _ = terminal_sender.send(ShellOutputEvent::Data(output)).await;
+						Self::send_output_event(&terminal_sender, ShellOutputEventData::Data(output)).await;
 					}
 					None => break,
 				}
@@ -147,16 +147,20 @@ impl Shell {
 			}
 
 			let reason = kill_reason_lock.take().unwrap();
-			let _ = terminal_sender.send(ShellOutputEvent::Killed(reason)).await;
 
-			// workaround, that the lock is hold until the killed event is consumed by the terminal
-			sleep(Duration::from_millis(100)).await;
+			Self::send_output_event(&terminal_sender, ShellOutputEventData::Killed(reason)).await;
 
 			log::info!("Shell {} waiting thread closed", id_clone);
 		});
 
 		// workaround, that the lock of the guard is acquired in the thread before continue
 		sleep(Duration::from_millis(100)).await;
+	}
+
+	async fn send_output_event(sender: &Sender<ShellOutputEvent>, data: ShellOutputEventData) {
+		let (callback_sender, callback_receiver) = oneshot::channel();
+		let _ = sender.send((data, callback_sender)).await;
+		let _ = callback_receiver.await;
 	}
 
 	fn build_command(spawn_contract: &ShellSpawnContract) -> CommandBuilder {
