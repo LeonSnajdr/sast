@@ -1,6 +1,6 @@
 <template>
     <BaseBtnIcon
-        @click="saveTaskSet({ closeAfterSave: true })"
+        @click="saveTaskSet()"
         :disabled
         :loading="isLoading"
         color="success"
@@ -16,6 +16,7 @@
 const props = defineProps<{
     taskSet: TaskSetContract;
     disabled: boolean;
+    keybindDisabled: boolean;
 }>();
 
 const notify = useNotify();
@@ -27,9 +28,13 @@ const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => saveTaskSet({ closeAfterSave: false }));
+useKeybind(["control", "s"], () => {
+    if (props.keybindDisabled) return;
 
-const saveTaskSet = async (options: { closeAfterSave: boolean }) => {
+    saveTaskSet();
+});
+
+const saveTaskSet = async () => {
     if (props.disabled) return;
 
     isLoading.value = true;
@@ -51,8 +56,6 @@ const saveTaskSet = async (options: { closeAfterSave: boolean }) => {
 
     notify.success(t("action.save.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 
-    if (options.closeAfterSave) {
-        navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
-    }
+    navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
 };
 </script>

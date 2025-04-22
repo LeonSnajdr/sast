@@ -1,6 +1,6 @@
 <template>
     <BaseBtnIcon
-        @click="placeholderSave({ closeAfterSave: true })"
+        @click="placeholderSave()"
         :loading="isLoading"
         color="success"
         icon="mdi-content-save"
@@ -28,9 +28,9 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => placeholderSave({ closeAfterSave: false }));
+useKeybind(["control", "s"], () => placeholderSave());
 
-const placeholderSave = async (options: { closeAfterSave: boolean }) => {
+const placeholderSave = async () => {
     if (props.disabled) return;
 
     isLoading.value = true;
@@ -60,8 +60,6 @@ const placeholderSave = async (options: { closeAfterSave: boolean }) => {
 
     placeholderStore.loadAll();
 
-    if (options.closeAfterSave) {
-        navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
-    }
+    navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 };
 </script>

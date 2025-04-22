@@ -1,6 +1,6 @@
 <template>
     <BaseBtnIcon
-        @click="taskSave({ closeAfterSave: true })"
+        @click="taskSave()"
         :disabled
         :loading="isLoading"
         color="success"
@@ -29,9 +29,9 @@ const taskStore = useTaskStore();
 
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => taskSave({ closeAfterSave: false }));
+useKeybind(["control", "s"], () => taskSave());
 
-const taskSave = async (options: { closeAfterSave: boolean }) => {
+const taskSave = async () => {
     if (props.disabled) return;
 
     isLoading.value = true;
@@ -60,8 +60,6 @@ const taskSave = async (options: { closeAfterSave: boolean }) => {
 
     taskStore.loadAll();
 
-    if (options.closeAfterSave) {
-        emit("saved", saveResult.data);
-    }
+    emit("saved", saveResult.data);
 };
 </script>

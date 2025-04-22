@@ -6,7 +6,7 @@
         <VAppBarTitle>{{ $t("title.edit", { type: $t("taskSet.singular") }) }}</VAppBarTitle>
         <BaseActionBack />
         <TaskSetActionDelete v-if="taskSet" :taskSet class="mr-2" />
-        <TaskSetActionSave v-if="taskSet" :disabled="!isTaskSetValid" :taskSet />
+        <TaskSetActionSave v-if="taskSet" :disabled="!isTaskSetValid" :keybindDisabled="isTaskCreateDrawerOpen || isTaskEditDrawerOpen" :taskSet />
     </VAppBar>
 
     <VContainer v-if="taskSet" class="h-100 d-flex flex-column ga-4">
