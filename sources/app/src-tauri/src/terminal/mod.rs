@@ -13,7 +13,7 @@ pub mod terminal_mapper;
 use crate::prelude::*;
 use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
-use crate::terminal::shell::shell_events::ShellOutputEvent;
+use crate::terminal::shell::shell_events::{ShellOutputEvent, ShellOutputEventData};
 use crate::terminal::shell::Shell;
 use crate::terminal::terminal_contracts::TerminalCreateContract;
 use crate::terminal::terminal_events::{
@@ -25,7 +25,6 @@ use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellS
 use std::sync::Arc;
 use tauri::AppHandle;
 use tauri_specta::Event;
-use tokio::sync::mpsc::Sender;
 use tokio::sync::{mpsc, Mutex, RwLock};
 use tokio::task::JoinHandle;
 use uuid::Uuid;
@@ -38,7 +37,7 @@ pub struct Terminal {
 	pub shell_status: Arc<RwLock<TerminalShellStatus>>,
 	app_handle: Arc<AppHandle>,
 	handle: Arc<Mutex<Option<JoinHandle<()>>>>,
-	sender: Arc<Sender<ShellOutputEvent>>,
+	sender: Arc<mpsc::Sender<ShellOutputEvent>>,
 	shell: Arc<RwLock<Option<Shell>>>,
 }
 
@@ -55,13 +54,13 @@ pub struct TerminalBehavior {
 
 impl Terminal {
 	pub async fn create(app_handle: AppHandle, spawn_contract: TerminalCreateContract) -> Result<Arc<Terminal>> {
-		let (sender, mut receiver) = mpsc::channel(100);
+		let (sender, mut receiver) = mpsc::channel::<ShellOutputEvent>(100);
 		let id = Uuid::new_v4();
 		let app_handle = Arc::new(app_handle);
 		let behavior = Arc::new(RwLock::new(TerminalBehavior {
 			history_persistence: spawn_contract.history_persistence,
 		}));
-		let shell = Arc::new(RwLock::new(None));
+		let shell = Arc::new(RwLock::new(None::<Shell>));
 		let history = Arc::new(RwLock::new(String::new()));
 		let shell_status = Arc::new(RwLock::new(TerminalShellStatus::None));
 
@@ -74,23 +73,34 @@ impl Terminal {
 		let handle = tokio::spawn(async move {
 			while let Some(event) = receiver.recv().await {
 				match event {
-					ShellOutputEvent::Spawned => {
+					(ShellOutputEventData::Spawned, callback) => {
 						log::info!("Terminal {} shell spawned", id_clone);
+
 						*shell_status_clone.write().await = TerminalShellStatus::Running;
 						let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
 							id: id_clone,
 							status: shell_status_clone.read().await.clone(),
 						})
 						.emit(app_handle_clone.as_ref());
+
+						let _ = callback.send(());
 					}
-					ShellOutputEvent::Data(text) => {
+					(ShellOutputEventData::Data(text), callback) => {
 						history_clone.write().await.push_str(&text);
 
 						let _ = TerminalShellReadEvent(TerminalShellReadEventData { id: id_clone, data: text }).emit(app_handle_clone.as_ref());
+
+						let _ = callback.send(());
 					}
-					ShellOutputEvent::Killed(reason) => {
+					(ShellOutputEventData::Killed(reason), callback) => {
 						log::info!("Terminal {} shell closed with reason {:?}", id_clone, reason);
-						*shell_clone.write().await = None;
+
+						*shell_status_clone.write().await = match reason.clone() {
+							ShellKillReason::Manually => TerminalShellStatus::NoneManually,
+							ShellKillReason::Success => TerminalShellStatus::NoneSuccessfully,
+							ShellKillReason::Restart => TerminalShellStatus::Restarting,
+							ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
+						};
 
 						let persist_terminal = match (behavior_clone.read().await.history_persistence.clone(), reason.clone()) {
 							(_, ShellKillReason::Restart) => true,
@@ -101,13 +111,6 @@ impl Terminal {
 						};
 
 						if persist_terminal {
-							*shell_status_clone.write().await = match reason {
-								ShellKillReason::Manually => TerminalShellStatus::Killed,
-								ShellKillReason::Success => TerminalShellStatus::Killed,
-								ShellKillReason::Restart => TerminalShellStatus::Restarting,
-								ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
-							};
-
 							let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
 								id: id_clone,
 								status: shell_status_clone.read().await.clone(),
@@ -117,6 +120,18 @@ impl Terminal {
 							let _ = terminal_repository::delete_one(&id_clone).await;
 							let _ = TerminalClosedEvent(id_clone).emit(app_handle_clone.as_ref());
 						}
+
+						let _ = callback.send(());
+
+						/*
+						We have to wait until the shell has consumed the callback, this is achieved by awaiting the lock.
+						The lock is released as soon as the shell is completely cleaned up
+						 */
+						if let Some(shell) = shell_clone.read().await.as_ref() {
+							shell.wait().await;
+						}
+
+						*shell_clone.write().await = None;
 					}
 				}
 			}
@@ -173,12 +188,19 @@ impl Terminal {
 		*self.shell.write().await = Some(shell);
 	}
 
-	pub async fn shell_spawn_blocking(&self, spawn_contract: ShellSpawnContract) {
+	pub async fn shell_spawn_blocking(&self, spawn_contract: ShellSpawnContract) -> Result<bool> {
 		self.shell_spawn(spawn_contract).await;
 
 		if let Some(shell) = self.shell.read().await.as_ref() {
 			shell.wait().await;
 		}
+
+		let successful = !matches!(
+			*self.shell_status.read().await,
+			TerminalShellStatus::Crashed { .. } | TerminalShellStatus::NoneManually
+		);
+
+		Ok(successful)
 	}
 
 	pub async fn shell_restart(&self, spawn_contract: ShellSpawnContract) {
@@ -186,12 +208,19 @@ impl Terminal {
 		self.shell_spawn(spawn_contract).await;
 	}
 
-	pub async fn shell_restart_blocking(&self, spawn_contract: ShellSpawnContract) {
+	pub async fn shell_restart_blocking(&self, spawn_contract: ShellSpawnContract) -> Result<bool> {
 		self.shell_restart(spawn_contract).await;
 
 		if let Some(shell) = self.shell.read().await.as_ref() {
 			shell.wait().await;
 		}
+
+		let successful = !matches!(
+			*self.shell_status.read().await,
+			TerminalShellStatus::Crashed { .. } | TerminalShellStatus::NoneManually
+		);
+
+		Ok(successful)
 	}
 
 	pub async fn shell_write(&self, data: String) {

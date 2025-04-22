@@ -328,13 +328,13 @@ export type TaskUpdateContract = { id: string; name: string; tabName: string | n
 export type TerminalClosedEvent = string
 export type TerminalCreateContract = { projectId: string; taskId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
 export type TerminalCreatedEvent = string
-export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null }
+export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null; shellStatus: TerminalShellStatus[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; name: string; shellStatus: TerminalShellStatus }
 export type TerminalOpenContract = { history: string; shellSize: ShellSizeContract }
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
-export type TerminalShellStatus = "None" | "Running" | "Restarting" | "Killed" | { Crashed: { code: number; message: string } }
+export type TerminalShellStatus = "None" | "NoneManually" | "NoneSuccessfully" | "Running" | "Restarting" | { Crashed: { code: number; message: string } }
 export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
 export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
 

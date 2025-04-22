@@ -3,6 +3,7 @@ use crate::task_set::task::{task_set_task_repository, task_set_task_service};
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetModel, TaskSetUpdateModel};
 use crate::task_set::task_set_repository;
+use crate::terminal::terminal_enums::TerminalShellStatus;
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::terminal_service;
 use chrono::Utc;
@@ -72,7 +73,10 @@ pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uui
 		let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task).await?;
 
 		if task_set_task.blocking {
-			terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?;
+			let successful = terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?;
+			if !successful {
+				break;
+			}
 		} else {
 			terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract)).await?;
 		}
@@ -107,13 +111,30 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 
 		match (is_terminal_existing, task_set_task.blocking) {
 			(true, false) => terminal_service::shell_restart_first(&filter, spawn_contract).await?,
-			(true, true) => terminal_service::shell_restart_first_blocking(&filter, spawn_contract).await?,
+			(true, true) => {
+				let successful = terminal_service::shell_restart_first_blocking(&filter, spawn_contract).await?;
+				if !successful {
+					break;
+				}
+			}
 			(false, false) => terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract))
 				.await
 				.map(|_| ())?,
-			(false, true) => terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?,
+			(false, true) => {
+				let successful = terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?;
+				if !successful {
+					break;
+				}
+			}
 		};
 	}
+
+	let restarting_filter = TerminalFilter {
+		shell_status: Some(vec![TerminalShellStatus::Restarting]),
+		..filter
+	};
+
+	terminal_service::close_many(&restarting_filter).await?;
 
 	Ok(())
 }

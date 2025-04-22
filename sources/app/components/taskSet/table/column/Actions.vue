@@ -1,7 +1,7 @@
 <template>
     <div @click.prevent.stop class="d-flex">
         <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal" :loading="isStarting" color="success" icon="mdi-play" />
-        <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal || isStarting || isStopping" :loading="isRestarting" color="info" icon="mdi-autorenew" />
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
 </template>
