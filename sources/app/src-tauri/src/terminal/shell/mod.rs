@@ -31,10 +31,16 @@ impl Shell {
 		}
 	}
 
-	pub async fn run(&self, spawn_contract: ShellSpawnContract) {
+	pub async fn run(&self, spawn_contract: ShellSpawnContract, size: ShellSizeContract) {
 		let pty_system = NativePtySystem::default();
 
-		let pair = pty_system.openpty(PtySize::default()).unwrap();
+		let pty_size = PtySize {
+			rows: size.rows,
+			cols: size.cols,
+			..PtySize::default()
+		};
+
+		let pair = pty_system.openpty(pty_size).unwrap();
 
 		let cmd = Self::build_command(&spawn_contract);
 

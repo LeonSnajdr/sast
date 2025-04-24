@@ -143,7 +143,7 @@ impl Terminal {
 			name: spawn_contract.name.unwrap_or("PowerShell".to_string()),
 			project_id: spawn_contract.project_id,
 			task_id: spawn_contract.task_id,
-			shell_size: RwLock::new(ShellSizeContract { cols: 32, rows: 32 }),
+			shell_size: RwLock::new(ShellSizeContract::default()),
 		};
 
 		let app_handle_clone = Arc::clone(&app_handle);
@@ -184,7 +184,9 @@ impl Terminal {
 
 	pub async fn shell_spawn(&self, spawn_contract: ShellSpawnContract) {
 		let shell = Shell::new(self.sender.clone()).await;
-		shell.run(spawn_contract).await;
+		let size = self.meta.shell_size.read().await.clone();
+
+		shell.run(spawn_contract, size).await;
 		*self.shell.write().await = Some(shell);
 	}
 
