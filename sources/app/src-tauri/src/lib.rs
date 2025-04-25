@@ -33,6 +33,7 @@ pub fn run() {
 			terminal_commands::terminal_create,
 			terminal_commands::terminal_shell_write,
 			terminal_commands::terminal_get_one_open,
+			terminal_commands::terminal_replace_history,
 			terminal_commands::terminal_get_many_info,
 			terminal_commands::terminal_shell_resize,
 			terminal_commands::terminal_close,

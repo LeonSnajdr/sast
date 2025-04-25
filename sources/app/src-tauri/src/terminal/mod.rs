@@ -165,6 +165,12 @@ impl Terminal {
 		Ok(created_terminal)
 	}
 
+	pub async fn replace_history(&self, history: String) -> Result<()> {
+		*self.history.write().await = history;
+
+		Ok(())
+	}
+
 	pub async fn close(&self) -> Result<()> {
 		self.shell_kill(ShellKillReason::Manually).await;
 

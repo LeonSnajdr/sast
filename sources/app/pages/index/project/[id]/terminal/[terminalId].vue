@@ -8,6 +8,7 @@
 import "xterm/css/xterm.css";
 import { Terminal } from "xterm";
 import { FitAddon } from "xterm-addon-fit";
+import { SerializeAddon } from "@xterm/addon-serialize";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -19,10 +20,12 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const termElement = ref<HTMLDivElement>();
+const history = ref<string>();
 
 let terminal: Terminal;
 let fitAddon: FitAddon;
 let webLinksAddon: WebLinksAddon;
+let serializeAddon: SerializeAddon;
 
 let cleanup = () => {};
 
@@ -30,6 +33,8 @@ onMounted(async () => {
     const openContract = await loadOpenContract();
 
     if (!openContract) return;
+
+    history.value = openContract.history;
 
     terminal = new Terminal({
         cursorStyle: "bar",
@@ -60,16 +65,19 @@ onMounted(async () => {
             brightYellow: theme.current.value.colors["terminal-brightYellow"]
         },
         cols: openContract.size.cols,
-        rows: openContract.size.rows
+        rows: openContract.size.rows,
+        windowsPty: { backend: "conpty" }
     });
 
     fitAddon = new FitAddon();
     webLinksAddon = new WebLinksAddon((_, uri) => {
         openUrl(uri);
     });
+    serializeAddon = new SerializeAddon();
 
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(webLinksAddon);
+    terminal.loadAddon(serializeAddon);
 
     terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
         const isNewTabAction = event.ctrlKey && event.code === "KeyT" && event.type === "keydown";
@@ -82,16 +90,15 @@ onMounted(async () => {
         return !isCopyAction && !isNewTabAction && !isCloseTabAction;
     });
 
-    terminal.open(termElement.value!);
-
     await write(openContract.history);
+
+    terminal.open(termElement.value!);
 
     terminal.onResize((data) => resizeTerminal(data));
     terminal.onData((data) => writeToTerminal(data));
 
     const unlistenResize = await getCurrentWindow().onResized(
         lodDebounce(() => {
-            terminal.focus();
             fitAddon.fit();
             terminal.scrollToBottom();
         }, 500)
@@ -127,7 +134,8 @@ onMounted(async () => {
     });
 });
 
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
+    await replaceTerminalHistory();
     cleanup();
 });
 
@@ -165,4 +173,13 @@ async function resizeTerminal(resizeContract: ShellSizeContract) {
 
     console.debug("Resizing terminal", resizeContract);
 }
+
+const replaceTerminalHistory = async () => {
+    const serialize = serializeAddon.serialize();
+
+    const replaceResult = await commands.terminalReplaceHistory(route.params.terminalId, serialize);
+    if (replaceResult.status === "error") {
+        console.error("failed to replace temrinal history");
+    }
+};
 </script>

@@ -85,6 +85,14 @@ async terminalGetOneOpen(id: string) : Promise<Result<TerminalOpenContract, Erro
     else return { status: "error", error: e  as any };
 }
 },
+async terminalReplaceHistory(id: string, history: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("terminal_replace_history", { id, history }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async terminalGetManyInfo(filter: TerminalFilter) : Promise<Result<TerminalInfoContract[], Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("terminal_get_many_info", { filter }) };

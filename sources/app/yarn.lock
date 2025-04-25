@@ -3710,6 +3710,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@xterm/addon-serialize@npm:^0.13.0":
+  version: 0.13.0
+  resolution: "@xterm/addon-serialize@npm:0.13.0"
+  peerDependencies:
+    "@xterm/xterm": ^5.0.0
+  checksum: 10c0/090f502867250cdceca9abdbe37aebe0c01eb5d708a09c51d3e0e9bb5d4d3b0d4d67af1c4c8bde9b78f108a5e4150420180de69e6228aac76596fdbf6c4c59dc
+  languageName: node
+  linkType: hard
+
 "@xterm/addon-web-links@npm:^0.11.0":
   version: 0.11.0
   resolution: "@xterm/addon-web-links@npm:0.11.0"
@@ -8079,6 +8088,7 @@ __metadata:
     "@vueuse/core": "npm:^12.5.0"
     "@vueuse/integrations": "npm:^12.7.0"
     "@vueuse/nuxt": "npm:^12.5.0"
+    "@xterm/addon-serialize": "npm:^0.13.0"
     "@xterm/addon-web-links": "npm:^0.11.0"
     eslint: "npm:^9.19.0"
     fuse.js: "npm:^7.1.0"
