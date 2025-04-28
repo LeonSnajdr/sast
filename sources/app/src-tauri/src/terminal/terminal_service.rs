@@ -33,6 +33,14 @@ pub async fn get_one_open(id: Uuid) -> Result<TerminalOpenContract> {
 	Ok(open_contract)
 }
 
+pub async fn replace_history(id: Uuid, history: String) -> Result<()> {
+	let terminal = terminal_repository::get_one(&id).await?;
+
+	terminal.replace_history(history).await?;
+
+	Ok(())
+}
+
 pub async fn close(id: Uuid) -> Result<()> {
 	let terminal = terminal_repository::get_one(&id).await?;
 

@@ -8,6 +8,12 @@ pub struct ShellSizeContract {
 	pub cols: u16,
 }
 
+impl Default for ShellSizeContract {
+	fn default() -> Self {
+		ShellSizeContract { rows: 25, cols: 150 }
+	}
+}
+
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ShellSpawnContract {

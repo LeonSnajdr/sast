@@ -82,7 +82,7 @@ Contributions are welcome! Feel free to open an issue or submit a pull request. 
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). Feel free to browse and contribute to the codebase under these guidelines.
+This project is licensed under the [Prosperity Public License](LICENSE.md). Feel free to browse and contribute to the codebase under these guidelines.
 
 ---
 

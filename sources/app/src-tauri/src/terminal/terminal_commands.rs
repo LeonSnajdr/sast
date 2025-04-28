@@ -33,6 +33,14 @@ pub async fn terminal_get_one_open(id: Uuid) -> Result<TerminalOpenContract> {
 
 #[tauri::command]
 #[specta::specta]
+pub async fn terminal_replace_history(id: Uuid, history: String) -> Result<()> {
+	terminal_service::replace_history(id, history).await?;
+
+	Ok(())
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn terminal_close(id: Uuid) -> Result<()> {
 	terminal_service::close(id).await?;
 

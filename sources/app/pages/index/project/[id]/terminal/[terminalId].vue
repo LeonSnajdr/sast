@@ -5,9 +5,10 @@
 </template>
 
 <script setup lang="ts">
-import "xterm/css/xterm.css";
-import { Terminal } from "xterm";
-import { FitAddon } from "xterm-addon-fit";
+import "@xterm/xterm/css/xterm.css";
+import { Terminal } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
+import { SerializeAddon } from "@xterm/addon-serialize";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -23,6 +24,7 @@ const termElement = ref<HTMLDivElement>();
 let terminal: Terminal;
 let fitAddon: FitAddon;
 let webLinksAddon: WebLinksAddon;
+let serializeAddon: SerializeAddon;
 
 let cleanup = () => {};
 
@@ -60,16 +62,20 @@ onMounted(async () => {
             brightYellow: theme.current.value.colors["terminal-brightYellow"]
         },
         cols: openContract.size.cols,
-        rows: openContract.size.rows
+        rows: openContract.size.rows,
+        windowsPty: { backend: "conpty" },
+        scrollback: 30000
     });
 
     fitAddon = new FitAddon();
     webLinksAddon = new WebLinksAddon((_, uri) => {
         openUrl(uri);
     });
+    serializeAddon = new SerializeAddon();
 
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(webLinksAddon);
+    terminal.loadAddon(serializeAddon);
 
     terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
         const isNewTabAction = event.ctrlKey && event.code === "KeyT" && event.type === "keydown";
@@ -82,25 +88,22 @@ onMounted(async () => {
         return !isCopyAction && !isNewTabAction && !isCloseTabAction;
     });
 
+    terminal.write(openContract.history);
+
     terminal.open(termElement.value!);
 
-    await write(openContract.history);
-
-    terminal.onResize((data) => resizeTerminal(data));
     terminal.onData((data) => writeToTerminal(data));
 
     const unlistenResize = await getCurrentWindow().onResized(
         lodDebounce(() => {
-            terminal.focus();
-            fitAddon.fit();
-            terminal.scrollToBottom();
+            resizeTerminal();
         }, 500)
     );
 
     const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen(async (eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
 
-        await write(eventData.payload.data);
+        terminal.write(eventData.payload.data);
     });
 
     const unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((event) => {
@@ -116,28 +119,19 @@ onMounted(async () => {
         terminal.dispose();
     };
 
-    nextTick(() => {
-        terminal.focus();
+    terminal.focus();
 
-        const dims = fitAddon.proposeDimensions();
-        const sizeChanged = dims?.cols != openContract.size.cols || dims.rows != openContract.size.rows;
-        if (sizeChanged) {
-            fitAddon.fit();
-        }
-    });
+    const dims = fitAddon.proposeDimensions();
+    const sizeChanged = dims?.cols != openContract.size.cols || dims.rows != openContract.size.rows;
+    if (sizeChanged) {
+        resizeTerminal();
+    }
 });
 
-onBeforeUnmount(() => {
+onBeforeUnmount(async () => {
+    await replaceTerminalHistory();
     cleanup();
 });
-
-const write = async (data: string): Promise<void> => {
-    return new Promise((resolve, _) => {
-        terminal.write(data, () => {
-            resolve();
-        });
-    });
-};
 
 const loadOpenContract = async () => {
     const openResult = await commands.terminalGetOneOpen(route.params.terminalId);
@@ -157,12 +151,28 @@ const writeToTerminal = async (data: string) => {
     }
 };
 
-async function resizeTerminal(resizeContract: ShellSizeContract) {
-    const resizeResult = await commands.terminalShellResize(route.params.terminalId, resizeContract);
+const resizeTerminal = lodDebounce(async () => {
+    const dims = fitAddon.proposeDimensions();
+
+    terminal.resize(terminal.cols, dims!.rows);
+
+    const resizeResult = await commands.terminalShellResize(route.params.terminalId, {
+        cols: terminal.cols,
+        rows: terminal.rows
+    });
+
     if (resizeResult.status === "error") {
         console.error("Error while resizing terminal");
+        return;
     }
+}, 500);
 
-    console.debug("Resizing terminal", resizeContract);
-}
+const replaceTerminalHistory = async () => {
+    const serialize = serializeAddon.serialize();
+
+    const replaceResult = await commands.terminalReplaceHistory(route.params.terminalId, serialize);
+    if (replaceResult.status === "error") {
+        console.error("failed to replace temrinal history", replaceResult.error);
+    }
+};
 </script>
