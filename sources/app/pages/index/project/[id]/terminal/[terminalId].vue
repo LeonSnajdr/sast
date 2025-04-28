@@ -20,7 +20,6 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const termElement = ref<HTMLDivElement>();
-const history = ref<string>();
 
 let terminal: Terminal;
 let fitAddon: FitAddon;
@@ -33,8 +32,6 @@ onMounted(async () => {
     const openContract = await loadOpenContract();
 
     if (!openContract) return;
-
-    history.value = openContract.history;
 
     terminal = new Terminal({
         cursorStyle: "bar",
@@ -105,8 +102,6 @@ onMounted(async () => {
 
     const unlistenTerminalShellReadEvent = await events.terminalShellReadEvent.listen(async (eventData) => {
         if (eventData.payload.id !== route.params.terminalId) return;
-
-        history.value += eventData.payload.data;
 
         terminal.write(eventData.payload.data);
     });
