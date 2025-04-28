@@ -10,7 +10,7 @@ pub struct ShellSizeContract {
 
 impl Default for ShellSizeContract {
 	fn default() -> Self {
-		ShellSizeContract { rows: 24, cols: 80 }
+		ShellSizeContract { rows: 25, cols: 150 }
 	}
 }
 

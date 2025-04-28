@@ -96,10 +96,17 @@ impl Shell {
 						}
 					}
 					ShellInputEvent::Resize(resize_contract) => {
+						/*	NOTE: This is a workaround required for ConPTY on Windows.
+							We handle column resizing only on the client side; the backend always assumes the column count remains constant.
+							This is necessary because ConPTY handles column resizing differently; instead of bringing parts of the scrollback
+							back into the viewport, new lines are inserted at the bottom (ie. the same behavior as if there was no scrollback).
+						*/
+						let current_cols = pair.master.get_size().unwrap().cols;
+
 						pair.master
 							.resize(PtySize {
 								rows: resize_contract.rows,
-								cols: resize_contract.cols,
+								cols: current_cols,
 								..PtySize::default()
 							})
 							.unwrap();
