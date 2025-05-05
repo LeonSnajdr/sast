@@ -7,7 +7,6 @@
 <script setup lang="ts">
 const route = useRoute();
 const presentation = usePresentation();
-const { current: pressedKeys } = useMagicKeys();
 
 const settingStore = useSettingStore();
 const updateStore = useUpdateStore();
@@ -53,12 +52,9 @@ const checkForUpdate = async () => {
     updateStore.notifyIfUpdateIsAvailable();
 };
 
-whenever(
-    () => pressedKeys.has("control") && pressedKeys.has(","),
-    () => {
-        if (route.name === "initialize") return;
+useKeybind(["control", ","], () => {
+    if (route.name === "initialize") return;
 
-        return navigateTo({ name: "index-setting-index-presentation" });
-    }
-);
+    return navigateTo({ name: "index-setting-index-presentation" });
+});
 </script>
