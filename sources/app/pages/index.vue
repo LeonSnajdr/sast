@@ -7,14 +7,11 @@
 <script setup lang="ts">
 const route = useRoute();
 const presentation = usePresentation();
-const { current: pressedKeys } = useMagicKeys();
 
 const settingStore = useSettingStore();
 const updateStore = useUpdateStore();
-const projectStore = useProjectStore();
 
 const { setting } = storeToRefs(settingStore);
-const { lastOpenedProject } = storeToRefs(projectStore);
 
 const isInitialized = ref(false);
 
@@ -39,12 +36,6 @@ const initialize = async () => {
 
     checkForUpdate();
 
-    await projectStore.loadLastOpenedProject();
-
-    if (!setting.value.behaviorOpenWelcome && lastOpenedProject.value) {
-        await navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value.id } });
-    }
-
     isInitialized.value = true;
 };
 
@@ -53,12 +44,9 @@ const checkForUpdate = async () => {
     updateStore.notifyIfUpdateIsAvailable();
 };
 
-whenever(
-    () => pressedKeys.has("control") && pressedKeys.has(","),
-    () => {
-        if (route.name === "initialize") return;
+useKeybind(["control", ","], () => {
+    if (route.name === "initialize") return;
 
-        return navigateTo({ name: "index-setting-index-presentation" });
-    }
-);
+    return navigateTo({ name: "index-setting-index-presentation" });
+});
 </script>

@@ -2,7 +2,8 @@ use chrono::Utc;
 use uuid::Uuid;
 
 use crate::prelude::*;
-use crate::project::project_contracts::{ProjectContract, ProjectCreateContract};
+use crate::project::project_contracts::{ProjectContract, ProjectCreateContract, ProjectUpdateContract};
+use crate::project::project_models::ProjectUpdateModel;
 use crate::project::project_repository;
 
 pub async fn create(project_create_contract: &ProjectCreateContract) -> Result<ProjectContract> {
@@ -26,8 +27,14 @@ pub async fn get_all() -> Result<Vec<ProjectContract>> {
 
 pub async fn open(id: &Uuid) -> Result<ProjectContract> {
 	let current_time = Utc::now();
-	project_repository::update_one(&id, &current_time).await?;
+	project_repository::update_one_date_last_opened(id, &current_time).await?;
 
+	let project = get_one(id).await?;
+
+	Ok(project)
+}
+
+pub async fn get_one(id: &Uuid) -> Result<ProjectContract> {
 	let project_model = project_repository::get_one(id).await?;
 
 	let project_contract = ProjectContract::from(project_model);
@@ -44,4 +51,21 @@ pub async fn get_last_opened() -> Result<Option<ProjectContract>> {
 	}
 
 	Ok(None)
+}
+
+pub async fn update_one(update_contract: ProjectUpdateContract) -> Result<ProjectContract> {
+	let project_id = update_contract.id;
+	let update_model = ProjectUpdateModel::from(update_contract);
+
+	project_repository::update_one(update_model).await?;
+
+	let project = get_one(&project_id).await?;
+
+	Ok(project)
+}
+
+pub async fn delete_one(id: Uuid) -> Result<()> {
+	project_repository::delete_one(id).await?;
+
+	Ok(())
 }

@@ -64,6 +64,11 @@ const subPages = computed((): { icon: string; name: string; to: RouteLocationRaw
             icon: "mdi-checkbox-multiple-marked-circle-outline",
             name: t("taskSet.plural"),
             to: { name: "index-project-id-taskSet", params: { id: selectedProject.value.id } }
+        },
+        {
+            icon: "mdi-folder-cog-outline",
+            name: t("projectSetting.singular"),
+            to: { name: "index-project-id-settings", params: { id: selectedProject.value.id } }
         }
     ];
 });

@@ -1,5 +1,5 @@
 <template>
-    <VEmptyState :headline="$t('welcome.headline')" :title="$t('welcome.title')">
+    <VEmptyState v-if="ready" :headline="$t('welcome.headline')" :title="$t('welcome.title')">
         <VContainer>
             <VRow>
                 <VCol cols="12" sm="6">
@@ -58,9 +58,26 @@
 </template>
 
 <script setup lang="ts">
+const router = useRouter();
+
 const projectStore = useProjectStore();
+const settingStore = useSettingStore();
 
 const { lastOpenedProject } = storeToRefs(projectStore);
+const { setting } = storeToRefs(settingStore);
+
+const ready = ref(false);
+
+onBeforeMount(async () => {
+    await projectStore.loadLastOpenedProject();
+
+    const isInitialMount = router.options.history.state.back === null;
+    if (isInitialMount && !setting.value.behaviorOpenWelcome && lastOpenedProject.value) {
+        await navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value.id } });
+    }
+
+    ready.value = true;
+});
 
 const openLastProject = () => {
     navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value!.id } });

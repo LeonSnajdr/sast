@@ -2,7 +2,7 @@
     <VForm ref="form" v-model="isValid">
         <PlaceholderFieldName v-model="placeholder.name" autofocus />
         <PlaceholderFieldValue v-model="placeholder.value" />
-        <PlaceholderFieldVisibility v-model="placeholder.visibility" />
+        <PlaceholderFieldVisibility v-model="placeholder.visibility" v-model:projectId="placeholder.projectId" />
     </VForm>
 </template>
 

@@ -1,7 +1,6 @@
 import { defineVuetifyConfiguration } from "vuetify-nuxt-module/custom-configuration";
 
 export default defineVuetifyConfiguration({
-    labComponents: ["VSnackbarQueue"],
     theme: {
         defaultTheme: "dark",
         // https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/composables/theme.ts#L128

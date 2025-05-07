@@ -6,7 +6,7 @@ use uuid::Uuid;
 #[derive(Debug, FromRow)]
 pub struct PlaceholderModel {
 	pub id: Uuid,
-	pub project_id: Uuid,
+	pub project_id: Option<Uuid>,
 	pub name: String,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
@@ -19,7 +19,7 @@ pub struct PlaceholderModel {
 #[derive(Debug)]
 pub struct PlaceholderUpdateModel {
 	pub id: Uuid,
-	pub project_id: Uuid,
+	pub project_id: Option<Uuid>,
 	pub name: String,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,

@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, sqlx::Type, specta::Type, Serialize, Deserialize)]
+#[derive(Debug, PartialEq, sqlx::Type, specta::Type, Serialize, Deserialize)]
 pub enum PlaceholderVisibility {
 	Global,
 	Project,
