@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon color="error" variant="flat">
+    <BaseBtnIcon :loading="isDeleting" color="error" variant="flat">
         <BaseDialogConfirm
             @confirm="deleteProject()"
             :message="$t('action.delete.description', { type: $t('project.singular'), name: project.name })"
@@ -19,8 +19,12 @@ const props = defineProps<{
 const notify = useNotify();
 const { t } = useI18n();
 
+const isDeleting = ref(false);
+
 const deleteProject = async () => {
+    isDeleting.value = true;
     const deleteResult = await commands.projectDeleteOne(props.project.id);
+    isDeleting.value = false;
 
     if (deleteResult.status == "error") {
         notify.error(t("action.delete.error", { type: t("project.singular"), name: props.project.name }), { error: deleteResult.error });
