@@ -78,3 +78,25 @@ pub async fn get_many(filter: PlaceholderInsertTileFilterModel) -> Result<Vec<Pl
 
 	Ok(placeholder_insert_tiles)
 }
+
+pub async fn get_count_containing_placeholder(placeholder_id: Uuid, excluded_project_id: Option<Uuid>) -> Result<i64> {
+	let count = sqlx::query_scalar!(
+		r#"--sql
+			select count(pit.id)
+			from placeholder_insert_tile pit
+			left join task as tc on tc.id = pit.task_command_id
+			left join task as twd on twd.id = pit.task_working_dir_id
+			where
+				pit.placeholder_id is $1 and
+				tc.project_id is not $2 and
+				twd.project_id is not $2
+		"#,
+		placeholder_id,
+		excluded_project_id
+	)
+	.fetch_one(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(count)
+}

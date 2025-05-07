@@ -332,7 +332,7 @@ terminalShellStatusChangedEvent: "terminal-shell-status-changed-event"
 
 /** user-defined types **/
 
-export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "EventEmit"
+export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "HasUsages" | "EventEmit"
 export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
 export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
