@@ -7,7 +7,7 @@ use uuid::Uuid;
 #[derive(Debug, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlaceholderCreateContract {
-	pub project_id: Uuid,
+	pub project_id: Option<Uuid>,
 	pub name: String,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
@@ -19,7 +19,7 @@ pub struct PlaceholderCreateContract {
 #[serde(rename_all = "camelCase")]
 pub struct PlaceholderUpdateContract {
 	pub id: Uuid,
-	pub project_id: Uuid,
+	pub project_id: Option<Uuid>,
 	pub name: String,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
@@ -31,7 +31,7 @@ pub struct PlaceholderUpdateContract {
 #[serde(rename_all = "camelCase")]
 pub struct PlaceholderContract {
 	pub id: Uuid,
-	pub project_id: Uuid,
+	pub project_id: Option<Uuid>,
 	pub name: String,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,

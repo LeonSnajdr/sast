@@ -10,10 +10,8 @@ const presentation = usePresentation();
 
 const settingStore = useSettingStore();
 const updateStore = useUpdateStore();
-const projectStore = useProjectStore();
 
 const { setting } = storeToRefs(settingStore);
-const { lastOpenedProject } = storeToRefs(projectStore);
 
 const isInitialized = ref(false);
 
@@ -37,12 +35,6 @@ const initialize = async () => {
     presentation.applySetting();
 
     checkForUpdate();
-
-    await projectStore.loadLastOpenedProject();
-
-    if (!setting.value.behaviorOpenWelcome && lastOpenedProject.value) {
-        await navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value.id } });
-    }
 
     isInitialized.value = true;
 };

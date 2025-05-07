@@ -3,7 +3,7 @@ use uuid::Uuid;
 
 use crate::db;
 use crate::prelude::*;
-use crate::project::project_models::ProjectModel;
+use crate::project::project_models::{ProjectModel, ProjectUpdateModel};
 
 pub async fn create(name: &String, date_created: &DateTime<Utc>, date_last_opened: &DateTime<Utc>) -> Result<ProjectModel> {
 	let id = Uuid::new_v4();
@@ -95,13 +95,49 @@ pub async fn get_last_opened() -> Result<Option<ProjectModel>> {
 	Ok(last_opened_project)
 }
 
-pub async fn update_one(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
+pub async fn update_one(update_model: ProjectUpdateModel) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
-            update project set date_last_opened = $1 where id = $2
+            update project
+            set name = $2
+            where id = $1
         "#,
-		date_last_opened,
+		update_model.id,
+		update_model.name
+	)
+	.execute(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(())
+}
+
+pub async fn update_one_date_last_opened(id: &Uuid, date_last_opened: &DateTime<Utc>) -> Result<()> {
+	sqlx::query!(
+		r#"--sql
+            update project
+            set date_last_opened = $2
+            where id = $1
+        "#,
 		id,
+		date_last_opened,
+	)
+	.execute(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(())
+}
+
+pub async fn delete_one(id: Uuid) -> Result<()> {
+	sqlx::query!(
+		r#"--sql
+			delete
+			from
+			project
+			where id = $1
+		"#,
+		id
 	)
 	.execute(db::get_pool())
 	.await

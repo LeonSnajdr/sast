@@ -17,7 +17,9 @@
                 <VList>
                     <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'index-project-id-home', params: { id: project.id } }">
                         <VListItemTitle>{{ project.name }}</VListItemTitle>
-                        <VListItemSubtitle>{{ useLocaleTimeAgo(project.dateLastOpened) }}</VListItemSubtitle>
+                        <VListItemSubtitle>
+                            {{ $t("date.opened", { date: useLocaleTimeAgo(project.dateLastOpened).value }) }}
+                        </VListItemSubtitle>
                         <template #append>
                             <VIcon icon="mdi-arrow-right" />
                         </template>

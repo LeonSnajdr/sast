@@ -9,3 +9,8 @@ pub struct ProjectModel {
 	pub date_created: DateTime<Utc>,
 	pub date_last_opened: DateTime<Utc>,
 }
+
+pub struct ProjectUpdateModel {
+	pub id: Uuid,
+	pub name: String,
+}

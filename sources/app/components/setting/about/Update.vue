@@ -18,10 +18,6 @@
                         <VRowSingle>
                             <VProgressLinear v-model="downloaded" :max="contentLength" color="primary" />
                         </VRowSingle>
-                        <VRowSingle>
-                            <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps">{{ $t("action.download") }}</BaseBtnIcon>
-                            <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps" class="ml-2">{{ $t("action.install") }}</BaseBtnIcon>
-                        </VRowSingle>
                     </div>
                     <div v-else class="text-center">
                         <VIcon color="success" icon="mdi-check" />
@@ -29,6 +25,10 @@
                     </div>
                 </template>
             </VCardText>
+            <VCardActions v-if="updateInfo">
+                <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps">{{ $t("action.download") }}</BaseBtnIcon>
+                <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps" class="ml-2">{{ $t("action.install") }}</BaseBtnIcon>
+            </VCardActions>
         </VCard>
     </VRowSingle>
 </template>

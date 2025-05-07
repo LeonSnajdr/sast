@@ -1,13 +1,22 @@
-use crate::project::project_contracts::ProjectContract;
-use crate::project::project_models::ProjectModel;
+use crate::project::project_contracts::{ProjectContract, ProjectUpdateContract};
+use crate::project::project_models::{ProjectModel, ProjectUpdateModel};
 
-impl From<ProjectModel> for ProjectContract {
-	fn from(value: ProjectModel) -> Self {
+impl ProjectContract {
+	pub fn from(value: ProjectModel) -> Self {
 		Self {
 			id: value.id,
 			name: value.name,
 			date_created: value.date_created,
 			date_last_opened: value.date_last_opened,
+		}
+	}
+}
+
+impl ProjectUpdateModel {
+	pub fn from(value: ProjectUpdateContract) -> Self {
+		Self {
+			id: value.id,
+			name: value.name,
 		}
 	}
 }

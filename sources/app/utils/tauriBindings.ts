@@ -45,6 +45,14 @@ async projectGetAll() : Promise<Result<ProjectContract[], Error>> {
     else return { status: "error", error: e  as any };
 }
 },
+async projectGetOne(id: string) : Promise<Result<ProjectContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("project_get_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async projectGetLastOpened() : Promise<Result<ProjectContract | null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("project_get_last_opened") };
@@ -56,6 +64,22 @@ async projectGetLastOpened() : Promise<Result<ProjectContract | null, Error>> {
 async projectOpen(id: string) : Promise<Result<ProjectContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("project_open", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async projectUpdateOne(updateContract: ProjectUpdateContract) : Promise<Result<ProjectContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("project_update_one", { updateContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async projectDeleteOne(id: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("project_delete_one", { id }) };
 } catch (e) {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
@@ -309,16 +333,17 @@ terminalShellStatusChangedEvent: "terminal-shell-status-changed-event"
 /** user-defined types **/
 
 export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "EventEmit"
-export type PlaceholderContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
-export type PlaceholderCreateContract = { projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
+export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
 export type PlaceholderInsertTileKind = "Text" | "Placeholder"
 export type PlaceholderKind = "Text" | "Select"
 export type PlaceholderSource = "Static"
-export type PlaceholderUpdateContract = { id: string; projectId: string; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderUpdateContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }
+export type ProjectUpdateContract = { id: string; name: string }
 export type SettingContract = { id: string; metaDateUpdated: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type SettingInitializeContract = { presentationLanguage: string; presentationTheme: string }
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
