@@ -11,7 +11,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskIds: null });
+        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskIds: null, shellStatus: null });
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {

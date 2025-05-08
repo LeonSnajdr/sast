@@ -1,9 +1,9 @@
 <template>
     <BaseDialogEdit v-model="isDialogOpen" :type="$t('project.singular')" icon="mdi-folder">
-        <template v-if="project" #content>
+        <template v-if="project.id" #content>
             <ProjectFieldContainer v-model="project" v-model:isValid="isValid" />
         </template>
-        <template v-if="project" #actions>
+        <template v-if="project.id" #actions>
             <ProjectActionSave @saved="projectSaved" :disabled="!isValid" :project />
         </template>
     </BaseDialogEdit>

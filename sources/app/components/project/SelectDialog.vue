@@ -15,7 +15,7 @@
                     clearable
                 />
                 <VList>
-                    <VListItem v-for="project in filteredProjects" :key="project.id" :to="{ name: 'index-project-id-home', params: { id: project.id } }">
+                    <VListItem v-for="project in filteredProjects" :key="project.id" @click="switchProject(project)">
                         <VListItemTitle>{{ project.name }}</VListItemTitle>
                         <VListItemSubtitle>
                             {{ $t("date.opened", { date: useLocaleTimeAgo(project.dateLastOpened).value }) }}
@@ -36,6 +36,7 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
 const { t } = useI18n();
 const notify = useNotify();
 
@@ -53,6 +54,20 @@ const projects = ref<ProjectContract[]>([]);
 onBeforeMount(() => {
     loadProjects();
 });
+
+const switchProject = async (project: ProjectContract) => {
+    const isProjectRoute = route.matched.some((match) => match.name === "index-project-id");
+
+    if (!isProjectRoute) return;
+
+    const match = lodFindLast(route.matched, (match) => {
+        return match.meta.projectSwitchName != undefined;
+    });
+
+    const name = match ? match.meta.projectSwitchName : "index-project-id-home";
+
+    await navigateTo({ name: name as "/", params: { id: project.id } });
+};
 
 const loadProjects = async () => {
     isLoading.value = true;

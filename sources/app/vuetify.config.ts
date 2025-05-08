@@ -258,6 +258,9 @@ export default defineVuetifyConfiguration({
             VAppBarTitle: {
                 class: "text-body-1"
             }
+        },
+        VBtn: {
+            class: "text-none"
         }
     }
 });

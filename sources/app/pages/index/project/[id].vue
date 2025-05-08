@@ -1,5 +1,5 @@
 <template>
-    <template v-if="!isLoading">
+    <template v-if="!isLoading && selectedProject.id">
         <ProjectDrawer />
         <NuxtPage />
     </template>
@@ -37,6 +37,8 @@ onBeforeUnmount(() => {
 });
 
 const loadProject = async () => {
+    console.log("load project", route.params.id);
+
     await projectStore.loadProject(route.params.id);
 };
 

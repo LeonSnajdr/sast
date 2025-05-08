@@ -29,7 +29,7 @@
                                 {{ $t("projectSetting.delete.rename") }}
                             </span>
                             <template #append>
-                                <BaseBtnIcon color="secondary" variant="flat">
+                                <BaseBtnIcon variant="tonal" width="100">
                                     {{ $t("action.edit") }}
                                     <ProjectDialogEdit @saved="projectSaved" :projectId="selectedProject.id" />
                                 </BaseBtnIcon>
@@ -41,7 +41,7 @@
                                 {{ $t("projectSetting.delete.description") }}
                             </span>
                             <template #append>
-                                <ProjectActionDelete :project="selectedProject" class="ml-2" />
+                                <ProjectActionDelete :project="selectedProject" class="ml-2" width="100" />
                             </template>
                         </VListItem>
                     </VList>
@@ -66,5 +66,9 @@ const folderColor = ref("info");
 const onFolderIconClick = lodAfter(10, () => {
     const currentIndex = colors.indexOf(folderColor.value);
     folderColor.value = colors[(currentIndex + 1) % colors.length];
+});
+
+definePageMeta({
+    projectSwitchName: "index-project-id-settings"
 });
 </script>
