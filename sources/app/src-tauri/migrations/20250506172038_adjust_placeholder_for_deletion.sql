@@ -1,3 +1,10 @@
+-- WORKAROUND: To disable foreign keys; https://github.com/launchbadge/sqlx/issues/2085
+commit transaction;
+
+pragma foreign_keys = off;
+
+begin transaction;
+
 create table placeholder_new
 (
     id                blob not null,
@@ -37,3 +44,9 @@ where visibility = 'Global';
 drop index if exists uidx_placeholder_project_id_name;
 
 create unique index uidx_placeholder_project_id_name on placeholder (coalesce(project_id, 'null'), name);
+
+commit transaction;
+
+pragma foreign_keys = on;
+
+begin transaction;
