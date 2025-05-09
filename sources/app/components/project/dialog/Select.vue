@@ -37,22 +37,16 @@
 
 <script setup lang="ts">
 const route = useRoute();
-const { t } = useI18n();
-const notify = useNotify();
 
 const projectStore = useProjectStore();
 
-const { selectedProject } = storeToRefs(projectStore);
+const { selectedProject, allProjects } = storeToRefs(projectStore);
 
 const isDialogOpen = ref(false);
-const isLoading = ref(false);
-
 const search = ref<string>();
 
-const projects = ref<ProjectContract[]>([]);
-
 onBeforeMount(() => {
-    loadProjects();
+    projectStore.loadAllProjects();
 });
 
 const switchProject = async (project: ProjectContract) => {
@@ -69,25 +63,10 @@ const switchProject = async (project: ProjectContract) => {
     await navigateTo({ name: name as "/", params: { id: project.id } });
 };
 
-const loadProjects = async () => {
-    isLoading.value = true;
-
-    const projectsResult = await commands.projectGetAll();
-
-    isLoading.value = false;
-
-    if (projectsResult.status == "error") {
-        notify.error(t("project.load.failed"), { error: projectsResult.error });
-        return;
-    }
-
-    projects.value = projectsResult.data;
-};
-
 const filteredProjects = computed(() => {
     const lowerCaseSearch = search.value?.toLocaleLowerCase() ?? "";
 
-    return projects.value.filter((x) => {
+    return allProjects.value.filter((x) => {
         const isMatchingSearch = x.name.toLowerCase().includes(lowerCaseSearch);
         const isCurrentProject = selectedProject.value.id === x.id;
 

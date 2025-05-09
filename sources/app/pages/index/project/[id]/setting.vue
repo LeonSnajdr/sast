@@ -36,6 +36,24 @@
                             </template>
                         </VListItem>
                         <VListItem>
+                            <VListItemTitle class="d-flex align-center">
+                                {{ $t("projectSetting.quickSwitch") }}
+                                <VChip class="ml-2" color="secondary" density="compact" variant="outlined" label>{{
+                                    keybind ? keybind : $t("keybind.none")
+                                }}</VChip>
+                            </VListItemTitle>
+                            <span class="text-medium-emphasis">
+                                {{ $t("projectSetting.quickSwitch.description") }}
+                            </span>
+                            <template #append>
+                                <div v-if="!isCapturing" class="d-flex ga-2">
+                                    <BaseBtnIcon v-if="keybind" @click="keybind = ''">{{ $t("action.reset") }}</BaseBtnIcon>
+                                    <BaseBtnIcon @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</BaseBtnIcon>
+                                </div>
+                                <BaseBtnIcon v-else @click="cancel()" variant="tonal" width="100">{{ $t("action.cancel") }}</BaseBtnIcon>
+                            </template>
+                        </VListItem>
+                        <VListItem>
                             <VListItemTitle>{{ $t("action.delete") }}</VListItemTitle>
                             <span class="text-medium-emphasis">
                                 {{ $t("projectSetting.delete.description") }}
@@ -63,12 +81,16 @@ const projectSaved = (project: ProjectContract) => {
 const colors = ["info", "success", "warning", "secondary", "primary", "error"];
 const folderColor = ref("info");
 
+const keybind = ref("");
+
+const { isCapturing, capture, cancel } = useKeybindCapture(keybind);
+
 const onFolderIconClick = lodAfter(10, () => {
     const currentIndex = colors.indexOf(folderColor.value);
     folderColor.value = colors[(currentIndex + 1) % colors.length];
 });
 
 definePageMeta({
-    projectSwitchName: "index-project-id-settings"
+    projectSwitchName: "index-project-id-setting"
 });
 </script>

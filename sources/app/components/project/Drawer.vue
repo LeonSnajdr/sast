@@ -1,13 +1,14 @@
 <template>
-    <VNavigationDrawer location="left" width="240" permanent>
+    <VNavigationDrawer location="left" permanent>
         <VList>
             <VListItem height="48">
-                <VListItemTitle v-tooltip="selectedProject.name">
+                <VListItemTitle class="d-flex align-center">
                     <span class="text-body-1">{{ selectedProject.name }}</span>
+                    <VIcon class="ml-1" icon="mdi-chevron-down" />
+                    <ProjectMenuSelect />
                 </VListItemTitle>
                 <template #append>
-                    <BaseBtnIcon class="ml-1" icon="mdi-chevron-down" size="x-small" />
-                    <BaseBtnIcon icon="mdi-swap-horizontal" size="x-small">
+                    <BaseBtnIcon class="ml-2" icon="mdi-swap-horizontal" size="x-small">
                         <ProjectDialogSelect />
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
                     </BaseBtnIcon>
@@ -21,12 +22,16 @@
             </VListItem>
         </VList>
         <template #append>
-            <div class="pa-2 d-flex ga-2">
+            <div class="px-2 pb-2 d-flex ga-2">
                 <BaseBtnIcon class="flex-grow-1" icon="mdi-plus" variant="tonal">
-                    {{ $t("action.create") }}
+                    <VTooltip activator="parent">{{ $t("action.create") }}</VTooltip>
                     <ProjectDialogCreate />
-                    <VTooltip activator="parent">{{ $t("project.drawer.create") }}</VTooltip>
                 </BaseBtnIcon>
+                <BaseBtnIcon :to="{ name: 'index-setting-index-presentation' }" class="flex-grow-1" icon="mdi-cog" variant="tonal">
+                    <VTooltip activator="parent">{{ $t("setting.title") }}</VTooltip>
+                </BaseBtnIcon>
+            </div>
+            <div class="px-2 pb-2 d-flex">
                 <BaseBtnIcon @click="closeProject()" class="flex-grow-1" icon="mdi-close" variant="tonal">
                     {{ $t("action.close") }}
                 </BaseBtnIcon>
@@ -80,7 +85,7 @@ const subPages = computed((): { icon: string; iconActive: string; name: string; 
             icon: "mdi-folder-cog-outline",
             iconActive: "mdi-folder-cog",
             name: t("projectSetting.singular"),
-            to: { name: "index-project-id-settings", params: { id: selectedProject.value.id } }
+            to: { name: "index-project-id-setting", params: { id: selectedProject.value.id } }
         }
     ];
 });

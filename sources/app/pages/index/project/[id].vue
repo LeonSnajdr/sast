@@ -1,5 +1,5 @@
 <template>
-    <template v-if="!isLoading && selectedProject.id">
+    <template v-if="selectedProject.id">
         <ProjectDrawer />
         <NuxtPage />
     </template>
@@ -15,31 +15,27 @@ const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
 const terminalStore = useTerminalStore();
 
-const { isLoading, selectedProject } = storeToRefs(projectStore);
+const { selectedProject } = storeToRefs(projectStore);
 
 let unlistenTerminalClosedEvent: UnlistenFn;
 let unlistenTerminalCreatedEvent: UnlistenFn;
 let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
-    await loadProject();
+    await openProject();
     await loadPlaceholders();
     await loadTasks();
     await loadTerminals();
 });
 
 onBeforeUnmount(() => {
-    selectedProject.value = {} as ProjectContract;
-
     unlistenTerminalClosedEvent();
     unlistenTerminalCreatedEvent();
     unlistenTerminalShellStatusChangedEvent();
 });
 
-const loadProject = async () => {
-    console.log("load project", route.params.id);
-
-    await projectStore.loadProject(route.params.id);
+const openProject = async () => {
+    await projectStore.openProject(route.params.id);
 };
 
 const loadPlaceholders = async () => {
@@ -51,6 +47,8 @@ const loadTasks = async () => {
 };
 
 const loadTerminals = async () => {
+    // NOTE: Terminal logic is required globaly in the project to show indicators and status in some places
+
     await terminalStore.loadAll();
 
     unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {

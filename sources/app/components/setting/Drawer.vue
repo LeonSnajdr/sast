@@ -5,11 +5,6 @@
                 <VListItemTitle>
                     <span class="text-body-1">{{ $t("setting.title") }}</span>
                 </VListItemTitle>
-                <template #append>
-                    <BaseBtnIcon @click="closeSetting()" icon="mdi-close" size="x-small">
-                        <VTooltip activator="parent">{{ $t("action.close") }}</VTooltip>
-                    </BaseBtnIcon>
-                </template>
             </VListItem>
             <VDivider />
             <VListItem v-for="page in subPages" :key="page.name" :title="page.name" :to="page.to" link>
@@ -18,6 +13,13 @@
                 </template>
             </VListItem>
         </VList>
+        <template #append>
+            <div class="d-flex pa-2">
+                <BaseBtnIcon @click="closeSetting()" class="flex-grow-1" icon="mdi-close" variant="tonal">
+                    {{ $t("action.close") }}
+                </BaseBtnIcon>
+            </div>
+        </template>
     </VNavigationDrawer>
 </template>
 
