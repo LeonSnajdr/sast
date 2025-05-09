@@ -8,7 +8,7 @@
                 <template #append>
                     <BaseBtnIcon class="ml-1" icon="mdi-chevron-down" size="x-small" />
                     <BaseBtnIcon icon="mdi-swap-horizontal" size="x-small">
-                        <ProjectSelectDialog />
+                        <ProjectDialogSelect />
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
                     </BaseBtnIcon>
                 </template>
@@ -24,7 +24,7 @@
             <div class="pa-2 d-flex ga-2">
                 <BaseBtnIcon class="flex-grow-1" icon="mdi-plus" variant="tonal">
                     {{ $t("action.create") }}
-                    <ProjectCreateDialog />
+                    <ProjectDialogCreate />
                     <VTooltip activator="parent">{{ $t("project.drawer.create") }}</VTooltip>
                 </BaseBtnIcon>
                 <BaseBtnIcon @click="closeProject()" class="flex-grow-1" icon="mdi-close" variant="tonal">

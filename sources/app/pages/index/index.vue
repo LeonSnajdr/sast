@@ -11,7 +11,7 @@
                         <VCardText>
                             {{ $t("project.create.description") }}
                         </VCardText>
-                        <ProjectCreateDialog />
+                        <ProjectDialogCreate />
                     </VCard>
                 </VCol>
 
@@ -24,7 +24,7 @@
                         <VCardText>
                             {{ $t("project.select.description") }}
                         </VCardText>
-                        <ProjectSelectDialog />
+                        <ProjectDialogSelect />
                     </VCard>
                 </VCol>
 
