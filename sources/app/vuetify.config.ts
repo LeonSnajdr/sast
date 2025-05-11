@@ -207,7 +207,7 @@ export default defineVuetifyConfiguration({
             },
             VListItem: {
                 VListItemTitle: {
-                    class: "text-caption"
+                    class: "text-caption d-flex align-center"
                 }
             }
         },
@@ -258,6 +258,9 @@ export default defineVuetifyConfiguration({
             VAppBarTitle: {
                 class: "text-body-1"
             }
+        },
+        VBtn: {
+            class: "text-none"
         }
     }
 });

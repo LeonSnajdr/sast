@@ -1,7 +1,7 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.plural") }}</VAppBarTitle>
-        <BaseBtnIcon color="secondary" icon="mdi-plus" variant="flat">
+        <BaseBtnIcon icon="mdi-plus" variant="tonal">
             {{ $t("action.create") }}
             <PlaceholderDialogCreate />
         </BaseBtnIcon>

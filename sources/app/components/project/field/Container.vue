@@ -1,6 +1,6 @@
 <template>
     <VForm ref="form" v-model="isValid">
-        <ProjectFieldName v-model="project.name" autofocus />
+        <ProjectFieldName v-model.trim="project.name" autofocus />
     </VForm>
 </template>
 

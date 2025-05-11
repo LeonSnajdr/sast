@@ -3578,15 +3578,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vuetify/loader-shared@npm:^2.0.3":
-  version: 2.0.3
-  resolution: "@vuetify/loader-shared@npm:2.0.3"
+"@vuetify/loader-shared@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "@vuetify/loader-shared@npm:2.1.0"
   dependencies:
     upath: "npm:^2.0.1"
   peerDependencies:
     vue: ^3.0.0
     vuetify: ^3.0.0
-  checksum: 10c0/88cfe831821e8c4ac11edb725ee7321436f0b152ac8c2aad70ca71d343a39176e79f67314397cfb622118520998712660f4ed036128b0123244ed2cafb2c9b46
+  checksum: 10c0/85c882ccbfd151cafd9fc0790c65c2e9924e2a4552e867ca4aa1deb47c501222fc1fb6e83df9c31080e7d1285d8f9a51a44a996901d104e2b49ad0dee301be76
   languageName: node
   linkType: hard
 
@@ -8119,7 +8119,7 @@ __metadata:
     vue-draggable-plus: "npm:^0.6.0"
     vue-router: "npm:^4.5.0"
     vue-text-insert: "npm:^0.0.3"
-    vuetify-nuxt-module: "npm:^0.18.3"
+    vuetify-nuxt-module: "npm:^0.18.6"
   languageName: unknown
   linkType: soft
 
@@ -11000,18 +11000,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite-plugin-vuetify@npm:^2.0.4":
-  version: 2.0.4
-  resolution: "vite-plugin-vuetify@npm:2.0.4"
+"vite-plugin-vuetify@npm:^2.1.0":
+  version: 2.1.1
+  resolution: "vite-plugin-vuetify@npm:2.1.1"
   dependencies:
-    "@vuetify/loader-shared": "npm:^2.0.3"
+    "@vuetify/loader-shared": "npm:^2.1.0"
     debug: "npm:^4.3.3"
     upath: "npm:^2.0.1"
   peerDependencies:
     vite: ">=5"
     vue: ^3.0.0
     vuetify: ^3.0.0
-  checksum: 10c0/23c03bfcb9997e4aeeef7a5ed64f9849189bf1a5599ab228cd9c49c87ef7867f0abc51f3c5a93cf261288b10d3947d529c5399e1d4f720879d8ed18e6f1419d4
+  checksum: 10c0/629893488ae23ffd9e9a32fccf2d6ff4d5a00826329ec90e9765a17d182a9200ffe11430bd418227119e8ef3ed21eaec1bab0635a77fdcb4b64aac10f38adcb0
   languageName: node
   linkType: hard
 
@@ -11241,9 +11241,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vuetify-nuxt-module@npm:^0.18.3":
-  version: 0.18.3
-  resolution: "vuetify-nuxt-module@npm:0.18.3"
+"vuetify-nuxt-module@npm:^0.18.6":
+  version: 0.18.6
+  resolution: "vuetify-nuxt-module@npm:0.18.6"
   dependencies:
     "@nuxt/kit": "npm:^3.12.4"
     defu: "npm:^6.1.4"
@@ -11254,9 +11254,9 @@ __metadata:
     ufo: "npm:^1.5.4"
     unconfig: "npm:^0.5.5"
     upath: "npm:^2.0.1"
-    vite-plugin-vuetify: "npm:^2.0.4"
+    vite-plugin-vuetify: "npm:^2.1.0"
     vuetify: "npm:^3.7.0"
-  checksum: 10c0/95a4dac67e04452ba9645309ced65f46cae9821677febb8e790ca74e0517957b72934be667da2b3c6d8ecb07e8905b987fddb88f5d7a14f80dcec585a013db08
+  checksum: 10c0/b2e1c9ad790a6fc0294e99fb70170b029d4f497bbbb5a3e2860e204718b2c7966a42c770eaa9003acd34f9fb2bfd5b38ebb51128f55b0f5d6acefd6e83bf4e1b
   languageName: node
   linkType: hard
 

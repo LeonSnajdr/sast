@@ -8,3 +8,9 @@
         <NuxtPage />
     </div>
 </template>
+
+<script setup lang="ts">
+definePageMeta({
+    projectSwitchName: "index-project-id-terminal"
+});
+</script>

@@ -26,9 +26,9 @@ const emptyElement: TaskCreateContract = {
     projectId: selectedProject.value.id,
     name: "",
     tabName: null,
-    noExit: true,
+    noExit: false,
     forceKill: false,
-    historyPersistence: "Never",
+    historyPersistence: "OnError",
     workingDirTiles: [] as PlaceholderInsertTileContract[],
     commandTiles: [] as PlaceholderInsertTileContract[]
 };

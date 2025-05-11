@@ -1,4 +1,5 @@
 export default function useProject() {
+    const route = useRoute();
     const notify = useNotify();
     const { t } = useI18n();
 
@@ -20,5 +21,19 @@ export default function useProject() {
         project.value = taskResult.data;
     };
 
-    return { isProjectLoading, project, loadProject };
+    const switchProject = async (project: ProjectContract) => {
+        const isProjectRoute = route.matched.some((match) => match.name === "index-project-id");
+
+        if (!isProjectRoute) return;
+
+        const match = lodFindLast(route.matched, (match) => {
+            return match.meta.projectSwitchName != undefined;
+        });
+
+        const name = match ? match.meta.projectSwitchName : "index-project-id-home";
+
+        await navigateTo({ name: name as "/", params: { id: project.id } });
+    };
+
+    return { isProjectLoading, project, loadProject, switchProject };
 }
