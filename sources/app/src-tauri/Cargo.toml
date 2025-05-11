@@ -18,8 +18,8 @@ tauri-build = { version = "2.0.5", features = [] }
 serde_json = "1.0.138"
 serde = { version = "1.0.217", features = ["derive"] }
 log = "0.4.25"
-tauri = { version = "2.4.1", features = [] }
-tauri-plugin-log = "2.3.1"
+tauri = { version = "2.5.1", features = [] }
+tauri-plugin-log = "2.4.0"
 tokio = { version = "1.43", features = ["macros"] }
 sqlx = { version = "0.8.3", features = [
     "sqlite",
@@ -42,4 +42,4 @@ tauri-plugin-opener = "2.2.6"
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = "2.2.3"
-tauri-plugin-updater = "2.7.0"
+tauri-plugin-updater = "2.7.1"
