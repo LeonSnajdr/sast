@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                name,\n                favorite,\n                quick_switch_keybind,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_opened as \"date_last_opened: DateTime<Utc>\"\n            from project\n            order by date_last_opened desc\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                name,\n                favorite,\n                quick_switch_keybind,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_opened as \"date_last_opened: DateTime<Utc>\"\n            from project\n            order by\n                favorite desc,\n    \t\t\tname\n        ",
   "describe": {
     "columns": [
       {
@@ -46,5 +46,5 @@
       false
     ]
   },
-  "hash": "8abe1ec12887edabce661e161eb26ca55953e27d1dd33c7849583a34fd6d8b03"
+  "hash": "7224cd167bf5ce8de13e14f24c1111cc3ffdac5c76249cc2a86d20ec4ace59a0"
 }
