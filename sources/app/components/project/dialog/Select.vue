@@ -1,6 +1,6 @@
 <template>
     <VDialog v-model="isDialogOpen" activator="parent" width="800">
-        <VCard>
+        <VCard height="400">
             <VCardTitle>
                 <VIcon color="warning" icon="mdi-folder-marker" />
                 {{ $t("title.select", { type: $t("project.singular") }) }}
@@ -15,17 +15,20 @@
                     clearable
                 />
                 <VList>
-                    <VListItem v-for="project in filteredProjects" :key="project.id" @click="switchProject(project)">
-                        <VListItemTitle>{{ project.name }}</VListItemTitle>
+                    <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="switchProject(projectResult.item)">
+                        <VListItemTitle>
+                            <VIcon v-if="projectResult.item.favorite" class="mr-1" color="warning" icon="mdi-star" size="small" />
+                            {{ projectResult.item.name }}
+                        </VListItemTitle>
                         <VListItemSubtitle>
-                            {{ $t("date.opened", { date: useLocaleTimeAgo(project.dateLastOpened).value }) }}
+                            {{ $t("date.opened", { date: useLocaleTimeAgo(projectResult.item.dateLastOpened).value }) }}
                         </VListItemSubtitle>
                         <template #append>
                             <VIcon icon="mdi-arrow-right" />
                         </template>
                     </VListItem>
 
-                    <VListSubheader v-if="filteredProjects.length == 0" class="text-center">{{ $t("search.noResults") }}</VListSubheader>
+                    <VListSubheader v-if="projectResults.length == 0" class="text-center">{{ $t("search.noResults") }}</VListSubheader>
                 </VList>
             </VCardText>
             <VCardActions>
@@ -36,45 +39,30 @@
 </template>
 
 <script setup lang="ts">
-const route = useRoute();
+import { useFuse } from "@vueuse/integrations/useFuse";
+
+const { switchProject } = useProject();
 
 const projectStore = useProjectStore();
 
-const { selectedProject, allProjects } = storeToRefs(projectStore);
+const { allProjects } = storeToRefs(projectStore);
 
 const isDialogOpen = ref(false);
-const search = ref<string>();
+const search = ref<string>("");
 
 onBeforeMount(() => {
     projectStore.loadAllProjects();
 });
 
-const switchProject = async (project: ProjectContract) => {
-    const isProjectRoute = route.matched.some((match) => match.name === "index-project-id");
-
-    if (!isProjectRoute) return;
-
-    const match = lodFindLast(route.matched, (match) => {
-        return match.meta.projectSwitchName != undefined;
-    });
-
-    const name = match ? match.meta.projectSwitchName : "index-project-id-home";
-
-    await navigateTo({ name: name as "/", params: { id: project.id } });
-};
-
-const filteredProjects = computed(() => {
-    const lowerCaseSearch = search.value?.toLocaleLowerCase() ?? "";
-
-    return allProjects.value.filter((x) => {
-        const isMatchingSearch = x.name.toLowerCase().includes(lowerCaseSearch);
-        const isCurrentProject = selectedProject.value.id === x.id;
-
-        return isMatchingSearch && !isCurrentProject;
-    });
+const { results: projectResults } = useFuse(search, allProjects, {
+    fuseOptions: {
+        keys: ["name"],
+        isCaseSensitive: false
+    },
+    matchAllWhenSearchEmpty: true
 });
 
 watch(isDialogOpen, () => {
-    search.value = undefined;
+    search.value = "";
 });
 </script>

@@ -15,6 +15,15 @@
                             {{ selectedProject.name }}
                         </VListItemTitle>
                         <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(selectedProject.dateCreated).value }) }}</VListItemSubtitle>
+
+                        <template #append>
+                            <BaseBtnIcon
+                                @click="selectedProject.favorite = !selectedProject.favorite"
+                                :icon="selectedProject.favorite ? 'mdi-star' : 'mdi-star-outline'"
+                                :iconColor="selectedProject.favorite ? 'warning' : 'secondary'"
+                                width="100"
+                            />
+                        </template>
                     </VListItem>
                 </VCardText>
             </VCard>
@@ -36,21 +45,21 @@
                             </template>
                         </VListItem>
                         <VListItem>
-                            <VListItemTitle class="d-flex align-center">
+                            <VListItemTitle>
                                 {{ $t("projectSetting.quickSwitch") }}
-                                <VChip class="ml-2" color="secondary" density="compact" variant="outlined" label>{{
-                                    keybind ? keybind : $t("keybind.none")
-                                }}</VChip>
+                                <VChip class="ml-2" color="secondary" density="compact" variant="outlined" label>
+                                    {{ keybind ? keybind : $t("keybind.none") }}
+                                </VChip>
                             </VListItemTitle>
                             <span class="text-medium-emphasis">
                                 {{ $t("projectSetting.quickSwitch.description") }}
                             </span>
                             <template #append>
-                                <div v-if="!isCapturing" class="d-flex ga-2">
+                                <div v-if="!isCapturing" class="d-flex ga-2 ml-2">
                                     <BaseBtnIcon v-if="keybind" @click="keybind = ''">{{ $t("action.reset") }}</BaseBtnIcon>
                                     <BaseBtnIcon @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</BaseBtnIcon>
                                 </div>
-                                <BaseBtnIcon v-else @click="cancel()" variant="tonal" width="100">{{ $t("action.cancel") }}</BaseBtnIcon>
+                                <BaseBtnIcon v-else @click="cancel()" class="ml-2" variant="tonal" width="100">{{ $t("action.cancel") }}</BaseBtnIcon>
                             </template>
                         </VListItem>
                         <VListItem>
@@ -81,9 +90,29 @@ const projectSaved = (project: ProjectContract) => {
 const colors = ["info", "success", "warning", "secondary", "primary", "error"];
 const folderColor = ref("info");
 
-const keybind = ref("");
+const keybind = computed({
+    get() {
+        return selectedProject.value.quickSwitchKeybind;
+    },
+    set(newVal) {
+        selectedProject.value.quickSwitchKeybind = newVal;
+    }
+});
 
 const { isCapturing, capture, cancel } = useKeybindCapture(keybind);
+
+watch(
+    selectedProject,
+    async () => {
+        await saveProject();
+    },
+    { deep: true }
+);
+
+const saveProject = async () => {
+    await commands.projectUpdateOne({ ...selectedProject.value });
+    await projectStore.loadAllProjects();
+};
 
 const onFolderIconClick = lodAfter(10, () => {
     const currentIndex = colors.indexOf(folderColor.value);

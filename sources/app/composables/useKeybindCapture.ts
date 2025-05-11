@@ -1,4 +1,4 @@
-export default function useKeybindCapture(keybind: Ref<string>) {
+export default function useKeybindCapture(keybind: Ref<string | null>) {
     enum CaptureSate {
         None,
         Inited,

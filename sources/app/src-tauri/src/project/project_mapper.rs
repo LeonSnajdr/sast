@@ -6,6 +6,8 @@ impl ProjectContract {
 		Self {
 			id: value.id,
 			name: value.name,
+			favorite: value.favorite,
+			quick_switch_keybind: value.quick_switch_keybind,
 			date_created: value.date_created,
 			date_last_opened: value.date_last_opened,
 		}
@@ -17,6 +19,8 @@ impl ProjectUpdateModel {
 		Self {
 			id: value.id,
 			name: value.name,
+			favorite: value.favorite,
+			quick_switch_keybind: value.quick_switch_keybind,
 		}
 	}
 }

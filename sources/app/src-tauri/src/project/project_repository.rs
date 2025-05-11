@@ -17,7 +17,9 @@ pub async fn create(name: &String, date_created: &DateTime<Utc>, date_last_opene
                 ($1, $2, $3, $4) 
             returning
                 id as "id: Uuid",
-                name, 
+                name,
+                favorite,
+                quick_switch_keybind,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
         "#,
@@ -40,6 +42,8 @@ pub async fn get_all() -> Result<Vec<ProjectModel>> {
             select
                 id as "id: Uuid",
                 name,
+                favorite,
+                quick_switch_keybind,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
             from project
@@ -60,6 +64,8 @@ pub async fn get_one(id: &Uuid) -> Result<ProjectModel> {
             select
                 id as "id: Uuid",
                 name,
+                favorite,
+                quick_switch_keybind,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
             from project
@@ -81,6 +87,8 @@ pub async fn get_last_opened() -> Result<Option<ProjectModel>> {
         select
                 id as "id: Uuid",
                 name,
+                favorite,
+                quick_switch_keybind,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
         from project
@@ -99,11 +107,16 @@ pub async fn update_one(update_model: ProjectUpdateModel) -> Result<()> {
 	sqlx::query!(
 		r#"--sql
             update project
-            set name = $2
+            set
+                name = $2,
+                favorite = $3,
+                quick_switch_keybind = $4
             where id = $1
         "#,
 		update_model.id,
-		update_model.name
+		update_model.name,
+		update_model.favorite,
+		update_model.quick_switch_keybind
 	)
 	.execute(db::get_pool())
 	.await

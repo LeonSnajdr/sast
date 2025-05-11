@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFuse, type UseFuseOptions } from "@vueuse/integrations/useFuse";
+import { useFuse } from "@vueuse/integrations/useFuse";
 import type { MenuProps } from "vue-text-insert";
 
 const props = defineProps<MenuProps<PlaceholderInsertTileContract>>();
@@ -40,13 +40,11 @@ const addInsert = (placeholder: PlaceholderContract) => {
     });
 };
 
-const fuseOptions = computed<UseFuseOptions<PlaceholderContract>>(() => ({
+const { results: placeholderResults } = useFuse(() => props.menu.value.query, placeholders, {
     fuseOptions: {
         keys: ["name"],
         isCaseSensitive: false
     },
     matchAllWhenSearchEmpty: true
-}));
-
-const { results: placeholderResults } = useFuse(() => props.menu.value.query, placeholders, fuseOptions);
+});
 </script>

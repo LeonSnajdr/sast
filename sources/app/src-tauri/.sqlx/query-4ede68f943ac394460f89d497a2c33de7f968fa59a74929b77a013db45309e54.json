@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update project\n            set\n                name = $2,\n                favorite = $3,\n                quick_switch_keybind = $4\n            where id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "4ede68f943ac394460f89d497a2c33de7f968fa59a74929b77a013db45309e54"
+}

@@ -14,6 +14,8 @@ pub struct ProjectCreateContract {
 pub struct ProjectContract {
 	pub id: Uuid,
 	pub name: String,
+	pub favorite: bool,
+	pub quick_switch_keybind: Option<String>,
 	pub date_created: DateTime<Utc>,
 	pub date_last_opened: DateTime<Utc>,
 }
@@ -23,4 +25,6 @@ pub struct ProjectContract {
 pub struct ProjectUpdateContract {
 	pub id: Uuid,
 	pub name: String,
+	pub favorite: bool,
+	pub quick_switch_keybind: Option<String>,
 }

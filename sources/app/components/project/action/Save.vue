@@ -36,7 +36,9 @@ const projectSave = async () => {
 
     const updateContract: ProjectUpdateContract = {
         id: props.project.id,
-        name: props.project.name
+        name: props.project.name,
+        favorite: props.project.favorite,
+        quickSwitchKeybind: props.project.quickSwitchKeybind
     };
 
     const saveResult = await commands.projectUpdateOne(updateContract);

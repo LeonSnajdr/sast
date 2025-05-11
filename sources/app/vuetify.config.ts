@@ -207,7 +207,7 @@ export default defineVuetifyConfiguration({
             },
             VListItem: {
                 VListItemTitle: {
-                    class: "text-caption"
+                    class: "text-caption d-flex align-center"
                 }
             }
         },
