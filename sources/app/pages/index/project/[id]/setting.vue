@@ -40,7 +40,7 @@
                             <template #append>
                                 <BaseBtnIcon variant="tonal" width="100">
                                     {{ $t("action.edit") }}
-                                    <ProjectDialogEdit @saved="projectSaved" :projectId="selectedProject.id" />
+                                    <ProjectSettingEditName v-model="selectedProject" />
                                 </BaseBtnIcon>
                             </template>
                         </VListItem>
@@ -79,13 +79,12 @@
 </template>
 
 <script setup lang="ts">
+const notify = useNotify();
+const { t } = useI18n();
+
 const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
-
-const projectSaved = (project: ProjectContract) => {
-    selectedProject.value = project;
-};
 
 const colors = ["info", "success", "warning", "secondary", "primary", "error"];
 const folderColor = ref("info");
@@ -104,15 +103,24 @@ const { isCapturing, capture, cancel } = useKeybindCapture(keybind);
 watch(
     selectedProject,
     async () => {
-        await saveProject();
+        const updateContract: ProjectUpdateContract = {
+            id: selectedProject.value.id,
+            name: selectedProject.value.name,
+            favorite: selectedProject.value.favorite,
+            quickSwitchKeybind: selectedProject.value.quickSwitchKeybind
+        };
+
+        const saveResult = await commands.projectUpdateOne(updateContract);
+
+        if (saveResult.status == "error") {
+            notify.error(t("action.save.error", { type: t("project.singular"), name: selectedProject.value.name }), { error: saveResult.error });
+            return;
+        }
+
+        await projectStore.loadAllProjects();
     },
     { deep: true }
 );
-
-const saveProject = async () => {
-    await commands.projectUpdateOne({ ...selectedProject.value });
-    await projectStore.loadAllProjects();
-};
 
 const onFolderIconClick = lodAfter(10, () => {
     const currentIndex = colors.indexOf(folderColor.value);
