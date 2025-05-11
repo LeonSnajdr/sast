@@ -2669,14 +2669,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pinia/nuxt@npm:^0.9.0":
-  version: 0.9.0
-  resolution: "@pinia/nuxt@npm:0.9.0"
+"@pinia/nuxt@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@pinia/nuxt@npm:0.11.0"
   dependencies:
     "@nuxt/kit": "npm:^3.9.0"
   peerDependencies:
-    pinia: ^2.3.0
-  checksum: 10c0/04e6a3889455c54c7c419e28e335f41bd17a9a7542c57e5ea360c689a9f2a38f4b0493a5a8e5199dae7b2f78e44307d3155bc694c063dba258f323ed81d63890
+    pinia: ^3.0.2
+  checksum: 10c0/afe281a86744d86b9ef7e9e677bf23651dd0d3359ddf490d4cbc4e1daa8e4e686555a96d54756c15aa0c850f2753219eaf86a3dff414744c6bf10c458b3ce1f9
   languageName: node
   linkType: hard
 
@@ -3866,10 +3866,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/devtools-api@npm:^6.5.0, @vue/devtools-api@npm:^6.6.3, @vue/devtools-api@npm:^6.6.4":
+"@vue/devtools-api@npm:^6.5.0, @vue/devtools-api@npm:^6.6.4":
   version: 6.6.4
   resolution: "@vue/devtools-api@npm:6.6.4"
   checksum: 10c0/0a993ae23618166e1bee5a7c14cebd8312752b93c143cbdd48fb2d0f7ade070d0e6baf757cd920d4681fef8f9acf29515162160f38cc7410f9a684d2df21b6de
+  languageName: node
+  linkType: hard
+
+"@vue/devtools-api@npm:^7.7.2":
+  version: 7.7.6
+  resolution: "@vue/devtools-api@npm:7.7.6"
+  dependencies:
+    "@vue/devtools-kit": "npm:^7.7.6"
+  checksum: 10c0/2f616292f63fa20dab412ccddebfbd794af73a3eee0942ac39f1c72092bfc35c288b26a9ea058041e7ce5781159bf47df004e415a03473aa85223835c9b5d072
   languageName: node
   linkType: hard
 
@@ -3919,12 +3928,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue/devtools-kit@npm:^7.7.6":
+  version: 7.7.6
+  resolution: "@vue/devtools-kit@npm:7.7.6"
+  dependencies:
+    "@vue/devtools-shared": "npm:^7.7.6"
+    birpc: "npm:^2.3.0"
+    hookable: "npm:^5.5.3"
+    mitt: "npm:^3.0.1"
+    perfect-debounce: "npm:^1.0.0"
+    speakingurl: "npm:^14.0.1"
+    superjson: "npm:^2.2.2"
+  checksum: 10c0/8025e894207ae0d8a4e82965a9a0ca7c5a3e98b3540616dc7f5de19af7fbfedc2398913786cf129f89509a7be2b0a18f8913682fa9a15669e748834ea2843546
+  languageName: node
+  linkType: hard
+
 "@vue/devtools-shared@npm:^7.6.8, @vue/devtools-shared@npm:^7.7.1":
   version: 7.7.1
   resolution: "@vue/devtools-shared@npm:7.7.1"
   dependencies:
     rfdc: "npm:^1.4.1"
   checksum: 10c0/02e880140453f57885debe1ab61344d31575d2a90195c6b38e469a8338108bfd25c07d07a56d07c56454096c3d45367ec8b987b6cb675cbb4c778829ec6df566
+  languageName: node
+  linkType: hard
+
+"@vue/devtools-shared@npm:^7.7.6":
+  version: 7.7.6
+  resolution: "@vue/devtools-shared@npm:7.7.6"
+  dependencies:
+    rfdc: "npm:^1.4.1"
+  checksum: 10c0/4087bb9fbdb265c489e73452238062815a98f3cdc1c8816ed7a7a3a0c8f904802906a84fc9c6deccec3cec3a2f577ee871d24c2496b7b7e950fec6f5650e9117
   languageName: node
   linkType: hard
 
@@ -4500,6 +4533,13 @@ __metadata:
   version: 0.2.19
   resolution: "birpc@npm:0.2.19"
   checksum: 10c0/be3c6a4044e3041a5d8eb4c4d50b57b46158dc8149ada718ead20544e50b68b72b34c9d8bf0457d23d5f18e5a66d206b8bef5ff22c1018e1e39d373187eed455
+  languageName: node
+  linkType: hard
+
+"birpc@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "birpc@npm:2.3.0"
+  checksum: 10c0/82489bcfa1c0a669bf4e5a15fa72691e8bda35abeac8860044eeffdcbc05da200b4349711a4beccdb2d0b90c40d752b0c7fcf01462bcfcb38ae9bd2b034ed339
   languageName: node
   linkType: hard
 
@@ -9059,7 +9099,7 @@ __metadata:
   dependencies:
     "@nuxt/eslint": "npm:^1.3.0"
     "@nuxtjs/i18n": "npm:^9.1.5"
-    "@pinia/nuxt": "npm:^0.9.0"
+    "@pinia/nuxt": "npm:^0.11.0"
     "@tauri-apps/api": "npm:^2.5.0"
     "@tauri-apps/cli": "npm:^2.5.0"
     "@tauri-apps/plugin-opener": "npm:^2.2.6"
@@ -9076,7 +9116,7 @@ __metadata:
     fuse.js: "npm:^7.1.0"
     nuxt: "npm:^3.15.4"
     nuxt-lodash: "npm:^2.5.3"
-    pinia: "npm:^2.3.1"
+    pinia: "npm:^3.0.2"
     sass: "npm:^1.83.4"
     typescript: "npm:^5.7.3"
     vue: "npm:^3.5.13"
@@ -9629,19 +9669,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:^2.3.1":
-  version: 2.3.1
-  resolution: "pinia@npm:2.3.1"
+"pinia@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "pinia@npm:3.0.2"
   dependencies:
-    "@vue/devtools-api": "npm:^6.6.3"
-    vue-demi: "npm:^0.14.10"
+    "@vue/devtools-api": "npm:^7.7.2"
   peerDependencies:
     typescript: ">=4.4.4"
     vue: ^2.7.0 || ^3.5.11
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/e005883c26fe782e26803859db8703ead2e7053271d22828175c82d56e925ddab65ca2543a3f3a36686a11e6835f60c031f1eb2ef9159f9da05121495499c5f6
+  checksum: 10c0/4c21412ddb32c48c1d9fb9fb47a2cd40bc4af9198e65392423ab97f6a9da31d0b880bc59b008967058643a988cb574025f885a1d0e4faf47bec25521933bb27f
   languageName: node
   linkType: hard
 
@@ -11196,6 +11235,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"superjson@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "superjson@npm:2.2.2"
+  dependencies:
+    copy-anything: "npm:^3.0.2"
+  checksum: 10c0/aa49ebe6653e963020bc6a1ed416d267dfda84cfcc3cbd3beffd75b72e44eb9df7327215f3e3e77528f6e19ad8895b16a4964fdcd56d1799d14350db8c92afbc
+  languageName: node
+  linkType: hard
+
 "supports-color@npm:^5.3.0":
   version: 5.5.0
   resolution: "supports-color@npm:5.5.0"
@@ -12433,22 +12481,6 @@ __metadata:
   dependencies:
     ufo: "npm:^1.5.4"
   checksum: 10c0/c5c241a2395ee34d8105fb6010027165f54f79f7cffebb73cb9da35b9ec006d910457b3e32026688f7f6a718e660040abffc43cd559d1e31cfea22b32fa0ba7f
-  languageName: node
-  linkType: hard
-
-"vue-demi@npm:^0.14.10":
-  version: 0.14.10
-  resolution: "vue-demi@npm:0.14.10"
-  peerDependencies:
-    "@vue/composition-api": ^1.0.0-rc.1
-    vue: ^3.0.0-0 || ^2.6.0
-  peerDependenciesMeta:
-    "@vue/composition-api":
-      optional: true
-  bin:
-    vue-demi-fix: bin/vue-demi-fix.js
-    vue-demi-switch: bin/vue-demi-switch.js
-  checksum: 10c0/a9ed8712fa36d01bc13c39757f95f30cebf42d557b99e94bff86d8660c81f2911b41220f7affc023d1ffcc19e13999e4a83019991e264787cca2c616e83aea48
   languageName: node
   linkType: hard
 
