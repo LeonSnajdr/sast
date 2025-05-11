@@ -1,8 +1,8 @@
 <template>
-    <div v-if="selectedProject.id" :key="selectedProject.id">
-        <ProjectDrawer />
-        <NuxtPage />
-    </div>
+    <template v-if="selectedProject.id">
+        <ProjectDrawer :key="selectedProject.id" />
+        <NuxtPage :key="selectedProject.id" />
+    </template>
 </template>
 
 <script setup lang="ts">

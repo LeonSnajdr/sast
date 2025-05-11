@@ -56,7 +56,7 @@
                             </span>
                             <template #append>
                                 <div v-if="!isCapturing" class="d-flex ga-2 ml-2">
-                                    <BaseBtnIcon v-if="keybind" @click="keybind = ''">{{ $t("action.reset") }}</BaseBtnIcon>
+                                    <BaseBtnIcon v-if="keybind" @click="keybind = null">{{ $t("action.reset") }}</BaseBtnIcon>
                                     <BaseBtnIcon @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</BaseBtnIcon>
                                 </div>
                                 <BaseBtnIcon v-else @click="cancel()" class="ml-2" variant="tonal" width="100">{{ $t("action.cancel") }}</BaseBtnIcon>
@@ -114,6 +114,9 @@ watch(
 
         if (saveResult.status == "error") {
             notify.error(t("action.save.error", { type: t("project.singular"), name: selectedProject.value.name }), { error: saveResult.error });
+
+            // Restore the project
+            projectStore.openProject(selectedProject.value.id);
             return;
         }
 

@@ -47,7 +47,9 @@ pub async fn get_all() -> Result<Vec<ProjectModel>> {
                 date_created as "date_created: DateTime<Utc>",
                 date_last_opened as "date_last_opened: DateTime<Utc>"
             from project
-            order by date_last_opened desc
+            order by
+                favorite desc,
+    			name
         "#
 	)
 	.fetch_all(db::get_pool())

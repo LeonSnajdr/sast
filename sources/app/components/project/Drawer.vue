@@ -2,9 +2,10 @@
     <VNavigationDrawer location="left" permanent>
         <VList>
             <VListItem height="48">
-                <VListItemTitle>
+                <VListItemTitle class="ga-1">
+                    <VIcon v-if="selectedProject.favorite" color="warning" icon="mdi-star" />
                     <span class="text-body-1 text-truncate" style="max-width: 150px">{{ selectedProject.name }}</span>
-                    <VIcon class="ml-1" icon="mdi-chevron-down" />
+                    <VIcon icon="mdi-chevron-down" />
                     <ProjectMenuSelect />
                 </VListItemTitle>
                 <template #append>
