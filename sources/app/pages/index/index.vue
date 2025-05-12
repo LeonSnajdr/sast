@@ -32,7 +32,9 @@
                     <VCard @click="openLastProject()" :disabled="!lastOpenedProject">
                         <VCardTitle>
                             <VIcon color="info" icon="mdi-folder" />
-                            <span v-if="lastOpenedProject" class="text-truncate"> {{ $t("project.openLast.title", { name: lastOpenedProject.name }) }}</span>
+                            <span v-if="lastOpenedProject" class="text-truncate" style="max-width: 300px">
+                                {{ $t("project.openLast.title", { name: lastOpenedProject.name }) }}
+                            </span>
                             <span v-else>{{ $t("project.openLast.title.noProject") }}</span>
                         </VCardTitle>
                         <VCardText>
