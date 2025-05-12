@@ -70,7 +70,7 @@
   "project.select.description": "Wähle eines deiner Projekte aus",
   "project.select.title": "Projekt auswählen",
   "project.singular": "Projekt",
-  "projectSetting.delete.description": "Alles innerhalb des Projekts wird gelöscht, mit Ausnahme es ist global. Nach der Löschung eines Projekts gibt es kein Zurück mehr.",
+  "projectSetting.delete.description": "Alles innerhalb des Projekts wird gelöscht, mit Ausnahme es ist global. Nach der Löschung eines Projekts gibt es kein Zurück mehr",
   "projectSetting.delete.rename": "Ändern Sie den Namen des Projekts",
   "projectSetting.quickSwitch": "Schnellwechsel",
   "projectSetting.quickSwitch.description": "Definieren Sie ein Tastaturkürzel, mit dem Sie schnell zwischen Projekten wechseln können",
