@@ -1,0 +1,20 @@
+{
+  "vueUse.timeAgo.ago": "{0} ago",
+  "vueUse.timeAgo.day": "day | days",
+  "vueUse.timeAgo.hour": "hour | hours",
+  "vueUse.timeAgo.in": "in {0}",
+  "vueUse.timeAgo.justNow": "just now",
+  "vueUse.timeAgo.lastMonth": "last month",
+  "vueUse.timeAgo.lastWeek": "last week",
+  "vueUse.timeAgo.lastYear": "last year",
+  "vueUse.timeAgo.minute": "minute | minutes",
+  "vueUse.timeAgo.month": "month | months",
+  "vueUse.timeAgo.nextMonth": "next month",
+  "vueUse.timeAgo.nextWeek": "next week",
+  "vueUse.timeAgo.nextYear": "next year",
+  "vueUse.timeAgo.second": "second | seconds",
+  "vueUse.timeAgo.tomorrow": "tomorrow",
+  "vueUse.timeAgo.week": "week | weeks",
+  "vueUse.timeAgo.year": "year | years",
+  "vueUse.timeAgo.yesterday": "yesterday"
+}
