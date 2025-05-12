@@ -20,7 +20,7 @@
                     <VList>
                         <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="itemClicked(projectResult.item)">
                             <VListItemTitle>
-                                <VIcon v-if="projectResult.item.favorite" class="mr-1" color="warning" icon="mdi-star" size="small" />
+                                <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
                                 {{ projectResult.item.name }}
                             </VListItemTitle>
                             <VListItemSubtitle>
