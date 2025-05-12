@@ -1,6 +1,6 @@
 <template>
-    <VDialog v-model="isDialogOpen" activator="parent" width="800">
-        <VCard height="400">
+    <VDialog v-model="isDialogOpen" activator="parent" width="800" height="400">
+        <VCard class="h-100">
             <VCardTitle>
                 <VIcon color="warning" icon="mdi-folder-marker" />
                 {{ $t("title.select", { type: $t("project.singular") }) }}
