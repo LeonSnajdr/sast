@@ -3,7 +3,7 @@
         <VList maxHeight="400" maxWidth="400">
             <VListItem v-for="project in allProjects" :key="project.id" @click="switchProject(project)">
                 <VListItemTitle>
-                    <VIcon v-if="project.favorite" class="mr-1" color="warning" icon="mdi-star" size="small" />
+                    <VIcon v-if="project.favorite" color="warning" icon="mdi-star" size="small" />
                     {{ project.name }}
                 </VListItemTitle>
                 <VListItemSubtitle>

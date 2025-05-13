@@ -27,8 +27,7 @@ export default defineNuxtConfig({
             }
         ],
         defaultLocale: "en",
-        strategy: "no_prefix",
-        vueI18n: "./i18n.config.ts"
+        strategy: "no_prefix"
     },
     css: ["./assets/styles/global.scss"],
     vuetify: {

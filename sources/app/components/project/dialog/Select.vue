@@ -1,6 +1,6 @@
 <template>
-    <VDialog v-model="isDialogOpen" activator="parent" width="800">
-        <VCard height="400">
+    <VDialog v-model="isDialogOpen" activator="parent" width="800" height="400">
+        <VCard class="h-100">
             <VCardTitle>
                 <VIcon color="warning" icon="mdi-folder-marker" />
                 {{ $t("title.select", { type: $t("project.singular") }) }}
@@ -20,7 +20,7 @@
                     <VList>
                         <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="itemClicked(projectResult.item)">
                             <VListItemTitle>
-                                <VIcon v-if="projectResult.item.favorite" class="mr-1" color="warning" icon="mdi-star" size="small" />
+                                <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
                                 {{ projectResult.item.name }}
                             </VListItemTitle>
                             <VListItemSubtitle>
