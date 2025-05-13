@@ -1,5 +1,5 @@
 <template>
-    <VDialog v-model="isDialogOpen" activator="parent" width="800" height="400">
+    <VDialog v-model="isDialogOpen" activator="parent" height="400" width="800">
         <VCard class="h-100">
             <VCardTitle>
                 <VIcon color="warning" icon="mdi-folder-marker" />

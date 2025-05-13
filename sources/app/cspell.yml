@@ -3,8 +3,8 @@ import: ["@cspell/dict-de-de"]
 enabled: true
 
 files:
-  - src/translations/en.json
-  - src/translations/de.json
+  - i18n/locales/de/de.json
+  - i18n/locales/en/en.json
 
 dictionaryDefinitions:
   - name: custom.de
@@ -22,12 +22,12 @@ patterns:
     pattern: "/{.*?}/"
 
 overrides:
-  - filename: src/translations/en.json
+  - filename: i18n/locales/en/en.json
     language: en
     dictionaries: [custom.en]
     ignoreRegExpList: [translationKey, placeholder]
 
-  - filename: src/translations/de.json
+  - filename: i18n/locales/de/de.json
     language: de
     dictionaries: [custom.de]
     ignoreRegExpList: [translationKey, placeholder]
