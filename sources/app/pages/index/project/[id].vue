@@ -13,6 +13,7 @@ const route = useRoute("index-project-id");
 const projectStore = useProjectStore();
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
+const taskSetSessionStore = useTaskSetSessionStore();
 const terminalStore = useTerminalStore();
 
 const { selectedProject } = storeToRefs(projectStore);
@@ -21,30 +22,26 @@ let unlistenTerminalClosedEvent: UnlistenFn;
 let unlistenTerminalCreatedEvent: UnlistenFn;
 let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
 
+let unlistenTaskSetSessionStartedEvent: UnlistenFn;
+let unlistenTaskSetSessionFinishedEvent: UnlistenFn;
+let unlistenTaskSetSessionTaskStatusChangedEvent: UnlistenFn;
+
 onBeforeMount(async () => {
-    await openProject();
-    await loadPlaceholders();
-    await loadTasks();
+    await projectStore.openProject(route.params.id);
+    await placeholderStore.loadAll();
+    await taskStore.loadAll();
     await loadTerminals();
+    await loadTaskSetSessions();
 });
 
 onBeforeUnmount(() => {
     unlistenTerminalClosedEvent();
     unlistenTerminalCreatedEvent();
     unlistenTerminalShellStatusChangedEvent();
+    unlistenTaskSetSessionStartedEvent();
+    unlistenTaskSetSessionFinishedEvent();
+    unlistenTaskSetSessionTaskStatusChangedEvent();
 });
-
-const openProject = async () => {
-    await projectStore.openProject(route.params.id);
-};
-
-const loadPlaceholders = async () => {
-    await placeholderStore.loadAll();
-};
-
-const loadTasks = async () => {
-    await taskStore.loadAll();
-};
 
 const loadTerminals = async () => {
     // NOTE: Terminal logic is required globaly in the project to show indicators and status in some places
@@ -61,6 +58,22 @@ const loadTerminals = async () => {
 
     unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((eventData) => {
         terminalStore.closed(eventData.payload);
+    });
+};
+
+const loadTaskSetSessions = async () => {
+    await taskSetSessionStore.loadAll();
+
+    unlistenTaskSetSessionStartedEvent = await events.taskSetSessionStartedEvent.listen(() => {
+        taskSetSessionStore.loadAll();
+    });
+
+    unlistenTaskSetSessionFinishedEvent = await events.taskSetSessionFinishedEvent.listen(() => {
+        taskSetSessionStore.loadAll();
+    });
+
+    unlistenTaskSetSessionTaskStatusChangedEvent = await events.taskSetSessionTaskStatusChangedEvent.listen((eventData) => {
+        taskSetSessionStore.taskStatusChanged(eventData.payload.taskSetSessionId, eventData.payload.taskId, eventData.payload.status);
     });
 };
 </script>

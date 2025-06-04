@@ -125,6 +125,7 @@
   "taskSet.table.column.dateCreated": "Erstellt",
   "taskSet.table.column.dateLastUpdated": "Geändert",
   "taskSet.table.column.name": "Name",
+  "taskSetSession.plural": "Laufende Aufgabensätze",
   "taskSetTask.empty.text": "Fügen Sie neue durch die Suche hinzu oder erstellen Sie ganz bequem neue ",
   "taskSetTask.empty.title": "Keine Aufgaben hinzugefügt",
   "taskSetTask.field.blocking": "Blockierend",

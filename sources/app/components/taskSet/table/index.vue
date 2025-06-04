@@ -1,5 +1,5 @@
 <template>
-    <VDataTableVirtual :headers="headers" :items="taskSets" :rowProps="getRowProps" hideDefaultFooter>
+    <VDataTableVirtual :headers="headers" :items="taskSets" :rowProps="getRowProps" hideDefaultFooter showExpand>
         <template #[`item.actions`]="{ item }">
             <TaskSetTableColumnActions :taskSet="item" />
         </template>
@@ -9,7 +9,12 @@
         <template #[`item.dateLastUpdated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateLastUpdated) }}
         </template>
-
+        <template #[`item.data-table-expand`]="{ internalItem, isExpanded, toggleExpand }">
+            <BaseBtnExpand @click.prevent.stop="toggleExpand(internalItem)" :modelValue="isExpanded(internalItem)" />
+        </template>
+        <template #expanded-row="{ columns, item }">
+            <TaskSetTableExpansionRow :columnLength="columns.length" :taskSet="item" />
+        </template>
         <template #loading>
             <VSkeletonLoader type="table-row" />
         </template>

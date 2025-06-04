@@ -125,6 +125,7 @@
   "taskSet.table.column.dateCreated": "Created",
   "taskSet.table.column.dateLastUpdated": "Updated",
   "taskSet.table.column.name": "Name",
+  "taskSetSession.plural": "Running tasksets",
   "taskSetTask.empty.text": "Add new ones using the search function, or easily create new ones. ",
   "taskSetTask.empty.title": "No tasks added",
   "taskSetTask.field.blocking": "Blocking",

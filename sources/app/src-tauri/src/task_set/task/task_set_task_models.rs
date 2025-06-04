@@ -2,7 +2,7 @@ use chrono::{DateTime, Utc};
 use sqlx::FromRow;
 use uuid::Uuid;
 
-#[derive(Debug, FromRow)]
+#[derive(Debug, Clone, FromRow)]
 pub struct TaskSetTaskModel {
 	pub id: Uuid,
 	pub task_id: Uuid,
@@ -11,7 +11,7 @@ pub struct TaskSetTaskModel {
 	pub position: i64,
 }
 
-#[derive(Debug, FromRow)]
+#[derive(Debug, Clone, FromRow)]
 pub struct TaskSetTaskInfoModel {
 	pub task_id: Uuid,
 	pub task_name: String,
