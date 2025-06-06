@@ -16,10 +16,6 @@
 </template>
 
 <script setup lang="ts">
-const emit = defineEmits<{
-    created: [id: string];
-}>();
-
 const taskSet = ref({} as TaskSetCreateContract);
 const isDialogOpen = ref(false);
 const isTaskSetValid = ref<boolean | null>(false);
@@ -33,8 +29,8 @@ const emptyElement: TaskSetCreateContract = {
     name: ""
 };
 
-const taskSetCreated = (id: string) => {
+const taskSetCreated = async (id: string) => {
+    await navigateTo({ name: "index-project-id-taskSet-taskSetId", params: { id: selectedProject.value.id, taskSetId: id } });
     isDialogOpen.value = false;
-    emit("created", id);
 };
 </script>

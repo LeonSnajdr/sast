@@ -1,5 +1,14 @@
 <template>
-    <VDataTableVirtual :headers="headers" :items="taskSets" :rowProps="getRowProps" hideDefaultFooter showExpand>
+    <VDataTableVirtual
+        v-model:expanded="expandedTaskSetIds"
+        :headers="headers"
+        :hideDefaultHeader="inline"
+        :items="taskSets"
+        :rowProps="getRowProps"
+        itemValue="id"
+        hideDefaultFooter
+        showExpand
+    >
         <template #[`item.actions`]="{ item }">
             <TaskSetTableColumnActions :taskSet="item" />
         </template>
@@ -13,7 +22,11 @@
             <BaseBtnExpand @click.prevent.stop="toggleExpand(internalItem)" :modelValue="isExpanded(internalItem)" />
         </template>
         <template #expanded-row="{ columns, item }">
-            <TaskSetTableExpansionRow :columnLength="columns.length" :taskSet="item" />
+            <tr>
+                <td :colspan="columns.length" class="pr-0 pl-6">
+                    <TaskSetSessionList :taskSetId="item.id" />
+                </td>
+            </tr>
         </template>
         <template #loading>
             <VSkeletonLoader type="table-row" />
@@ -25,37 +38,49 @@
 import type { RouteLocationRaw } from "vue-router";
 import type { DataTableHeader } from "vuetify/helpers";
 
-defineProps<{
+const props = defineProps<{
     taskSets: TaskSetInfoContract[];
+    inline?: boolean;
 }>();
 
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
+const taskSetSessionStore = useTaskSetSessionStore();
 
 const { selectedProject } = storeToRefs(projectStore);
+const { sessions } = storeToRefs(taskSetSessionStore);
 
-const headers: DataTableHeader[] = [
-    {
-        title: t("taskSet.table.column.actions") as string,
-        key: "actions",
-        width: 200
-    },
-    {
-        title: t("taskSet.table.column.name") as string,
-        key: "name"
-    },
-    {
-        title: t("taskSet.table.column.dateCreated") as string,
-        key: "dateCreated"
-    },
-    {
-        title: t("taskSet.table.column.dateLastUpdated") as string,
-        key: "dateLastUpdated"
-    }
-];
+const headers = computed((): DataTableHeader[] => {
+    const defaultHeaders = [
+        {
+            title: t("taskSet.table.column.actions") as string,
+            key: "actions",
+            width: 150
+        },
+        {
+            title: t("taskSet.table.column.name") as string,
+            key: "name"
+        }
+    ];
+
+    const additionalHeaders = [
+        {
+            title: t("taskSet.table.column.dateCreated") as string,
+            key: "dateCreated"
+        },
+        {
+            title: t("taskSet.table.column.dateLastUpdated") as string,
+            key: "dateLastUpdated"
+        }
+    ];
+
+    return props.inline ? defaultHeaders : [...defaultHeaders, ...additionalHeaders];
+});
 
 const getRowProps = ({ item }: { item: TaskSetInfoContract }) => {
+    if (props.inline) return undefined;
+
     return {
         onClick: () => {
             const taskSetRouteLoaction = getTaskSetRouteLocation(item);
@@ -67,4 +92,16 @@ const getRowProps = ({ item }: { item: TaskSetInfoContract }) => {
 const getTaskSetRouteLocation = (taskSet: TaskSetInfoContract): RouteLocationRaw => {
     return { name: "index-project-id-taskSet-taskSetId", params: { id: selectedProject.value.id, taskSetId: taskSet.id } };
 };
+
+const expandedTaskSetIds = ref<string[]>([]);
+
+watch(
+    sessions,
+    () => {
+        const runningTaskSetIds = sessions.value.filter((x) => x.status === "Running").map((x) => x.taskSetId);
+
+        expandedTaskSetIds.value = lodUnion(expandedTaskSetIds.value, runningTaskSetIds);
+    },
+    { deep: true, immediate: true }
+);
 </script>

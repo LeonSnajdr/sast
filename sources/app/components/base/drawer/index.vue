@@ -1,6 +1,6 @@
 <template>
     <VNavigationDrawer v-model="isDrawerOpen" location="right" width="450" disableResizeWatcher>
-        <VList>
+        <VList class="h-100">
             <VListItem height="48">
                 <slot name="title" />
                 <template #append>
@@ -9,7 +9,7 @@
                 </template>
             </VListItem>
             <VDivider />
-            <VContainer>
+            <VContainer class="h-100 overflow-auto">
                 <slot name="content" />
             </VContainer>
         </VList>

@@ -3,46 +3,21 @@
         <VAppBarTitle>{{ $t("taskSet.plural") }}</VAppBarTitle>
         <BaseBtnIcon icon="mdi-plus" variant="tonal">
             {{ $t("action.create") }}
-            <TaskSetDialogCreate @created="loadTaskSets()" />
+            <TaskSetDialogCreate />
         </BaseBtnIcon>
     </VAppBar>
 
     <VContainer class="h-100">
         <VCard>
             <VCardText>
-                <TaskSetTable :taskSets="taskSets" />
+                <TaskSetTable :loading="isLoading" :taskSets="taskSets" />
             </VCardText>
         </VCard>
     </VContainer>
 </template>
 
 <script setup lang="ts">
-const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
-const notify = useNotify();
-const { t } = useI18n();
-
-const { selectedProject } = storeToRefs(projectStore);
-
-const isLoading = ref(false);
-const taskSets = ref<TaskSetInfoContract[]>([]);
-
-onBeforeMount(() => {
-    loadTaskSets();
-});
-
-const loadTaskSets = async () => {
-    isLoading.value = true;
-
-    const taskResult = await commands.taskSetGetManyInfo(selectedProject.value.id);
-
-    isLoading.value = false;
-
-    if (taskResult.status === "error") {
-        notify.error(t("action.load.error", { type: t("taskSet.plural") }), { error: taskResult.error });
-        return;
-    }
-
-    taskSets.value = taskResult.data;
-};
+const { isLoading, taskSets } = storeToRefs(taskSetStore);
 </script>

@@ -13,6 +13,7 @@ const route = useRoute("index-project-id");
 const projectStore = useProjectStore();
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
+const taskSetStore = useTaskSetStore();
 const taskSetSessionStore = useTaskSetSessionStore();
 const terminalStore = useTerminalStore();
 
@@ -30,6 +31,7 @@ onBeforeMount(async () => {
     await projectStore.openProject(route.params.id);
     await placeholderStore.loadAll();
     await taskStore.loadAll();
+    await taskSetStore.loadAll();
     await loadTerminals();
     await loadTaskSetSessions();
 });
@@ -73,7 +75,8 @@ const loadTaskSetSessions = async () => {
     });
 
     unlistenTaskSetSessionTaskStatusChangedEvent = await events.taskSetSessionTaskStatusChangedEvent.listen((eventData) => {
-        taskSetSessionStore.taskStatusChanged(eventData.payload.taskSetSessionId, eventData.payload.taskId, eventData.payload.status);
+        // TODO do not a full reload here
+        taskSetSessionStore.loadAll();
     });
 };
 </script>

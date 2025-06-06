@@ -1,10 +1,12 @@
 <template>
-    <BaseBtnIcon @click="navigateToTerminal()" :disabled="!terminal" color="secondary" icon="mdi-tab" />
+    <TerminalShellStatusBadge :shellStatus="terminal?.shellStatus" offsetX="12" offsetY="2">
+        <BaseBtnIcon @click="navigateToTerminal()" :disabled="!terminal" color="secondary" icon="mdi-tab" />
+    </TerminalShellStatusBadge>
 </template>
 
 <script setup lang="ts">
 const props = defineProps<{
-    task: TaskInfoContract;
+    taskId: string;
 }>();
 
 const terminalStore = useTerminalStore();
@@ -12,7 +14,7 @@ const terminalStore = useTerminalStore();
 const { terminals } = storeToRefs(terminalStore);
 
 const terminal = computed(() => {
-    return terminals.value.find((x) => (x.task ? x.task.id === props.task.id : false));
+    return terminals.value.find((x) => x.task?.id === props.taskId);
 });
 
 const navigateToTerminal = () => {

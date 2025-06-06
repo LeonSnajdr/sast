@@ -1,6 +1,6 @@
 <template>
     <div @click.prevent.stop class="d-flex">
-        <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal" :loading="isStarting" color="success" icon="mdi-play" />
+        <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal || !hasTasks" :loading="isStarting" color="success" icon="mdi-play" />
         <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal || isStarting || isStopping" :loading="isRestarting" color="info" icon="mdi-autorenew" />
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
@@ -21,6 +21,10 @@ const { terminals } = storeToRefs(terminalStore);
 const { sessions } = storeToRefs(taskSetSessionStore);
 
 const isStopping = ref(false);
+
+const hasTasks = computed(() => {
+    return props.taskSet.taskIds.length > 0;
+});
 
 const hasRunningTerminal = computed(() => {
     return terminals.value.some((x) => (x.task ? props.taskSet.taskIds.includes(x.task.id) : false));
