@@ -16,7 +16,7 @@ pub struct TaskSetContract {
 	pub tasks: Vec<TaskSetTaskInfoContract>,
 }
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TaskSetInfoContract {
 	pub id: Uuid,

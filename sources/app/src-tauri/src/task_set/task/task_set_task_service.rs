@@ -6,7 +6,7 @@ use crate::task_set::task::task_set_task_contracts::TaskSetTaskInfoContract;
 use crate::task_set::task::task_set_task_models::{TaskSetTaskInfoModel, TaskSetTaskModel};
 use crate::task_set::task::task_set_task_repository;
 use crate::terminal::shell::shell_contracts::ShellSpawnContract;
-use crate::terminal::terminal_contracts::TerminalCreateContract;
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalRestartContract};
 
 pub async fn create_or_replace(task_set_id: Uuid, contracts: Vec<TaskSetTaskInfoContract>) -> Result<()> {
 	let models = contracts
@@ -32,7 +32,25 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoContra
 }
 
 pub async fn build_terminal_create_contract(project_id: Uuid, task_set_task: &TaskSetTaskInfoModel) -> Result<TerminalCreateContract> {
-	task_service::build_terminal_create_contract(project_id, task_set_task.task_id).await
+	let task_terminal_create_contract = task_service::build_terminal_create_contract(project_id, task_set_task.task_id).await?;
+
+	let terminal_create_contract = TerminalCreateContract {
+		task_set_id: Some(task_set_task.task_set_id),
+		..task_terminal_create_contract
+	};
+
+	Ok(terminal_create_contract)
+}
+
+pub async fn build_terminal_restart_contract(task_set_task: &TaskSetTaskInfoModel) -> Result<TerminalRestartContract> {
+	let task_terminal_restart_contract = task_service::build_terminal_restart_contract(task_set_task.task_id).await?;
+	
+	let terminal_restart_contract = TerminalRestartContract {
+		task_set_id: Some(task_set_task.task_set_id),
+		..task_terminal_restart_contract
+	};
+	
+	Ok(terminal_restart_contract)
 }
 
 pub async fn build_shell_spawn_contract(task_set_task: &TaskSetTaskInfoModel) -> Result<ShellSpawnContract> {

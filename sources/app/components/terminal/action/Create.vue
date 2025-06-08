@@ -17,19 +17,15 @@ const isLoading = ref(false);
 useKeybind(["control", "t"], () => createTerminal());
 
 const createTerminal = async () => {
-    const createContract: TerminalCreateContract = {
-        name: null,
+    const createContract = {
         projectId: selectedProject.value.id,
-        taskId: null,
         historyPersistence: "OnError"
-    };
+    } as TerminalCreateContract;
 
-    const spawnContract: ShellSpawnContract = {
-        command: null,
+    const spawnContract = {
         noExit: false,
-        workingDir: null,
         forceKill: false
-    };
+    } as ShellSpawnContract;
 
     isLoading.value = true;
     const spawnResult = await commands.terminalCreate(createContract, spawnContract);

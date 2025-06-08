@@ -69,6 +69,7 @@ pub fn run() {
 		.events(collect_events![
 			TerminalClosedEvent,
 			TerminalCreatedEvent,
+			TerminalUpdatedEvent,
 			TerminalShellStatusChangedEvent,
 			TerminalShellReadEvent,
 			TaskSetSessionStartedEvent,

@@ -127,7 +127,7 @@
   "taskSet.table.column.name": "Name",
   "taskSetSession.plural": "Laufende Aufgabensätze",
   "taskSetSession.run": "Lauf #{run}",
-  "taskSetSession.run.latest": "Letzer",
+  "taskSetSession.run.latest": "Aktuellster Lauf",
   "taskSetSession.task.status.completed": "Abgeschlossen in {seconds} Sekunden",
   "taskSetSession.task.status.failed": "Fehlgeschlagen nach {seconds} Sekunden",
   "taskSetSession.task.status.notStarted": "Noch nicht gestartet",

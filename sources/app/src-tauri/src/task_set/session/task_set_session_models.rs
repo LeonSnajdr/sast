@@ -4,6 +4,8 @@ use std::sync::Arc;
 use tokio::sync::RwLock;
 use uuid::Uuid;
 
+
+// TODO check if the arcs around rw locks are needed
 #[derive(Debug)]
 pub struct TaskSetSessionModel {
 	pub id: Uuid,

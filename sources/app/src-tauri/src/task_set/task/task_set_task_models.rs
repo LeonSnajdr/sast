@@ -17,5 +17,6 @@ pub struct TaskSetTaskInfoModel {
 	pub task_name: String,
 	pub task_date_created: DateTime<Utc>,
 	pub task_date_last_updated: DateTime<Utc>,
+	pub task_set_id: Uuid,
 	pub blocking: bool,
 }

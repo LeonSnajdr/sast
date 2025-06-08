@@ -5,7 +5,7 @@ use crate::task::task_contracts::{TaskContract, TaskCreateContract, TaskInfoCont
 use crate::task::task_models::{TaskModel, TaskUpdateModel};
 use crate::task::task_repository;
 use crate::terminal::shell::shell_contracts::ShellSpawnContract;
-use crate::terminal::terminal_contracts::TerminalCreateContract;
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalRestartContract};
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::terminal_service;
 use chrono::Utc;
@@ -62,8 +62,8 @@ pub async fn get_one(id: Uuid) -> Result<TaskContract> {
 	Ok(task_contract)
 }
 
-pub async fn get_one_info(project_id: Uuid) -> Result<TaskInfoContract> {
-	let task_info_model = task_repository::get_one_info(project_id).await?;
+pub async fn get_one_info(id: Uuid) -> Result<TaskInfoContract> {
+	let task_info_model = task_repository::get_one_info(id).await?;
 
 	let task_info_contract = TaskInfoContract::from(task_info_model);
 
@@ -123,14 +123,27 @@ pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_id: Uuid) -
 pub async fn build_terminal_create_contract(project_id: Uuid, task_id: Uuid) -> Result<TerminalCreateContract> {
 	let task = task_repository::get_one(task_id).await?;
 
-	let pty_spawn_contract = TerminalCreateContract {
+	let spawn_contract = TerminalCreateContract {
 		project_id,
 		task_id: Some(task_id),
+		task_set_id: None,
 		name: task.tab_name,
 		history_persistence: task.history_persistence,
 	};
 
-	Ok(pty_spawn_contract)
+	Ok(spawn_contract)
+}
+
+pub async fn build_terminal_restart_contract(task_id: Uuid) -> Result<TerminalRestartContract> {
+	let task = task_repository::get_one(task_id).await?;
+	
+	let restart_contract = TerminalRestartContract {
+		name: task.tab_name,
+		task_set_id: None,
+		history_persistence: task.history_persistence,
+	};
+	
+	Ok(restart_contract)
 }
 
 pub async fn build_shell_spawn_contract(task_id: Uuid) -> Result<ShellSpawnContract> {
@@ -158,15 +171,16 @@ pub async fn build_shell_spawn_contract(task_id: Uuid) -> Result<ShellSpawnContr
 	Ok(shell_spawn_contract)
 }
 
-pub async fn restart_one(task_id: Uuid) -> Result<()> {
+pub async fn restart_one(app_handle: AppHandle, task_id: Uuid) -> Result<()> {
 	let filter = TerminalFilter {
 		task_ids: Some(vec![task_id]),
 		..TerminalFilter::default()
 	};
 
+	let restart_contract = build_terminal_restart_contract(task_id).await?;
 	let spawn_contract = build_shell_spawn_contract(task_id).await?;
 
-	terminal_service::shell_restart_first(&filter, spawn_contract).await?;
+	terminal_service::restart_first(&app_handle, &filter, restart_contract, spawn_contract).await?;
 
 	Ok(())
 }

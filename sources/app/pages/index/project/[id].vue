@@ -21,6 +21,7 @@ const { selectedProject } = storeToRefs(projectStore);
 
 let unlistenTerminalClosedEvent: UnlistenFn;
 let unlistenTerminalCreatedEvent: UnlistenFn;
+let unlistenTerminalUpdatedEvent: UnlistenFn;
 let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
 
 let unlistenTaskSetSessionStartedEvent: UnlistenFn;
@@ -32,6 +33,8 @@ onBeforeMount(async () => {
     await placeholderStore.loadAll();
     await taskStore.loadAll();
     await taskSetStore.loadAll();
+
+    // NOTE: Terminal/TaskSet logic is required globaly in the project to show indicators and status in many places
     await loadTerminals();
     await loadTaskSetSessions();
 });
@@ -39,6 +42,7 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     unlistenTerminalClosedEvent();
     unlistenTerminalCreatedEvent();
+    unlistenTerminalUpdatedEvent();
     unlistenTerminalShellStatusChangedEvent();
     unlistenTaskSetSessionStartedEvent();
     unlistenTaskSetSessionFinishedEvent();
@@ -46,20 +50,22 @@ onBeforeUnmount(() => {
 });
 
 const loadTerminals = async () => {
-    // NOTE: Terminal logic is required globaly in the project to show indicators and status in some places
-
     await terminalStore.loadAll();
 
     unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {
         terminalStore.loadAll();
     });
 
-    unlistenTerminalShellStatusChangedEvent = await events.terminalShellStatusChangedEvent.listen((eventData) => {
-        terminalStore.statusChanged(eventData.payload.id, eventData.payload.status);
+    unlistenTerminalUpdatedEvent = await events.terminalUpdatedEvent.listen((eventData) => {
+        terminalStore.updated(eventData.payload);
     });
 
     unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((eventData) => {
         terminalStore.closed(eventData.payload);
+    });
+
+    unlistenTerminalShellStatusChangedEvent = await events.terminalShellStatusChangedEvent.listen((eventData) => {
+        terminalStore.statusChanged(eventData.payload);
     });
 };
 

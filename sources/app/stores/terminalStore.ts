@@ -22,17 +22,25 @@ export const useTerminalStore = defineStore("terminal", () => {
         terminals.value = sessionInfoResult.data;
     };
 
-    const statusChanged = async (id: string, status: TerminalShellStatus) => {
-        const terminal = terminals.value.find((x) => x.id === id);
+    const updated = async (update: TerminalUpdatedEventData) => {
+        const terminal = terminals.value.find((x) => x.id === update.id);
 
-        if (terminal) {
-            terminal.shellStatus = status;
-        }
+        if (!terminal) return;
+
+        lodAssign(terminal, update);
+    };
+
+    const statusChanged = async (update: TerminalShellStatusChangedEventData) => {
+        const terminal = terminals.value.find((x) => x.id === update.id);
+
+        if (!terminal) return;
+
+        terminal.shellStatus = update.status;
     };
 
     const closed = async (id: string) => {
         terminals.value = terminals.value.filter((x) => x.id !== id);
     };
 
-    return { isLoading, terminals, loadAll, statusChanged, closed };
+    return { isLoading, terminals, loadAll, updated, statusChanged, closed };
 });

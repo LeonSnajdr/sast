@@ -79,9 +79,10 @@ pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoMo
 	for terminal in terminals.iter() {
 		info_models.push(TerminalInfoModel {
 			id: terminal.id,
-			name: terminal.meta.name.clone(),
+			name: terminal.meta.name.read().await.clone(),
 			project_id: terminal.meta.project_id,
 			task_id: terminal.meta.task_id,
+			task_set_id: terminal.meta.task_set_id.read().await.clone(),
 			shell_status: terminal.shell_status.read().await.clone(),
 		})
 	}

@@ -11,6 +11,7 @@ pub struct TerminalInfoModel {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
+	pub task_set_id: Option<Uuid>,
 	pub name: String,
 	pub shell_status: TerminalShellStatus,
 }

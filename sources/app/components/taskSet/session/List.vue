@@ -9,7 +9,7 @@
                 <component :is="$slots.default" />
             </VListItemSubtitle>
             <template #append>
-                <TaskActionTerminalLink v-if="isLatestSessionSelected" :taskId="sessionTask.taskId" />
+                <TaskActionTerminalLink :disabled="!isLatestSessionSelected" :taskId="sessionTask.taskId" :taskSetId="taskSetId" />
             </template>
         </VListItem>
     </DefineSessionTask>

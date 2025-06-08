@@ -5,6 +5,7 @@ use crate::task_set::task::{task_set_task_repository, task_set_task_service};
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetModel, TaskSetUpdateModel};
 use crate::task_set::task_set_repository;
+use crate::terminal::terminal_contracts::TerminalRestartContract;
 use crate::terminal::terminal_enums::TerminalShellStatus;
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::terminal_service;
@@ -32,6 +33,15 @@ pub async fn get_one(id: Uuid) -> Result<TaskSetContract> {
 	let task_set_contract = TaskSetContract::from(tasks, task_set_model);
 
 	Ok(task_set_contract)
+}
+
+pub async fn get_one_info(id: Uuid) -> Result<TaskSetInfoContract> {
+	let task_set_info_model = task_set_repository::get_one_info(id).await?;
+	let task_ids = task_set_task_repository::get_all_task_ids(id).await?;
+
+	let task_set_info_contract = TaskSetInfoContract::from(task_set_info_model, task_ids);
+
+	Ok(task_set_info_contract)
 }
 
 pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskSetInfoContract>> {
@@ -109,6 +119,12 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 		..TerminalFilter::default()
 	};
 
+	/*
+	TODO somehow the task_set_id and fields that could change need to be updated. Not sure if it makes
+	sense to do this with two calls to first update the status e.g. to restarting and the task_set_id
+	to display the status in the UI. Or to set all fields except the status when doing the restart
+	 */
+	
 	terminal_service::restart_schedule(&filter).await?;
 
 	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::Restart).await?;
@@ -125,11 +141,12 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 
 		let app_handle_clone = app_handle.clone();
 		let create_contract = task_set_task_service::build_terminal_create_contract(project_id, &task_set_task_info).await?;
+		let restart_contract = task_set_task_service::build_terminal_restart_contract(&task_set_task_info).await?;
 		let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task_info).await?;
 
 		let successful = match (is_terminal_existing, task_set_task_info.blocking) {
-			(true, false) => terminal_service::shell_restart_first(&filter, spawn_contract).await.map(|_| true)?,
-			(true, true) => terminal_service::shell_restart_first_blocking(&filter, spawn_contract).await?,
+			(true, false) => terminal_service::restart_first(&app_handle, &filter, restart_contract, spawn_contract).await.map(|_| true)?,
+			(true, true) => terminal_service::restart_first_blocking(&app_handle_clone, &filter, restart_contract, spawn_contract).await?,
 			(false, false) => terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract))
 				.await
 				.map(|_| true)?,
