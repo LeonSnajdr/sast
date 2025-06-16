@@ -8,13 +8,11 @@ use uuid::Uuid;
 use crate::prelude::*;
 use crate::task_set::session::task_set_session_contracts::TaskSetSessionContract;
 use crate::task_set::session::task_set_session_enums::{TaskSetSessionKind, TaskSetSessionStatus, TaskSetSessionTaskStatus};
-use crate::task_set::session::task_set_session_events::{
-	TaskSetSessionStartedEvent, TaskSetSessionTaskStatusChangedEvent, TaskSetSessionTaskStatusChangedEventData,
-};
+use crate::task_set::session::task_set_session_events::{TaskSetSessionStartedEvent, TaskSetSessionUpdatedEvent};
 use crate::task_set::session::task_set_session_filters::TaskSetSessionFilter;
 use crate::task_set::session::task_set_session_models::{TaskSetSessionModel, TaskSetSessionTaskModel};
 use crate::task_set::session::task_set_session_repository;
-use crate::task_set::task::task_set_task_models::{TaskSetTaskInfoModel, TaskSetTaskModel};
+use crate::task_set::task::task_set_task_models::TaskSetTaskInfoModel;
 
 pub async fn get_many(filter: &TaskSetSessionFilter) -> Result<Vec<TaskSetSessionContract>> {
 	let sessions = task_set_session_repository::get_many_info(filter).await?;
@@ -24,7 +22,21 @@ pub async fn get_many(filter: &TaskSetSessionFilter) -> Result<Vec<TaskSetSessio
 	Ok(contracts)
 }
 
-pub async fn start(app_handle: &AppHandle, project_id: &Uuid, task_set_id: &Uuid, task_set_tasks: &Vec<TaskSetTaskInfoModel>, kind: TaskSetSessionKind) -> Result<Uuid> {
+pub async fn get_one(id: &Uuid) -> Result<TaskSetSessionContract> {
+	let session = task_set_session_repository::get_one_info(id).await?;
+
+	let contract = TaskSetSessionContract::from(session);
+
+	Ok(contract)
+}
+
+pub async fn start(
+	app_handle: &AppHandle,
+	project_id: &Uuid,
+	task_set_id: &Uuid,
+	task_set_tasks: &Vec<TaskSetTaskInfoModel>,
+	kind: TaskSetSessionKind,
+) -> Result<Uuid> {
 	let project_id = project_id.clone();
 	let task_set_id = task_set_id.clone();
 	let task_set_tasks = task_set_tasks.clone();
@@ -45,7 +57,7 @@ pub async fn finish(app_handle: &AppHandle, session_id: &Uuid) -> Result<()> {
 	for task_session in session.tasks.write().await.iter_mut() {
 		let mut task_session_status = task_session.status.write().await;
 		let mut task_session_date_finished = task_session.date_finished.write().await;
-		
+
 		match *task_session_status {
 			TaskSetSessionTaskStatus::NotStarted => {
 				*task_session_status = TaskSetSessionTaskStatus::Skipped;
@@ -100,12 +112,7 @@ pub async fn start_task(app_handle: &AppHandle, task_set_session_id: &Uuid, task
 		*task.date_started.write().await = Some(Utc::now());
 		*task.status.write().await = TaskSetSessionTaskStatus::Running;
 
-		let _ = TaskSetSessionTaskStatusChangedEvent(TaskSetSessionTaskStatusChangedEventData {
-			task_set_session_id: task_set_session_id.clone(),
-			task_id: task_id.clone(),
-			status: TaskSetSessionTaskStatus::Running,
-		})
-		.emit(app_handle);
+		let _ = TaskSetSessionUpdatedEvent(task_set_session_id.clone()).emit(app_handle);
 	}
 
 	Ok(())
@@ -119,12 +126,7 @@ pub async fn finish_task(app_handle: &AppHandle, task_set_session_id: &Uuid, tas
 		*task.date_finished.write().await = Some(Utc::now());
 		*task.status.write().await = status.clone();
 
-		let _ = TaskSetSessionTaskStatusChangedEvent(TaskSetSessionTaskStatusChangedEventData {
-			task_set_session_id: task_set_session_id.clone(),
-			task_id: task_id.clone(),
-			status,
-		})
-		.emit(app_handle);
+		let _ = TaskSetSessionUpdatedEvent(task_set_session_id.clone()).emit(app_handle);
 	}
 
 	Ok(())

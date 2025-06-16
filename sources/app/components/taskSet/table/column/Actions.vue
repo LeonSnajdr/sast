@@ -1,7 +1,21 @@
 <template>
     <div @click.prevent.stop class="d-flex">
-        <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal || !hasTasks" :loading="isStarting" color="success" icon="mdi-play" />
-        <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal || isStarting || isStopping" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        <BaseBtnIcon @click="start()" :disabled="!isStartable" :loading="isStarting" class="tooltip-events" color="success" icon="mdi-play">
+            <VTooltip v-if="!isStartable && !isStarting" activator="parent">
+                <p>{{ $t("taskSet.action.start.disabled") }}</p>
+                <p v-if="hasRunningTerminal">- {{ $t("taskSet.action.start.disabled.hasRunningTerminal") }}</p>
+                <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
+                <p v-if="!hasTasks">- {{ $t("taskSet.action.start.disabled.hasTasks") }}</p>
+            </VTooltip>
+        </BaseBtnIcon>
+        <BaseBtnIcon @click="restart()" :disabled="!isRestartable" :loading="isRestarting" class="tooltip-events" color="info" icon="mdi-autorenew">
+            <VTooltip v-if="!isRestartable && !isRestarting" activator="parent">
+                <p>{{ $t("taskSet.action.restart.disabled") }}</p>
+                <p v-if="!hasRunningTerminal">- {{ $t("taskSet.action.restart.disabled.hasNoRunningTerminal") }}</p>
+                <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
+                <p v-if="isStarting || isStopping">- {{ $t("taskSet.action.restart.disabled.otherAction") }}</p>
+            </VTooltip>
+        </BaseBtnIcon>
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
 </template>
@@ -22,6 +36,14 @@ const { sessions } = storeToRefs(taskSetSessionStore);
 
 const isStopping = ref(false);
 
+const isStartable = computed(() => {
+    return !hasRunningTerminal.value && !hasRunningTaskSetSession.value && hasTasks.value;
+});
+
+const isRestartable = computed(() => {
+    return hasRunningTerminal.value && !isStarting.value && !isStopping.value && !hasRunningTaskSetSession.value;
+});
+
 const hasTasks = computed(() => {
     return props.taskSet.taskIds.length > 0;
 });
@@ -29,6 +51,10 @@ const hasTasks = computed(() => {
 const hasRunningTerminal = computed(() => {
     return terminals.value.some((x) => (x.task ? props.taskSet.taskIds.includes(x.task.id) : false));
 });
+
+const hasRunningTaskSetSession = computed(() =>
+    sessions.value.some(({ tasks }) => tasks.some(({ status, taskId }) => ["NotStarted", "Running"].includes(status) && props.taskSet.taskIds.includes(taskId)))
+);
 
 const start = async () => {
     const startResult = await commands.taskSetStartOne(props.taskSet.projectId, props.taskSet.id);

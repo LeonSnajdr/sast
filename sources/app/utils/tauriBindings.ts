@@ -324,6 +324,14 @@ async taskSetSessionGetMany(filter: TaskSetSessionFilter) : Promise<Result<TaskS
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async taskSetSessionGetOne(id: string) : Promise<Result<TaskSetSessionContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_session_get_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -333,7 +341,7 @@ async taskSetSessionGetMany(filter: TaskSetSessionFilter) : Promise<Result<TaskS
 export const events = __makeEvents__<{
 taskSetSessionFinishedEvent: TaskSetSessionFinishedEvent,
 taskSetSessionStartedEvent: TaskSetSessionStartedEvent,
-taskSetSessionTaskStatusChangedEvent: TaskSetSessionTaskStatusChangedEvent,
+taskSetSessionUpdatedEvent: TaskSetSessionUpdatedEvent,
 terminalClosedEvent: TerminalClosedEvent,
 terminalCreatedEvent: TerminalCreatedEvent,
 terminalShellReadEvent: TerminalShellReadEvent,
@@ -342,7 +350,7 @@ terminalUpdatedEvent: TerminalUpdatedEvent
 }>({
 taskSetSessionFinishedEvent: "task-set-session-finished-event",
 taskSetSessionStartedEvent: "task-set-session-started-event",
-taskSetSessionTaskStatusChangedEvent: "task-set-session-task-status-changed-event",
+taskSetSessionUpdatedEvent: "task-set-session-updated-event",
 terminalClosedEvent: "terminal-closed-event",
 terminalCreatedEvent: "terminal-created-event",
 terminalShellReadEvent: "terminal-shell-read-event",
@@ -380,15 +388,14 @@ export type TaskSetContract = { id: string; projectId: string; name: string; dat
 export type TaskSetCreateContract = { projectId: string; name: string }
 export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; taskIds: string[] }
 export type TaskSetSessionContract = { id: string; projectId: string; taskSetId: string; kind: TaskSetSessionKind; dateStarted: string; dateFinished: string | null; status: TaskSetSessionStatus; tasks: TaskSetSessionTaskContract[] }
-export type TaskSetSessionFilter = { projectId: string | null; taskSetId: string | null }
+export type TaskSetSessionFilter = { id: string | null; projectId: string | null; taskSetId: string | null }
 export type TaskSetSessionFinishedEvent = string
 export type TaskSetSessionKind = "Start" | "Restart"
 export type TaskSetSessionStartedEvent = string
 export type TaskSetSessionStatus = "Running" | "Failed" | "Completed"
 export type TaskSetSessionTaskContract = { taskId: string; taskName: string; dateStarted: string | null; dateFinished: string | null; status: TaskSetSessionTaskStatus }
 export type TaskSetSessionTaskStatus = "NotStarted" | "Running" | "Skipped" | "Failed" | "Completed"
-export type TaskSetSessionTaskStatusChangedEvent = TaskSetSessionTaskStatusChangedEventData
-export type TaskSetSessionTaskStatusChangedEventData = { taskSetSessionId: string; taskId: string; status: TaskSetSessionTaskStatus }
+export type TaskSetSessionUpdatedEvent = string
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }

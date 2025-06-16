@@ -26,7 +26,7 @@ let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
 
 let unlistenTaskSetSessionStartedEvent: UnlistenFn;
 let unlistenTaskSetSessionFinishedEvent: UnlistenFn;
-let unlistenTaskSetSessionTaskStatusChangedEvent: UnlistenFn;
+let unlistenTaskSetSessionTaskUpdatedEvent: UnlistenFn;
 
 onBeforeMount(async () => {
     await projectStore.openProject(route.params.id);
@@ -46,7 +46,7 @@ onBeforeUnmount(() => {
     unlistenTerminalShellStatusChangedEvent();
     unlistenTaskSetSessionStartedEvent();
     unlistenTaskSetSessionFinishedEvent();
-    unlistenTaskSetSessionTaskStatusChangedEvent();
+    unlistenTaskSetSessionTaskUpdatedEvent();
 });
 
 const loadTerminals = async () => {
@@ -80,9 +80,8 @@ const loadTaskSetSessions = async () => {
         taskSetSessionStore.loadAll();
     });
 
-    unlistenTaskSetSessionTaskStatusChangedEvent = await events.taskSetSessionTaskStatusChangedEvent.listen((eventData) => {
-        // TODO do not a full reload here
-        taskSetSessionStore.loadAll();
+    unlistenTaskSetSessionTaskUpdatedEvent = await events.taskSetSessionUpdatedEvent.listen((eventData) => {
+        taskSetSessionStore.updated(eventData.payload);
     });
 };
 </script>

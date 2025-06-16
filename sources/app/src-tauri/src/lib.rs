@@ -65,7 +65,8 @@ pub fn run() {
 			task_set_start_one,
 			task_set_restart_one,
 			task_set_stop_one,
-			task_set_session_get_many
+			task_set_session_get_many,
+			task_set_session_get_one
 		])
 		.events(collect_events![
 			TerminalClosedEvent,
@@ -75,7 +76,7 @@ pub fn run() {
 			TerminalShellReadEvent,
 			TaskSetSessionStartedEvent,
 			TaskSetSessionFinishedEvent,
-			TaskSetSessionTaskStatusChangedEvent
+			TaskSetSessionUpdatedEvent
 		]);
 
 	#[cfg(debug_assertions)]

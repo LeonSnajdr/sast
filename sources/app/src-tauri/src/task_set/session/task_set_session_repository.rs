@@ -54,51 +54,52 @@ pub async fn get_many_info(filter: &TaskSetSessionFilter) -> Result<Vec<TaskSetS
 	let mut info_models = Vec::new();
 	for session in sessions.iter().cloned() {
 		if matches_filter(&session, filter).await {
-			let tasks = session.tasks.read().await;
-			let mut task_infos = Vec::with_capacity(tasks.len());
-
-			for task in tasks.iter() {
-				task_infos.push(TaskSetSessionTaskInfoModel {
-					task_id: task.task_id,
-					task_name: task.task_name.clone(),
-					date_started: task.date_started.read().await.clone(),
-					date_finished: task.date_finished.read().await.clone(),
-					status: task.status.read().await.clone(),
-				});
-			}
-
-			info_models.push(TaskSetSessionInfoModel {
-				id: session.id,
-				project_id: session.project_id,
-				task_set_id: session.task_set_id,
-				kind: session.kind.clone(),
-				date_started: session.date_started,
-				date_finished: session.date_finished.read().await.clone(),
-				status: session.status.read().await.clone(),
-				tasks: task_infos,
-			});
+			let info_model = to_info_model(&session).await;
+			info_models.push(info_model);
 		}
 	}
 
 	Ok(info_models)
 }
 
-pub async fn get_is_existing(filter: &TaskSetSessionFilter) -> Result<bool> {
-	let exists = get_first(filter).await?.is_some();
-	Ok(exists)
+pub async fn get_one_info(id: &Uuid) -> Result<TaskSetSessionInfoModel> {
+	let session = get_one(id).await?;
+
+	let info_model = to_info_model(&session).await;
+	
+	Ok(info_model)
 }
 
-pub async fn delete_one(id: &Uuid) -> Result<()> {
-	let mut sessions = STATE.write().await;
-	if let Some(pos) = sessions.iter().position(|s| s.id == *id) {
-		sessions.remove(pos);
+async fn to_info_model(session: &Arc<TaskSetSessionModel>) -> TaskSetSessionInfoModel {
+	let tasks = session.tasks.read().await;
+	let mut task_infos = Vec::with_capacity(tasks.len());
+
+	for task in tasks.iter() {
+		task_infos.push(TaskSetSessionTaskInfoModel {
+			task_id: task.task_id,
+			task_name: task.task_name.clone(),
+			date_started: task.date_started.read().await.clone(),
+			date_finished: task.date_finished.read().await.clone(),
+			status: task.status.read().await.clone(),
+		});
 	}
-	Ok(())
+
+	TaskSetSessionInfoModel {
+		id: session.id,
+		project_id: session.project_id,
+		task_set_id: session.task_set_id,
+		kind: session.kind.clone(),
+		date_started: session.date_started,
+		date_finished: session.date_finished.read().await.clone(),
+		status: session.status.read().await.clone(),
+		tasks: task_infos,
+	}
 }
 
 async fn matches_filter(terminal: &Arc<TaskSetSessionModel>, filter: &TaskSetSessionFilter) -> bool {
+	let matches_id = filter.id.map_or(true, |id| terminal.id == id);
 	let matches_project_id = filter.project_id.map_or(true, |id| terminal.project_id == id);
 	let matches_task_set_id = filter.task_set_id.map_or(true, |id| terminal.task_set_id == id);
 
-	matches_project_id && matches_task_set_id
+	matches_id && matches_project_id && matches_task_set_id
 }
