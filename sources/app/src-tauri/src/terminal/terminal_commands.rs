@@ -17,6 +17,14 @@ pub async fn terminal_create(app_handle: AppHandle, create_contract: TerminalCre
 
 #[tauri::command]
 #[specta::specta]
+pub async fn terminal_get_one_info(id: Uuid) -> Result<TerminalInfoContract> {
+	let result = terminal_service::get_one_info(&id).await?;
+
+	Ok(result)
+}
+
+#[tauri::command]
+#[specta::specta]
 pub async fn terminal_get_many_info(filter: TerminalFilter) -> Result<Vec<TerminalInfoContract>> {
 	let result = terminal_service::get_many_info(&filter).await?;
 

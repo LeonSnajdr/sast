@@ -39,6 +39,7 @@ pub fn run() {
 			terminal_create,
 			terminal_shell_write,
 			terminal_get_one_open,
+			terminal_get_one_info,
 			terminal_replace_history,
 			terminal_get_many_info,
 			terminal_shell_resize,

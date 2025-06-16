@@ -109,6 +109,14 @@ async terminalGetOneOpen(id: string) : Promise<Result<TerminalOpenContract, Erro
     else return { status: "error", error: e  as any };
 }
 },
+async terminalGetOneInfo(id: string) : Promise<Result<TerminalInfoContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("terminal_get_one_info", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async terminalReplaceHistory(id: string, history: string) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("terminal_replace_history", { id, history }) };
@@ -396,8 +404,7 @@ export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "NoneManually" | "NoneSuccessfully" | "Running" | "Restarting" | { Crashed: { code: number; message: string } }
 export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
 export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
-export type TerminalUpdatedEvent = TerminalUpdatedEventData
-export type TerminalUpdatedEventData = { id: string; name: string; taskSetId: string | null }
+export type TerminalUpdatedEvent = string
 
 /** tauri-specta globals **/
 

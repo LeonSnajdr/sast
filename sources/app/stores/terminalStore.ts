@@ -11,7 +11,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskIds: null, shellStatus: null });
+        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id } as TerminalFilter);
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
@@ -22,12 +22,17 @@ export const useTerminalStore = defineStore("terminal", () => {
         terminals.value = sessionInfoResult.data;
     };
 
-    const updated = async (update: TerminalUpdatedEventData) => {
-        const terminal = terminals.value.find((x) => x.id === update.id);
+    const updated = async (id: string) => {
+        const infoResult = await commands.terminalGetOneInfo(id);
 
-        if (!terminal) return;
+        if (infoResult.status === "error") {
+            notify.error(t("action.load.error", { type: t("terminal.singular") }), { error: infoResult.error });
+            return;
+        }
 
-        lodAssign(terminal, update);
+        const terminal = terminals.value.find((x) => x.id === id);
+
+        lodAssign(terminal, infoResult.data);
     };
 
     const statusChanged = async (update: TerminalShellStatusChangedEventData) => {

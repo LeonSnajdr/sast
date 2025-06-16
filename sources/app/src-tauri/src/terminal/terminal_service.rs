@@ -9,6 +9,7 @@ use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::{terminal_repository, Terminal};
 use tauri::AppHandle;
 use uuid::Uuid;
+use crate::terminal::terminal_models::TerminalInfoModel;
 
 pub async fn create(app_handle: AppHandle, create_contract: TerminalCreateContract, spawn_contract: Option<ShellSpawnContract>) -> Result<Uuid> {
 	let terminal = Terminal::create(app_handle, create_contract).await?;
@@ -128,23 +129,37 @@ pub async fn get_is_existing(filter: &TerminalFilter) -> bool {
 	terminal_repository::get_is_existing(filter).await
 }
 
+pub async fn get_one_info(id: &Uuid) -> Result<TerminalInfoContract> {
+	let terminal = terminal_repository::get_one_info(id).await?;
+	let contract = to_info_contract(terminal).await?;
+	
+	Ok(contract)
+}
+
 pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoContract>> {
 	let terminals = terminal_repository::get_many_info(filter).await?;
 	let mut terminal_infos = Vec::new();
 
 	for terminal in terminals {
-		let task = match terminal.task_id {
-			Some(task_id) => Some(task_service::get_one_info(task_id).await?),
-			None => None,
-		};
-
-		let task_set = match terminal.task_set_id {
-			Some(task_set_id) => Some(task_set_service::get_one_info(task_set_id).await?),
-			None => None,
-		};
-
-		terminal_infos.push(TerminalInfoContract::from(terminal, task, task_set));
+		let contract = to_info_contract(terminal).await?;
+		terminal_infos.push(contract);
 	}
 
 	Ok(terminal_infos)
+}
+
+pub async fn to_info_contract(terminal: TerminalInfoModel) -> Result<TerminalInfoContract> {
+	let task = match terminal.task_id {
+		Some(task_id) => Some(task_service::get_one_info(task_id).await?),
+		None => None,
+	};
+
+	let task_set = match terminal.task_set_id {
+		Some(task_set_id) => Some(task_set_service::get_one_info(task_set_id).await?),
+		None => None,
+	};
+
+	let contract = TerminalInfoContract::from(terminal, task, task_set);
+	
+	Ok(contract)
 }

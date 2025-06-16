@@ -7,6 +7,7 @@ use once_cell::sync::Lazy;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use uuid::Uuid;
+use crate::terminal::terminal_contracts::TerminalInfoContract;
 
 static STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	terminals: RwLock::new(Vec::new()),
@@ -72,22 +73,35 @@ pub async fn get_many(filter: &TerminalFilter) -> Result<Vec<Arc<Terminal>>> {
 	Ok(filtered_terminals)
 }
 
+pub async fn get_one_info(id: &Uuid) -> Result<TerminalInfoModel> {
+	let terminal = get_one(id).await?;
+	
+	let info_model = to_info_model(&terminal).await;
+	
+	Ok(info_model)	
+}
+
 pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoModel>> {
 	let terminals = get_many(filter).await?;
 
 	let mut info_models = Vec::new();
 	for terminal in terminals.iter() {
-		info_models.push(TerminalInfoModel {
-			id: terminal.id,
-			name: terminal.meta.name.read().await.clone(),
-			project_id: terminal.meta.project_id,
-			task_id: terminal.meta.task_id,
-			task_set_id: terminal.meta.task_set_id.read().await.clone(),
-			shell_status: terminal.shell_status.read().await.clone(),
-		})
+		let info_model = to_info_model(terminal).await;
+		info_models.push(info_model)
 	}
 
 	Ok(info_models)
+}
+
+async fn to_info_model(terminal: &Arc<Terminal>) ->  TerminalInfoModel {
+	TerminalInfoModel {
+		id: terminal.id,
+		name: terminal.meta.name.read().await.clone(),
+		project_id: terminal.meta.project_id,
+		task_id: terminal.meta.task_id,
+		task_set_id: terminal.meta.task_set_id.read().await.clone(),
+		shell_status: terminal.shell_status.read().await.clone(),
+	}
 }
 
 async fn matches_filter(terminal: &Arc<Terminal>, filter: &TerminalFilter) -> bool {

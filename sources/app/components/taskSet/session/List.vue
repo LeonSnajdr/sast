@@ -14,8 +14,8 @@
         </VListItem>
     </DefineSessionTask>
 
-    <VList v-if="selectedSession">
-        <VListSubheader v-if="!alwaysShowLatestRun">
+    <VList>
+        <VListSubheader v-if="selectedSession && !alwaysShowLatestRun">
             <VSelect
                 v-model="selectedSessionId"
                 @click:clear="selectedSessionId = LATEST"
@@ -30,7 +30,7 @@
                 persistentClear
             />
         </VListSubheader>
-        <template v-for="sessionTask in selectedSession.tasks" :key="sessionTask.taskId">
+        <template v-for="sessionTask in selectedSession?.tasks" :key="sessionTask.taskId">
             <SessionTask v-if="sessionTask.status === 'NotStarted'" :sessionTask color="secondary" icon="mdi-checkbox-blank-circle-outline">
                 {{ $t("taskSetSession.task.status.notStarted") }}
             </SessionTask>
@@ -55,10 +55,11 @@
                 {{ $t("taskSetSession.task.status.skipped") }}
             </SessionTask>
         </template>
+
+        <VListItem v-if="!selectedSession">
+            {{ $t("search.noResults") }}
+        </VListItem>
     </VList>
-    <VEmptyState v-else height="50">
-        {{ $t("search.noResults") }}
-    </VEmptyState>
 </template>
 
 <script setup lang="ts">
