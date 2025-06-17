@@ -11,6 +11,8 @@ const props = defineProps<{
     taskSet: TaskSetCreateContract;
 }>();
 
+const taskSetStore = useTaskSetStore();
+
 const notify = useNotify();
 const { t } = useI18n();
 
@@ -30,6 +32,8 @@ const createTaskSet = async () => {
 
     notify.success(t("action.create.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 
-    emit("created");
+    taskSetStore.loadAll();
+
+    emit("created", createResult.data);
 };
 </script>

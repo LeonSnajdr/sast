@@ -109,6 +109,14 @@ async terminalGetOneOpen(id: string) : Promise<Result<TerminalOpenContract, Erro
     else return { status: "error", error: e  as any };
 }
 },
+async terminalGetOneInfo(id: string) : Promise<Result<TerminalInfoContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("terminal_get_one_info", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async terminalReplaceHistory(id: string, history: string) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("terminal_replace_history", { id, history }) };
@@ -308,6 +316,22 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
     if(e instanceof Error) throw e;
     else return { status: "error", error: e  as any };
 }
+},
+async taskSetSessionGetMany(filter: TaskSetSessionFilter) : Promise<Result<TaskSetSessionContract[], Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_session_get_many", { filter }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskSetSessionGetOne(id: string) : Promise<Result<TaskSetSessionContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_session_get_one", { id }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
 }
 }
 
@@ -315,15 +339,23 @@ async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
 
 
 export const events = __makeEvents__<{
+taskSetSessionFinishedEvent: TaskSetSessionFinishedEvent,
+taskSetSessionStartedEvent: TaskSetSessionStartedEvent,
+taskSetSessionUpdatedEvent: TaskSetSessionUpdatedEvent,
 terminalClosedEvent: TerminalClosedEvent,
 terminalCreatedEvent: TerminalCreatedEvent,
 terminalShellReadEvent: TerminalShellReadEvent,
-terminalShellStatusChangedEvent: TerminalShellStatusChangedEvent
+terminalShellStatusChangedEvent: TerminalShellStatusChangedEvent,
+terminalUpdatedEvent: TerminalUpdatedEvent
 }>({
+taskSetSessionFinishedEvent: "task-set-session-finished-event",
+taskSetSessionStartedEvent: "task-set-session-started-event",
+taskSetSessionUpdatedEvent: "task-set-session-updated-event",
 terminalClosedEvent: "terminal-closed-event",
 terminalCreatedEvent: "terminal-created-event",
 terminalShellReadEvent: "terminal-shell-read-event",
-terminalShellStatusChangedEvent: "terminal-shell-status-changed-event"
+terminalShellStatusChangedEvent: "terminal-shell-status-changed-event",
+terminalUpdatedEvent: "terminal-updated-event"
 })
 
 /** user-defined constants **/
@@ -355,21 +387,31 @@ export type TaskInfoContract = { id: string; projectId: string; name: string; da
 export type TaskSetContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskSetCreateContract = { projectId: string; name: string }
 export type TaskSetInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string; taskIds: string[] }
+export type TaskSetSessionContract = { id: string; projectId: string; taskSetId: string; kind: TaskSetSessionKind; dateStarted: string; dateFinished: string | null; status: TaskSetSessionStatus; tasks: TaskSetSessionTaskContract[] }
+export type TaskSetSessionFilter = { id: string | null; projectId: string | null; taskSetId: string | null }
+export type TaskSetSessionFinishedEvent = string
+export type TaskSetSessionKind = "Start" | "Restart"
+export type TaskSetSessionStartedEvent = string
+export type TaskSetSessionStatus = "Running" | "Failed" | "Completed"
+export type TaskSetSessionTaskContract = { taskId: string; taskName: string; dateStarted: string | null; dateFinished: string | null; status: TaskSetSessionTaskStatus }
+export type TaskSetSessionTaskStatus = "NotStarted" | "Running" | "Skipped" | "Failed" | "Completed"
+export type TaskSetSessionUpdatedEvent = string
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TerminalClosedEvent = string
-export type TerminalCreateContract = { projectId: string; taskId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
+export type TerminalCreateContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
 export type TerminalCreatedEvent = string
 export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null; shellStatus: TerminalShellStatus[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
-export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; name: string; shellStatus: TerminalShellStatus }
+export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; taskSet: TaskSetInfoContract | null; name: string; shellStatus: TerminalShellStatus }
 export type TerminalOpenContract = { history: string; shellSize: ShellSizeContract }
 export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "NoneManually" | "NoneSuccessfully" | "Running" | "Restarting" | { Crashed: { code: number; message: string } }
 export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
 export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
+export type TerminalUpdatedEvent = string
 
 /** tauri-specta globals **/
 

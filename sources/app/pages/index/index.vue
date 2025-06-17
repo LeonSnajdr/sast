@@ -75,14 +75,14 @@ onBeforeMount(async () => {
 
     const isInitialMount = router.options.history.state.back === null;
     if (isInitialMount && !setting.value.behaviorOpenWelcome && lastOpenedProject.value) {
-        await navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value.id } });
+        await navigateTo({ name: "index-project-id", params: { id: lastOpenedProject.value.id } });
     }
 
     ready.value = true;
 });
 
 const openLastProject = () => {
-    navigateTo({ name: "index-project-id-home", params: { id: lastOpenedProject.value!.id } });
+    navigateTo({ name: "index-project-id", params: { id: lastOpenedProject.value!.id } });
 };
 
 const openSetting = () => {

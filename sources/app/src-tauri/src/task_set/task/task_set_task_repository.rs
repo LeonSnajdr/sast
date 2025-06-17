@@ -77,6 +77,7 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoModel>
                 t.name as task_name,
                 t.date_created as "task_date_created: DateTime<Utc>",
                 t.date_last_updated as "task_date_last_updated: DateTime<Utc>",
+                tst.task_set_id as "task_set_id: Uuid",
             	tst.blocking
             from task_set_task as tst
             join task as t on t.id = tst.task_id

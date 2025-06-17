@@ -15,10 +15,10 @@ use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContr
 use crate::terminal::shell::shell_enums::ShellKillReason;
 use crate::terminal::shell::shell_events::{ShellOutputEvent, ShellOutputEventData};
 use crate::terminal::shell::Shell;
-use crate::terminal::terminal_contracts::TerminalCreateContract;
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalRestartContract};
 use crate::terminal::terminal_events::{
 	TerminalClosedEvent, TerminalCreatedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellStatusChangedEvent,
-	TerminalShellStatusChangedEventData,
+	TerminalShellStatusChangedEventData, TerminalUpdatedEvent,
 };
 
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
@@ -32,7 +32,7 @@ use uuid::Uuid;
 pub struct Terminal {
 	pub id: Uuid,
 	pub meta: Arc<TerminalMeta>,
-	pub behavior: Arc<RwLock<TerminalBehavior>>,
+	pub behavior: Arc<TerminalBehavior>,
 	pub history: Arc<RwLock<String>>,
 	pub shell_status: Arc<RwLock<TerminalShellStatus>>,
 	app_handle: Arc<AppHandle>,
@@ -42,14 +42,15 @@ pub struct Terminal {
 }
 
 pub struct TerminalMeta {
-	pub name: String,
+	pub name: RwLock<String>,
 	pub project_id: Uuid,
 	pub task_id: Option<Uuid>,
+	pub task_set_id: RwLock<Option<Uuid>>,
 	pub shell_size: RwLock<ShellSizeContract>,
 }
 
 pub struct TerminalBehavior {
-	pub history_persistence: TerminalHistoryPersistence,
+	pub history_persistence: RwLock<TerminalHistoryPersistence>,
 }
 
 impl Terminal {
@@ -57,9 +58,9 @@ impl Terminal {
 		let (sender, mut receiver) = mpsc::channel::<ShellOutputEvent>(100);
 		let id = Uuid::new_v4();
 		let app_handle = Arc::new(app_handle);
-		let behavior = Arc::new(RwLock::new(TerminalBehavior {
-			history_persistence: spawn_contract.history_persistence,
-		}));
+		let behavior = Arc::new(TerminalBehavior {
+			history_persistence: RwLock::new(spawn_contract.history_persistence),
+		});
 		let shell = Arc::new(RwLock::new(None::<Shell>));
 		let history = Arc::new(RwLock::new(String::new()));
 		let shell_status = Arc::new(RwLock::new(TerminalShellStatus::None));
@@ -102,7 +103,7 @@ impl Terminal {
 							ShellKillReason::Error { code, message } => TerminalShellStatus::Crashed { code, message },
 						};
 
-						let persist_terminal = match (behavior_clone.read().await.history_persistence.clone(), reason.clone()) {
+						let persist_terminal = match (behavior_clone.history_persistence.read().await.clone(), reason.clone()) {
 							(_, ShellKillReason::Restart) => true,
 							(TerminalHistoryPersistence::Always, _) => true,
 							(TerminalHistoryPersistence::OnSuccess, ShellKillReason::Success) => true,
@@ -140,9 +141,11 @@ impl Terminal {
 		});
 
 		let meta = TerminalMeta {
-			name: spawn_contract.name.unwrap_or("PowerShell".to_string()),
+			// TODO do not hardcode it here since it also used in restart
+			name: RwLock::new(spawn_contract.name.unwrap_or("PowerShell".to_string())),
 			project_id: spawn_contract.project_id,
 			task_id: spawn_contract.task_id,
+			task_set_id: RwLock::new(spawn_contract.task_set_id),
 			shell_size: RwLock::new(ShellSizeContract::default()),
 		};
 
@@ -163,6 +166,18 @@ impl Terminal {
 		TerminalCreatedEvent(id).emit(app_handle.as_ref()).map_err(|_| Error::EventEmit)?;
 
 		Ok(created_terminal)
+	}
+
+	pub async fn update(&self, restart_contract: TerminalRestartContract) -> Result<()> {
+		let name = restart_contract.name.unwrap_or("PowerShell".to_string());
+
+		*self.meta.name.write().await = name.clone();
+		*self.behavior.history_persistence.write().await = restart_contract.history_persistence;
+		*self.meta.task_set_id.write().await = restart_contract.task_set_id;
+
+		let _ = TerminalUpdatedEvent(self.id).emit(self.app_handle.as_ref());
+
+		Ok(())
 	}
 
 	pub async fn replace_history(&self, history: String) -> Result<()> {

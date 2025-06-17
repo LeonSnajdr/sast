@@ -1,7 +1,21 @@
 <template>
     <div @click.prevent.stop class="d-flex">
-        <BaseBtnIcon @click="start()" :disabled="hasRunningTerminal" :loading="isStarting" color="success" icon="mdi-play" />
-        <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal || isStarting || isStopping" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        <BaseBtnIcon @click="start()" :disabled="!isStartable" :loading="isStarting" class="tooltip-events" color="success" icon="mdi-play">
+            <VTooltip v-if="!isStartable && !isStarting" activator="parent">
+                <p>{{ $t("taskSet.action.start.disabled") }}</p>
+                <p v-if="!hasTasks">- {{ $t("taskSet.action.start.disabled.hasTasks") }}</p>
+                <p v-if="hasRunningTerminal">- {{ $t("taskSet.action.start.disabled.hasRunningTerminal") }}</p>
+                <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
+            </VTooltip>
+        </BaseBtnIcon>
+        <BaseBtnIcon @click="restart()" :disabled="!isRestartable" :loading="isRestarting" class="tooltip-events" color="info" icon="mdi-autorenew">
+            <VTooltip v-if="!isRestartable && !isRestarting" activator="parent">
+                <p>{{ $t("taskSet.action.restart.disabled") }}</p>
+                <p v-if="isStarting || isStopping">- {{ $t("taskSet.action.restart.disabled.otherAction") }}</p>
+                <p v-if="!hasRunningTerminal">- {{ $t("taskSet.action.restart.disabled.hasNoRunningTerminal") }}</p>
+                <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
+            </VTooltip>
+        </BaseBtnIcon>
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
 </template>
@@ -15,46 +29,66 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const terminalStore = useTerminalStore();
+const taskSetSessionStore = useTaskSetSessionStore();
 
 const { terminals } = storeToRefs(terminalStore);
+const { sessions } = storeToRefs(taskSetSessionStore);
 
-const isStarting = ref(false);
 const isStopping = ref(false);
-const isRestarting = ref(false);
+
+const isStartable = computed(() => {
+    return !hasRunningTerminal.value && !hasRunningTaskSetSession.value && hasTasks.value;
+});
+
+const isRestartable = computed(() => {
+    return hasRunningTerminal.value && !isStarting.value && !isStopping.value && !hasRunningTaskSetSession.value;
+});
+
+const hasTasks = computed(() => {
+    return props.taskSet.taskIds.length > 0;
+});
 
 const hasRunningTerminal = computed(() => {
     return terminals.value.some((x) => (x.task ? props.taskSet.taskIds.includes(x.task.id) : false));
 });
 
-const start = async () => {
-    isStarting.value = true;
+const hasRunningTaskSetSession = computed(() =>
+    sessions.value.some(({ tasks }) => tasks.some(({ status, taskId }) => ["NotStarted", "Running"].includes(status) && props.taskSet.taskIds.includes(taskId)))
+);
 
-    const startResult = await commands.taskSetStartOne(props.taskSet.projectId, props.taskSet.id);
+const start = async () => {
+    const startPromise = commands.taskSetStartOne(props.taskSet.projectId, props.taskSet.id);
+
+    notify.success(t("action.start.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    const startResult = await startPromise;
 
     if (startResult.status === "error") {
         notify.error(t("action.start.error", { type: t("taskSet.singular"), name: props.taskSet.name }), { error: startResult.error });
         return;
     }
-
-    notify.success(t("action.start.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
-
-    isStarting.value = false;
 };
 
-const restart = async () => {
-    isRestarting.value = true;
+const isStarting = computed(() => {
+    return sessions.value.some((session) => session.taskSetId === props.taskSet.id && session.status === "Running" && session.kind == "Start");
+});
 
-    const restartResult = await commands.taskSetRestartOne(props.taskSet.projectId, props.taskSet.id);
+const restart = async () => {
+    const restartPromise = commands.taskSetRestartOne(props.taskSet.projectId, props.taskSet.id);
+
+    notify.success(t("action.restart.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    const restartResult = await restartPromise;
 
     if (restartResult.status === "error") {
         notify.error(t("action.restart.error", { type: t("taskSet.singular"), name: props.taskSet.name }), { error: restartResult.error });
         return;
     }
-
-    notify.success(t("action.restart.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
-
-    isRestarting.value = false;
 };
+
+const isRestarting = computed(() => {
+    return sessions.value.some((session) => session.taskSetId === props.taskSet.id && session.status === "Running" && session.kind == "Restart");
+});
 
 const stop = async () => {
     isStopping.value = true;

@@ -1,5 +1,5 @@
 <template>
-    <VMenu activator="parent" openOnHover>
+    <VMenu :openDelay="0" activator="parent" openOnHover>
         <VList maxHeight="400" maxWidth="400">
             <VListItem v-for="project in allProjects" :key="project.id" @click="switchProject(project)">
                 <VListItemTitle>

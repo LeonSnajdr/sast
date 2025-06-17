@@ -11,7 +11,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id, id: null, taskIds: null, shellStatus: null });
+        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id } as TerminalFilter);
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
@@ -22,17 +22,30 @@ export const useTerminalStore = defineStore("terminal", () => {
         terminals.value = sessionInfoResult.data;
     };
 
-    const statusChanged = async (id: string, status: TerminalShellStatus) => {
+    const updated = async (id: string) => {
+        const infoResult = await commands.terminalGetOneInfo(id);
+
+        if (infoResult.status === "error") {
+            notify.error(t("action.load.error", { type: t("terminal.singular") }), { error: infoResult.error });
+            return;
+        }
+
         const terminal = terminals.value.find((x) => x.id === id);
 
-        if (terminal) {
-            terminal.shellStatus = status;
-        }
+        lodAssign(terminal, infoResult.data);
+    };
+
+    const statusChanged = async (update: TerminalShellStatusChangedEventData) => {
+        const terminal = terminals.value.find((x) => x.id === update.id);
+
+        if (!terminal) return;
+
+        terminal.shellStatus = update.status;
     };
 
     const closed = async (id: string) => {
         terminals.value = terminals.value.filter((x) => x.id !== id);
     };
 
-    return { isLoading, terminals, loadAll, statusChanged, closed };
+    return { isLoading, terminals, loadAll, updated, statusChanged, closed };
 });

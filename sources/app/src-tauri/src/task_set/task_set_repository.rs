@@ -33,6 +33,28 @@ pub async fn create(create_model: TaskSetModel) -> Result<TaskSetModel> {
 	Ok(task_set)
 }
 
+pub async fn get_one_info(id: Uuid) -> Result<TaskSetInfoModel> {
+	let task_set_info = sqlx::query_as!(
+		TaskSetInfoModel,
+		r#"--sql
+            select
+                id as "id: Uuid",
+                project_id as "project_id: Uuid",
+                name,
+                date_created as "date_created: DateTime<Utc>",
+                date_last_updated as "date_last_updated: DateTime<Utc>"
+            from task_set
+            where id is $1
+        "#,
+		id
+	)
+		.fetch_one(db::get_pool())
+		.await
+		.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(task_set_info)
+}
+
 pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskSetInfoModel>> {
 	let task_sets = sqlx::query_as!(
 		TaskSetInfoModel,

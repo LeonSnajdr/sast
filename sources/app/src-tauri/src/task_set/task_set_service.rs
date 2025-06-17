@@ -1,4 +1,7 @@
 use crate::prelude::*;
+use crate::task_set::session::task_set_session_enums::{TaskSetSessionKind, TaskSetSessionTaskStatus};
+use crate::task_set::session::task_set_session_service;
+use crate::task_set::task::task_set_task_models::TaskSetTaskInfoModel;
 use crate::task_set::task::{task_set_task_repository, task_set_task_service};
 use crate::task_set::task_set_contracts::{TaskSetContract, TaskSetCreateContract, TaskSetInfoContract, TaskSetUpdateContract};
 use crate::task_set::task_set_models::{TaskSetModel, TaskSetUpdateModel};
@@ -30,6 +33,15 @@ pub async fn get_one(id: Uuid) -> Result<TaskSetContract> {
 	let task_set_contract = TaskSetContract::from(tasks, task_set_model);
 
 	Ok(task_set_contract)
+}
+
+pub async fn get_one_info(id: Uuid) -> Result<TaskSetInfoContract> {
+	let task_set_info_model = task_set_repository::get_one_info(id).await?;
+	let task_ids = task_set_task_repository::get_all_task_ids(id).await?;
+
+	let task_set_info_contract = TaskSetInfoContract::from(task_set_info_model, task_ids);
+
+	Ok(task_set_info_contract)
 }
 
 pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskSetInfoContract>> {
@@ -65,30 +77,32 @@ pub async fn delete_one(id: Uuid) -> Result<()> {
 }
 
 pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
-	let task_set_tasks = task_set_task_repository::get_all(task_set_id).await?;
+	let task_set_task_infos = task_set_task_repository::get_all_info(task_set_id).await?;
 
-	for task_set_task in task_set_tasks {
-		let app_handle_clone = app_handle.clone();
-		let create_contract = task_set_task_service::build_terminal_create_contract(project_id, &task_set_task).await?;
-		let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task).await?;
+	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::Start).await?;
 
-		if task_set_task.blocking {
-			let successful = terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?;
-			if !successful {
-				break;
-			}
-		} else {
-			terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract)).await?;
+	for task_set_task_info in task_set_task_infos {
+		task_set_session_service::start_task(&app_handle, &session_id, &task_set_task_info.task_id).await?;
+
+		let successful = start_task_set_task(&app_handle, &project_id, &task_set_task_info).await?;
+
+		if !successful {
+			task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Failed).await?;
+			break;
 		}
+
+		task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Completed).await?;
 	}
+
+	task_set_session_service::finish(&app_handle, &session_id).await?;
 
 	Ok(())
 }
 
 pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
-	let task_set_tasks = task_set_task_repository::get_all(task_set_id).await?;
+	let task_set_task_infos = task_set_task_repository::get_all_info(task_set_id).await?;
 
-	let task_ids = task_set_tasks.iter().map(|task_set_task| task_set_task.task_id).collect::<Vec<Uuid>>();
+	let task_ids = task_set_task_infos.iter().map(|task_set_task| task_set_task.task_id).collect::<Vec<Uuid>>();
 
 	let filter = TerminalFilter {
 		task_ids: Some(task_ids),
@@ -97,36 +111,30 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 
 	terminal_service::restart_schedule(&filter).await?;
 
-	for task_set_task in task_set_tasks.iter() {
+	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::Restart).await?;
+
+	for task_set_task_info in task_set_task_infos.iter() {
+		task_set_session_service::start_task(&app_handle, &session_id, &task_set_task_info.task_id).await?;
+
 		let filter = TerminalFilter {
-			task_ids: Some(vec![task_set_task.task_id]),
+			task_ids: Some(vec![task_set_task_info.task_id]),
 			..TerminalFilter::default()
 		};
 
 		let is_terminal_existing = terminal_service::get_is_existing(&filter).await;
 
-		let app_handle_clone = app_handle.clone();
-		let create_contract = task_set_task_service::build_terminal_create_contract(project_id, &task_set_task).await?;
-		let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task).await?;
-
-		match (is_terminal_existing, task_set_task.blocking) {
-			(true, false) => terminal_service::shell_restart_first(&filter, spawn_contract).await?,
-			(true, true) => {
-				let successful = terminal_service::shell_restart_first_blocking(&filter, spawn_contract).await?;
-				if !successful {
-					break;
-				}
-			}
-			(false, false) => terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract))
-				.await
-				.map(|_| ())?,
-			(false, true) => {
-				let successful = terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await?;
-				if !successful {
-					break;
-				}
-			}
+		let successful = if is_terminal_existing {
+			restart_task_set_task(&filter, task_set_task_info).await?
+		} else {
+			start_task_set_task(&app_handle, &project_id, &task_set_task_info).await?
 		};
+
+		if !successful {
+			task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Failed).await?;
+			break;
+		}
+
+		task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Completed).await?;
 	}
 
 	let restarting_filter = TerminalFilter {
@@ -135,8 +143,32 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 	};
 
 	terminal_service::close_many(&restarting_filter).await?;
+	task_set_session_service::finish(&app_handle, &session_id).await?;
 
 	Ok(())
+}
+
+async fn start_task_set_task(app_handle: &AppHandle, project_id: &Uuid, task_set_task_info: &TaskSetTaskInfoModel) -> Result<bool> {
+	let app_handle_clone = app_handle.clone();
+	let create_contract = task_set_task_service::build_terminal_create_contract(project_id.clone(), &task_set_task_info).await?;
+	let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task_info).await?;
+
+	if task_set_task_info.blocking {
+		terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await
+	} else {
+		terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract)).await.map(|_| true)
+	}
+}
+
+async fn restart_task_set_task(filter: &TerminalFilter, task_set_task_info: &TaskSetTaskInfoModel) -> Result<bool> {
+	let restart_contract = task_set_task_service::build_terminal_restart_contract(&task_set_task_info).await?;
+	let spawn_contract = task_set_task_service::build_shell_spawn_contract(&task_set_task_info).await?;
+
+	if task_set_task_info.blocking {
+		terminal_service::restart_first_blocking(filter, restart_contract, spawn_contract).await
+	} else {
+		terminal_service::restart_first(filter, restart_contract, spawn_contract).await.map(|_| true)
+	}
 }
 
 pub async fn stop_one(task_set_id: Uuid) -> Result<()> {

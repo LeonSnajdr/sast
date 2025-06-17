@@ -1,13 +1,15 @@
 use crate::prelude::*;
 use crate::task::task_service;
+use crate::task_set::task_set_service;
 use crate::terminal::shell::shell_contracts::{ShellSizeContract, ShellSpawnContract};
 use crate::terminal::shell::shell_enums::ShellKillReason;
-use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract, TerminalOpenContract};
+use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalInfoContract, TerminalOpenContract, TerminalRestartContract};
 use crate::terminal::terminal_enums::TerminalShellStatus;
 use crate::terminal::terminal_filters::TerminalFilter;
 use crate::terminal::{terminal_repository, Terminal};
 use tauri::AppHandle;
 use uuid::Uuid;
+use crate::terminal::terminal_models::TerminalInfoModel;
 
 pub async fn create(app_handle: AppHandle, create_contract: TerminalCreateContract, spawn_contract: Option<ShellSpawnContract>) -> Result<Uuid> {
 	let terminal = Terminal::create(app_handle, create_contract).await?;
@@ -91,27 +93,32 @@ pub async fn restart_schedule(filter: &TerminalFilter) -> Result<()> {
 	for terminal in terminals {
 		terminal.shell_kill(ShellKillReason::Restart).await;
 
-		// This is needed if the shell already crashed before the restart. This should be reworked but is fine for now.
+		/*
+		This is needed if the shell already crashed before the restart. This should be reworked but is fine for now.
+		The status update is never sent to the client it's just for internal cleanup later on
+		 */
 		*terminal.shell_status.write().await = TerminalShellStatus::Restarting;
 	}
 
 	Ok(())
 }
 
-pub async fn shell_restart_first_blocking(filter: &TerminalFilter, spawn_contract: ShellSpawnContract) -> Result<bool> {
+pub async fn restart_first_blocking(filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<bool> {
 	let terminal = terminal_repository::get_first(filter).await;
 
 	if let Some(terminal) = terminal {
+		terminal.update(restart_contract).await?;
 		return terminal.shell_restart_blocking(spawn_contract).await;
 	}
 
 	Ok(true)
 }
 
-pub async fn shell_restart_first(filter: &TerminalFilter, spawn_contract: ShellSpawnContract) -> Result<()> {
+pub async fn restart_first(filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<()> {
 	let terminal = terminal_repository::get_first(filter).await;
 
 	if let Some(terminal) = terminal {
+		terminal.update(restart_contract).await?;
 		terminal.shell_restart(spawn_contract).await;
 	}
 
@@ -122,18 +129,37 @@ pub async fn get_is_existing(filter: &TerminalFilter) -> bool {
 	terminal_repository::get_is_existing(filter).await
 }
 
+pub async fn get_one_info(id: &Uuid) -> Result<TerminalInfoContract> {
+	let terminal = terminal_repository::get_one_info(id).await?;
+	let contract = to_info_contract(terminal).await?;
+	
+	Ok(contract)
+}
+
 pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoContract>> {
 	let terminals = terminal_repository::get_many_info(filter).await?;
 	let mut terminal_infos = Vec::new();
 
 	for terminal in terminals {
-		let task = match terminal.task_id {
-			Some(task_id) => Some(task_service::get_one_info(task_id).await?),
-			None => None,
-		};
-
-		terminal_infos.push(TerminalInfoContract::from(terminal, task));
+		let contract = to_info_contract(terminal).await?;
+		terminal_infos.push(contract);
 	}
 
 	Ok(terminal_infos)
+}
+
+pub async fn to_info_contract(terminal: TerminalInfoModel) -> Result<TerminalInfoContract> {
+	let task = match terminal.task_id {
+		Some(task_id) => Some(task_service::get_one_info(task_id).await?),
+		None => None,
+	};
+
+	let task_set = match terminal.task_set_id {
+		Some(task_set_id) => Some(task_set_service::get_one_info(task_set_id).await?),
+		None => None,
+	};
+
+	let contract = TerminalInfoContract::from(terminal, task, task_set);
+	
+	Ok(contract)
 }

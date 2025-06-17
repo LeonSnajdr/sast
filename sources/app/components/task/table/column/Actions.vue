@@ -3,7 +3,7 @@
         <TaskActionStart :task />
         <TaskActionRestart :task />
         <TaskActionStop :task />
-        <TaskActionTerminalLink :task />
+        <TaskActionTerminalLink :taskId="task.id" />
     </div>
 </template>
 

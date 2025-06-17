@@ -23,6 +23,7 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
+const taskSetStore = useTaskSetStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
@@ -55,6 +56,8 @@ const saveTaskSet = async () => {
     }
 
     notify.success(t("action.save.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    taskSetStore.loadAll();
 
     navigateTo({ name: "index-project-id-taskSet", params: { id: selectedProject.value.id } });
 };

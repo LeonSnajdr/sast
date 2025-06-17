@@ -11,6 +11,9 @@ pub struct TerminalClosedEvent(pub Uuid);
 pub struct TerminalCreatedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
+pub struct TerminalUpdatedEvent(pub Uuid);
+
+#[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
 pub struct TerminalShellStatusChangedEvent(pub TerminalShellStatusChangedEventData);
 
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]

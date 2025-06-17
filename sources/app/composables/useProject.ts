@@ -30,9 +30,9 @@ export default function useProject() {
             return match.meta.projectSwitchName != undefined;
         });
 
-        const name = match ? match.meta.projectSwitchName : "index-project-id-home";
+        const name = match ? match.meta.projectSwitchName : "index-project-id";
 
-        await navigateTo({ name: name as "/", params: { id: project.id } });
+        await navigateTo({ name: name as "index", params: { id: project.id } });
     };
 
     return { isProjectLoading, project, loadProject, switchProject };

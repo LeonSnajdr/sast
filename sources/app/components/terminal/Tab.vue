@@ -6,10 +6,10 @@
     >
         <template #prepend>
             <div class="d-flex ga-1">
-                <VBadge :color="indicator.color" location="bottom right" offsetX="-2" offsetY="-2" dot>
+                <TerminalShellStatusBadge :shellStatus="terminal.shellStatus" offsetX="-2" offsetY="-2">
                     <VIcon color="info" icon="mdi-powershell" />
-                    <VTooltip v-if="indicator.tooltip" :text="indicator.tooltip" activator="parent" location="left" />
-                </VBadge>
+                </TerminalShellStatusBadge>
+
                 <VBtn v-if="terminal.task" @click.prevent.stop size="20" variant="plain">
                     <VIcon icon="mdi-checkbox-marked-circle-outline" size="small" />
                     <VMenu activator="parent" openOnHover>
@@ -32,23 +32,9 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
     terminal: TerminalInfoContract;
 }>();
 
 const route = useRoute("index-project-id-terminal-terminalId");
-
-const indicator = computed(() => {
-    const status = props.terminal.shellStatus;
-
-    if (typeof status === "object" && "Crashed" in status) {
-        return { color: "error", tooltip: `${status.Crashed.code} ${status.Crashed.message}` };
-    } else if (status == "Restarting") {
-        return { color: "warning" };
-    } else if (status == "Running") {
-        return { color: "success" };
-    }
-
-    return { color: undefined };
-});
 </script>
