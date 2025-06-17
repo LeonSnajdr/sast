@@ -168,14 +168,14 @@ impl Terminal {
 		Ok(created_terminal)
 	}
 
-	pub async fn update(&self, app_handle: &AppHandle, restart_contract: TerminalRestartContract) -> Result<()> {
+	pub async fn update(&self, restart_contract: TerminalRestartContract) -> Result<()> {
 		let name = restart_contract.name.unwrap_or("PowerShell".to_string());
 
 		*self.meta.name.write().await = name.clone();
 		*self.behavior.history_persistence.write().await = restart_contract.history_persistence;
 		*self.meta.task_set_id.write().await = restart_contract.task_set_id;
 
-		let _ = TerminalUpdatedEvent(self.id).emit(app_handle);
+		let _ = TerminalUpdatedEvent(self.id).emit(self.app_handle.as_ref());
 
 		Ok(())
 	}

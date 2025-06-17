@@ -3,17 +3,17 @@
         <BaseBtnIcon @click="start()" :disabled="!isStartable" :loading="isStarting" class="tooltip-events" color="success" icon="mdi-play">
             <VTooltip v-if="!isStartable && !isStarting" activator="parent">
                 <p>{{ $t("taskSet.action.start.disabled") }}</p>
+                <p v-if="!hasTasks">- {{ $t("taskSet.action.start.disabled.hasTasks") }}</p>
                 <p v-if="hasRunningTerminal">- {{ $t("taskSet.action.start.disabled.hasRunningTerminal") }}</p>
                 <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
-                <p v-if="!hasTasks">- {{ $t("taskSet.action.start.disabled.hasTasks") }}</p>
             </VTooltip>
         </BaseBtnIcon>
         <BaseBtnIcon @click="restart()" :disabled="!isRestartable" :loading="isRestarting" class="tooltip-events" color="info" icon="mdi-autorenew">
             <VTooltip v-if="!isRestartable && !isRestarting" activator="parent">
                 <p>{{ $t("taskSet.action.restart.disabled") }}</p>
+                <p v-if="isStarting || isStopping">- {{ $t("taskSet.action.restart.disabled.otherAction") }}</p>
                 <p v-if="!hasRunningTerminal">- {{ $t("taskSet.action.restart.disabled.hasNoRunningTerminal") }}</p>
                 <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
-                <p v-if="isStarting || isStopping">- {{ $t("taskSet.action.restart.disabled.otherAction") }}</p>
             </VTooltip>
         </BaseBtnIcon>
         <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
@@ -57,14 +57,16 @@ const hasRunningTaskSetSession = computed(() =>
 );
 
 const start = async () => {
-    const startResult = await commands.taskSetStartOne(props.taskSet.projectId, props.taskSet.id);
+    const startPromise = commands.taskSetStartOne(props.taskSet.projectId, props.taskSet.id);
+
+    notify.success(t("action.start.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    const startResult = await startPromise;
 
     if (startResult.status === "error") {
         notify.error(t("action.start.error", { type: t("taskSet.singular"), name: props.taskSet.name }), { error: startResult.error });
         return;
     }
-
-    notify.success(t("action.start.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 };
 
 const isStarting = computed(() => {
@@ -72,14 +74,16 @@ const isStarting = computed(() => {
 });
 
 const restart = async () => {
-    const restartResult = await commands.taskSetRestartOne(props.taskSet.projectId, props.taskSet.id);
+    const restartPromise = commands.taskSetRestartOne(props.taskSet.projectId, props.taskSet.id);
+
+    notify.success(t("action.restart.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    const restartResult = await restartPromise;
 
     if (restartResult.status === "error") {
         notify.error(t("action.restart.error", { type: t("taskSet.singular"), name: props.taskSet.name }), { error: restartResult.error });
         return;
     }
-
-    notify.success(t("action.restart.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
 };
 
 const isRestarting = computed(() => {

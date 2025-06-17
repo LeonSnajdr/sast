@@ -171,7 +171,7 @@ pub async fn build_shell_spawn_contract(task_id: Uuid) -> Result<ShellSpawnContr
 	Ok(shell_spawn_contract)
 }
 
-pub async fn restart_one(app_handle: AppHandle, task_id: Uuid) -> Result<()> {
+pub async fn restart_one(task_id: Uuid) -> Result<()> {
 	let filter = TerminalFilter {
 		task_ids: Some(vec![task_id]),
 		..TerminalFilter::default()
@@ -180,7 +180,7 @@ pub async fn restart_one(app_handle: AppHandle, task_id: Uuid) -> Result<()> {
 	let restart_contract = build_terminal_restart_contract(task_id).await?;
 	let spawn_contract = build_shell_spawn_contract(task_id).await?;
 
-	terminal_service::restart_first(&app_handle, &filter, restart_contract, spawn_contract).await?;
+	terminal_service::restart_first(&filter, restart_contract, spawn_contract).await?;
 
 	Ok(())
 }

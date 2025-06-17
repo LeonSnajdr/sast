@@ -7,7 +7,6 @@ use once_cell::sync::Lazy;
 use std::sync::Arc;
 use tokio::sync::RwLock;
 use uuid::Uuid;
-use crate::terminal::terminal_contracts::TerminalInfoContract;
 
 static STATE: Lazy<PtyState> = Lazy::new(|| PtyState {
 	terminals: RwLock::new(Vec::new()),
@@ -75,10 +74,10 @@ pub async fn get_many(filter: &TerminalFilter) -> Result<Vec<Arc<Terminal>>> {
 
 pub async fn get_one_info(id: &Uuid) -> Result<TerminalInfoModel> {
 	let terminal = get_one(id).await?;
-	
+
 	let info_model = to_info_model(&terminal).await;
-	
-	Ok(info_model)	
+
+	Ok(info_model)
 }
 
 pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoModel>> {
@@ -93,7 +92,7 @@ pub async fn get_many_info(filter: &TerminalFilter) -> Result<Vec<TerminalInfoMo
 	Ok(info_models)
 }
 
-async fn to_info_model(terminal: &Arc<Terminal>) ->  TerminalInfoModel {
+async fn to_info_model(terminal: &Arc<Terminal>) -> TerminalInfoModel {
 	TerminalInfoModel {
 		id: terminal.id,
 		name: terminal.meta.name.read().await.clone(),

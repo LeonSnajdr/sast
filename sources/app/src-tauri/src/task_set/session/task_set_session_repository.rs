@@ -24,30 +24,6 @@ pub async fn get_one(id: &Uuid) -> Result<Arc<TaskSetSessionModel>> {
 	Ok(session)
 }
 
-pub async fn get_first(filter: &TaskSetSessionFilter) -> Result<Option<Arc<TaskSetSessionModel>>> {
-	let sessions = STATE.read().await;
-	for session in sessions.iter().cloned() {
-		if matches_filter(&session, filter).await {
-			return Ok(Some(session));
-		}
-	}
-
-	Ok(None)
-}
-
-pub async fn get_many(filter: &TaskSetSessionFilter) -> Result<Vec<Arc<TaskSetSessionModel>>> {
-	let sessions = STATE.read().await;
-
-	let mut filtered_sessions = Vec::new();
-	for session in sessions.iter().cloned() {
-		if matches_filter(&session, filter).await {
-			filtered_sessions.push(session);
-		}
-	}
-
-	Ok(filtered_sessions)
-}
-
 pub async fn get_many_info(filter: &TaskSetSessionFilter) -> Result<Vec<TaskSetSessionInfoModel>> {
 	let sessions = STATE.read().await;
 

@@ -1,5 +1,5 @@
 use crate::task_set::session::task_set_session_contracts::{TaskSetSessionContract, TaskSetSessionTaskContract};
-use crate::task_set::session::task_set_session_models::{TaskSetSessionInfoModel, TaskSetSessionTaskInfoModel, TaskSetSessionTaskModel};
+use crate::task_set::session::task_set_session_models::{TaskSetSessionInfoModel, TaskSetSessionTaskInfoModel};
 
 impl TaskSetSessionContract {
 	pub fn from(value: TaskSetSessionInfoModel) -> Self {

@@ -103,22 +103,22 @@ pub async fn restart_schedule(filter: &TerminalFilter) -> Result<()> {
 	Ok(())
 }
 
-pub async fn restart_first_blocking(app_handle: &AppHandle, filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<bool> {
+pub async fn restart_first_blocking(filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<bool> {
 	let terminal = terminal_repository::get_first(filter).await;
 
 	if let Some(terminal) = terminal {
-		terminal.update(app_handle, restart_contract).await?;
+		terminal.update(restart_contract).await?;
 		return terminal.shell_restart_blocking(spawn_contract).await;
 	}
 
 	Ok(true)
 }
 
-pub async fn restart_first(app_handle: &AppHandle, filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<()> {
+pub async fn restart_first(filter: &TerminalFilter, restart_contract: TerminalRestartContract, spawn_contract: ShellSpawnContract) -> Result<()> {
 	let terminal = terminal_repository::get_first(filter).await;
 
 	if let Some(terminal) = terminal {
-		terminal.update(app_handle, restart_contract).await?;
+		terminal.update(restart_contract).await?;
 		terminal.shell_restart(spawn_contract).await;
 	}
 
