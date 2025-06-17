@@ -19,6 +19,6 @@ const emptyElement: ProjectCreateContract = {
 };
 
 const projectCreated = (id: string) => {
-    navigateTo({ name: "index-project-id-home", params: { id } });
+    navigateTo({ name: "index-project-id", params: { id } });
 };
 </script>

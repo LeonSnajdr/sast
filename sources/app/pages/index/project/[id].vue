@@ -28,6 +28,13 @@ let unlistenTaskSetSessionStartedEvent: UnlistenFn;
 let unlistenTaskSetSessionFinishedEvent: UnlistenFn;
 let unlistenTaskSetSessionTaskUpdatedEvent: UnlistenFn;
 
+definePageMeta({
+    redirect(to) {
+        const id = (to.params as { id: string }).id;
+        return { name: "index-project-id-terminal", params: { id } };
+    }
+});
+
 onBeforeMount(async () => {
     await projectStore.openProject(route.params.id);
     await placeholderStore.loadAll();

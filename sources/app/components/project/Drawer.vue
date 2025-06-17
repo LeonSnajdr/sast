@@ -53,12 +53,6 @@ const { selectedProject } = storeToRefs(projectStore);
 const subPages = computed((): { icon: string; iconActive: string; name: string; to: RouteLocationRaw }[] => {
     return [
         {
-            icon: "mdi-home-outline",
-            iconActive: "mdi-home",
-            name: t("project.home"),
-            to: { name: "index-project-id-home", params: { id: selectedProject.value.id } }
-        },
-        {
             icon: "mdi-tab",
             iconActive: "mdi-tab",
             name: t("terminal.plural"),

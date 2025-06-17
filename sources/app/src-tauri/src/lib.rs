@@ -8,7 +8,6 @@ mod task;
 mod task_set;
 mod terminal;
 
-use specta_typescript::Typescript;
 use tauri::Manager;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
@@ -81,7 +80,7 @@ pub fn run() {
 
 	#[cfg(debug_assertions)]
 	builder
-		.export(Typescript::default(), "../utils/tauriBindings.ts")
+		.export(specta_typescript::Typescript::default(), "../utils/tauriBindings.ts")
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()
