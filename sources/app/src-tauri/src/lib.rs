@@ -80,7 +80,7 @@ pub fn run() {
 
 	#[cfg(debug_assertions)]
 	builder
-		.export(specta_typescript::Typescript::default(), "../utils/tauriBindings.ts")
+		.export(specta_typescript::Typescript::default(), "../app/utils/tauriBindings.ts")
 		.expect("Failed to export typescript bindings");
 
 	tauri::Builder::default()

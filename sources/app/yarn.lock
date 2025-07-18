@@ -2460,7 +2460,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nuxt/kit@npm:^3.12.4, @nuxt/kit@npm:^3.15.4, @nuxt/kit@npm:^3.17.6, @nuxt/kit@npm:^3.8.0, @nuxt/kit@npm:^3.9.0":
+"@nuxt/kit@npm:^3.12.4, @nuxt/kit@npm:^3.15.4, @nuxt/kit@npm:^3.17.6, @nuxt/kit@npm:^3.9.0":
   version: 3.17.7
   resolution: "@nuxt/kit@npm:3.17.7"
   dependencies:
@@ -3755,19 +3755,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash-es@npm:^4.17.10":
-  version: 4.17.12
-  resolution: "@types/lodash-es@npm:4.17.12"
-  dependencies:
-    "@types/lodash": "npm:*"
-  checksum: 10c0/5d12d2cede07f07ab067541371ed1b838a33edb3c35cb81b73284e93c6fd0c4bbeaefee984e69294bffb53f62d7272c5d679fdba8e595ff71e11d00f2601dde0
-  languageName: node
-  linkType: hard
-
-"@types/lodash@npm:*":
-  version: 4.17.16
-  resolution: "@types/lodash@npm:4.17.16"
-  checksum: 10c0/cf017901b8ab1d7aabc86d5189d9288f4f99f19a75caf020c0e2c77b8d4cead4db0d0b842d009b029339f92399f49f34377dd7c2721053388f251778b4c23534
+"@types/lodash@npm:^4":
+  version: 4.17.20
+  resolution: "@types/lodash@npm:4.17.20"
+  checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
   languageName: node
   linkType: hard
 
@@ -8391,7 +8382,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.17.15":
+"lodash@npm:^4.17.15, lodash@npm:^4.17.21":
   version: 4.17.21
   resolution: "lodash@npm:4.17.21"
   checksum: 10c0/d8cbea072bb08655bb4c989da418994b073a608dffa608b09ac04b43a791b12aeae7cd7ad919aa4c925f33b48490b5cfe6c1f71d827956071dae2e7bb3a6b74c
@@ -9147,6 +9138,7 @@ __metadata:
     "@tauri-apps/plugin-opener": "npm:^2.2.6"
     "@tauri-apps/plugin-process": "npm:^2.2.1"
     "@tauri-apps/plugin-updater": "npm:^2.7.1"
+    "@types/lodash": "npm:^4"
     "@vueuse/core": "npm:^13.5.0"
     "@vueuse/integrations": "npm:^13.5.0"
     "@vueuse/nuxt": "npm:^13.5.0"
@@ -9157,8 +9149,8 @@ __metadata:
     cspell: "npm:9.1.5"
     eslint: "npm:^9.31.0"
     fuse.js: "npm:^7.1.0"
+    lodash: "npm:^4.17.21"
     nuxt: "npm:^4.0.0"
-    nuxt-lodash: "npm:^2.5.3"
     pinia: "npm:^3.0.3"
     sass: "npm:^1.89.2"
     typescript: "npm:^5.8.3"
@@ -9174,17 +9166,6 @@ __metadata:
   version: 1.0.0
   resolution: "nuxt-define@npm:1.0.0"
   checksum: 10c0/f06341a4c792ac6de0e3447209542550d39a2892c9bfa62b3bfa131de613c6d314f5b410426a188d5ee0dfa89b85eefe32852163341e841eafbacb295e892ddc
-  languageName: node
-  linkType: hard
-
-"nuxt-lodash@npm:^2.5.3":
-  version: 2.5.3
-  resolution: "nuxt-lodash@npm:2.5.3"
-  dependencies:
-    "@nuxt/kit": "npm:^3.8.0"
-    "@types/lodash-es": "npm:^4.17.10"
-    lodash-es: "npm:^4.17.21"
-  checksum: 10c0/ec572a179960c98bb510c2a9c90e4175f2e07e0aa9b6ee6bd5a33e26b639c9495da9448c7c23f09853c1e023a57f9a438ea25d106568bea511d7d979e1200268
   languageName: node
   linkType: hard
 
