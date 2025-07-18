@@ -544,10 +544,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cspell/dict-de-de@npm:4.1.0":
-  version: 4.1.0
-  resolution: "@cspell/dict-de-de@npm:4.1.0"
-  checksum: 10c0/29dce09b0d6e94afe9ad955fd50698f7fee61456313276d05c11254dcade74aaf9784c654809e940d9a163d01c7d5675bc314d190fc877e2015bb6b4b82d0990
+"@cspell/dict-de-de@npm:4.1.1":
+  version: 4.1.1
+  resolution: "@cspell/dict-de-de@npm:4.1.1"
+  checksum: 10c0/19d4746551e262da045ed5f05a516ab4fc79d03e9517df0a32e84472c0b6236f4e032c410d33f4dd63caafb62b2ae92355207d289fac50046557b1e1739092f7
   languageName: node
   linkType: hard
 
@@ -9137,7 +9137,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
-    "@cspell/dict-de-de": "npm:4.1.0"
+    "@cspell/dict-de-de": "npm:4.1.1"
     "@nuxt/eslint": "npm:^1.3.1"
     "@nuxtjs/i18n": "npm:^9.5.4"
     "@pinia/nuxt": "npm:^0.11.0"
