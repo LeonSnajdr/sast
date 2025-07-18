@@ -3755,7 +3755,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4":
+"@types/lodash@npm:^4.17.20":
   version: 4.17.20
   resolution: "@types/lodash@npm:4.17.20"
   checksum: 10c0/98cdd0faae22cbb8079a01a3bb65aa8f8c41143367486c1cbf5adc83f16c9272a2a5d2c1f541f61d0d73da543c16ee1d21cf2ef86cb93cd0cc0ac3bced6dd88f
@@ -9138,7 +9138,7 @@ __metadata:
     "@tauri-apps/plugin-opener": "npm:^2.2.6"
     "@tauri-apps/plugin-process": "npm:^2.2.1"
     "@tauri-apps/plugin-updater": "npm:^2.7.1"
-    "@types/lodash": "npm:^4"
+    "@types/lodash": "npm:^4.17.20"
     "@vueuse/core": "npm:^13.5.0"
     "@vueuse/integrations": "npm:^13.5.0"
     "@vueuse/nuxt": "npm:^13.5.0"

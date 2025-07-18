@@ -38,7 +38,7 @@
     "@cspell/dict-de-de": "4.1.1",
     "@nuxt/eslint": "^1.6.0",
     "@tauri-apps/cli": "^2.5.0",
-    "@types/lodash": "^4",
+    "@types/lodash": "^4.17.20",
     "cspell": "9.1.5",
     "eslint": "^9.31.0",
     "sass": "^1.89.2",
