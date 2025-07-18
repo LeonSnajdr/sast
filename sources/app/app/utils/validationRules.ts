@@ -1,4 +1,4 @@
-import type { ValidationRule } from "vuetify/helpers";
+import type { ValidationRule } from "vuetify";
 
 export function required(message: string): ValidationRule {
     return (value: string) => {

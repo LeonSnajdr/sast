@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import type { RouteLocationRaw } from "vue-router";
-import type { DataTableHeader } from "vuetify/helpers";
+import type { DataTableHeader } from "vuetify";
 
 defineProps<{
     placeholders: PlaceholderContract[];
