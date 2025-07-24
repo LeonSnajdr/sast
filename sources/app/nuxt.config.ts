@@ -55,7 +55,9 @@ export default defineNuxtConfig({
                     { name: "filter", as: "lodFilter" },
                     { name: "union", as: "lodUnion" },
                     { name: "after", as: "lodAfter" },
-                    { name: "assign", as: "lodAssign" }
+                    { name: "assign", as: "lodAssign" },
+                    { name: "findLast", as: "lodFindLast" },
+                    { name: "remove", as: "lodRemove" }
                 ]
             }
         ]
