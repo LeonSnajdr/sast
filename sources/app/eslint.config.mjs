@@ -1,6 +1,6 @@
-import withNuxt from "./.nuxt/eslint.config.mjs";
+import { createConfigForNuxt } from "@nuxt/eslint-config";
 
-export default withNuxt({ ignores: ["utils/tauriBindings.ts"] })
+export default createConfigForNuxt({}, { ignores: ["app/utils/tauriBindings.ts"] })
     .override("nuxt/vue/rules", {
         rules: {
             "vue/multi-word-component-names": "off",

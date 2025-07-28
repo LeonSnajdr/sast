@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-    compatibilityDate: "2024-04-03",
+    compatibilityDate: "2025-07-21",
     devtools: { enabled: true },
     ssr: false,
     devServer: { host: process.env.TAURI_DEV_HOST || "localhost" },
@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     experimental: {
         typedPages: true
     },
-    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "nuxt-lodash", "@vueuse/nuxt"],
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "@vueuse/nuxt"],
     i18n: {
         locales: [
             {
@@ -38,10 +38,28 @@ export default defineNuxtConfig({
         },
         vuetifyOptions: "./vuetify.config.ts"
     },
-    lodash: {
-        prefix: "lod"
-    },
     vueuse: {
         autoImports: true
+    },
+    imports: {
+        presets: [
+            {
+                from: "lodash",
+                imports: [
+                    { name: "cloneDeep", as: "lodCloneDeep" },
+                    { name: "maxBy", as: "lodMaxBy" },
+                    { name: "orderBy", as: "lodOrderBy" },
+                    { name: "debounce", as: "lodDebounce" },
+                    { name: "trim", as: "lodTrim" },
+                    { name: "some", as: "lodSome" },
+                    { name: "filter", as: "lodFilter" },
+                    { name: "union", as: "lodUnion" },
+                    { name: "after", as: "lodAfter" },
+                    { name: "assign", as: "lodAssign" },
+                    { name: "findLast", as: "lodFindLast" },
+                    { name: "remove", as: "lodRemove" }
+                ]
+            }
+        ]
     }
 });
