@@ -156,7 +156,9 @@ async fn start_task_set_task(app_handle: &AppHandle, project_id: &Uuid, task_set
 	if task_set_task_info.blocking {
 		terminal_service::create_blocking(app_handle_clone, create_contract, spawn_contract).await
 	} else {
-		terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract)).await.map(|_| true)
+		terminal_service::create(app_handle_clone, create_contract, Some(spawn_contract))
+			.await
+			.map(|_| true)
 	}
 }
 

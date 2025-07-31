@@ -8,10 +8,24 @@ use uuid::Uuid;
 pub struct TerminalClosedEvent(pub Uuid);
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalCreatedEvent(pub Uuid);
+pub struct TerminalCreatedEvent(pub TerminalCreatedEventData);
+
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TerminalCreatedEventData {
+	pub id: Uuid,
+	pub jump_into: bool,
+}
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
-pub struct TerminalUpdatedEvent(pub Uuid);
+pub struct TerminalUpdatedEvent(pub TerminalUpdatedEventData);
+
+#[derive(Debug, Clone, Type, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TerminalUpdatedEventData {
+	pub id: Uuid,
+	pub jump_into: bool,
+}
 
 #[derive(Debug, Clone, Type, Event, Serialize, Deserialize)]
 pub struct TerminalShellStatusChangedEvent(pub TerminalShellStatusChangedEventData);

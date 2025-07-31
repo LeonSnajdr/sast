@@ -8,6 +8,7 @@ pub struct TaskSetTaskModel {
 	pub task_id: Uuid,
 	pub task_set_id: Uuid,
 	pub blocking: bool,
+	pub jump_into: bool,
 	pub position: i64,
 }
 
@@ -19,4 +20,5 @@ pub struct TaskSetTaskInfoModel {
 	pub task_date_last_updated: DateTime<Utc>,
 	pub task_set_id: Uuid,
 	pub blocking: bool,
+	pub jump_into: bool,
 }

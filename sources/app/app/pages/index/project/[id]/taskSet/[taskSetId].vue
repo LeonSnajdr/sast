@@ -29,7 +29,7 @@
         <div class="flex-grow-1 overflow-hidden">
             <Draggable v-model="taskSet.tasks" class="h-100 overflow-auto" handle=".drag-handle">
                 <VListItem
-                    v-for="taskSetTask in taskSet.tasks"
+                    v-for="(taskSetTask, index) in taskSet.tasks"
                     :key="taskSetTask.taskId"
                     @click="toggleTaskEditDrawer(taskSetTask.taskId)"
                     :active="taskSetTask.taskId === editTaskId"
@@ -47,9 +47,10 @@
                     </div>
                     <template #append>
                         <div class="d-flex ga-2 align-center">
-                            <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
+                            <!--<BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
                                 {{ $t("taskSetTask.field.blocking") }}
-                            </BaseChipSwitch>
+                            </BaseChipSwitch>-->
+                            <TaskSetTaskOptionToggle v-model="taskSet.tasks[index]!" />
                             <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
                     </template>

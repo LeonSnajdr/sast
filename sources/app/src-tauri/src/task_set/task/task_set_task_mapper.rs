@@ -10,6 +10,7 @@ impl TaskSetTaskInfoContract {
 			task_date_created: value.task_date_created,
 			task_date_last_updated: value.task_date_last_updated,
 			blocking: value.blocking,
+			jump_into: value.jump_into,
 		}
 	}
 }
@@ -21,6 +22,7 @@ impl TaskSetTaskModel {
 			task_id: value.task_id,
 			task_set_id,
 			blocking: value.blocking,
+			jump_into: value.jump_into,
 			position,
 		}
 	}

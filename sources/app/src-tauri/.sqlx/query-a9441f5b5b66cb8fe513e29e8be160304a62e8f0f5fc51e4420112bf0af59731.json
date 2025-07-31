@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                task_id as \"task_id: Uuid\",\n            \ttask_set_id as \"task_set_id: Uuid\",\n            \tblocking,\n            \tposition\n            from task_set_task\n            where task_set_id is $1\n\t\t\torder by position asc\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                task_id as \"task_id: Uuid\",\n            \ttask_set_id as \"task_set_id: Uuid\",\n            \tblocking,\n            \tposition,\n                jump_into\n            from task_set_task\n            where task_set_id is $1\n\t\t\torder by position asc\n        ",
   "describe": {
     "columns": [
       {
@@ -27,6 +27,11 @@
         "name": "position",
         "ordinal": 4,
         "type_info": "Integer"
+      },
+      {
+        "name": "jump_into",
+        "ordinal": 5,
+        "type_info": "Bool"
       }
     ],
     "parameters": {
@@ -37,8 +42,9 @@
       false,
       false,
       false,
+      false,
       false
     ]
   },
-  "hash": "b04340fbd03350d288b262640657532c5e03fa0566db4e39a487cbdccf52f153"
+  "hash": "a9441f5b5b66cb8fe513e29e8be160304a62e8f0f5fc51e4420112bf0af59731"
 }

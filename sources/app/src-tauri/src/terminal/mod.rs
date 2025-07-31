@@ -17,8 +17,8 @@ use crate::terminal::shell::shell_events::{ShellOutputEvent, ShellOutputEventDat
 use crate::terminal::shell::Shell;
 use crate::terminal::terminal_contracts::{TerminalCreateContract, TerminalRestartContract};
 use crate::terminal::terminal_events::{
-	TerminalClosedEvent, TerminalCreatedEvent, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellStatusChangedEvent,
-	TerminalShellStatusChangedEventData, TerminalUpdatedEvent,
+	TerminalClosedEvent, TerminalCreatedEvent, TerminalCreatedEventData, TerminalShellReadEvent, TerminalShellReadEventData, TerminalShellStatusChangedEvent,
+	TerminalShellStatusChangedEventData, TerminalUpdatedEvent, TerminalUpdatedEventData,
 };
 
 use crate::terminal::terminal_enums::{TerminalHistoryPersistence, TerminalShellStatus};
@@ -163,7 +163,13 @@ impl Terminal {
 		};
 
 		let created_terminal = terminal_repository::create_one(terminal).await?;
-		TerminalCreatedEvent(id).emit(app_handle.as_ref()).map_err(|_| Error::EventEmit)?;
+
+		TerminalCreatedEvent(TerminalCreatedEventData {
+			id,
+			jump_into: spawn_contract.jump_into,
+		})
+		.emit(app_handle.as_ref())
+		.map_err(|_| Error::EventEmit)?;
 
 		Ok(created_terminal)
 	}
@@ -175,7 +181,11 @@ impl Terminal {
 		*self.behavior.history_persistence.write().await = restart_contract.history_persistence;
 		*self.meta.task_set_id.write().await = restart_contract.task_set_id;
 
-		let _ = TerminalUpdatedEvent(self.id).emit(self.app_handle.as_ref());
+		let _ = TerminalUpdatedEvent(TerminalUpdatedEventData {
+			id: self.id,
+			jump_into: restart_contract.jump_into,
+		})
+		.emit(self.app_handle.as_ref());
 
 		Ok(())
 	}

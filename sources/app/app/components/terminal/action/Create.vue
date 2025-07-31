@@ -19,7 +19,8 @@ useKeybind(["control", "t"], () => createTerminal());
 const createTerminal = async () => {
     const createContract = {
         projectId: selectedProject.value.id,
-        historyPersistence: "OnError"
+        historyPersistence: "OnError",
+        jumpInto: true
     } as TerminalCreateContract;
 
     const spawnContract = {
@@ -35,7 +36,5 @@ const createTerminal = async () => {
         notify.error(t("action.create.error", { type: t("terminal.singular") }), { error: spawnResult.error });
         return;
     }
-
-    navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: spawnResult.data } });
 };
 </script>
