@@ -86,5 +86,6 @@
     $alert-border-opacity: 1,
 
     //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VBtn/_variables.scss
-    $button-density: ("default": -2, "comfortable": -3, "compact": -4)
+    $button-density: ("default": -2, "comfortable": -3, "compact": -4),
+    $button-font-size: 0.8rem
 );
