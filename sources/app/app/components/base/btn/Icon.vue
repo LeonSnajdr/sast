@@ -1,6 +1,6 @@
 <template>
-    <VBtn size="small" variant="text">
-        <VIcon v-if="icon" :color="iconColor" :icon="icon" size="large" />
+    <VBtn class="text-body-2" variant="text">
+        <VIcon v-if="icon" :color="iconColor" :icon="icon" />
         <slot />
     </VBtn>
 </template>

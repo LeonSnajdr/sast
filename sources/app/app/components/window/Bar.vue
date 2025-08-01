@@ -1,13 +1,13 @@
 <template>
     <VSystemBar style="z-index: 10000" data-tauri-drag-region window>
-        <BaseBtnIcon @click="$router.back()" icon="mdi-arrow-left" size="x-small" />
-        <BaseBtnIcon @click="$router.forward()" icon="mdi-arrow-right" size="x-small" />
+        <BaseBtnIcon @click="$router.back()" icon="mdi-arrow-left" size="small" />
+        <BaseBtnIcon @click="$router.forward()" icon="mdi-arrow-right" size="small" />
         <VSpacer />
-        <BaseBtnIcon @click="appWindow.minimize()" icon="mdi-minus" size="x-small" />
+        <BaseBtnIcon @click="appWindow.minimize()" icon="mdi-minus" size="small" />
         <BaseBtnIcon
             @click="appWindow.toggleMaximize()"
             :icon="isMaximized ? 'mdi-checkbox-multiple-blank-outline' : 'mdi-checkbox-blank-outline'"
-            size="x-small"
+            size="small"
         />
         <VHover v-slot="{ isHovering, props }">
             <BaseBtnIcon
@@ -16,7 +16,7 @@
                 :color="isHovering ? 'error' : ''"
                 :variant="isHovering ? 'flat' : 'text'"
                 icon="mdi-close"
-                size="x-small"
+                size="small"
             />
         </VHover>
     </VSystemBar>

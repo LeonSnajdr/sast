@@ -44,6 +44,7 @@
     $input-density: ("default": -4, "comfortable": -5, "compact": -6),
     $input-affix-margin-inside: 4px,
 
+    $button-density: ("default": -3, "comfortable": -4, "compact": -5),
     //https://github.com/vuetifyjs/vuetify/blob/master/packages/vuetify/src/components/VTooltip/_variables.scss
     $tooltip-transition-enter-duration: 50ms,
     $tooltip-transition-leave-duration: 0ms,

@@ -9,7 +9,7 @@
                     <ProjectMenuSelect />
                 </VListItemTitle>
                 <template #append>
-                    <BaseBtnIcon class="ml-2" icon="mdi-swap-horizontal" size="x-small">
+                    <BaseBtnIcon class="ml-2" icon="mdi-swap-horizontal" size="small">
                         <ProjectDialogSelect />
                         <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
                     </BaseBtnIcon>
