@@ -262,6 +262,9 @@ export default defineVuetifyConfiguration({
         },
         VBtn: {
             class: "text-none"
+        },
+        VBtnToggle: {
+            variant: "outlined"
         }
     }
 });

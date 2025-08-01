@@ -47,9 +47,6 @@
                     </div>
                     <template #append>
                         <div class="d-flex ga-2 align-center">
-                            <!--<BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
-                                {{ $t("taskSetTask.field.blocking") }}
-                            </BaseChipSwitch>-->
                             <TaskSetTaskOptionToggle v-model="taskSet.tasks[index]!" />
                             <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
@@ -138,7 +135,8 @@ const addTask = (task: { id: string; name: string; dateCreated: string; dateLast
         taskName: task.name,
         taskDateCreated: task.dateCreated,
         taskDateLastUpdated: task.dateLastUpdated,
-        blocking: false
+        blocking: false,
+        jumpInto: false
     });
 };
 

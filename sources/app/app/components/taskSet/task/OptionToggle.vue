@@ -1,5 +1,5 @@
 <template>
-    <VBtnToggle v-model="options" @click.stop.prevent density="compact" style="height: 28px" variant="outlined" multiple>
+    <VBtnToggle v-model="options" @click.stop.prevent density="compact" style="height: 28px" multiple>
         <VBtn :value="TaskSetTaskOptions.Blocking" v-tooltip="$t('taskSetTask.field.blocking.info')">
             <VIcon icon="mdi-timer-sand" />
         </VBtn>
