@@ -9,7 +9,7 @@
                 <slot name="content" />
             </VCardText>
             <VCardActions>
-                <BaseBtnIcon @click="isDialogOpen = false" variant="flat">{{ $t("action.close") }}</BaseBtnIcon>
+                <VBtn @click="isDialogOpen = false" variant="flat">{{ $t("action.close") }}</VBtn>
                 <slot name="actions" />
             </VCardActions>
         </VCard>

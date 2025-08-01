@@ -23,7 +23,7 @@
         </template>
         <template #expanded-row="{ columns, item }">
             <tr>
-                <td :colspan="columns.length" class="pr-0 pl-6">
+                <td :colspan="columns.length" class="pr-0">
                     <TaskSetSessionList :taskSetId="item.id" />
                 </td>
             </tr>

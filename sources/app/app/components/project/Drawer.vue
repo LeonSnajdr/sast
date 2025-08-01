@@ -9,10 +9,8 @@
                     <ProjectMenuSelect />
                 </VListItemTitle>
                 <template #append>
-                    <BaseBtnIcon class="ml-2" icon="mdi-swap-horizontal" size="small">
-                        <ProjectDialogSelect />
-                        <VTooltip activator="parent">{{ $t("project.drawer.select") }}</VTooltip>
-                    </BaseBtnIcon>
+                    <VIconBtn id="swap-btn" class="ml-2" icon="mdi-swap-horizontal" size="small" v-tooltip="$t('project.drawer.select')" />
+                    <ProjectDialogSelect activator="#swap-btn" />
                 </template>
             </VListItem>
             <VDivider />
@@ -24,18 +22,20 @@
         </VList>
         <template #append>
             <div class="px-2 pb-2 d-flex ga-2">
-                <BaseBtnIcon class="flex-grow-1" icon="mdi-plus" variant="tonal">
+                <VBtn class="flex-grow-1" variant="tonal">
+                    <VIcon icon="mdi-plus" />
                     <VTooltip activator="parent">{{ $t("action.create") }}</VTooltip>
                     <ProjectDialogCreate />
-                </BaseBtnIcon>
-                <BaseBtnIcon :to="{ name: 'index-setting-index-presentation' }" class="flex-grow-1" icon="mdi-cog" variant="tonal">
+                </VBtn>
+                <VBtn :to="{ name: 'index-setting-index-presentation' }" class="flex-grow-1" variant="tonal">
+                    <VIcon icon="mdi-cog" />
                     <VTooltip activator="parent">{{ $t("setting.title") }}</VTooltip>
-                </BaseBtnIcon>
+                </VBtn>
             </div>
             <div class="px-2 pb-2 d-flex">
-                <BaseBtnIcon @click="closeProject()" class="flex-grow-1" icon="mdi-close" variant="tonal">
+                <VBtn @click="closeProject()" class="flex-grow-1" prependIcon="mdi-close" variant="tonal">
                     {{ $t("action.close") }}
-                </BaseBtnIcon>
+                </VBtn>
             </div>
         </template>
     </VNavigationDrawer>

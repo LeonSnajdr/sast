@@ -4,7 +4,7 @@
             <VListItem height="48">
                 <slot name="title" />
                 <template #append>
-                    <BaseBtnIcon @click="isDrawerOpen = false" class="mr-2" icon="mdi-close">{{ $t("action.close") }}</BaseBtnIcon>
+                    <VBtn @click="isDrawerOpen = false" class="mr-2" prependIcon="mdi-close">{{ $t("action.close") }}</VBtn>
                     <slot name="actions" />
                 </template>
             </VListItem>

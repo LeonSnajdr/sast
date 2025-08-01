@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
+    <VIconBtn @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
 </template>
 
 <script setup lang="ts">

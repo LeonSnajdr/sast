@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon :loading="isDeleting" color="error" variant="flat">
+    <VBtn :loading="isDeleting" color="error" variant="flat">
         <BaseDialogConfirm
             @confirm="deleteProject()"
             :message="$t('action.delete.description', { type: $t('project.singular'), name: project.name })"
@@ -8,7 +8,7 @@
             iconColor="error"
         />
         {{ $t("action.delete") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">

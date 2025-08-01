@@ -1,15 +1,15 @@
 <template>
-    <BaseBtnIcon
+    <VBtn
         @click="saveTaskSet()"
         :disabled
         :loading="isLoading"
         color="success"
-        icon="mdi-content-save"
+        prependIcon="mdi-content-save"
         variant="flat"
         v-tooltip="$t('keybind.controlS.tooltip')"
     >
         {{ $t("action.save") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">

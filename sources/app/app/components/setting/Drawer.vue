@@ -15,9 +15,9 @@
         </VList>
         <template #append>
             <div class="d-flex pa-2">
-                <BaseBtnIcon @click="closeSetting()" class="flex-grow-1" icon="mdi-close" variant="tonal">
+                <VBtn @click="closeSetting()" class="flex-grow-1" prependIcon="mdi-close" variant="tonal">
                     {{ $t("action.close") }}
-                </BaseBtnIcon>
+                </VBtn>
             </div>
         </template>
     </VNavigationDrawer>

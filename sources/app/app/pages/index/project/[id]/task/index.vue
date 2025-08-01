@@ -1,10 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("task.plural") }}</VAppBarTitle>
-        <BaseBtnIcon icon="mdi-plus" variant="tonal">
+        <VBtn prependIcon="mdi-plus" variant="tonal">
             {{ $t("action.create") }}
             <TaskDialogCreate />
-        </BaseBtnIcon>
+        </VBtn>
     </VAppBar>
 
     <VContainer class="h-100">

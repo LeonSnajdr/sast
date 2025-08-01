@@ -20,9 +20,9 @@
             <VCardText class="d-flex ga-2 align-center">
                 <TaskSetTaskSearch @add="addTask" :taskSetTasks="taskSet.tasks" />
                 <VDivider vertical />
-                <BaseBtnIcon @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">
+                <VBtn @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" prependIcon="mdi-dock-right">
                     {{ $t("action.create") }} & {{ $t("action.add") }}
-                </BaseBtnIcon>
+                </VBtn>
             </VCardText>
         </VCard>
 
@@ -48,7 +48,7 @@
                     <template #append>
                         <div class="d-flex ga-2 align-center">
                             <TaskSetTaskOptionToggle v-model="taskSet.tasks[index]!" />
-                            <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
+                            <VIconBtn @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
                     </template>
                 </VListItem>

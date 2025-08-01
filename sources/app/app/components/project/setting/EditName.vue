@@ -9,9 +9,9 @@
             </VConfirmEdit>
         </template>
         <template v-if="project.id" #actions>
-            <BaseBtnIcon @click="save()" :disabled="!isValid" color="success" icon="mdi-content-save" variant="flat" v-tooltip="$t('keybind.controlS.tooltip')">
+            <VBtn @click="save()" :disabled="!isValid" color="success" prependIcon="mdi-content-save" variant="flat" v-tooltip="$t('keybind.controlS.tooltip')">
                 {{ $t("action.save") }}
-            </BaseBtnIcon>
+            </VBtn>
         </template>
     </BaseDialogEdit>
 </template>

@@ -1,7 +1,7 @@
 <template>
-    <BaseBtnIcon @click="createProject()" :loading="isLoading" color="success" icon="mdi-plus" variant="flat">
+    <VBtn @click="createProject()" :loading="isLoading" color="success" prependIcon="mdi-plus" variant="flat">
         {{ $t("action.create") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">

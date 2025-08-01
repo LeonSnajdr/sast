@@ -36,7 +36,7 @@
                 </VRowSingle>
             </VCardText>
             <VCardActions>
-                <BaseBtnIcon @click="isDialogOpen = false">{{ $t("action.close") }}</BaseBtnIcon>
+                <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
             </VCardActions>
         </VCard>
     </VDialog>

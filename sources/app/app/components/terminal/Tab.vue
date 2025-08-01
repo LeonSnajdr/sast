@@ -12,7 +12,7 @@
                         <VList>
                             <VListItem :subtitle="$t('action.restart.description', { name: terminal.task.name })" :title="$t('action.restart')">
                                 <template #prepend>
-                                    <TaskActionRestart :task="terminal.task" />
+                                    <TaskActionRestart :task="terminal.task" class="mr-2" />
                                 </template>
                             </VListItem>
                         </VList>

@@ -261,10 +261,29 @@ export default defineVuetifyConfiguration({
             }
         },
         VBtn: {
-            class: "text-none"
+            class: "text-none",
+            variant: "text"
         },
         VBtnToggle: {
             variant: "outlined"
+        },
+        VIconBtn: {
+            rounded: "lg",
+            variant: "text",
+            sizes: [
+                ["x-small", 24],
+                ["small", 28],
+                ["default", 32],
+                ["large", 36],
+                ["x-large", 40]
+            ],
+            iconSizes: [
+                ["x-small", 12],
+                ["small", 16],
+                ["default", 20],
+                ["large", 24],
+                ["x-large", 28]
+            ]
         }
     }
 });

@@ -1,7 +1,5 @@
 <template>
-    <VBtn @click.prevent.stop="terminalClose()" size="20" variant="plain" v-tooltip="$t('keybind.controlW.tooltip')">
-        <VIcon icon="mdi-close" />
-    </VBtn>
+    <VIconBtn @click.prevent.stop="terminalClose()" icon="mdi-close" iconSize="16" size="20" variant="plain" v-tooltip="$t('keybind.controlW.tooltip')" />
 </template>
 
 <script setup lang="ts">

@@ -17,11 +17,11 @@
                         <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(selectedProject.dateCreated).value }) }}</VListItemSubtitle>
 
                         <template #append>
-                            <BaseBtnIcon
+                            <VIconBtn
                                 @click="selectedProject.favorite = !selectedProject.favorite"
+                                :color="selectedProject.favorite ? 'warning' : 'secondary'"
                                 :icon="selectedProject.favorite ? 'mdi-star' : 'mdi-star-outline'"
-                                :iconColor="selectedProject.favorite ? 'warning' : 'secondary'"
-                                width="100"
+                                class="mr-8"
                             />
                         </template>
                     </VListItem>
@@ -38,10 +38,10 @@
                                 {{ $t("projectSetting.delete.rename") }}
                             </span>
                             <template #append>
-                                <BaseBtnIcon variant="tonal" width="100">
+                                <VBtn variant="tonal" width="100">
                                     {{ $t("action.edit") }}
                                     <ProjectSettingEditName v-model="selectedProject" />
-                                </BaseBtnIcon>
+                                </VBtn>
                             </template>
                         </VListItem>
                         <VListItem>
@@ -56,10 +56,10 @@
                             </span>
                             <template #append>
                                 <div v-if="!isCapturing" class="d-flex ga-2 ml-2">
-                                    <BaseBtnIcon v-if="keybind" @click="keybind = null">{{ $t("action.reset") }}</BaseBtnIcon>
-                                    <BaseBtnIcon @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</BaseBtnIcon>
+                                    <VBtn v-if="keybind" @click="keybind = null">{{ $t("action.reset") }}</VBtn>
+                                    <VBtn @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</VBtn>
                                 </div>
-                                <BaseBtnIcon v-else @click="cancel()" class="ml-2" variant="tonal" width="100">{{ $t("action.cancel") }}</BaseBtnIcon>
+                                <VBtn v-else @click="cancel()" class="ml-2" variant="tonal" width="100">{{ $t("action.cancel") }}</VBtn>
                             </template>
                         </VListItem>
                         <VListItem>
@@ -127,7 +127,7 @@ watch(
 
 const onFolderIconClick = lodAfter(10, () => {
     const currentIndex = colors.indexOf(folderColor.value);
-    folderColor.value = colors[(currentIndex + 1) % colors.length];
+    folderColor.value = colors[(currentIndex + 1) % colors.length]!;
 });
 
 definePageMeta({

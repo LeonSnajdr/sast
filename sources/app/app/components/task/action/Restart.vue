@@ -1,5 +1,5 @@
 <template>
-    <BaseBtnIcon @click="restart()" :disabled="!hasRunningTerminal" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+    <VIconBtn @click="restart()" :disabled="!hasRunningTerminal" :loading="isRestarting" color="info" icon="mdi-autorenew" />
 </template>
 
 <script setup lang="ts">

@@ -21,7 +21,6 @@
                 @click:clear="selectedSessionId = LATEST"
                 :clearable="!isLatestSessionSelected"
                 :items="items"
-                class="mr-2"
                 clearIcon="mdi-history"
                 density="compact"
                 itemTitle="name"

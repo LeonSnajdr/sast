@@ -5,7 +5,7 @@
                 <VIcon color="info" icon="mdi-update" />
                 {{ $t("setting.about.update.title") }}
                 <VSpacer />
-                <BaseBtnIcon @click="updateStore.loadUpdate()" icon="mdi-refresh" />
+                <VIconBtn @click="updateStore.loadUpdate()" icon="mdi-refresh" />
             </VCardTitle>
             <VCardText>
                 <BaseEmptyStateLoader v-if="status === UpdateStatus.Loading" />
@@ -26,8 +26,8 @@
                 </template>
             </VCardText>
             <VCardActions v-if="updateInfo">
-                <BaseBtnIcon @click="updateStore.download()" v-bind="downloadButtonProps">{{ $t("action.download") }}</BaseBtnIcon>
-                <BaseBtnIcon @click="updateStore.install()" v-bind="installButtonProps" class="ml-2">{{ $t("action.install") }}</BaseBtnIcon>
+                <VBtn @click="updateStore.download()" v-bind="downloadButtonProps">{{ $t("action.download") }}</VBtn>
+                <VBtn @click="updateStore.install()" v-bind="installButtonProps" class="ml-2">{{ $t("action.install") }}</VBtn>
             </VCardActions>
         </VCard>
     </VRowSingle>
