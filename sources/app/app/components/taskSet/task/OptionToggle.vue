@@ -1,9 +1,10 @@
 <template>
     <VBtnToggle v-model="options" @click.stop.prevent density="compact" multiple>
-        <VBtn :value="TaskSetTaskOptions.Blocking" v-tooltip="$t('taskSetTask.field.blocking.info')">
+        <VBtn :value="TaskSetTaskOptions.Blocking" v-tooltip:top="$t('taskSetTask.field.blocking.info')">
             <VIcon icon="mdi-timer-sand" />
+            <span v-if="mdAndUp" class="text-caption">{{ $t("taskSetTask.field.blocking") }}</span>
         </VBtn>
-        <VBtn :value="TaskSetTaskOptions.JumpInto">
+        <VBtn :value="TaskSetTaskOptions.JumpInto" v-tooltip:top="$t('taskSetTask.field.jumpInto')">
             <VIcon icon="mdi-debug-step-into" />
         </VBtn>
     </VBtnToggle>
@@ -11,6 +12,8 @@
 
 <script setup lang="ts">
 const taskSetTask = defineModel<TaskSetTaskInfoContract>({ required: true });
+
+const { mdAndUp } = useDisplay();
 
 enum TaskSetTaskOptions {
     Blocking = "Blocking",
