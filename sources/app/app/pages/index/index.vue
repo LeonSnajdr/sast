@@ -48,6 +48,8 @@
                         <VCardTitle>
                             <VIcon color="secondary" icon="mdi-cog" />
                             {{ $t("setting.title") }}
+                            <VSpacer />
+                            <VHotkey keys="cmd+," />
                         </VCardTitle>
                         <VCardText>
                             {{ $t("setting.description") }}
