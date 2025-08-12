@@ -1,8 +1,8 @@
 import type { Locale } from "vue-i18n";
 
 export default function usePresentation() {
-    const { setLocale } = useI18n();
-    const { global: uiTheme } = useTheme();
+    const i18n = useI18n();
+    const theme = useTheme();
 
     const settingStore = useSettingStore();
 
@@ -16,11 +16,11 @@ export default function usePresentation() {
     };
 
     const applyLangauge = (language: string) => {
-        setLocale(language as Locale);
+        i18n.setLocale(language as Locale);
     };
 
-    const applyTheme = (theme: string) => {
-        uiTheme.name.value = theme;
+    const applyTheme = (themeName: string) => {
+        theme.change(themeName);
     };
 
     return { applySetting, applyLangauge, applyTheme };
