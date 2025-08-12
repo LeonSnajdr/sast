@@ -10,9 +10,7 @@
                     {{ $t("date.opened", { date: useLocaleTimeAgo(project.dateLastOpened).value }) }}
                 </VListItemSubtitle>
                 <template #append>
-                    <VChip v-if="project.quickSwitchKeybind" class="ml-2" color="secondary" density="compact" variant="outlined" label>
-                        {{ project.quickSwitchKeybind }}
-                    </VChip>
+                    <VHotkey v-if="project.quickSwitchKeybind" :keys="project.quickSwitchKeybind" />
                 </template>
             </VListItem>
             <VListSubheader v-if="allProjects.length == 0" class="text-center">{{ $t("search.noResults") }}</VListSubheader>
@@ -22,35 +20,8 @@
 
 <script setup lang="ts">
 const { switchProject } = useProject();
-const { current: pressedKeys } = useMagicKeys();
 
 const projectStore = useProjectStore();
 
 const { allProjects } = storeToRefs(projectStore);
-
-onBeforeMount(() => {
-    projectStore.loadAllProjects();
-});
-
-const isMatchingProject = (project: ProjectContract) => {
-    if (!project.quickSwitchKeybind) return false;
-
-    const keys = project.quickSwitchKeybind
-        .toLowerCase()
-        .split("+")
-        .map((k) => k.trim());
-
-    return keys.every((key) => pressedKeys.has(key));
-};
-
-whenever(
-    () => allProjects.value.some((project) => isMatchingProject(project)),
-    () => {
-        const project = allProjects.value.find((project) => isMatchingProject(project));
-
-        if (!project) return;
-
-        switchProject(project);
-    }
-);
 </script>

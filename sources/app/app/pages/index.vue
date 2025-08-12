@@ -44,9 +44,13 @@ const checkForUpdate = async () => {
     updateStore.notifyIfUpdateIsAvailable();
 };
 
-useKeybind(["control", ","], () => {
-    if (route.name === "initialize") return;
+useHotkey(
+    "cmd+,",
+    () => () => {
+        if (route.name === "initialize") return;
 
-    return navigateTo({ name: "index-setting-index-presentation" });
-});
+        return navigateTo({ name: "index-setting-index-presentation" });
+    },
+    { inputs: true }
+);
 </script>

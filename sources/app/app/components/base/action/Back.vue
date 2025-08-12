@@ -7,7 +7,7 @@
 <script setup lang="ts">
 const router = useRouter();
 
-useKeybind(["control", "b"], () => back());
+useHotkey("cmd+b", () => back(), { inputs: true });
 
 const back = () => {
     router.back();

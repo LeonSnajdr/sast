@@ -54,10 +54,6 @@ const { allProjects } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const search = ref<string>("");
 
-onBeforeMount(() => {
-    projectStore.loadAllProjects();
-});
-
 const { results: projectResults } = useFuse(search, allProjects, {
     fuseOptions: {
         keys: ["name"],

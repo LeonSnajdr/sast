@@ -12,7 +12,7 @@ const { selectedProject } = storeToRefs(projectService);
 
 const isLoading = ref(false);
 
-useKeybind(["control", "t"], () => createTerminal());
+useHotkey("cmd+t", () => createTerminal(), { inputs: true });
 
 const createTerminal = async () => {
     const createContract = {

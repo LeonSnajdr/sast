@@ -47,19 +47,25 @@
                         <VListItem>
                             <VListItemTitle>
                                 {{ $t("projectSetting.quickSwitch") }}
-                                <VChip class="ml-2" color="secondary" density="compact" variant="outlined" label>
-                                    {{ keybind ? keybind : $t("keybind.none") }}
-                                </VChip>
                             </VListItemTitle>
                             <span class="text-medium-emphasis">
                                 {{ $t("projectSetting.quickSwitch.description") }}
                             </span>
                             <template #append>
-                                <div v-if="!isCapturing" class="d-flex ga-2 ml-2">
-                                    <VBtn v-if="keybind" @click="keybind = null">{{ $t("action.reset") }}</VBtn>
-                                    <VBtn @click="capture()" variant="tonal" width="100">{{ $t("action.capture") }}</VBtn>
+                                <div class="d-flex ga-2 ml-2">
+                                    <template v-if="!isCapturing && keybind">
+                                        <VHotkey :keys="keybind" class="ml-2" />
+                                        <VBtn @click="keybind = null" variant="tonal" width="100">
+                                            {{ $t("action.reset") }}
+                                        </VBtn>
+                                    </template>
+                                    <VBtn v-else-if="isCapturing" @click="cancel()" class="ml-2" variant="tonal" width="100">
+                                        {{ $t("action.cancel") }}
+                                    </VBtn>
+                                    <VBtn v-else @click="capture()" variant="tonal" width="100">
+                                        {{ $t("action.capture") }}
+                                    </VBtn>
                                 </div>
-                                <VBtn v-else @click="cancel()" class="ml-2" variant="tonal" width="100">{{ $t("action.cancel") }}</VBtn>
                             </template>
                         </VListItem>
                         <VListItem>

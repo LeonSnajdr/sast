@@ -29,11 +29,15 @@ const { selectedProject } = storeToRefs(projectStore);
 
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => {
-    if (props.keybindDisabled) return;
+useHotkey(
+    "cmd+s",
+    () => {
+        if (props.keybindDisabled) return;
 
-    saveTaskSet();
-});
+        saveTaskSet();
+    },
+    { inputs: true }
+);
 
 const saveTaskSet = async () => {
     if (props.disabled) return;

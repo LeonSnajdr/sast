@@ -18,7 +18,7 @@ const emptyElement: ProjectCreateContract = {
     name: ""
 };
 
-const projectCreated = (id: string) => {
+const projectCreated = async (id: string) => {
     navigateTo({ name: "index-project-id", params: { id } });
 };
 </script>

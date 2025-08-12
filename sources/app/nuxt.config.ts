@@ -59,6 +59,10 @@ export default defineNuxtConfig({
                     { name: "findLast", as: "lodFindLast" },
                     { name: "remove", as: "lodRemove" }
                 ]
+            },
+            {
+                from: "vuetify",
+                imports: [{ name: "useHotkey", as: "useHotkey" }]
             }
         ]
     }

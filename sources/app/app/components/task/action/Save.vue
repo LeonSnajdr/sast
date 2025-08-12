@@ -29,7 +29,7 @@ const taskStore = useTaskStore();
 
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => taskSave());
+useHotkey("cmd+s", () => taskSave(), { inputs: true });
 
 const taskSave = async () => {
     if (props.disabled) return;

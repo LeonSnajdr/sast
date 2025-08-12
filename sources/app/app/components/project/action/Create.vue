@@ -13,6 +13,8 @@ const props = defineProps<{
     project: ProjectCreateContract;
 }>();
 
+const projectStore = useProjectStore();
+
 const notify = useNotify();
 const { t } = useI18n();
 
@@ -31,6 +33,8 @@ const createProject = async () => {
     }
 
     notify.success(t("action.create.success", { type: t("project.singular"), name: props.project.name }));
+
+    await projectStore.loadAllProjects();
 
     emit("created", createResult.data.id);
 };

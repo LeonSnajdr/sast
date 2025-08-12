@@ -284,6 +284,9 @@ export default defineVuetifyConfiguration({
                 ["large", 24],
                 ["x-large", 28]
             ]
+        },
+        VHotkey: {
+            variant: "contained"
         }
     }
 });

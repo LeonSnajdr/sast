@@ -11,11 +11,15 @@ const route = useRoute("index-project-id-terminal-terminalId");
 const notify = useNotify();
 const { t } = useI18n();
 
-useKeybind(["control", "w"], async () => {
-    if (route.params.terminalId != props.terminal.id) return;
+useHotkey(
+    "cmd+w",
+    async () => {
+        if (route.params.terminalId != props.terminal.id) return;
 
-    await terminalClose();
-});
+        await terminalClose();
+    },
+    { inputs: true }
+);
 
 const terminalClose = async () => {
     const closeResult = await commands.terminalClose(props.terminal.id);

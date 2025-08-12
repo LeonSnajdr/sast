@@ -21,7 +21,7 @@ import type { VConfirmEdit } from "vuetify/components";
 
 const project = defineModel<ProjectContract>({ required: true });
 
-useKeybind(["control", "s"], () => save());
+useHotkey("cmd+s", () => save(), { inputs: true });
 
 const isDialogOpen = ref(false);
 const isValid = ref<boolean | null>(null);

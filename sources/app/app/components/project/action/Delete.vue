@@ -16,6 +16,8 @@ const props = defineProps<{
     project: ProjectContract;
 }>();
 
+const projectStore = useProjectStore();
+
 const notify = useNotify();
 const { t } = useI18n();
 
@@ -32,6 +34,8 @@ const deleteProject = async () => {
     }
 
     notify.success(t("action.delete.success", { type: t("project.singular"), name: props.project.name }));
+
+    await projectStore.loadAllProjects();
 
     navigateTo({ name: "index" });
 };

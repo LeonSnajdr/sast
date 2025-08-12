@@ -28,7 +28,7 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => placeholderSave());
+useHotkey("cmd+s", () => placeholderSave(), { inputs: true });
 
 const placeholderSave = async () => {
     if (props.disabled) return;
