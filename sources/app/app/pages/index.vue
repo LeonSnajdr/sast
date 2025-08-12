@@ -46,7 +46,7 @@ const checkForUpdate = async () => {
 
 useHotkey(
     "cmd+,",
-    () => () => {
+    () => {
         if (route.name === "initialize") return;
 
         return navigateTo({ name: "index-setting-index-presentation" });
