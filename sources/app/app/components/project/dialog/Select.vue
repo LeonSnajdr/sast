@@ -36,7 +36,7 @@
                 </VRowSingle>
             </VCardText>
             <VCardActions>
-                <BaseBtnIcon @click="isDialogOpen = false">{{ $t("action.close") }}</BaseBtnIcon>
+                <VBtn @click="isDialogOpen = false">{{ $t("action.close") }}</VBtn>
             </VCardActions>
         </VCard>
     </VDialog>
@@ -53,10 +53,6 @@ const { allProjects } = storeToRefs(projectStore);
 
 const isDialogOpen = ref(false);
 const search = ref<string>("");
-
-onBeforeMount(() => {
-    projectStore.loadAllProjects();
-});
 
 const { results: projectResults } = useFuse(search, allProjects, {
     fuseOptions: {

@@ -1,7 +1,7 @@
 <template>
-    <BaseBtnIcon @click="createProject()" :loading="isLoading" color="success" icon="mdi-plus" variant="flat">
+    <VBtn @click="createProject()" :loading="isLoading" color="success" prependIcon="mdi-plus" variant="flat">
         {{ $t("action.create") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">
@@ -12,6 +12,8 @@ const emit = defineEmits<{
 const props = defineProps<{
     project: ProjectCreateContract;
 }>();
+
+const projectStore = useProjectStore();
 
 const notify = useNotify();
 const { t } = useI18n();
@@ -31,6 +33,8 @@ const createProject = async () => {
     }
 
     notify.success(t("action.create.success", { type: t("project.singular"), name: props.project.name }));
+
+    await projectStore.loadAllProjects();
 
     emit("created", createResult.data.id);
 };

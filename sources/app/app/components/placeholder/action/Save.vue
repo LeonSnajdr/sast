@@ -1,14 +1,14 @@
 <template>
-    <BaseBtnIcon
+    <VBtn
         @click="placeholderSave()"
         :loading="isLoading"
         color="success"
-        icon="mdi-content-save"
+        prependIcon="mdi-content-save"
         variant="flat"
         v-tooltip="$t('keybind.controlS.tooltip')"
     >
         {{ $t("action.save") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">
@@ -28,7 +28,7 @@ const { selectedProject } = storeToRefs(projectStore);
 const isDialogOpen = ref(false);
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => placeholderSave());
+useHotkey("cmd+s", () => placeholderSave(), { inputs: true });
 
 const placeholderSave = async () => {
     if (props.disabled) return;

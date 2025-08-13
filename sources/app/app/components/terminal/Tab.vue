@@ -1,9 +1,5 @@
 <template>
-    <VBtn
-        :to="{ name: 'index-project-id-terminal-terminalId', params: { id: route.params.id, terminalId: terminal.id } }"
-        class="ml-2 px-2 text-body-2"
-        density="comfortable"
-    >
+    <VBtn :to="{ name: 'index-project-id-terminal-terminalId', params: { id: route.params.id, terminalId: terminal.id } }" class="ml-2 px-2 text-body-2">
         <template #prepend>
             <div class="d-flex ga-1">
                 <TerminalShellStatusBadge :shellStatus="terminal.shellStatus" offsetX="-2" offsetY="-2">
@@ -16,7 +12,7 @@
                         <VList>
                             <VListItem :subtitle="$t('action.restart.description', { name: terminal.task.name })" :title="$t('action.restart')">
                                 <template #prepend>
-                                    <TaskActionRestart :task="terminal.task" />
+                                    <TaskActionRestart :task="terminal.task" class="mr-2" />
                                 </template>
                             </VListItem>
                         </VList>

@@ -20,16 +20,16 @@
             <VCardText class="d-flex ga-2 align-center">
                 <TaskSetTaskSearch @add="addTask" :taskSetTasks="taskSet.tasks" />
                 <VDivider vertical />
-                <BaseBtnIcon @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" icon="mdi-dock-right">
+                <VBtn @click.stop.prevent="toggleTaskCreateDrawer()" :active="isTaskCreateDrawerOpen" prependIcon="mdi-dock-right">
                     {{ $t("action.create") }} & {{ $t("action.add") }}
-                </BaseBtnIcon>
+                </VBtn>
             </VCardText>
         </VCard>
 
         <div class="flex-grow-1 overflow-hidden">
             <Draggable v-model="taskSet.tasks" class="h-100 overflow-auto" handle=".drag-handle">
                 <VListItem
-                    v-for="taskSetTask in taskSet.tasks"
+                    v-for="(taskSetTask, index) in taskSet.tasks"
                     :key="taskSetTask.taskId"
                     @click="toggleTaskEditDrawer(taskSetTask.taskId)"
                     :active="taskSetTask.taskId === editTaskId"
@@ -47,10 +47,8 @@
                     </div>
                     <template #append>
                         <div class="d-flex ga-2 align-center">
-                            <BaseChipSwitch v-model="taskSetTask.blocking" @click.stop.prevent :infoText="$t('taskSetTask.field.blocking.info')">
-                                {{ $t("taskSetTask.field.blocking") }}
-                            </BaseChipSwitch>
-                            <BaseBtnIcon @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
+                            <TaskSetTaskOptionToggle v-model="taskSet.tasks[index]!" />
+                            <VIconBtn @click.stop.prevent="removeTask(taskSetTask.taskId)" icon="mdi-close" />
                         </div>
                     </template>
                 </VListItem>
@@ -137,7 +135,8 @@ const addTask = (task: { id: string; name: string; dateCreated: string; dateLast
         taskName: task.name,
         taskDateCreated: task.dateCreated,
         taskDateLastUpdated: task.dateLastUpdated,
-        blocking: false
+        blocking: false,
+        jumpInto: false
     });
 };
 

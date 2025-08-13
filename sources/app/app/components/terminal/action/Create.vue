@@ -1,7 +1,5 @@
 <template>
-    <VBtn @click.prevent.stop="createTerminal()" class="ml-2" size="28" v-tooltip="$t('keybind.controlT.tooltip')">
-        <VIcon icon="mdi-plus" size="small" />
-    </VBtn>
+    <VIconBtn @click.prevent.stop="createTerminal()" class="ml-2" icon="mdi-plus" size="small" v-tooltip="$t('keybind.controlT.tooltip')" />
 </template>
 
 <script setup lang="ts">
@@ -14,12 +12,13 @@ const { selectedProject } = storeToRefs(projectService);
 
 const isLoading = ref(false);
 
-useKeybind(["control", "t"], () => createTerminal());
+useHotkey("cmd+t", () => createTerminal(), { inputs: true });
 
 const createTerminal = async () => {
     const createContract = {
         projectId: selectedProject.value.id,
-        historyPersistence: "OnError"
+        historyPersistence: "OnError",
+        jumpInto: true
     } as TerminalCreateContract;
 
     const spawnContract = {
@@ -35,7 +34,5 @@ const createTerminal = async () => {
         notify.error(t("action.create.error", { type: t("terminal.singular") }), { error: spawnResult.error });
         return;
     }
-
-    navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: spawnResult.data } });
 };
 </script>

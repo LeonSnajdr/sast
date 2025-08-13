@@ -128,6 +128,7 @@ pub async fn build_terminal_create_contract(project_id: Uuid, task_id: Uuid) -> 
 		task_id: Some(task_id),
 		task_set_id: None,
 		name: task.tab_name,
+		jump_into: false,
 		history_persistence: task.history_persistence,
 	};
 
@@ -136,13 +137,14 @@ pub async fn build_terminal_create_contract(project_id: Uuid, task_id: Uuid) -> 
 
 pub async fn build_terminal_restart_contract(task_id: Uuid) -> Result<TerminalRestartContract> {
 	let task = task_repository::get_one(task_id).await?;
-	
+
 	let restart_contract = TerminalRestartContract {
 		name: task.tab_name,
+		jump_into: false,
 		task_set_id: None,
 		history_persistence: task.history_persistence,
 	};
-	
+
 	Ok(restart_contract)
 }
 

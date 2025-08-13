@@ -36,6 +36,7 @@ pub async fn build_terminal_create_contract(project_id: Uuid, task_set_task: &Ta
 
 	let terminal_create_contract = TerminalCreateContract {
 		task_set_id: Some(task_set_task.task_set_id),
+		jump_into: task_set_task.jump_into,
 		..task_terminal_create_contract
 	};
 
@@ -44,12 +45,13 @@ pub async fn build_terminal_create_contract(project_id: Uuid, task_set_task: &Ta
 
 pub async fn build_terminal_restart_contract(task_set_task: &TaskSetTaskInfoModel) -> Result<TerminalRestartContract> {
 	let task_terminal_restart_contract = task_service::build_terminal_restart_contract(task_set_task.task_id).await?;
-	
+
 	let terminal_restart_contract = TerminalRestartContract {
 		task_set_id: Some(task_set_task.task_set_id),
+		jump_into: task_set_task.jump_into,
 		..task_terminal_restart_contract
 	};
-	
+
 	Ok(terminal_restart_contract)
 }
 

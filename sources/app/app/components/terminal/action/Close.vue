@@ -1,7 +1,5 @@
 <template>
-    <VBtn @click.prevent.stop="terminalClose()" size="20" variant="plain" v-tooltip="$t('keybind.controlW.tooltip')">
-        <VIcon icon="mdi-close" />
-    </VBtn>
+    <VIconBtn @click.prevent.stop="terminalClose()" icon="mdi-close" iconSize="16" size="20" variant="plain" v-tooltip="$t('keybind.controlW.tooltip')" />
 </template>
 
 <script setup lang="ts">
@@ -13,11 +11,15 @@ const route = useRoute("index-project-id-terminal-terminalId");
 const notify = useNotify();
 const { t } = useI18n();
 
-useKeybind(["control", "w"], async () => {
-    if (route.params.terminalId != props.terminal.id) return;
+useHotkey(
+    "cmd+w",
+    async () => {
+        if (route.params.terminalId != props.terminal.id) return;
 
-    await terminalClose();
-});
+        await terminalClose();
+    },
+    { inputs: true }
+);
 
 const terminalClose = async () => {
     const closeResult = await commands.terminalClose(props.terminal.id);

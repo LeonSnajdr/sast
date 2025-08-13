@@ -59,8 +59,8 @@ onBeforeUnmount(() => {
 const loadTerminals = async () => {
     await terminalStore.loadAll();
 
-    unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen(() => {
-        terminalStore.loadAll();
+    unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen((eventData) => {
+        terminalStore.created(eventData.payload);
     });
 
     unlistenTerminalUpdatedEvent = await events.terminalUpdatedEvent.listen((eventData) => {

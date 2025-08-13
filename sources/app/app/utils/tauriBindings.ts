@@ -396,12 +396,13 @@ export type TaskSetSessionStatus = "Running" | "Failed" | "Completed"
 export type TaskSetSessionTaskContract = { taskId: string; taskName: string; dateStarted: string | null; dateFinished: string | null; status: TaskSetSessionTaskStatus }
 export type TaskSetSessionTaskStatus = "NotStarted" | "Running" | "Skipped" | "Failed" | "Completed"
 export type TaskSetSessionUpdatedEvent = string
-export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean }
+export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean; jumpInto: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; tasks: TaskSetTaskInfoContract[] }
 export type TaskUpdateContract = { id: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TerminalClosedEvent = string
-export type TerminalCreateContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; historyPersistence: TerminalHistoryPersistence }
-export type TerminalCreatedEvent = string
+export type TerminalCreateContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; jumpInto: boolean; historyPersistence: TerminalHistoryPersistence }
+export type TerminalCreatedEvent = TerminalCreatedEventData
+export type TerminalCreatedEventData = { id: string; jumpInto: boolean }
 export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null; shellStatus: TerminalShellStatus[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; taskSet: TaskSetInfoContract | null; name: string; shellStatus: TerminalShellStatus }
@@ -411,7 +412,8 @@ export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "NoneManually" | "NoneSuccessfully" | "Running" | "Restarting" | { Crashed: { code: number; message: string } }
 export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
 export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
-export type TerminalUpdatedEvent = string
+export type TerminalUpdatedEvent = TerminalUpdatedEventData
+export type TerminalUpdatedEventData = { id: string; jumpInto: boolean }
 
 /** tauri-specta globals **/
 

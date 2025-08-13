@@ -6,7 +6,11 @@
                 {{ $t("setting.behavior.openWelcome.title") }}
             </VCardTitle>
             <VCardText>
-                <BaseChipSelect v-model="openWelcome" :items="laguageItems" itemText="translation" itemValue="value" />
+                <VBtnToggle v-model="openWelcome" @click.stop.prevent density="compact">
+                    <VBtn v-for="option of options" :key="option.value + option.translation" :value="option.value">
+                        {{ option.translation }}
+                    </VBtn>
+                </VBtnToggle>
             </VCardText>
         </VCard>
     </VRowSingle>
@@ -17,7 +21,7 @@ const openWelcome = defineModel<boolean>({ required: true });
 
 const { t } = useI18n();
 
-const laguageItems = computed(() => [
+const options = computed(() => [
     {
         value: true,
         translation: t("setting.behavior.openWelcome.true")

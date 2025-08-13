@@ -1,13 +1,13 @@
 <template>
-    <BaseBtnIcon @click="back()" icon="mdi-arrow-left" variant="flat" v-tooltip="$t('keybind.controlB.tooltip')">
+    <VBtn @click="back()" prependIcon="mdi-arrow-left" variant="flat" v-tooltip="$t('keybind.controlB.tooltip')">
         {{ $t("action.back") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">
 const router = useRouter();
 
-useKeybind(["control", "b"], () => back());
+useHotkey("cmd+b", () => back(), { inputs: true });
 
 const back = () => {
     router.back();

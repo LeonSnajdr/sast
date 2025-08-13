@@ -9,9 +9,9 @@
             </VConfirmEdit>
         </template>
         <template v-if="project.id" #actions>
-            <BaseBtnIcon @click="save()" :disabled="!isValid" color="success" icon="mdi-content-save" variant="flat" v-tooltip="$t('keybind.controlS.tooltip')">
+            <VBtn @click="save()" :disabled="!isValid" color="success" prependIcon="mdi-content-save" variant="flat" v-tooltip="$t('keybind.controlS.tooltip')">
                 {{ $t("action.save") }}
-            </BaseBtnIcon>
+            </VBtn>
         </template>
     </BaseDialogEdit>
 </template>
@@ -21,7 +21,7 @@ import type { VConfirmEdit } from "vuetify/components";
 
 const project = defineModel<ProjectContract>({ required: true });
 
-useKeybind(["control", "s"], () => save());
+useHotkey("cmd+s", () => save(), { inputs: true });
 
 const isDialogOpen = ref(false);
 const isValid = ref<boolean | null>(null);

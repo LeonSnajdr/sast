@@ -1,22 +1,24 @@
 <template>
-    <div @click.prevent.stop class="d-flex">
-        <BaseBtnIcon @click="start()" :disabled="!isStartable" :loading="isStarting" class="tooltip-events" color="success" icon="mdi-play">
-            <VTooltip v-if="!isStartable && !isStarting" activator="parent">
+    <div @click.prevent.stop class="d-flex ga-2">
+        <div>
+            <VIconBtn @click="start()" :disabled="!isStartable" :loading="isStarting" color="success" icon="mdi-play" />
+            <VTooltip :disabled="isStartable || isStarting" activator="parent">
                 <p>{{ $t("taskSet.action.start.disabled") }}</p>
                 <p v-if="!hasTasks">- {{ $t("taskSet.action.start.disabled.hasTasks") }}</p>
                 <p v-if="hasRunningTerminal">- {{ $t("taskSet.action.start.disabled.hasRunningTerminal") }}</p>
                 <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
             </VTooltip>
-        </BaseBtnIcon>
-        <BaseBtnIcon @click="restart()" :disabled="!isRestartable" :loading="isRestarting" class="tooltip-events" color="info" icon="mdi-autorenew">
-            <VTooltip v-if="!isRestartable && !isRestarting" activator="parent">
+        </div>
+        <div>
+            <VTooltip :disabled="isRestartable || isRestarting" activator="parent">
                 <p>{{ $t("taskSet.action.restart.disabled") }}</p>
                 <p v-if="isStarting || isStopping">- {{ $t("taskSet.action.restart.disabled.otherAction") }}</p>
                 <p v-if="!hasRunningTerminal">- {{ $t("taskSet.action.restart.disabled.hasNoRunningTerminal") }}</p>
                 <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
             </VTooltip>
-        </BaseBtnIcon>
-        <BaseBtnIcon @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
+            <VIconBtn @click="restart()" :disabled="!isRestartable" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+        </div>
+        <VIconBtn @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
 </template>
 

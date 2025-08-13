@@ -10,4 +10,5 @@ pub struct TaskSetTaskInfoContract {
 	pub task_date_created: DateTime<Utc>,
 	pub task_date_last_updated: DateTime<Utc>,
 	pub blocking: bool,
+	pub jump_into: bool,
 }

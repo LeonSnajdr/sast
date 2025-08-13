@@ -1,15 +1,15 @@
 <template>
-    <BaseBtnIcon
+    <VBtn
         @click="taskSave()"
         :disabled
         :loading="isLoading"
         color="success"
-        icon="mdi-content-save"
+        prependIcon="mdi-content-save"
         variant="flat"
         v-tooltip="$t('keybind.controlS.tooltip')"
     >
         {{ $t("action.save") }}
-    </BaseBtnIcon>
+    </VBtn>
 </template>
 
 <script setup lang="ts">
@@ -29,7 +29,7 @@ const taskStore = useTaskStore();
 
 const isLoading = ref(false);
 
-useKeybind(["control", "s"], () => taskSave());
+useHotkey("cmd+s", () => taskSave(), { inputs: true });
 
 const taskSave = async () => {
     if (props.disabled) return;

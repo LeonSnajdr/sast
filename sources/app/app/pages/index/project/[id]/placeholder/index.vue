@@ -1,10 +1,10 @@
 <template>
     <VAppBar>
         <VAppBarTitle>{{ $t("placeholder.plural") }}</VAppBarTitle>
-        <BaseBtnIcon icon="mdi-plus" variant="tonal">
+        <VBtn prependIcon="mdi-plus" variant="tonal">
             {{ $t("action.create") }}
             <PlaceholderDialogCreate />
-        </BaseBtnIcon>
+        </VBtn>
     </VAppBar>
 
     <div class="fill-height d-flex flex-column">

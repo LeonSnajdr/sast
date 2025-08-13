@@ -1,6 +1,6 @@
 <template>
-    <TerminalShellStatusBadge :shellStatus="!disabled ? terminal?.shellStatus : undefined" offsetX="12" offsetY="2">
-        <BaseBtnIcon @click="navigateToTerminal()" :disabled="!terminal || disabled" color="secondary" icon="mdi-tab" />
+    <TerminalShellStatusBadge :shellStatus="!disabled ? terminal?.shellStatus : undefined" offsetY="2">
+        <VIconBtn @click="navigateToTerminal()" :disabled="!terminal || disabled" color="secondary" icon="mdi-tab" />
     </TerminalShellStatusBadge>
 </template>
 

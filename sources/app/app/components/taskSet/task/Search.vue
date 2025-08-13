@@ -11,7 +11,7 @@
         returnObject
     />
 
-    <BaseBtnIcon @click="addTask()" :disabled="!selectedTask" icon="mdi-plus">{{ $t("action.add") }}</BaseBtnIcon>
+    <VBtn @click="addTask()" :disabled="!selectedTask" prependIcon="mdi-plus">{{ $t("action.add") }}</VBtn>
 </template>
 
 <script setup lang="ts">

@@ -13,6 +13,7 @@ pub struct TerminalCreateContract {
 	pub task_id: Option<Uuid>,
 	pub task_set_id: Option<Uuid>,
 	pub name: Option<String>,
+	pub jump_into: bool,
 	pub history_persistence: TerminalHistoryPersistence,
 }
 
@@ -27,6 +28,7 @@ pub struct TerminalOpenContract {
 #[serde(rename_all = "camelCase")]
 pub struct TerminalRestartContract {
 	pub name: Option<String>,
+	pub jump_into: bool,
 	pub history_persistence: TerminalHistoryPersistence,
 	pub task_set_id: Option<Uuid>,
 }

@@ -11,22 +11,22 @@
     "cspell": "cspell"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "^10.0.3",
+    "@nuxtjs/i18n": "^10.0.4",
     "@pinia/nuxt": "^0.11.2",
     "@tauri-apps/api": "^2.7.0",
     "@tauri-apps/plugin-opener": "^2.4.0",
     "@tauri-apps/plugin-process": "^2.3.0",
     "@tauri-apps/plugin-updater": "^2.9.0",
-    "@vueuse/core": "^13.5.0",
-    "@vueuse/integrations": "^13.5.0",
-    "@vueuse/nuxt": "^13.5.0",
+    "@vueuse/core": "^13.6.0",
+    "@vueuse/integrations": "^13.6.0",
+    "@vueuse/nuxt": "^13.6.0",
     "@xterm/addon-fit": "^0.10.0",
     "@xterm/addon-serialize": "^0.13.0",
     "@xterm/addon-web-links": "^0.11.0",
     "@xterm/xterm": "^5.5.0",
     "fuse.js": "^7.1.0",
     "lodash": "^4.17.21",
-    "nuxt": "^4.0.1",
+    "nuxt": "^4.0.3",
     "pinia": "^3.0.3",
     "vue": "^3.5.18",
     "vue-draggable-plus": "^0.6.0",
@@ -36,17 +36,17 @@
   },
   "devDependencies": {
     "@cspell/dict-de-de": "4.1.2",
-    "@nuxt/eslint": "^1.7.1",
+    "@nuxt/eslint": "^1.8.0",
     "@tauri-apps/cli": "^2.7.1",
     "@types/lodash": "^4.17.20",
     "cspell": "9.2.0",
-    "eslint": "^9.32.0",
-    "sass": "^1.89.2",
-    "typescript": "^5.8.3"
+    "eslint": "^9.33.0",
+    "sass": "^1.90.0",
+    "typescript": "^5.9.2"
   },
   "volta": {
     "node": "20.18.0",
-    "yarn": "4.5.0"
+    "yarn": "4.9.2"
   },
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.9.2"
 }

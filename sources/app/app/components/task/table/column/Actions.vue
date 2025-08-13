@@ -1,5 +1,5 @@
 <template>
-    <div @click.prevent.stop class="d-flex">
+    <div @click.prevent.stop class="d-flex ga-2">
         <TaskActionStart :task />
         <TaskActionRestart :task />
         <TaskActionStop :task />

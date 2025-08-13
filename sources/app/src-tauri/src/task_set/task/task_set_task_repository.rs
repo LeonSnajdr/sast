@@ -25,15 +25,16 @@ pub async fn create_or_replace(task_set_id: Uuid, create_models: Vec<TaskSetTask
 		sqlx::query!(
 			r#"--sql
 				insert into task_set_task
-					(id, task_id, task_set_id, position, blocking)
+					(id, task_id, task_set_id, position, blocking, jump_into)
 				values
-					($1, $2, $3, $4, $5)
+					($1, $2, $3, $4, $5, $6)
 			"#,
 			create_model.id,
 			create_model.task_id,
 			create_model.task_set_id,
 			create_model.position,
 			create_model.blocking,
+			create_model.jump_into,
 		)
 		.execute(&mut *tx)
 		.await
@@ -54,7 +55,8 @@ pub async fn get_all(task_set_id: Uuid) -> Result<Vec<TaskSetTaskModel>> {
                 task_id as "task_id: Uuid",
             	task_set_id as "task_set_id: Uuid",
             	blocking,
-            	position
+            	position,
+                jump_into
             from task_set_task
             where task_set_id is $1
 			order by position asc
@@ -78,7 +80,8 @@ pub async fn get_all_info(task_set_id: Uuid) -> Result<Vec<TaskSetTaskInfoModel>
                 t.date_created as "task_date_created: DateTime<Utc>",
                 t.date_last_updated as "task_date_last_updated: DateTime<Utc>",
                 tst.task_set_id as "task_set_id: Uuid",
-            	tst.blocking
+            	tst.blocking,
+                tst.jump_into
             from task_set_task as tst
             join task as t on t.id = tst.task_id
             where tst.task_set_id is $1

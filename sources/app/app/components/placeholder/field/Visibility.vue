@@ -1,6 +1,10 @@
 <template>
     <VRowSingle>
-        <BaseChipSelect v-model="visibility" :items="items" itemText="translation" itemValue="visibility" />
+        <VBtnToggle v-model="visibility" @click.stop.prevent density="compact">
+            <VBtn v-for="item of items" :key="item.visibility" :value="item.visibility">
+                {{ item.translation }}
+            </VBtn>
+        </VBtnToggle>
     </VRowSingle>
 </template>
 
