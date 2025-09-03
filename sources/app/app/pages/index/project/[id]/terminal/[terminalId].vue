@@ -27,6 +27,7 @@ let webLinksAddon: WebLinksAddon;
 let serializeAddon: SerializeAddon;
 
 let cleanup = () => {};
+let isTerminalBeingClosed = false;
 
 onMounted(async () => {
     const openContract = await loadOpenContract();
@@ -109,6 +110,8 @@ onMounted(async () => {
     const unlistenTerminalClosedEvent = await events.terminalClosedEvent.listen((event) => {
         if (event.payload !== route.params.terminalId) return;
 
+        isTerminalBeingClosed = true;
+
         navigateTo({ name: "index-project-id-terminal" });
     });
 
@@ -168,6 +171,8 @@ const resizeTerminal = lodDebounce(async () => {
 }, 500);
 
 const replaceTerminalHistory = async () => {
+    if (isTerminalBeingClosed) return;
+
     const serialize = serializeAddon.serialize();
 
     const replaceResult = await commands.terminalReplaceHistory(route.params.terminalId, serialize);

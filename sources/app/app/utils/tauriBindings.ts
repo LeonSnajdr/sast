@@ -402,7 +402,7 @@ export type TaskUpdateContract = { id: string; name: string; tabName: string | n
 export type TerminalClosedEvent = string
 export type TerminalCreateContract = { projectId: string; taskId: string | null; taskSetId: string | null; name: string | null; jumpInto: boolean; historyPersistence: TerminalHistoryPersistence }
 export type TerminalCreatedEvent = TerminalCreatedEventData
-export type TerminalCreatedEventData = { id: string; jumpInto: boolean }
+export type TerminalCreatedEventData = { projectId: string; id: string; jumpInto: boolean }
 export type TerminalFilter = { id: string | null; projectId: string | null; taskIds: string[] | null; shellStatus: TerminalShellStatus[] | null }
 export type TerminalHistoryPersistence = "Always" | "Never" | "OnError" | "OnSuccess"
 export type TerminalInfoContract = { id: string; projectId: string; task: TaskInfoContract | null; taskSet: TaskSetInfoContract | null; name: string; shellStatus: TerminalShellStatus }
@@ -411,9 +411,9 @@ export type TerminalShellReadEvent = TerminalShellReadEventData
 export type TerminalShellReadEventData = { id: string; data: string }
 export type TerminalShellStatus = "None" | "NoneManually" | "NoneSuccessfully" | "Running" | "Restarting" | { Crashed: { code: number; message: string } }
 export type TerminalShellStatusChangedEvent = TerminalShellStatusChangedEventData
-export type TerminalShellStatusChangedEventData = { id: string; status: TerminalShellStatus }
+export type TerminalShellStatusChangedEventData = { projectId: string; id: string; status: TerminalShellStatus }
 export type TerminalUpdatedEvent = TerminalUpdatedEventData
-export type TerminalUpdatedEventData = { id: string; jumpInto: boolean }
+export type TerminalUpdatedEventData = { projectId: string; id: string; jumpInto: boolean }
 
 /** tauri-specta globals **/
 

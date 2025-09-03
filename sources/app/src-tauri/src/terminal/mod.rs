@@ -66,6 +66,7 @@ impl Terminal {
 		let shell_status = Arc::new(RwLock::new(TerminalShellStatus::None));
 
 		let id_clone = id.clone();
+		let project_id_clone = spawn_contract.project_id.clone();
 		let behavior_clone = Arc::clone(&behavior);
 		let app_handle_clone = Arc::clone(&app_handle);
 		let shell_clone = Arc::clone(&shell);
@@ -79,6 +80,7 @@ impl Terminal {
 
 						*shell_status_clone.write().await = TerminalShellStatus::Running;
 						let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
+							project_id: project_id_clone,
 							id: id_clone,
 							status: shell_status_clone.read().await.clone(),
 						})
@@ -113,6 +115,7 @@ impl Terminal {
 
 						if persist_terminal {
 							let _ = TerminalShellStatusChangedEvent(TerminalShellStatusChangedEventData {
+								project_id: project_id_clone,
 								id: id_clone,
 								status: shell_status_clone.read().await.clone(),
 							})
@@ -165,6 +168,7 @@ impl Terminal {
 		let created_terminal = terminal_repository::create_one(terminal).await?;
 
 		TerminalCreatedEvent(TerminalCreatedEventData {
+			project_id: spawn_contract.project_id,
 			id,
 			jump_into: spawn_contract.jump_into,
 		})
@@ -182,6 +186,7 @@ impl Terminal {
 		*self.meta.task_set_id.write().await = restart_contract.task_set_id;
 
 		let _ = TerminalUpdatedEvent(TerminalUpdatedEventData {
+			project_id: self.meta.project_id,
 			id: self.id,
 			jump_into: restart_contract.jump_into,
 		})

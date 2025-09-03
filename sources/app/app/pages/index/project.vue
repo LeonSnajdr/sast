@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-const { switchProject } = useProject();
+const { switchProjectDebounced } = useProject();
 
 const projectStore = useProjectStore();
 
@@ -23,7 +23,7 @@ const setupHotkeys = () => {
     for (const project of allProjects.value) {
         if (!project.quickSwitchKeybind) continue;
 
-        const cleanup = useHotkey(project.quickSwitchKeybind, () => switchProject(project), { inputs: true });
+        const cleanup = useHotkey(project.quickSwitchKeybind, async () => await switchProjectDebounced(project), { inputs: true });
 
         hotkeyCleanups.push(cleanup);
     }
