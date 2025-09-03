@@ -18,5 +18,7 @@ definePageMeta({
     projectSwitchName: "index-project-id-terminal"
 });
 
-const isTaskSetDrawerOpen = ref(false);
+const terminalStore = useTerminalStore();
+
+const { isTaskSetDrawerOpen } = storeToRefs(terminalStore);
 </script>

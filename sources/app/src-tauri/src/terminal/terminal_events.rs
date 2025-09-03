@@ -13,6 +13,7 @@ pub struct TerminalCreatedEvent(pub TerminalCreatedEventData);
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminalCreatedEventData {
+	pub project_id: Uuid,
 	pub id: Uuid,
 	pub jump_into: bool,
 }
@@ -23,6 +24,7 @@ pub struct TerminalUpdatedEvent(pub TerminalUpdatedEventData);
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminalUpdatedEventData {
+	pub project_id: Uuid,
 	pub id: Uuid,
 	pub jump_into: bool,
 }
@@ -33,6 +35,7 @@ pub struct TerminalShellStatusChangedEvent(pub TerminalShellStatusChangedEventDa
 #[derive(Debug, Clone, Type, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TerminalShellStatusChangedEventData {
+	pub project_id: Uuid,
 	pub id: Uuid,
 	pub status: TerminalShellStatus,
 }

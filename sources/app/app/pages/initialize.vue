@@ -5,7 +5,7 @@
             <SettingPresentationFieldTheme v-model="setting.presentationTheme" />
             <VRowSingle colClass="d-flex">
                 <VSpacer />
-                <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary">{{ $t("initialize.finish") }}</VBtn>
+                <VBtn @click="finish()" appendIcon="mdi-arrow-right" color="primary" variant="text">{{ $t("initialize.finish") }}</VBtn>
             </VRowSingle>
         </VRowSingle>
     </VContainer>

@@ -6,6 +6,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const { selectedProject } = storeToRefs(projectService);
 
+    const isTaskSetDrawerOpen = ref(false);
     const isLoading = ref(false);
     const terminals = ref<TerminalInfoContract[]>([]);
 
@@ -23,6 +24,8 @@ export const useTerminalStore = defineStore("terminal", () => {
     };
 
     const created = async (created: TerminalCreatedEventData) => {
+        if (created.projectId != selectedProject.value.id) return;
+
         const infoResult = await commands.terminalGetOneInfo(created.id);
 
         if (infoResult.status === "error") {
@@ -38,6 +41,8 @@ export const useTerminalStore = defineStore("terminal", () => {
     };
 
     const updated = async (updated: TerminalUpdatedEventData) => {
+        if (updated.projectId != selectedProject.value.id) return;
+
         const infoResult = await commands.terminalGetOneInfo(updated.id);
 
         if (infoResult.status === "error") {
@@ -55,6 +60,8 @@ export const useTerminalStore = defineStore("terminal", () => {
     };
 
     const statusChanged = async (update: TerminalShellStatusChangedEventData) => {
+        if (update.projectId != selectedProject.value.id) return;
+
         const terminal = terminals.value.find((x) => x.id === update.id);
 
         if (!terminal) return;
@@ -66,5 +73,5 @@ export const useTerminalStore = defineStore("terminal", () => {
         terminals.value = terminals.value.filter((x) => x.id !== id);
     };
 
-    return { isLoading, terminals, loadAll, created, updated, statusChanged, closed };
+    return { isTaskSetDrawerOpen, isLoading, terminals, loadAll, created, updated, statusChanged, closed };
 });

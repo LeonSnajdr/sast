@@ -10,7 +10,7 @@
                     {{ $t("date.opened", { date: useLocaleTimeAgo(project.dateLastOpened).value }) }}
                 </VListItemSubtitle>
                 <template #append>
-                    <VHotkey v-if="project.quickSwitchKeybind" :keys="project.quickSwitchKeybind" />
+                    <VHotkey v-if="project.quickSwitchKeybind" :keys="project.quickSwitchKeybind" class="ml-2" />
                 </template>
             </VListItem>
             <VListSubheader v-if="allProjects.length == 0" class="text-center">{{ $t("search.noResults") }}</VListSubheader>
