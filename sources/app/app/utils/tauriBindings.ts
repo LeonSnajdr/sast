@@ -197,6 +197,22 @@ async taskCreate(taskCreateContract: TaskCreateContract) : Promise<Result<TaskCo
     else return { status: "error", error: e  as any };
 }
 },
+async taskBuildEmptyTaskClone(taskId: string, projectId: string) : Promise<Result<TaskCloneContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_build_empty_task_clone", { taskId, projectId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async taskClone(taskCloneContract: TaskCloneContract) : Promise<Result<TaskContract, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_clone", { taskCloneContract }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async taskGetOne(id: string) : Promise<Result<TaskContract, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("task_get_one", { id }) };
@@ -381,6 +397,8 @@ export type SettingInitializeContract = { presentationLanguage: string; presenta
 export type SettingUpdateContract = { id: string; presentationLanguage: string; presentationTheme: string; behaviorOpenWelcome: boolean }
 export type ShellSizeContract = { rows: number; cols: number }
 export type ShellSpawnContract = { workingDir: string | null; command: string | null; noExit: boolean; forceKill: boolean }
+export type TaskCloneContract = { id: string; newProjectId: string; newName: string; taskPlaceholders: PlaceholderContract[]; projectPlaceholders: PlaceholderContract[]; placeholderMappings: TaskClonePlaceholderMappingContract[] }
+export type TaskClonePlaceholderMappingContract = { from: PlaceholderContract; to: PlaceholderContract | null }
 export type TaskContract = { id: string; projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[]; dateCreated: string; dateLastUpdated: string }
 export type TaskCreateContract = { projectId: string; name: string; tabName: string | null; noExit: boolean; forceKill: boolean; historyPersistence: TerminalHistoryPersistence; commandTiles: PlaceholderInsertTileContract[]; workingDirTiles: PlaceholderInsertTileContract[] }
 export type TaskInfoContract = { id: string; projectId: string; name: string; dateCreated: string; dateLastUpdated: string }

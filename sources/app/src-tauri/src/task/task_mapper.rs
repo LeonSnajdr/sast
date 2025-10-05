@@ -23,6 +23,21 @@ impl TaskContract {
 	}
 }
 
+impl TaskCreateContract {
+	pub fn from(project_id: Uuid, name: String, value: TaskContract) -> Self {
+		Self {
+			name: name,
+			project_id: project_id,
+			tab_name: value.tab_name,
+			no_exit: value.no_exit,
+			force_kill: value.force_kill,
+			history_persistence: value.history_persistence,
+			command_tiles: value.command_tiles,
+			working_dir_tiles: value.working_dir_tiles,
+		}
+	}
+}
+
 impl TaskInfoContract {
 	pub fn from(value: TaskInfoModel) -> Self {
 		Self {

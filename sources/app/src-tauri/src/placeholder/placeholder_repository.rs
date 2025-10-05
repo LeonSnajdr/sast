@@ -72,6 +72,37 @@ pub async fn get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
 	Ok(placeholders)
 }
 
+pub async fn get_many_used_in_task(task_id: Uuid) -> Result<Vec<PlaceholderModel>> {
+	let placeholders = sqlx::query_as!(
+		PlaceholderModel,
+		r#"--sql
+            select
+                p.id as "id: Uuid",
+                p.project_id as "project_id: Uuid",
+                p.name,
+                p.value,
+                p.visibility as "visibility: PlaceholderVisibility",
+                p.kind as "kind: PlaceholderKind",
+                p.source as "source: PlaceholderSource",
+                p.date_created as "date_created: DateTime<Utc>",
+                p.date_last_updated as "date_last_updated: DateTime<Utc>"
+            from placeholder p
+            where p.id in (
+                select pit.placeholder_id
+                from placeholder_insert_tile pit
+                where (pit.task_command_id = $1 or pit.task_working_dir_id = $1) and pit.placeholder_id is not null
+            )
+            order by p.name desc
+        "#,
+		task_id
+	)
+	.fetch_all(db::get_pool())
+	.await
+	.map_err(|err| Error::Db(err.to_string()))?;
+
+	Ok(placeholders)
+}
+
 pub async fn get_one(id: Uuid) -> Result<PlaceholderModel> {
 	let placeholder = sqlx::query_as!(
 		PlaceholderModel,

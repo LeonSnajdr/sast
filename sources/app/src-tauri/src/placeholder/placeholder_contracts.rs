@@ -27,7 +27,7 @@ pub struct PlaceholderUpdateContract {
 	pub source: PlaceholderSource,
 }
 
-#[derive(Debug, Type, Serialize, Deserialize)]
+#[derive(Debug, Type, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct PlaceholderContract {
 	pub id: Uuid,
