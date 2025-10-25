@@ -2,6 +2,11 @@
 
 Start Applications Seamlessly Timed (sast) is a project that helps you easily launch tasks, organize them into sets, and provides interactive terminals to manage and interact with them. This README will guide you through the setup process for development.
 
+> [!WARNING]
+> **PowerShell 7 Required**  
+> This application requires PowerShell 7 to run correctly. If you don't have it installed, please install it from:  
+> [Installing PowerShell on Windows](https://learn.microsoft.com/de-de/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.5)
+
 ## Table of Contents
 
 1. [Prerequisites](#prerequisites)
