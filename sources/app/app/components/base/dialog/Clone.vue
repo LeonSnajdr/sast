@@ -1,11 +1,11 @@
 <template>
     <VDialog v-model="isDialogOpen" activator="parent" width="800">
-        <VCard>
+        <VCard :loading class="h-100">
             <VCardTitle>
-                <VIcon :icon />
-                {{ $t("title.edit", { type }) }}
+                <VIcon :icon color="success" />
+                {{ $t("title.clone", { type }) }}
             </VCardTitle>
-            <VCardText>
+            <VCardText class="h-100 overflow-hidden">
                 <slot name="content" />
             </VCardText>
             <VCardActions>
@@ -22,6 +22,7 @@ import type { VForm } from "vuetify/components";
 defineProps<{
     icon: string;
     type: string;
+    loading?: boolean;
 }>();
 
 const isDialogOpen = defineModel<boolean>({ required: true });

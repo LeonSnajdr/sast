@@ -4,6 +4,7 @@ use specta::Type;
 use uuid::Uuid;
 
 use crate::placeholder::insert::placeholder_insert_contracts::PlaceholderInsertTileContract;
+use crate::placeholder::placeholder_contracts::PlaceholderContract;
 use crate::terminal::terminal_enums::TerminalHistoryPersistence;
 
 #[derive(Debug, Type, Serialize, Deserialize)]
@@ -56,4 +57,22 @@ pub struct TaskUpdateContract {
 	pub history_persistence: TerminalHistoryPersistence,
 	pub command_tiles: Vec<PlaceholderInsertTileContract>,
 	pub working_dir_tiles: Vec<PlaceholderInsertTileContract>,
+}
+
+#[derive(Debug, Type, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TaskCloneContract {
+	pub id: Uuid,
+	pub new_project_id: Uuid,
+	pub new_name: String,
+	pub task_placeholders: Vec<PlaceholderContract>,
+	pub project_placeholders: Vec<PlaceholderContract>,
+	pub placeholder_mappings: Vec<TaskClonePlaceholderMappingContract>,
+}
+
+#[derive(Debug, Type, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct TaskClonePlaceholderMappingContract {
+	pub from: PlaceholderContract,
+	pub to: Option<PlaceholderContract>,
 }

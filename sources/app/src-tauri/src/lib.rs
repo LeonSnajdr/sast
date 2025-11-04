@@ -49,6 +49,8 @@ pub fn run() {
 			placeholder_update_one,
 			placeholder_delete_one,
 			task_create,
+			task_build_empty_task_clone,
+			task_clone,
 			task_get_one,
 			task_get_many_info,
 			task_update_one,

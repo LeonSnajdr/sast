@@ -28,6 +28,15 @@ pub async fn get_many(project_id: Uuid) -> Result<Vec<PlaceholderContract>> {
 
 	Ok(placeholder_contracts)
 }
+
+pub async fn get_many_used_in_task(task_id: Uuid) -> Result<Vec<PlaceholderContract>> {
+	let placeholder_models = placeholder_repository::get_many_used_in_task(task_id).await?;
+
+	let placeholder_contracts = placeholder_models.into_iter().map(PlaceholderContract::from).collect();
+
+	Ok(placeholder_contracts)
+}
+
 pub async fn get_one(id: Uuid) -> Result<PlaceholderContract> {
 	let placeholder_model = placeholder_repository::get_one(id).await?;
 
@@ -58,7 +67,7 @@ async fn validate_update(update_contract: &PlaceholderUpdateContract) -> Result<
 			return Err(Error::HasUsages);
 		}
 	}
-	
+
 	Ok(())
 }
 

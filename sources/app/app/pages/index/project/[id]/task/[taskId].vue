@@ -2,7 +2,11 @@
     <VAppBar>
         <VAppBarTitle>{{ $t("title.edit", { type: $t("task.singular") }) }}</VAppBarTitle>
         <BaseActionBack />
-        <TaskActionDelete v-if="task" :task class="mr-2" />
+        <TaskActionDelete v-if="task" :task />
+        <VBtn v-if="task" class="mr-2" prependIcon="mdi-content-duplicate">
+            <TaskDialogClone @cloned="taskCloned" :taskId="task.id" />
+            {{ $t("action.clone") }}
+        </VBtn>
         <TaskActionSave v-if="task" @saved="taskSaved()" :disabled="!isTaskValid" :task />
     </VAppBar>
     <VContainer>
@@ -27,5 +31,9 @@ onBeforeMount(() => {
 
 const taskSaved = () => {
     navigateTo({ name: "index-project-id-task", params: { id: route.params.id } });
+};
+
+const taskCloned = (task: TaskContract) => {
+    navigateTo({ name: "index-project-id-task-taskId", params: { id: task.projectId, taskId: task.id } });
 };
 </script>
