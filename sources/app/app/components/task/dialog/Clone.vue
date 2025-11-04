@@ -1,6 +1,6 @@
 <template>
     <BaseDialogClone v-model="isDialogOpen" v-model:element="taskClone" :loading :type="$t('task.singular')" icon="mdi-checkbox-marked-circle-outline">
-        <template v-if="taskClone" #content>
+        <template #content>
             <VForm ref="form" v-model="isTaskValid">
                 <VRowSingle>
                     <VCombobox
@@ -12,11 +12,19 @@
                         class="required"
                         itemTitle="name"
                         itemValue="id"
+                        autofocus
                     />
                 </VRowSingle>
-                <TaskFieldName v-model="taskClone.newName" autofocus />
+                <TaskFieldName v-model="taskClone.newName" :disabled="loading" autofocus />
                 <VRowSingle>
-                    <VDataTable :headers="headers" :items="taskClone.placeholderMappings" hideDefaultFooter hideDefaultHeader>
+                    <VDataTable
+                        :headers="headers"
+                        :items="taskClone.placeholderMappings"
+                        :loading
+                        style="max-height: 200px"
+                        hideDefaultFooter
+                        hideDefaultHeader
+                    >
                         <template #[`item.from`]="{ item }">
                             <PlaceholderIcon :visibility="item.from.visibility" />
                             {{ item.from.name }}
@@ -91,6 +99,8 @@ whenever(isDialogOpen, () => buildDefaultTaskClone());
 watch(projectId, () => buildDefaultTaskClone());
 
 const buildDefaultTaskClone = async () => {
+    taskClone.value = {} as TaskCloneContract;
+
     loading.value = true;
 
     const buildTaskCloneResult = await commands.taskBuildEmptyTaskClone(props.taskId, projectId.value);

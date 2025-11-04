@@ -1,11 +1,11 @@
 <template>
     <VDialog v-model="isDialogOpen" activator="parent" width="800">
-        <VCard :loading>
+        <VCard :loading class="h-100">
             <VCardTitle>
                 <VIcon :icon color="success" />
                 {{ $t("title.clone", { type }) }}
             </VCardTitle>
-            <VCardText>
+            <VCardText class="h-100 overflow-hidden">
                 <slot name="content" />
             </VCardText>
             <VCardActions>
