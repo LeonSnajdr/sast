@@ -1,8 +1,7 @@
 <template>
     <template v-if="selectedProject.id">
-        <ProjectWindowBarContent :key="selectedProject.id" />
-        <ProjectDrawer :key="selectedProject.id" />
-        <NuxtPage :key="selectedProject.id" />
+        <ProjectDrawer />
+        <NuxtPage />
     </template>
 </template>
 

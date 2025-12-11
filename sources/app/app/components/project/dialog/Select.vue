@@ -21,6 +21,7 @@
                         <VListItem
                             v-for="projectResult in projectResults"
                             :key="projectResult.item.id"
+                            @click="isDialogOpen = false"
                             :to="getSwitchProjectLocationRef(projectResult.item).value"
                         >
                             <VListItemTitle>
