@@ -30,8 +30,6 @@ const setupHotkeys = () => {
 };
 
 onBeforeMount(() => {
-    projectStore.loadAllProjects();
-
     setupHotkeys();
 });
 

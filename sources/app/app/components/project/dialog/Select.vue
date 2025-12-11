@@ -18,7 +18,11 @@
                 </VRowSingle>
                 <VRowSingle class="h-100 overflow-y-scroll">
                     <VList>
-                        <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="itemClicked(projectResult.item)">
+                        <VListItem
+                            v-for="projectResult in projectResults"
+                            :key="projectResult.item.id"
+                            :to="getSwitchProjectLocationRef(projectResult.item).value"
+                        >
                             <VListItemTitle>
                                 <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
                                 {{ projectResult.item.name }}
@@ -45,7 +49,7 @@
 <script setup lang="ts">
 import { useFuse } from "@vueuse/integrations/useFuse";
 
-const { switchProject } = useProject();
+const { getSwitchProjectLocationRef } = useProject();
 
 const projectStore = useProjectStore();
 
@@ -62,11 +66,6 @@ const { results: projectResults } = useFuse(search, allProjects, {
     },
     matchAllWhenSearchEmpty: true
 });
-
-const itemClicked = (project: ProjectContract) => {
-    isDialogOpen.value = false;
-    switchProject(project);
-};
 
 watch(isDialogOpen, () => {
     search.value = "";

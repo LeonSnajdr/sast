@@ -1,7 +1,7 @@
 <template>
     <VMenu :openDelay="0" activator="parent" openOnHover>
         <VList maxHeight="400" maxWidth="400">
-            <VListItem v-for="project in allProjects" :key="project.id" @click="switchProject(project)">
+            <VListItem v-for="project in allProjects" :key="project.id" :to="getSwitchProjectLocationRef(project).value">
                 <VListItemTitle>
                     <VIcon v-if="project.favorite" color="warning" icon="mdi-star" size="small" />
                     {{ project.name }}
@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-const { switchProject } = useProject();
+const { getSwitchProjectLocationRef } = useProject();
 
 const projectStore = useProjectStore();
 

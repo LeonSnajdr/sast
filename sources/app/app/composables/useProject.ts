@@ -1,10 +1,14 @@
+import type { RouteLocationRaw } from "vue-router";
+
 export default function useProject() {
     const route = useRoute();
 
-    const switchProject = async (project: ProjectContract) => {
+    const getSwitchProjectLocationRef = (project: ProjectContract) => computed(() => getSwitchProjectLocation(project));
+
+    const getSwitchProjectLocation = (project: ProjectContract): RouteLocationRaw => {
         const isProjectRoute = route.matched.some((match) => match.name === "index-project-id");
 
-        if (!isProjectRoute) return;
+        if (!isProjectRoute) return { name: "index-project-id", params: { id: project.id } };
 
         const match = lodFindLast(route.matched, (match) => {
             return match.meta.projectSwitchName != undefined;
@@ -12,10 +16,14 @@ export default function useProject() {
 
         const name = match ? match.meta.projectSwitchName : "index-project-id";
 
-        await navigateTo({ name: name as "index", params: { id: project.id } });
+        return { name: name as "index", params: { id: project.id } };
+    };
+
+    const switchProject = async (project: ProjectContract) => {
+        await navigateTo(getSwitchProjectLocation(project));
     };
 
     const switchProjectDebounced = lodDebounce(switchProject, 250);
 
-    return { switchProject, switchProjectDebounced };
+    return { getSwitchProjectLocation, getSwitchProjectLocationRef, switchProject, switchProjectDebounced };
 }

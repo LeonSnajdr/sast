@@ -1,7 +1,10 @@
 <template>
     <VSystemBar class="d-flex ga-2" style="z-index: 10000" data-tauri-drag-region window>
-        <VIconBtn @click="$router.back()" icon="mdi-arrow-left" size="small" />
-        <VIconBtn @click="$router.forward()" icon="mdi-arrow-right" size="small" />
+        <div class="d-flex" style="width: 200px">
+            <VIconBtn @click="$router.back()" icon="mdi-arrow-left" size="small" />
+            <VIconBtn @click="$router.forward()" icon="mdi-arrow-right" size="small" />
+        </div>
+        <div id="window-bar-content" />
         <VSpacer />
         <VIconBtn @click="appWindow.minimize()" icon="mdi-minus" size="small" />
         <VIconBtn @click="appWindow.toggleMaximize()" :icon="isMaximized ? 'mdi-checkbox-multiple-blank-outline' : 'mdi-checkbox-blank-outline'" size="small" />
