@@ -8,7 +8,7 @@
             <VCardText class="h-100 overflow-y-hidden">
                 <VRowSingle>
                     <VTextField
-                        v-model="search"
+                        v-model="query"
                         :label="$t('search.filter')"
                         :persistentPlaceholder="false"
                         appendInnerIcon="mdi-filter-outline"
@@ -48,27 +48,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFuse } from "@vueuse/integrations/useFuse";
-
 const { getSwitchProjectLocationRef } = useProject();
-
-const projectStore = useProjectStore();
-
-const { allProjects } = storeToRefs(projectStore);
+const { query, projectResults } = useProjectSearch();
 
 const isDialogOpen = ref(false);
-const search = ref<string>("");
-
-const { results: projectResults } = useFuse(search, allProjects, {
-    fuseOptions: {
-        keys: ["name"],
-        isCaseSensitive: false,
-        sortFn: (a, b) => (b.item.favorite ? 1 : 0) - (a.item.favorite ? 1 : 0)
-    },
-    matchAllWhenSearchEmpty: true
-});
 
 watch(isDialogOpen, () => {
-    search.value = "";
+    query.value = "";
 });
 </script>

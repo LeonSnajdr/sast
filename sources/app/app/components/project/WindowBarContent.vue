@@ -1,10 +1,6 @@
 <template>
     <Teleport to="#window-bar-content">
         <div class="d-flex align-center ga-2">
-            <VIconBtn size="x-small" v-tooltip:bottom="$t('project.drawer.select')">
-                <VIcon icon="mdi-swap-horizontal" size="small" />
-                <ProjectDialogSelect />
-            </VIconBtn>
             <VIconBtn size="x-small">
                 <VIcon icon="mdi-chevron-down" size="small" />
                 <ProjectMenuSelect />
@@ -15,7 +11,7 @@
                         <template v-if="project.favorite" #prepend>
                             <VIcon class="mr-n1 opacity-1" color="warning" icon="mdi-star" />
                         </template>
-                        {{ project.name }}
+                        <span class="text-truncate" style="max-width: 150px">{{ project.name }}</span>
                     </VBtn>
                 </VSlideGroupItem>
             </VSlideGroup>
@@ -34,7 +30,7 @@ const { allProjects } = storeToRefs(projectStore);
 @use "@/assets/styles/settings";
 
 :deep(.v-slide-group__prev) {
-    margin-left: -(settings.$spacer * 4);
+    margin-left: -(settings.$spacer * 5);
     margin-right: -(settings.$spacer * 2);
 }
 
