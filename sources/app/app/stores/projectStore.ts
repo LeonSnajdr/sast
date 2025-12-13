@@ -31,6 +31,8 @@ export const useProjectStore = defineStore("project", () => {
         }
 
         selectedProject.value = taskResult.data;
+
+        await loadAllProjects();
     };
 
     const loadAllProjects = async () => {
