@@ -8,7 +8,7 @@
             <VCardText class="h-100 overflow-y-hidden">
                 <VRowSingle>
                     <VTextField
-                        v-model="search"
+                        v-model="query"
                         :label="$t('search.filter')"
                         :persistentPlaceholder="false"
                         appendInnerIcon="mdi-filter-outline"
@@ -18,7 +18,12 @@
                 </VRowSingle>
                 <VRowSingle class="h-100 overflow-y-scroll">
                     <VList>
-                        <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="itemClicked(projectResult.item)">
+                        <VListItem
+                            v-for="projectResult in projectResults"
+                            :key="projectResult.item.id"
+                            @click="isDialogOpen = false"
+                            :to="getSwitchProjectLocationRef(projectResult.item).value"
+                        >
                             <VListItemTitle>
                                 <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
                                 {{ projectResult.item.name }}
@@ -43,32 +48,12 @@
 </template>
 
 <script setup lang="ts">
-import { useFuse } from "@vueuse/integrations/useFuse";
-
-const { switchProject } = useProject();
-
-const projectStore = useProjectStore();
-
-const { allProjects } = storeToRefs(projectStore);
+const { getSwitchProjectLocationRef } = useProject();
+const { query, projectResults } = useProjectSearch();
 
 const isDialogOpen = ref(false);
-const search = ref<string>("");
-
-const { results: projectResults } = useFuse(search, allProjects, {
-    fuseOptions: {
-        keys: ["name"],
-        isCaseSensitive: false,
-        sortFn: (a, b) => (b.item.favorite ? 1 : 0) - (a.item.favorite ? 1 : 0)
-    },
-    matchAllWhenSearchEmpty: true
-});
-
-const itemClicked = (project: ProjectContract) => {
-    isDialogOpen.value = false;
-    switchProject(project);
-};
 
 watch(isDialogOpen, () => {
-    search.value = "";
+    query.value = "";
 });
 </script>

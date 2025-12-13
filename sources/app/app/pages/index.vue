@@ -10,6 +10,7 @@ const presentation = usePresentation();
 
 const settingStore = useSettingStore();
 const updateStore = useUpdateStore();
+const projectStore = useProjectStore();
 
 const { setting } = storeToRefs(settingStore);
 
@@ -35,6 +36,8 @@ const initialize = async () => {
     presentation.applySetting();
 
     checkForUpdate();
+
+    await projectStore.loadAllProjects();
 
     isInitialized.value = true;
 };

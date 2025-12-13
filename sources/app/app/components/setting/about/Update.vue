@@ -40,14 +40,14 @@ const { updateInfo, status, downloaded, contentLength } = storeToRefs(updateStor
 
 const downloadButtonProps = computed(() => ({
     color: status.value === UpdateStatus.UpdateAvailable ? "primary" : "",
-    variant: status.value === UpdateStatus.UpdateAvailable ? "flat" : "text",
+    variant: (status.value === UpdateStatus.UpdateAvailable ? "flat" : "text") as "flat" | "text",
     loading: status.value === UpdateStatus.Downloading,
     disabled: status.value !== UpdateStatus.UpdateAvailable
 }));
 
 const installButtonProps = computed(() => ({
     color: status.value === UpdateStatus.Downloaded ? "primary" : "",
-    variant: status.value === UpdateStatus.Downloaded ? "flat" : "text",
+    variant: (status.value === UpdateStatus.Downloaded ? "flat" : "text") as "flat" | "text",
     loading: status.value === UpdateStatus.Installing,
     disabled: status.value !== UpdateStatus.Downloaded
 }));

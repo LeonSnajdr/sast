@@ -1,4 +1,5 @@
 <template>
+    <ProjectWindowBarContent />
     <NuxtPage />
 </template>
 
@@ -30,8 +31,6 @@ const setupHotkeys = () => {
 };
 
 onBeforeMount(() => {
-    projectStore.loadAllProjects();
-
     setupHotkeys();
 });
 

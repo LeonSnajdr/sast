@@ -5,13 +5,7 @@
                 <VListItemTitle class="ga-1">
                     <VIcon v-if="selectedProject.favorite" color="warning" icon="mdi-star" />
                     <span class="text-body-1 text-truncate" style="max-width: 150px">{{ selectedProject.name }}</span>
-                    <VIcon icon="mdi-chevron-down" />
-                    <ProjectMenuSelect />
                 </VListItemTitle>
-                <template #append>
-                    <VIconBtn id="swap-btn" class="ml-2" icon="mdi-swap-horizontal" size="small" v-tooltip="$t('project.drawer.select')" />
-                    <ProjectDialogSelect activator="#swap-btn" />
-                </template>
             </VListItem>
             <VDivider />
             <VListItem v-for="page in subPages" :key="page.name" :title="page.name" :to="page.to" link>
