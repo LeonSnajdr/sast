@@ -15,9 +15,10 @@
             <VDivider />
             <VList maxHeight="400" maxWidth="400" minWidth="250">
                 <VListItem v-for="projectResult in projectResults" :key="projectResult.item.id" @click="onItemClick(projectResult.item)">
-                    <VListItemTitle>
+                    <VListItemTitle class="d-flex align-center ga-1">
                         <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
-                        {{ projectResult.item.name }}
+                        <span class="text-truncate" style="max-width: 300px">{{ projectResult.item.name }}</span>
+                        <TerminalCountChip :project="projectResult.item" density="default" />
                     </VListItemTitle>
                     <VListItemSubtitle>
                         {{ $t("date.opened", { date: useLocaleTimeAgo(projectResult.item.dateLastOpened).value }) }}

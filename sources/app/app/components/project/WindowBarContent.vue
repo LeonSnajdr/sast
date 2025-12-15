@@ -7,11 +7,14 @@
             </VIconBtn>
             <VSlideGroup showArrows>
                 <VSlideGroupItem v-for="project in allProjects" :key="project.id">
-                    <VBtn :to="getSwitchProjectLocationRef(project).value" density="compact">
+                    <VBtn :to="getSwitchProjectLocationRef(project).value" class="px-2" density="compact">
                         <template v-if="project.favorite" #prepend>
-                            <VIcon class="mr-n1 opacity-1" color="warning" icon="mdi-star" />
+                            <VIcon class="opacity-1" color="warning" icon="mdi-star" />
                         </template>
-                        <span class="text-truncate" style="max-width: 150px">{{ project.name }}</span>
+                        <span class="text-truncate mx-n1" style="max-width: 150px">{{ project.name }}</span>
+                        <template #append>
+                            <TerminalCountChip :project />
+                        </template>
                     </VBtn>
                 </VSlideGroupItem>
             </VSlideGroup>
