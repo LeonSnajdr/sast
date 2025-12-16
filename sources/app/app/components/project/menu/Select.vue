@@ -18,7 +18,7 @@
                     <VListItemTitle class="d-flex align-center ga-1">
                         <VIcon v-if="projectResult.item.favorite" color="warning" icon="mdi-star" size="small" />
                         <span class="text-truncate" style="max-width: 300px">{{ projectResult.item.name }}</span>
-                        <TerminalCountChip :project="projectResult.item" density="default" />
+                        <TerminalCountChip :project="projectResult.item" />
                     </VListItemTitle>
                     <VListItemSubtitle>
                         {{ $t("date.opened", { date: useLocaleTimeAgo(projectResult.item.dateLastOpened).value }) }}

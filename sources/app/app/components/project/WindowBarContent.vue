@@ -5,19 +5,25 @@
                 <VIcon icon="mdi-chevron-down" size="small" />
                 <ProjectMenuSelect />
             </VIconBtn>
-            <VSlideGroup showArrows>
-                <VSlideGroupItem v-for="project in allProjects" :key="project.id">
-                    <VBtn :to="getSwitchProjectLocationRef(project).value" class="px-2" density="compact">
-                        <template v-if="project.favorite" #prepend>
-                            <VIcon class="opacity-1" color="warning" icon="mdi-star" />
-                        </template>
-                        <span class="text-truncate mx-n1" style="max-width: 150px">{{ project.name }}</span>
-                        <template #append>
-                            <TerminalCountChip :project />
-                        </template>
-                    </VBtn>
-                </VSlideGroupItem>
-            </VSlideGroup>
+            <VTabs color="text" centerActive showArrows>
+                <VTab
+                    v-for="project in allProjects"
+                    :key="project.id"
+                    :to="getSwitchProjectLocationRef(project).value"
+                    class="border-b border-opacity-0"
+                    density="compact"
+                    height="34"
+                    selectedClass="border-text border-opacity-100"
+                >
+                    <template v-if="project.favorite" #prepend>
+                        <VIcon class="opacity-100" color="warning" icon="mdi-star" size="small" style="margin-top: 2px; margin-right: -2px" />
+                    </template>
+                    <span class="font-weight-medium text-truncate mx-n1" style="max-width: 150px">{{ project.name }}</span>
+                    <template #append>
+                        <TerminalCountChip :project />
+                    </template>
+                </VTab>
+            </VTabs>
         </div>
     </Teleport>
 </template>

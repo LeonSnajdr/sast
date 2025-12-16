@@ -1,5 +1,5 @@
 <template>
-    <VChip v-if="count" class="px-1" color="" density="comfortable" size="x-small" style="padding-bottom: 1px" variant="tonal" label>
+    <VChip v-if="count" class="px-1" color="primary" density="comfortable" size="x-small" style="padding-bottom: 1px" label>
         {{ count }}
     </VChip>
 </template>
