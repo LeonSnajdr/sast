@@ -8,11 +8,15 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const isTaskSetDrawerOpen = ref(false);
     const isLoading = ref(false);
-    const terminals = ref<TerminalInfoContract[]>([]);
+    const allTerminals = ref<TerminalInfoContract[]>([]);
+
+    const terminals = computed(() => {
+        return allTerminals.value.filter((x) => x.projectId === selectedProject.value.id);
+    });
 
     const loadAll = async () => {
         isLoading.value = true;
-        const sessionInfoResult = await commands.terminalGetManyInfo({ projectId: selectedProject.value.id } as TerminalFilter);
+        const sessionInfoResult = await commands.terminalGetManyInfo({} as TerminalFilter);
         isLoading.value = false;
 
         if (sessionInfoResult.status === "error") {
@@ -20,12 +24,10 @@ export const useTerminalStore = defineStore("terminal", () => {
             return;
         }
 
-        terminals.value = sessionInfoResult.data;
+        allTerminals.value = sessionInfoResult.data;
     };
 
     const created = async (created: TerminalCreatedEventData) => {
-        if (created.projectId != selectedProject.value.id) return;
-
         const infoResult = await commands.terminalGetOneInfo(created.id);
 
         if (infoResult.status === "error") {
@@ -33,16 +35,14 @@ export const useTerminalStore = defineStore("terminal", () => {
             return;
         }
 
-        terminals.value.push(infoResult.data);
+        allTerminals.value.push(infoResult.data);
 
-        if (created.jumpInto) {
+        if (created.jumpInto && created.projectId === selectedProject.value.id) {
             navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: created.id } });
         }
     };
 
     const updated = async (updated: TerminalUpdatedEventData) => {
-        if (updated.projectId != selectedProject.value.id) return;
-
         const infoResult = await commands.terminalGetOneInfo(updated.id);
 
         if (infoResult.status === "error") {
@@ -50,19 +50,17 @@ export const useTerminalStore = defineStore("terminal", () => {
             return;
         }
 
-        const terminal = terminals.value.find((x) => x.id === updated.id);
+        const terminal = allTerminals.value.find((x) => x.id === updated.id);
 
         lodAssign(terminal, infoResult.data);
 
-        if (updated.jumpInto) {
+        if (updated.jumpInto && updated.projectId === selectedProject.value.id) {
             navigateTo({ name: "index-project-id-terminal-terminalId", params: { id: selectedProject.value.id, terminalId: updated.id } });
         }
     };
 
     const statusChanged = async (update: TerminalShellStatusChangedEventData) => {
-        if (update.projectId != selectedProject.value.id) return;
-
-        const terminal = terminals.value.find((x) => x.id === update.id);
+        const terminal = allTerminals.value.find((x) => x.id === update.id);
 
         if (!terminal) return;
 
@@ -70,8 +68,8 @@ export const useTerminalStore = defineStore("terminal", () => {
     };
 
     const closed = async (id: string) => {
-        terminals.value = terminals.value.filter((x) => x.id !== id);
+        allTerminals.value = allTerminals.value.filter((x) => x.id !== id);
     };
 
-    return { isTaskSetDrawerOpen, isLoading, terminals, loadAll, created, updated, statusChanged, closed };
+    return { isTaskSetDrawerOpen, isLoading, allTerminals, terminals, loadAll, created, updated, statusChanged, closed };
 });
