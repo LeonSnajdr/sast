@@ -6,7 +6,7 @@ export const useTerminalStore = defineStore("terminal", () => {
 
     const { selectedProject } = storeToRefs(projectService);
 
-    const isTaskSetDrawerOpen = ref(false);
+    const isDrawerOpen = ref(false);
     const isLoading = ref(false);
     const allTerminals = ref<TerminalInfoContract[]>([]);
 
@@ -71,5 +71,5 @@ export const useTerminalStore = defineStore("terminal", () => {
         allTerminals.value = allTerminals.value.filter((x) => x.id !== id);
     };
 
-    return { isTaskSetDrawerOpen, isLoading, allTerminals, terminals, loadAll, created, updated, statusChanged, closed };
+    return { isDrawerOpen, isLoading, allTerminals, terminals, loadAll, created, updated, statusChanged, closed };
 });

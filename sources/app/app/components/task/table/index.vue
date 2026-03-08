@@ -1,5 +1,5 @@
 <template>
-    <VDataTableVirtual :headers="headers" :items="tasks" :rowProps="getRowProps" hideDefaultFooter>
+    <VDataTableVirtual :headers="headers" :hideDefaultHeader="inline" :items="tasks" :rowProps="getRowProps" hideDefaultFooter>
         <template #[`item.actions`]="{ item }">
             <TaskTableColumnActions :task="item" />
         </template>
@@ -26,8 +26,9 @@
 import type { RouteLocationRaw } from "vue-router";
 import type { DataTableHeader } from "vuetify";
 
-defineProps<{
+const props = defineProps<{
     tasks: TaskInfoContract[];
+    inline?: boolean;
 }>();
 
 const { t } = useI18n();
@@ -36,27 +37,36 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const headers: DataTableHeader[] = [
-    {
-        title: t("task.table.column.actions") as string,
-        key: "actions",
-        width: 200
-    },
-    {
-        title: t("task.table.column.name") as string,
-        key: "name"
-    },
-    {
-        title: t("task.table.column.dateCreated") as string,
-        key: "dateCreated"
-    },
-    {
-        title: t("task.table.column.dateLastUpdated") as string,
-        key: "dateLastUpdated"
-    }
-];
+const headers = computed((): DataTableHeader[] => {
+    const defaultHeaders = [
+        {
+            title: t("task.table.column.actions") as string,
+            key: "actions",
+            width: 200
+        },
+        {
+            title: t("task.table.column.name") as string,
+            key: "name"
+        }
+    ];
+
+    const additionalHeaders = [
+        {
+            title: t("task.table.column.dateCreated") as string,
+            key: "dateCreated"
+        },
+        {
+            title: t("task.table.column.dateLastUpdated") as string,
+            key: "dateLastUpdated"
+        }
+    ];
+
+    return props.inline ? defaultHeaders : [...defaultHeaders, ...additionalHeaders];
+});
 
 const getRowProps = ({ item }: { item: TaskInfoContract }) => {
+    if (props.inline) return undefined;
+
     return {
         onClick: () => {
             const taskRouteLoaction = getTaskRouteLocation(item);

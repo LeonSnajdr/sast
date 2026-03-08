@@ -1,11 +1,11 @@
 <template>
-    <TaskSetDrawer v-model="isTaskSetDrawerOpen" />
+    <TerminalDrawer v-model="isDrawerOpen" />
 
     <VAppBar>
         <TerminalTabs />
         <TerminalActionCreate />
         <VSpacer />
-        <TaskSetSessionBtnInfo @click="isTaskSetDrawerOpen = !isTaskSetDrawerOpen" :active="isTaskSetDrawerOpen" />
+        <TaskSetSessionBtnInfo @click="isDrawerOpen = !isDrawerOpen" :active="isDrawerOpen" />
     </VAppBar>
 
     <div class="h-100">
@@ -20,5 +20,5 @@ definePageMeta({
 
 const terminalStore = useTerminalStore();
 
-const { isTaskSetDrawerOpen } = storeToRefs(terminalStore);
+const { isDrawerOpen } = storeToRefs(terminalStore);
 </script>
