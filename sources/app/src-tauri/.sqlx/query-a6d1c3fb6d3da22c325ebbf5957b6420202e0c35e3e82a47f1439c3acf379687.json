@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            insert into task\n                (id, project_id, name, tab_name, no_exit, force_kill, history_persistence, date_created, date_last_updated)\n                values\n                ($1, $2, $3, $4, $5, $6, $7, $8, $9)\n\t\t\treturning\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                tab_name,\n                no_exit,\n                force_kill,\n                history_persistence as \"history_persistence: TerminalHistoryPersistence\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                favorite,\n                tab_name,\n                no_exit,\n                force_kill,\n                history_persistence as \"history_persistence: TerminalHistoryPersistence\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from task\n            where id = $1\n        ",
   "describe": {
     "columns": [
       {
@@ -19,40 +19,46 @@
         "type_info": "Text"
       },
       {
-        "name": "tab_name",
+        "name": "favorite",
         "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "tab_name",
+        "ordinal": 4,
         "type_info": "Text"
       },
       {
         "name": "no_exit",
-        "ordinal": 4,
-        "type_info": "Bool"
-      },
-      {
-        "name": "force_kill",
         "ordinal": 5,
         "type_info": "Bool"
       },
       {
-        "name": "history_persistence: TerminalHistoryPersistence",
+        "name": "force_kill",
         "ordinal": 6,
-        "type_info": "Text"
+        "type_info": "Bool"
       },
       {
-        "name": "date_created: DateTime<Utc>",
+        "name": "history_persistence: TerminalHistoryPersistence",
         "ordinal": 7,
         "type_info": "Text"
       },
       {
-        "name": "date_last_updated: DateTime<Utc>",
+        "name": "date_created: DateTime<Utc>",
         "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 9,
         "type_info": "Text"
       }
     ],
     "parameters": {
-      "Right": 9
+      "Right": 1
     },
     "nullable": [
+      false,
       false,
       false,
       false,
@@ -64,5 +70,5 @@
       false
     ]
   },
-  "hash": "c4062a7fc63acaea61287db464b8bfd1684e7cfe154b7dfb78f6571232e4b3f8"
+  "hash": "a6d1c3fb6d3da22c325ebbf5957b6420202e0c35e3e82a47f1439c3acf379687"
 }

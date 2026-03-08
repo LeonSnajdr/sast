@@ -11,6 +11,7 @@ pub struct TaskSetContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
 	pub tasks: Vec<TaskSetTaskInfoContract>,
@@ -22,6 +23,7 @@ pub struct TaskSetInfoContract {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
 	pub task_ids: Vec<Uuid>,
@@ -32,6 +34,7 @@ pub struct TaskSetInfoContract {
 pub struct TaskSetCreateContract {
 	pub project_id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 }
 
 #[derive(Debug, Type, Serialize, Deserialize)]
@@ -39,5 +42,6 @@ pub struct TaskSetCreateContract {
 pub struct TaskSetUpdateContract {
 	pub id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub tasks: Vec<TaskSetTaskInfoContract>,
 }

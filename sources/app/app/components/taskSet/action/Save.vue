@@ -47,6 +47,7 @@ const saveTaskSet = async () => {
     const updateContract: TaskSetUpdateContract = {
         id: props.taskSet.id,
         name: props.taskSet.name,
+        favorite: props.taskSet.favorite,
         tasks: props.taskSet.tasks
     };
 

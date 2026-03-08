@@ -7,6 +7,7 @@ pub struct TaskSetModel {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
 }
@@ -16,6 +17,7 @@ pub struct TaskSetInfoModel {
 	pub id: Uuid,
 	pub project_id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub date_created: DateTime<Utc>,
 	pub date_last_updated: DateTime<Utc>,
 }
@@ -24,5 +26,6 @@ pub struct TaskSetInfoModel {
 pub struct TaskSetUpdateModel {
 	pub id: Uuid,
 	pub name: String,
+	pub favorite: bool,
 	pub date_last_updated: DateTime<Utc>,
 }

@@ -10,6 +10,18 @@
         <TaskActionSave v-if="task" @saved="taskSaved()" :disabled="!isTaskValid" :task />
     </VAppBar>
     <VContainer>
+        <VCard :loading="isTaskLoading" class="mb-4">
+            <VCardText v-if="task">
+                <VListItem>
+                    <VListItemTitle>{{ task.name }}</VListItemTitle>
+                    <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(task.dateCreated).value }) }}</VListItemSubtitle>
+
+                    <template #append>
+                        <TaskFieldFavorite v-model="task.favorite" mode="button" />
+                    </template>
+                </VListItem>
+            </VCardText>
+        </VCard>
         <VCard :loading="isTaskLoading">
             <VCardText v-if="task">
                 <TaskFieldContainer v-model="task" v-model:isValid="isTaskValid" />

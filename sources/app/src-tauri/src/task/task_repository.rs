@@ -11,13 +11,14 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		TaskModel,
 		r#"--sql
             insert into task
-                (id, project_id, name, tab_name, no_exit, force_kill, history_persistence, date_created, date_last_updated)
+                (id, project_id, name, favorite, tab_name, no_exit, force_kill, history_persistence, date_created, date_last_updated)
                 values
-                ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
 			returning
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 tab_name,
                 no_exit,
                 force_kill,
@@ -28,6 +29,7 @@ pub async fn create(create_model: TaskModel) -> Result<TaskModel> {
 		create_model.id,
 		create_model.project_id,
 		create_model.name,
+		create_model.favorite,
 		create_model.tab_name,
 		create_model.no_exit,
 		create_model.force_kill,
@@ -50,11 +52,12 @@ pub async fn get_many_info(project_id: Uuid) -> Result<Vec<TaskInfoModel>> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
             where project_id is $1
-            order by name desc
+            order by favorite desc, name desc
         "#,
 		project_id
 	)
@@ -73,6 +76,7 @@ pub async fn get_one_info(id: Uuid) -> Result<TaskInfoModel> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 date_created as "date_created: DateTime<Utc>",
                 date_last_updated as "date_last_updated: DateTime<Utc>"
             from task
@@ -95,6 +99,7 @@ pub async fn get_one(id: Uuid) -> Result<TaskModel> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 tab_name,
                 no_exit,
                 force_kill,
@@ -119,15 +124,17 @@ pub async fn update_one(update_container: TaskUpdateModel) -> Result<()> {
             update task
             set
                 name = $2,
-                tab_name = $3,
-                no_exit = $4,
-                force_kill = $5,
-                history_persistence = $6,
-                date_last_updated = $7
+                favorite = $3,
+                tab_name = $4,
+                no_exit = $5,
+                force_kill = $6,
+                history_persistence = $7,
+                date_last_updated = $8
             where id = $1
         "#,
 		update_container.id,
 		update_container.name,
+		update_container.favorite,
 		update_container.tab_name,
 		update_container.no_exit,
 		update_container.force_kill,
