@@ -63,6 +63,10 @@ export default defineNuxtConfig({
             {
                 from: "vuetify",
                 imports: [{ name: "useHotkey", as: "useHotkey" }]
+            },
+            {
+                from: "@vueuse/integrations/useFuse",
+                imports: [{ name: "useFuse", as: "useFuse" }]
             }
         ]
     }

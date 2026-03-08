@@ -6,7 +6,7 @@
         <template #content>
             <div class="d-flex flex-column ga-4">
                 <div class="d-flex flex-wrap ga-2 align-center">
-                    <VTextField v-model="query" :placeholder="$t('search.filter')" density="compact" variant="plain" clearable hideDetails />
+                    <VTextField v-model="query" :placeholder="$t('search.filter')" density="compact" variant="plain" clearable />
                     <VChipGroup v-model="visibleTypes" filter multiple>
                         <VChip density="comfortable" value="task">
                             {{ $t("task.plural") }}
@@ -22,21 +22,10 @@
                         />
                     </VChipGroup>
                 </div>
-
-                <div v-if="showTasks">
-                    <div class="text-subtitle-2">
-                        {{ $t("task.plural") }}
-                    </div>
-                    <TaskTable :tasks="filteredTasks" inline />
+                <div>
+                    <TaskTable v-if="showTasks" :tasks="filteredTasks" inline />
+                    <TaskSetTable v-if="showTaskSets" :taskSets="filteredTaskSets" inline />
                 </div>
-
-                <div v-if="showTaskSets">
-                    <div class="text-subtitle-2">
-                        {{ $t("taskSet.plural") }}
-                    </div>
-                    <TaskSetTable :taskSets="filteredTaskSets" inline />
-                </div>
-
                 <div v-if="!hasResults" class="text-medium-emphasis text-center">
                     {{ $t("search.noResults") }}
                 </div>
@@ -60,31 +49,42 @@ const query = ref("");
 const favoritesOnly = ref(false);
 const visibleTypes = ref<VisibleType[]>(["task", "taskSet"]);
 
-const normalizedQuery = computed(() => {
-    return query.value.trim().toLowerCase();
+const { results: taskResults } = useFuse(query, tasks, {
+    fuseOptions: {
+        keys: ["name"],
+        isCaseSensitive: false
+    },
+    matchAllWhenSearchEmpty: true
+});
+
+const { results: taskSetResults } = useFuse(query, taskSets, {
+    fuseOptions: {
+        keys: ["name"],
+        isCaseSensitive: false
+    },
+    matchAllWhenSearchEmpty: true
 });
 
 const includesType = (type: VisibleType) => {
     return visibleTypes.value.includes(type);
 };
 
-const matchesFilters = (item: { name: string; favorite: boolean }) => {
-    const hasMatchingName = normalizedQuery.value.length === 0 || item.name.toLowerCase().includes(normalizedQuery.value);
+const matchesFilters = (item: { favorite: boolean }) => {
     const hasMatchingFavorite = !favoritesOnly.value || item.favorite;
 
-    return hasMatchingName && hasMatchingFavorite;
+    return hasMatchingFavorite;
 };
 
 const filteredTasks = computed(() => {
     if (!includesType("task")) return [];
 
-    return tasks.value.filter(matchesFilters);
+    return taskResults.value.map((x) => x.item).filter(matchesFilters);
 });
 
 const filteredTaskSets = computed(() => {
     if (!includesType("taskSet")) return [];
 
-    return taskSets.value.filter(matchesFilters);
+    return taskSetResults.value.map((x) => x.item).filter(matchesFilters);
 });
 
 const showTasks = computed(() => {
@@ -97,17 +97,5 @@ const showTaskSets = computed(() => {
 
 const hasResults = computed(() => {
     return showTasks.value || showTaskSets.value;
-});
-
-const resetFilters = () => {
-    query.value = "";
-    favoritesOnly.value = false;
-    visibleTypes.value = ["task", "taskSet"];
-};
-
-watch(isDrawerOpen, (isOpen, wasOpen) => {
-    if (wasOpen && !isOpen) {
-        resetFilters();
-    }
 });
 </script>

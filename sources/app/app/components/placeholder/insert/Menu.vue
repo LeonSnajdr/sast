@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { useFuse } from "@vueuse/integrations/useFuse";
 import type { MenuProps } from "vue-text-insert";
 
 const props = defineProps<MenuProps<PlaceholderInsertTileContract>>();
