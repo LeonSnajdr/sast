@@ -1,7 +1,8 @@
 <template>
     <VBtn
         @click="placeholderSave()"
-        :loading="isLoading"
+        :disabled
+        :loading="isPlaceholderSaving"
         color="success"
         prependIcon="mdi-content-save"
         variant="flat"
@@ -21,46 +22,22 @@ const notify = useNotify();
 const { t } = useI18n();
 
 const projectStore = useProjectStore();
-const placeholderStore = usePlaceholderStore();
 
 const { selectedProject } = storeToRefs(projectStore);
-
-const isDialogOpen = ref(false);
-const isLoading = ref(false);
+const { isPlaceholderSaving, savePlaceholder } = usePlaceholder();
 
 useHotkey("cmd+s", () => placeholderSave(), { inputs: true });
 
 const placeholderSave = async () => {
     if (props.disabled) return;
 
-    isLoading.value = true;
+    const isSaved = await savePlaceholder(props.placeholder);
 
-    const updateContract: PlaceholderUpdateContract = {
-        id: props.placeholder.id,
-        projectId: props.placeholder.projectId,
-        name: props.placeholder.name,
-        favorite: props.placeholder.favorite,
-        value: props.placeholder.value,
-        visibility: props.placeholder.visibility,
-        kind: props.placeholder.kind,
-        source: props.placeholder.source
-    };
-
-    const saveResult = await commands.placeholderUpdateOne(updateContract);
-
-    isLoading.value = false;
-
-    if (saveResult.status == "error") {
-        notify.error(t("action.save.error", { type: t("placeholder.singular"), name: props.placeholder.name }), { error: saveResult.error });
+    if (!isSaved) {
         return;
     }
 
     notify.success(t("action.save.success", { type: t("placeholder.singular"), name: props.placeholder.name }));
-
-    isDialogOpen.value = false;
-
-    placeholderStore.loadAll();
-
     navigateTo({ name: "index-project-id-placeholder", params: { id: selectedProject.value.id } });
 };
 </script>

@@ -5,6 +5,7 @@
         </template>
         <template #content>
             <div class="d-flex flex-column ga-4">
+                <TerminalPlaceholderFavorites />
                 <div class="d-flex flex-wrap ga-2 align-center">
                     <VTextField v-model="query" :placeholder="$t('search.filter')" density="compact" variant="plain" clearable />
                     <VChipGroup v-model="visibleTypes" filter multiple>
