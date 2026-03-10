@@ -159,7 +159,6 @@
   "taskSetTask.search": "Aufgaben suche",
   "terminal.noSelected": "Kein Tab ausgewählt",
   "terminal.open.error": "Terminal konnte nicht geöffnet werden",
-  "terminal.favoritePlaceholders.title": "Favorisierte Platzhalter",
   "terminal.plural": "Terminals",
   "terminal.singular": "Terminal",
   "title.clone": "{type} - Klonen",

@@ -5,7 +5,21 @@
         </template>
         <template #content>
             <div class="d-flex flex-column ga-4">
-                <TerminalPlaceholderFavorites />
+                <VRow v-if="favoritePlaceholders.length > 0">
+                    <VCol
+                        v-for="(placeholder, index) in favoritePlaceholders"
+                        :key="placeholder.id"
+                        :sm="favoritePlaceholders.length % 2 === 1 && index === favoritePlaceholders.length - 1 ? 12 : 6"
+                        cols="12"
+                    >
+                        <PlaceholderFieldAutosaveValue v-model="favoritePlaceholders[index]!" density="compact">
+                            <template #label>
+                                <PlaceholderIcon :visibility="placeholder.visibility" />
+                                <span class="ml-1 text-truncate">{{ placeholder.name }}</span>
+                            </template>
+                        </PlaceholderFieldAutosaveValue>
+                    </VCol>
+                </VRow>
                 <div class="d-flex flex-wrap ga-2 align-center">
                     <VTextField v-model="query" :placeholder="$t('search.filter')" density="compact" variant="plain" clearable />
                     <VChipGroup v-model="visibleTypes" filter multiple>
@@ -40,9 +54,11 @@ type VisibleType = "task" | "taskSet";
 
 const isDrawerOpen = defineModel<boolean>({ required: true });
 
+const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
 const taskSetStore = useTaskSetStore();
 
+const { placeholders } = storeToRefs(placeholderStore);
 const { tasks } = storeToRefs(taskStore);
 const { taskSets } = storeToRefs(taskSetStore);
 
@@ -75,6 +91,10 @@ const matchesFilters = (item: { favorite: boolean }) => {
 
     return hasMatchingFavorite;
 };
+
+const favoritePlaceholders = computed(() => {
+    return placeholders.value.filter((placeholder) => placeholder.favorite);
+});
 
 const filteredTasks = computed(() => {
     if (!includesType("task")) return [];
