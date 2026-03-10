@@ -6,6 +6,18 @@
         <PlaceholderActionSave v-if="placeholder" :disabled="!isPlaceholderValid" :placeholder="placeholder" />
     </VAppBar>
     <VContainer>
+        <VCard :loading="isLoading" class="mb-4">
+            <VCardText v-if="placeholder">
+                <VListItem>
+                    <VListItemTitle>{{ placeholder.name }}</VListItemTitle>
+                    <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(placeholder.dateCreated).value }) }}</VListItemSubtitle>
+
+                    <template #append>
+                        <PlaceholderFieldFavorite v-model="placeholder.favorite" mode="button" />
+                    </template>
+                </VListItem>
+            </VCardText>
+        </VCard>
         <VCard :loading="isLoading">
             <VCardText v-if="placeholder">
                 <PlaceholderFieldContainer v-model="placeholder" v-model:isValid="isPlaceholderValid" />

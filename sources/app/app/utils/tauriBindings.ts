@@ -381,13 +381,13 @@ terminalUpdatedEvent: "terminal-updated-event"
 /** user-defined types **/
 
 export type Error = { Db: string } | "AlreadyExists" | "NotExists" | "HasUsages" | "EventEmit"
-export type PlaceholderContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
-export type PlaceholderCreateContract = { projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderContract = { id: string; projectId: string | null; name: string; favorite: boolean; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource; dateCreated: string; dateLastUpdated: string }
+export type PlaceholderCreateContract = { projectId: string | null; name: string; favorite: boolean; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderInsertTileContract = { kind: PlaceholderInsertTileKind; textValue: string | null; placeholderId: string | null; placeholderName: string | null; placeholderVisibility: PlaceholderVisibility | null }
 export type PlaceholderInsertTileKind = "Text" | "Placeholder"
 export type PlaceholderKind = "Text" | "Select"
 export type PlaceholderSource = "Static"
-export type PlaceholderUpdateContract = { id: string; projectId: string | null; name: string; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
+export type PlaceholderUpdateContract = { id: string; projectId: string | null; name: string; favorite: boolean; value: string; visibility: PlaceholderVisibility; kind: PlaceholderKind; source: PlaceholderSource }
 export type PlaceholderVisibility = "Global" | "Project"
 export type ProjectContract = { id: string; name: string; favorite: boolean; quickSwitchKeybind: string | null; dateCreated: string; dateLastOpened: string }
 export type ProjectCreateContract = { name: string }

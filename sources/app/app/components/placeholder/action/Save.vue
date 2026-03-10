@@ -39,6 +39,7 @@ const placeholderSave = async () => {
         id: props.placeholder.id,
         projectId: props.placeholder.projectId,
         name: props.placeholder.name,
+        favorite: props.placeholder.favorite,
         value: props.placeholder.value,
         visibility: props.placeholder.visibility,
         kind: props.placeholder.kind,

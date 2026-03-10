@@ -51,6 +51,7 @@
   "keybind.none": "Kein Tastenkürzel",
   "placeholder.card.global.project": "Projekt",
   "placeholder.card.global.title": "Global",
+  "placeholder.field.favorite": "Favorit",
   "placeholder.field.name": "Platzhaltername",
   "placeholder.field.value": "Wert",
   "placeholder.field.visibility.global": "Globaler Platzhalter",

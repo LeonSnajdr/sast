@@ -11,13 +11,14 @@ pub async fn create(create_model: PlaceholderModel) -> Result<PlaceholderModel> 
 		PlaceholderModel,
 		r#"--sql
             insert into placeholder
-                (id, project_id, name, value, visibility, kind, source, date_created, date_last_updated)
+                (id, project_id, name, favorite, value, visibility, kind, source, date_created, date_last_updated)
                 values
-                ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+                ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
             returning
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 value,
                 visibility as "visibility: PlaceholderVisibility",
                 kind as "kind: PlaceholderKind",
@@ -28,6 +29,7 @@ pub async fn create(create_model: PlaceholderModel) -> Result<PlaceholderModel> 
 		create_model.id,
 		create_model.project_id,
 		create_model.name,
+		create_model.favorite,
 		create_model.value,
 		create_model.visibility,
 		create_model.kind,
@@ -50,6 +52,7 @@ pub async fn get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 value,
                 visibility as "visibility: PlaceholderVisibility",
                 kind as "kind: PlaceholderKind",
@@ -60,7 +63,7 @@ pub async fn get_many(project_id: Uuid) -> Result<Vec<PlaceholderModel>> {
             where
             	project_id is $1 or
             	(project_id is not $1 and visibility is $2)
-            order by name desc
+            order by favorite desc, name desc
         "#,
 		project_id,
 		PlaceholderVisibility::Global
@@ -80,6 +83,7 @@ pub async fn get_many_used_in_task(task_id: Uuid) -> Result<Vec<PlaceholderModel
                 p.id as "id: Uuid",
                 p.project_id as "project_id: Uuid",
                 p.name,
+                p.favorite,
                 p.value,
                 p.visibility as "visibility: PlaceholderVisibility",
                 p.kind as "kind: PlaceholderKind",
@@ -111,6 +115,7 @@ pub async fn get_one(id: Uuid) -> Result<PlaceholderModel> {
                 id as "id: Uuid",
                 project_id as "project_id: Uuid",
                 name,
+                favorite,
                 value,
                 visibility as "visibility: PlaceholderVisibility",
                 kind as "kind: PlaceholderKind",
@@ -136,15 +141,17 @@ pub async fn update_one(update_container: PlaceholderUpdateModel) -> Result<()> 
             set
                 project_id = $1,
                 name = $2,
-                value = $3,
-                visibility = $4,
-                kind = $5,
-                source = $6,
-                date_last_updated = $7
-            where id = $8
+                favorite = $3,
+                value = $4,
+                visibility = $5,
+                kind = $6,
+                source = $7,
+                date_last_updated = $8
+            where id = $9
         "#,
 		update_container.project_id,
 		update_container.name,
+		update_container.favorite,
 		update_container.value,
 		update_container.visibility,
 		update_container.kind,

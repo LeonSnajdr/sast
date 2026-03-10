@@ -51,6 +51,7 @@
   "keybind.none": "No keybind",
   "placeholder.card.global.project": "Project",
   "placeholder.card.global.title": "Global",
+  "placeholder.field.favorite": "Favorite",
   "placeholder.field.name": "Placeholder name",
   "placeholder.field.value": "Value",
   "placeholder.field.visibility.global": "Global placeholder",
