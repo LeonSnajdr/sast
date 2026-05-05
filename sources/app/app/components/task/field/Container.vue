@@ -1,6 +1,9 @@
 <template>
     <VForm ref="form" v-model="isValid">
-        <TaskFieldName v-model="task.name" autofocus />
+        <VRowSingle colClass="d-flex align-center ga-2">
+            <TaskFieldName v-model="task.name" autofocus />
+            <TaskFieldFavorite v-model="task.favorite" mode="button" />
+        </VRowSingle>
         <TaskFieldTabName v-model="task.tabName" />
         <VRow>
             <VCol>

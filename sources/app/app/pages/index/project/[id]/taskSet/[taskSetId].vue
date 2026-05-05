@@ -10,19 +10,6 @@
     </VAppBar>
 
     <VContainer v-if="taskSet" class="h-100 d-flex flex-column ga-4">
-        <VCard>
-            <VCardText>
-                <VListItem>
-                    <VListItemTitle>{{ taskSet.name }}</VListItemTitle>
-                    <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(taskSet.dateCreated).value }) }}</VListItemSubtitle>
-
-                    <template #append>
-                        <TaskSetFieldFavorite v-model="taskSet.favorite" mode="button" />
-                    </template>
-                </VListItem>
-            </VCardText>
-        </VCard>
-
         <VCard :loading="isLoading" class="overflow-visible">
             <VCardText>
                 <TaskSetFieldContainer v-model="taskSet" v-model:isValid="isTaskSetValid" />

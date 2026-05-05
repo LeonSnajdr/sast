@@ -1,6 +1,9 @@
 <template>
     <VForm ref="form" v-model="isValid">
-        <PlaceholderFieldName v-model="placeholder.name" autofocus />
+        <VRowSingle colClass="d-flex align-center ga-2">
+            <PlaceholderFieldName v-model="placeholder.name" autofocus />
+            <PlaceholderFieldFavorite v-model="placeholder.favorite" mode="button" />
+        </VRowSingle>
         <PlaceholderFieldValue v-model="placeholder.value" />
         <PlaceholderFieldVisibility v-model="placeholder.visibility" v-model:projectId="placeholder.projectId" />
     </VForm>

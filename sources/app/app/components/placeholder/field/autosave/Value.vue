@@ -1,5 +1,5 @@
 <template>
-    <BaseFieldAutosave v-model="placeholder" :isSaving="isPlaceholderSaving" :save="savePlaceholder">
+    <BaseFieldAutosave v-model="placeholder" @save="savePlaceholder" :isSaving="isPlaceholderSaving">
         <template #default="{ cloned, isSaving, save }">
             <PlaceholderFieldValue v-bind="$attrs" v-model="cloned.value" @blur="save">
                 <template v-for="(_, name) in $slots" #[name]="slotData">

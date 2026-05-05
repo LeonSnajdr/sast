@@ -8,7 +8,7 @@
                     <slot name="actions" />
                 </template>
             </VListItem>
-            <VDivider />
+            <VDivider opacity="40%" />
             <VContainer class="flex-grow-1 overflow-auto">
                 <slot name="content" />
             </VContainer>
