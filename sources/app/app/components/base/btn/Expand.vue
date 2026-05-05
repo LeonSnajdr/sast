@@ -1,5 +1,5 @@
 <template>
-    <VIconBtn @click="expanded = !expanded" :rotate="expanded ? 180 : 0" icon="mdi-chevron-up" />
+    <BaseBtnToggle v-model="expanded" :rotate="expanded ? 180 : 0" icon="mdi-chevron-up" />
 </template>
 
 <script setup lang="ts">

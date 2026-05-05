@@ -1,6 +1,7 @@
 <template>
     <BaseDialogCreate v-model="isDialogOpen" v-model:element="task" :emptyElement :type="$t('task.singular')" icon="mdi-checkbox-marked-circle-outline">
         <template #content>
+            <TaskFieldFavorite v-model="task.favorite" />
             <TaskFieldContainer v-model="task" v-model:isValid="isTaskValid" />
         </template>
         <template #actions>
@@ -25,6 +26,7 @@ const { selectedProject } = storeToRefs(projectStore);
 const emptyElement: TaskCreateContract = {
     projectId: selectedProject.value.id,
     name: "",
+    favorite: false,
     tabName: null,
     noExit: false,
     forceKill: false,

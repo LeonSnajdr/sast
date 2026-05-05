@@ -14,7 +14,7 @@ export default defineNuxtConfig({
     experimental: {
         typedPages: true
     },
-    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "@vueuse/nuxt"],
+    modules: ["@nuxt/eslint", "@nuxtjs/i18n", "vuetify-nuxt-module", "@pinia/nuxt", "pinia-plugin-persistedstate/nuxt", "@vueuse/nuxt"],
     i18n: {
         locales: [
             {
@@ -63,6 +63,10 @@ export default defineNuxtConfig({
             {
                 from: "vuetify",
                 imports: [{ name: "useHotkey", as: "useHotkey" }]
+            },
+            {
+                from: "@vueuse/integrations/useFuse",
+                imports: [{ name: "useFuse", as: "useFuse" }]
             }
         ]
     }

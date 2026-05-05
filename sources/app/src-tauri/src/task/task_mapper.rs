@@ -11,6 +11,7 @@ impl TaskContract {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
+			favorite: value.favorite,
 			tab_name: value.tab_name,
 			no_exit: value.no_exit,
 			force_kill: value.force_kill,
@@ -28,6 +29,7 @@ impl TaskCreateContract {
 		Self {
 			name: name,
 			project_id: project_id,
+			favorite: value.favorite,
 			tab_name: value.tab_name,
 			no_exit: value.no_exit,
 			force_kill: value.force_kill,
@@ -44,6 +46,7 @@ impl TaskInfoContract {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
+			favorite: value.favorite,
 			date_created: value.date_created,
 			date_last_updated: value.date_last_updated,
 		}
@@ -60,6 +63,7 @@ impl TaskModel {
 		let TaskCreateContract {
 			project_id,
 			name,
+			favorite,
 			tab_name,
 			no_exit,
 			force_kill,
@@ -72,6 +76,7 @@ impl TaskModel {
 			id,
 			project_id,
 			name,
+			favorite,
 			tab_name,
 			no_exit,
 			force_kill,
@@ -89,6 +94,7 @@ impl TaskUpdateModel {
 		let TaskUpdateContract {
 			id,
 			name,
+			favorite,
 			tab_name,
 			no_exit,
 			force_kill,
@@ -100,6 +106,7 @@ impl TaskUpdateModel {
 		let task_update_model = Self {
 			id,
 			name,
+			favorite,
 			tab_name,
 			no_exit,
 			force_kill,

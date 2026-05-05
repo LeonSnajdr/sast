@@ -10,6 +10,7 @@ impl TaskSetContract {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
+			favorite: value.favorite,
 			date_created: value.date_created,
 			date_last_updated: value.date_last_updated,
 			tasks,
@@ -23,6 +24,7 @@ impl TaskSetInfoContract {
 			id: value.id,
 			project_id: value.project_id,
 			name: value.name,
+			favorite: value.favorite,
 			date_created: value.date_created,
 			date_last_updated: value.date_last_updated,
 			task_ids,
@@ -36,6 +38,7 @@ impl TaskSetModel {
 			id,
 			project_id: value.project_id,
 			name: value.name,
+			favorite: value.favorite,
 			date_created,
 			date_last_updated,
 		}
@@ -44,9 +47,14 @@ impl TaskSetModel {
 
 impl TaskSetUpdateModel {
 	pub fn from(date_last_updated: DateTime<Utc>, value: TaskSetUpdateContract) -> (Self, Vec<TaskSetTaskInfoContract>) {
-		let TaskSetUpdateContract { id, name, tasks } = value;
+		let TaskSetUpdateContract { id, name, favorite, tasks } = value;
 
-		let update_model = Self { id, name, date_last_updated };
+		let update_model = Self {
+			id,
+			name,
+			favorite,
+			date_last_updated,
+		};
 
 		(update_model, tasks)
 	}

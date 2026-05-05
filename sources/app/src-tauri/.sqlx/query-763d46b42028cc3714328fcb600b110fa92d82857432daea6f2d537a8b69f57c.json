@@ -1,0 +1,12 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            update task_set\n            set\n                name = $2,\n                favorite = $3,\n                date_last_updated = $4\n            where id = $1\n        ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Right": 4
+    },
+    "nullable": []
+  },
+  "hash": "763d46b42028cc3714328fcb600b110fa92d82857432daea6f2d537a8b69f57c"
+}

@@ -9,6 +9,7 @@ use uuid::Uuid;
 pub struct PlaceholderCreateContract {
 	pub project_id: Option<Uuid>,
 	pub name: String,
+	pub favorite: bool,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
 	pub kind: PlaceholderKind,
@@ -21,6 +22,7 @@ pub struct PlaceholderUpdateContract {
 	pub id: Uuid,
 	pub project_id: Option<Uuid>,
 	pub name: String,
+	pub favorite: bool,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
 	pub kind: PlaceholderKind,
@@ -33,6 +35,7 @@ pub struct PlaceholderContract {
 	pub id: Uuid,
 	pub project_id: Option<Uuid>,
 	pub name: String,
+	pub favorite: bool,
 	pub value: String,
 	pub visibility: PlaceholderVisibility,
 	pub kind: PlaceholderKind,

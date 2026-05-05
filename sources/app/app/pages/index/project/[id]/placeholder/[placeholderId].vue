@@ -17,6 +17,9 @@
 <script setup lang="ts">
 const route = useRoute("index-project-id-placeholder-placeholderId");
 
+const notify = useNotify();
+const { t } = useI18n();
+
 const isLoading = ref(false);
 const isPlaceholderValid = ref<boolean | null>(false);
 const placeholder = ref<PlaceholderContract>();
@@ -33,6 +36,7 @@ const loadPlaceholder = async () => {
     isLoading.value = false;
 
     if (placeholderResult.status === "error") {
+        notify.error(t("action.load.error", { type: t("placeholder.singular") }), { error: placeholderResult.error });
         return;
     }
 

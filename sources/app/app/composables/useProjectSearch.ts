@@ -1,5 +1,3 @@
-import { useFuse } from "@vueuse/integrations/useFuse";
-
 export default function useProjectSearch() {
     const projectStore = useProjectStore();
 

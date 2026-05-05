@@ -17,8 +17,8 @@
                         <VListItemSubtitle>{{ $t("date.created", { date: useLocaleTimeAgo(selectedProject.dateCreated).value }) }}</VListItemSubtitle>
 
                         <template #append>
-                            <VIconBtn
-                                @click="selectedProject.favorite = !selectedProject.favorite"
+                            <BaseBtnToggle
+                                v-model="selectedProject.favorite"
                                 :color="selectedProject.favorite ? 'warning' : 'secondary'"
                                 :icon="selectedProject.favorite ? 'mdi-star' : 'mdi-star-outline'"
                                 class="mr-8"

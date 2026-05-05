@@ -1,0 +1,74 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                favorite,\n                value,\n                visibility as \"visibility: PlaceholderVisibility\",\n                kind as \"kind: PlaceholderKind\",\n                source as \"source: PlaceholderSource\",\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from placeholder\n            where\n            \tproject_id is $1 or\n            \t(project_id is not $1 and visibility is $2)\n            order by favorite desc, name desc\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "project_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "favorite",
+        "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "value",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "visibility: PlaceholderVisibility",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "kind: PlaceholderKind",
+        "ordinal": 6,
+        "type_info": "Text"
+      },
+      {
+        "name": "source: PlaceholderSource",
+        "ordinal": 7,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 8,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 9,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 2
+    },
+    "nullable": [
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "9f0cca33ea6542b78a8943d30690bf8cf98133304a4bd3a1cd5c3d7db1631d6f"
+}

@@ -4,6 +4,7 @@
             <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task />
         </template>
         <template #content>
+            <TaskFieldFavorite v-model="task.favorite" />
             <TaskFieldContainer v-model="task" v-model:isValid="isFormValid" />
         </template>
     </BaseDrawerCreate>
@@ -26,6 +27,7 @@ const { selectedProject } = storeToRefs(projectStore);
 const emptyElement: TaskCreateContract = {
     projectId: selectedProject.value.id,
     name: "",
+    favorite: false,
     tabName: null,
     noExit: false,
     forceKill: false,

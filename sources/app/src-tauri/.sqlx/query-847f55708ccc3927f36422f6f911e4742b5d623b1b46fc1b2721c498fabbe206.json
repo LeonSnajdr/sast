@@ -1,6 +1,6 @@
 {
   "db_name": "SQLite",
-  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from task\n            where project_id is $1\n            order by name desc\n        ",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                favorite,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from task_set\n            where id = $1\n        ",
   "describe": {
     "columns": [
       {
@@ -19,13 +19,18 @@
         "type_info": "Text"
       },
       {
-        "name": "date_created: DateTime<Utc>",
+        "name": "favorite",
         "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 4,
         "type_info": "Text"
       },
       {
         "name": "date_last_updated: DateTime<Utc>",
-        "ordinal": 4,
+        "ordinal": 5,
         "type_info": "Text"
       }
     ],
@@ -37,8 +42,9 @@
       false,
       false,
       false,
+      false,
       false
     ]
   },
-  "hash": "aba2b92117805e7f91a52839bead0e6ad368b66f9265acb772704990788a1315"
+  "hash": "847f55708ccc3927f36422f6f911e4742b5d623b1b46fc1b2721c498fabbe206"
 }

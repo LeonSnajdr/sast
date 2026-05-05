@@ -12,6 +12,12 @@
         <template #[`item.actions`]="{ item }">
             <TaskSetTableColumnActions :taskSet="item" />
         </template>
+        <template #[`item.name`]="{ item }">
+            <div class="d-flex align-center ga-1">
+                <VIcon v-if="item.favorite" color="warning" icon="mdi-star" size="small" />
+                <span class="text-truncate">{{ item.name }}</span>
+            </div>
+        </template>
         <template #[`item.dateCreated`]="{ item }">
             {{ useLocaleTimeAgo(item.dateCreated) }}
         </template>

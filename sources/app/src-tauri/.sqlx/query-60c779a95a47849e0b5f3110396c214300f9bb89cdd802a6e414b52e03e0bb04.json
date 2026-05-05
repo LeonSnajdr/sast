@@ -1,0 +1,50 @@
+{
+  "db_name": "SQLite",
+  "query": "--sql\n            select\n                id as \"id: Uuid\",\n                project_id as \"project_id: Uuid\",\n                name,\n                favorite,\n                date_created as \"date_created: DateTime<Utc>\",\n                date_last_updated as \"date_last_updated: DateTime<Utc>\"\n            from task\n            where project_id is $1\n            order by favorite desc, name desc\n        ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id: Uuid",
+        "ordinal": 0,
+        "type_info": "Blob"
+      },
+      {
+        "name": "project_id: Uuid",
+        "ordinal": 1,
+        "type_info": "Blob"
+      },
+      {
+        "name": "name",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "favorite",
+        "ordinal": 3,
+        "type_info": "Bool"
+      },
+      {
+        "name": "date_created: DateTime<Utc>",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "date_last_updated: DateTime<Utc>",
+        "ordinal": 5,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "60c779a95a47849e0b5f3110396c214300f9bb89cdd802a6e414b52e03e0bb04"
+}
