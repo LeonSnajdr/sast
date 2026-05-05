@@ -52,19 +52,15 @@
 <script setup lang="ts">
 type VisibleType = "task" | "taskSet";
 
-const isDrawerOpen = defineModel<boolean>({ required: true });
-
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
 const taskSetStore = useTaskSetStore();
+const terminalDrawerStore = useTerminalDrawerStore();
 
 const { placeholders } = storeToRefs(placeholderStore);
 const { tasks } = storeToRefs(taskStore);
 const { taskSets } = storeToRefs(taskSetStore);
-
-const query = ref("");
-const favoritesOnly = ref(false);
-const visibleTypes = ref<VisibleType[]>(["task", "taskSet"]);
+const { isDrawerOpen, query, favoritesOnly, visibleTypes } = storeToRefs(terminalDrawerStore);
 
 const { results: taskResults } = useFuse(query, tasks, {
     fuseOptions: {

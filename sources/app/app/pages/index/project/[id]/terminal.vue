@@ -1,5 +1,5 @@
 <template>
-    <TerminalDrawer v-model="isDrawerOpen" />
+    <TerminalDrawer />
 
     <VAppBar>
         <TerminalTabs />
@@ -18,7 +18,7 @@ definePageMeta({
     projectSwitchName: "index-project-id-terminal"
 });
 
-const terminalStore = useTerminalStore();
+const terminalDrawerStore = useTerminalDrawerStore();
 
-const { isDrawerOpen } = storeToRefs(terminalStore);
+const { isDrawerOpen } = storeToRefs(terminalDrawerStore);
 </script>

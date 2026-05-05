@@ -9279,6 +9279,7 @@ __metadata:
     lodash: "npm:^4.17.21"
     nuxt: "npm:^4.0.3"
     pinia: "npm:^3.0.3"
+    pinia-plugin-persistedstate: "npm:^4.7.1"
     sass: "npm:^1.90.0"
     typescript: "npm:^5.9.2"
     vue: "npm:^3.5.18"
@@ -10048,6 +10049,26 @@ __metadata:
   version: 4.0.3
   resolution: "picomatch@npm:4.0.3"
   checksum: 10c0/9582c951e95eebee5434f59e426cddd228a7b97a0161a375aed4be244bd3fe8e3a31b846808ea14ef2c8a2527a6eeab7b3946a67d5979e81694654f939473ae2
+  languageName: node
+  linkType: hard
+
+"pinia-plugin-persistedstate@npm:^4.7.1":
+  version: 4.7.1
+  resolution: "pinia-plugin-persistedstate@npm:4.7.1"
+  dependencies:
+    defu: "npm:^6.1.4"
+  peerDependencies:
+    "@nuxt/kit": ">=3.0.0"
+    "@pinia/nuxt": ">=0.10.0"
+    pinia: ">=3.0.0"
+  peerDependenciesMeta:
+    "@nuxt/kit":
+      optional: true
+    "@pinia/nuxt":
+      optional: true
+    pinia:
+      optional: true
+  checksum: 10c0/1d1d0dae9bfa256f0fa0b89286af35b1320198626882b6774b7d37a065f6a256844665c1b30e37a7b6af689f6858a501828020a6b3edfa8dedd9484df85c4fdd
   languageName: node
   linkType: hard
 
