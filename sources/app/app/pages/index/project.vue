@@ -21,8 +21,6 @@ let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
 const hotkeyCleanups: (() => void)[] = [];
 
 onBeforeMount(async () => {
-    await terminalStore.loadAll();
-
     unlistenTerminalCreatedEvent = await events.terminalCreatedEvent.listen((eventData) => {
         terminalStore.created(eventData.payload);
     });
@@ -38,6 +36,8 @@ onBeforeMount(async () => {
     unlistenTerminalShellStatusChangedEvent = await events.terminalShellStatusChangedEvent.listen((eventData) => {
         terminalStore.statusChanged(eventData.payload);
     });
+
+    await terminalStore.loadAll();
 });
 
 onBeforeUnmount(() => {
