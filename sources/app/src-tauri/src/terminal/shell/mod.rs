@@ -139,7 +139,7 @@ impl Shell {
 		tokio::task::spawn(async move {
 			let _guard = guard.lock().await;
 
-			let exit_status = child.wait().unwrap();
+			let exit_status = tokio::task::spawn_blocking(move || child.wait()).await.unwrap().unwrap();
 
 			let mut shell_sender_lock = shell_sender.lock().await;
 			if shell_sender_lock.is_some() {
