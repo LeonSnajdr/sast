@@ -1,5 +1,22 @@
 <template>
-    <VContainer class="h-100">
+    <VContainer class="h-100 position-relative">
+        <VCard v-if="searchOpen" style="position: absolute; top: 10px; right: 10px; width: 400px; z-index: 100">
+            <VTextField
+                v-model="searchQuery"
+                @keydown.enter.prevent="onSearchEnter"
+                @keydown.esc.prevent="searchClose()"
+                :placeholder="$t('search.filter')"
+                density="compact"
+                variant="solo"
+                autofocus
+            >
+                <template #append-inner>
+                    <VIconBtn @click="searchFindPrevious()" icon="mdi-chevron-up" size="small" />
+                    <VIconBtn @click="searchFindNext()" icon="mdi-chevron-down" size="small" />
+                    <VIconBtn @click="searchClose()" icon="mdi-close" size="small" />
+                </template>
+            </VTextField>
+        </VCard>
         <div ref="termElement" class="h-100 overflow-hidden" />
     </VContainer>
 </template>
@@ -12,6 +29,7 @@ import { SerializeAddon } from "@xterm/addon-serialize";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { SearchAddon } from "@xterm/addon-search";
 
 const route = useRoute("index-project-id-terminal-terminalId");
 
@@ -22,9 +40,16 @@ const { t } = useI18n();
 const termElement = ref<HTMLDivElement>();
 
 let terminal: Terminal;
-let fitAddon: FitAddon;
-let webLinksAddon: WebLinksAddon;
-let serializeAddon: SerializeAddon;
+
+const fitAddon = new FitAddon();
+const webLinksAddon = new WebLinksAddon((_, uri) => {
+    openUrl(uri);
+});
+const serializeAddon = new SerializeAddon();
+const searchAddon = new SearchAddon();
+
+const searchOpen = ref(false);
+const searchQuery = ref("");
 
 let cleanup = () => {};
 let isTerminalBeingClosed = false;
@@ -68,25 +93,21 @@ onMounted(async () => {
         scrollback: 30000
     });
 
-    fitAddon = new FitAddon();
-    webLinksAddon = new WebLinksAddon((_, uri) => {
-        openUrl(uri);
-    });
-    serializeAddon = new SerializeAddon();
-
     terminal.loadAddon(fitAddon);
     terminal.loadAddon(webLinksAddon);
     terminal.loadAddon(serializeAddon);
+    terminal.loadAddon(searchAddon);
 
     terminal.attachCustomKeyEventHandler((event: KeyboardEvent) => {
         const isNewTabAction = event.ctrlKey && event.code === "KeyT" && event.type === "keydown";
         const isCloseTabAction = event.ctrlKey && event.code === "KeyW" && event.type === "keydown";
+        const isFindAction = event.ctrlKey && event.shiftKey && event.code === "KeyF" && event.type === "keydown";
 
         const isCtrlC = event.ctrlKey && event.code === "KeyC" && event.type === "keydown";
         const isTextSelected = terminal.getSelection();
         const isCopyAction = isCtrlC && isTextSelected;
 
-        return !isCopyAction && !isNewTabAction && !isCloseTabAction;
+        return !isCopyAction && !isNewTabAction && !isCloseTabAction && !isFindAction;
     });
 
     terminal.write(openContract.history);
@@ -179,5 +200,32 @@ const replaceTerminalHistory = async () => {
     if (replaceResult.status === "error") {
         console.error("failed to replace temrinal history", replaceResult.error);
     }
+};
+
+useHotkey("cmd+shift+f", () => (searchOpen.value = true), { inputs: true });
+
+const searchFindNext = () => {
+    if (!searchQuery.value) return;
+    searchAddon.findNext(searchQuery.value);
+};
+
+const searchFindPrevious = () => {
+    if (!searchQuery.value) return;
+    searchAddon.findPrevious(searchQuery.value);
+};
+
+const onSearchEnter = (event: KeyboardEvent) => {
+    if (event.shiftKey) {
+        searchFindPrevious();
+    } else {
+        searchFindNext();
+    }
+};
+
+const searchClose = () => {
+    searchAddon.clearDecorations();
+    searchQuery.value = "";
+    searchOpen.value = false;
+    terminal.focus();
 };
 </script>

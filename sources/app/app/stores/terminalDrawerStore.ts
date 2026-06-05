@@ -6,7 +6,7 @@ export const useTerminalDrawerStore = defineStore(
         const isDrawerOpen = ref(false);
         const query = ref("");
         const favoritesOnly = ref(false);
-        const visibleTypes = ref<VisibleType[]>(["task", "taskSet"]);
+        const visibleTypes = ref<VisibleType[]>(["taskSet"]);
 
         return { isDrawerOpen, query, favoritesOnly, visibleTypes };
     },

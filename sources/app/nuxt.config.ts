@@ -41,6 +41,9 @@ export default defineNuxtConfig({
     vueuse: {
         autoImports: true
     },
+    piniaPluginPersistedstate: {
+        storage: "localStorage"
+    },
     imports: {
         presets: [
             {

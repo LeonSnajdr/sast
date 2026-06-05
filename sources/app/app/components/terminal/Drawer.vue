@@ -38,8 +38,8 @@
                     </VChipGroup>
                 </div>
                 <div>
-                    <TaskTable v-if="showTasks" :tasks="filteredTasks" inline />
                     <TaskSetTable v-if="showTaskSets" :taskSets="filteredTaskSets" inline />
+                    <TaskTable v-if="showTasks" :tasks="filteredTasks" inline />
                 </div>
                 <div v-if="!hasResults" class="text-medium-emphasis text-center">
                     {{ $t("search.noResults") }}

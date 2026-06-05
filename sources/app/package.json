@@ -20,10 +20,11 @@
     "@vueuse/core": "^13.6.0",
     "@vueuse/integrations": "^13.6.0",
     "@vueuse/nuxt": "^13.6.0",
-    "@xterm/addon-fit": "^0.10.0",
-    "@xterm/addon-serialize": "^0.13.0",
-    "@xterm/addon-web-links": "^0.11.0",
-    "@xterm/xterm": "^5.5.0",
+    "@xterm/addon-fit": "^0.11.0",
+    "@xterm/addon-search": "^0.16.0",
+    "@xterm/addon-serialize": "^0.14.0",
+    "@xterm/addon-web-links": "^0.12.0",
+    "@xterm/xterm": "^6.0.0",
     "fuse.js": "^7.1.0",
     "lodash": "^4.17.21",
     "nuxt": "^4.0.3",
@@ -46,8 +47,8 @@
     "typescript": "^5.9.2"
   },
   "volta": {
-    "node": "20.18.0",
-    "yarn": "4.9.2"
+    "node": "24.15.0",
+    "yarn": "4.14.1"
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.14.1"
 }
