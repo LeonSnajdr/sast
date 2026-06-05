@@ -4690,37 +4690,38 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@xterm/addon-fit@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "@xterm/addon-fit@npm:0.10.0"
-  peerDependencies:
-    "@xterm/xterm": ^5.0.0
-  checksum: 10c0/76926120fc940376afef2cb68b15aec2a99fc628b6e3cc84f2bcb1682ca9b87f982b3c10ff206faf4ebc5b410467b81a7b5e83be37b4ac386586f472e4fa1c61
-  languageName: node
-  linkType: hard
-
-"@xterm/addon-serialize@npm:^0.13.0":
-  version: 0.13.0
-  resolution: "@xterm/addon-serialize@npm:0.13.0"
-  peerDependencies:
-    "@xterm/xterm": ^5.0.0
-  checksum: 10c0/090f502867250cdceca9abdbe37aebe0c01eb5d708a09c51d3e0e9bb5d4d3b0d4d67af1c4c8bde9b78f108a5e4150420180de69e6228aac76596fdbf6c4c59dc
-  languageName: node
-  linkType: hard
-
-"@xterm/addon-web-links@npm:^0.11.0":
+"@xterm/addon-fit@npm:^0.11.0":
   version: 0.11.0
-  resolution: "@xterm/addon-web-links@npm:0.11.0"
-  peerDependencies:
-    "@xterm/xterm": ^5.0.0
-  checksum: 10c0/9426bed80afa954b0ea97771d041eb44e77a64e560ce8b8ef507a5d3a763979af18ae9f74ed54007bb7e235d0daf035be2a33f90d8edfecb431caf8ba0b0664e
+  resolution: "@xterm/addon-fit@npm:0.11.0"
+  checksum: 10c0/c0ce94f7e877d07e7197d15d041cc629ce2e853016400aadddc9810838ea8a26e836f87f325eba36df88c03feb72d9f13cd8c3bb41ee31e701f1058edb8553c3
   languageName: node
   linkType: hard
 
-"@xterm/xterm@npm:^5.5.0":
-  version: 5.5.0
-  resolution: "@xterm/xterm@npm:5.5.0"
-  checksum: 10c0/358801feece58617d777b2783bec68dac1f52f736da3b0317f71a34f4e25431fb0b1920244f678b8d673f797145b4858c2a5ccb463a4a6df7c10c9093f1c9267
+"@xterm/addon-search@npm:^0.16.0":
+  version: 0.16.0
+  resolution: "@xterm/addon-search@npm:0.16.0"
+  checksum: 10c0/bcd4c27852df1a9cfffb112174a510b0a410fc72f7f2ca431ae2ed3414c575cb1022795d491c7111382195b2d7f299b1f43d69674905c84cf31bafec7e48be9f
+  languageName: node
+  linkType: hard
+
+"@xterm/addon-serialize@npm:^0.14.0":
+  version: 0.14.0
+  resolution: "@xterm/addon-serialize@npm:0.14.0"
+  checksum: 10c0/38202b715e1f0eaf56bad70a4dd3a8da41b4209cc634101eae162aab557c373261d196034921ce6183b7ec256fdf5f5133035fac7e99038d840cc04469727bd7
+  languageName: node
+  linkType: hard
+
+"@xterm/addon-web-links@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "@xterm/addon-web-links@npm:0.12.0"
+  checksum: 10c0/1c4847f43948483a6a0f59994090b8b9d9f6006a1e4a8deed7d9c28fcb47422d77eb418fb8fc63fbfb0c486c49e4646b73188ff2efac5290b680db34f298f334
+  languageName: node
+  linkType: hard
+
+"@xterm/xterm@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "@xterm/xterm@npm:6.0.0"
+  checksum: 10c0/b99122553f323a65b708e5eba9903d4c5a1bcb59fe576d29d6e91a33002bccfd1b99403e1e839e1942f4952039db6d3d74ca9d65ed0399b4e9a0a5f35b8c12d9
   languageName: node
   linkType: hard
 
@@ -9269,10 +9270,11 @@ __metadata:
     "@vueuse/core": "npm:^13.6.0"
     "@vueuse/integrations": "npm:^13.6.0"
     "@vueuse/nuxt": "npm:^13.6.0"
-    "@xterm/addon-fit": "npm:^0.10.0"
-    "@xterm/addon-serialize": "npm:^0.13.0"
-    "@xterm/addon-web-links": "npm:^0.11.0"
-    "@xterm/xterm": "npm:^5.5.0"
+    "@xterm/addon-fit": "npm:^0.11.0"
+    "@xterm/addon-search": "npm:^0.16.0"
+    "@xterm/addon-serialize": "npm:^0.14.0"
+    "@xterm/addon-web-links": "npm:^0.12.0"
+    "@xterm/xterm": "npm:^6.0.0"
     cspell: "npm:9.2.0"
     eslint: "npm:^9.33.0"
     fuse.js: "npm:^7.1.0"
