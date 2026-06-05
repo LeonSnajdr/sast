@@ -47,7 +47,7 @@ jobs:
             uses: dtolnay/rust-toolchain@stable
 
           - name: Install node & yarn
-            uses: volta-cli/action@v4
+            uses: volta-cli/action@v5
 
           - name: Node cache
             uses: actions/cache@v4
