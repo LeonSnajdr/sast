@@ -4,7 +4,6 @@
             <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task />
         </template>
         <template #content>
-            <TaskFieldFavorite v-model="task.favorite" />
             <TaskFieldContainer v-model="task" v-model:isValid="isFormValid" />
         </template>
     </BaseDrawerCreate>

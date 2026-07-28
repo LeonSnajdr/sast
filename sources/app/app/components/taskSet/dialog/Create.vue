@@ -7,7 +7,6 @@
         icon="mdi-checkbox-multiple-marked-circle-outline"
     >
         <template #content>
-            <TaskSetFieldFavorite v-model="taskSet.favorite" />
             <TaskSetFieldContainer v-model="taskSet" v-model:isValid="isTaskSetValid" />
         </template>
         <template #actions>

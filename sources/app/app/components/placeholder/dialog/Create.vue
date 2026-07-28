@@ -1,7 +1,6 @@
 <template>
     <BaseDialogCreate v-model="isDialogOpen" v-model:element="placeholder" :emptyElement :type="$t('placeholder.singular')" icon="mdi-label">
         <template #content>
-            <PlaceholderFieldFavorite v-model="placeholder.favorite" />
             <PlaceholderFieldContainer v-model="placeholder" v-model:isValid="isPlaceholderValid" />
         </template>
         <template #actions>
