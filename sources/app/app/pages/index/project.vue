@@ -13,10 +13,10 @@ const projectStore = useProjectStore();
 
 const { allProjects } = storeToRefs(projectStore);
 
-let unlistenTerminalClosedEvent: UnlistenFn;
-let unlistenTerminalCreatedEvent: UnlistenFn;
-let unlistenTerminalUpdatedEvent: UnlistenFn;
-let unlistenTerminalShellStatusChangedEvent: UnlistenFn;
+let unlistenTerminalClosedEvent: UnlistenFn | undefined;
+let unlistenTerminalCreatedEvent: UnlistenFn | undefined;
+let unlistenTerminalUpdatedEvent: UnlistenFn | undefined;
+let unlistenTerminalShellStatusChangedEvent: UnlistenFn | undefined;
 
 const hotkeyCleanups: (() => void)[] = [];
 
@@ -41,10 +41,10 @@ onBeforeMount(async () => {
 });
 
 onBeforeUnmount(() => {
-    unlistenTerminalClosedEvent();
-    unlistenTerminalCreatedEvent();
-    unlistenTerminalUpdatedEvent();
-    unlistenTerminalShellStatusChangedEvent();
+    unlistenTerminalClosedEvent?.();
+    unlistenTerminalCreatedEvent?.();
+    unlistenTerminalUpdatedEvent?.();
+    unlistenTerminalShellStatusChangedEvent?.();
 });
 
 const cleanupHotkeys = () => {

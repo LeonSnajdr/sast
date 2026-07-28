@@ -4,7 +4,6 @@
             <TaskActionCreate @created="taskCreated" :disabled="!isFormValid" :task />
         </template>
         <template #content>
-            <TaskFieldFavorite v-model="task.favorite" />
             <TaskFieldContainer v-model="task" v-model:isValid="isFormValid" />
         </template>
     </BaseDrawerCreate>
@@ -24,7 +23,7 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const emptyElement: TaskCreateContract = {
+const emptyElement = computed<TaskCreateContract>(() => ({
     projectId: selectedProject.value.id,
     name: "",
     favorite: false,
@@ -34,7 +33,7 @@ const emptyElement: TaskCreateContract = {
     historyPersistence: "OnError",
     workingDirTiles: [] as PlaceholderInsertTileContract[],
     commandTiles: [] as PlaceholderInsertTileContract[]
-};
+}));
 
 const taskCreated = (task: TaskContract) => {
     isDrawerOpen.value = false;

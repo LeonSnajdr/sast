@@ -7,7 +7,6 @@
         icon="mdi-checkbox-multiple-marked-circle-outline"
     >
         <template #content>
-            <TaskSetFieldFavorite v-model="taskSet.favorite" />
             <TaskSetFieldContainer v-model="taskSet" v-model:isValid="isTaskSetValid" />
         </template>
         <template #actions>
@@ -25,11 +24,11 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const emptyElement: TaskSetCreateContract = {
+const emptyElement = computed<TaskSetCreateContract>(() => ({
     projectId: selectedProject.value.id,
     name: "",
     favorite: false
-};
+}));
 
 const taskSetCreated = async (id: string) => {
     await navigateTo({ name: "index-project-id-taskSet-taskSetId", params: { id: selectedProject.value.id, taskSetId: id } });

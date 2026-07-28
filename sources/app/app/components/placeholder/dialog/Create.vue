@@ -1,7 +1,6 @@
 <template>
     <BaseDialogCreate v-model="isDialogOpen" v-model:element="placeholder" :emptyElement :type="$t('placeholder.singular')" icon="mdi-label">
         <template #content>
-            <PlaceholderFieldFavorite v-model="placeholder.favorite" />
             <PlaceholderFieldContainer v-model="placeholder" v-model:isValid="isPlaceholderValid" />
         </template>
         <template #actions>
@@ -23,7 +22,7 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const emptyElement: PlaceholderCreateContract = {
+const emptyElement = computed<PlaceholderCreateContract>(() => ({
     projectId: selectedProject.value.id,
     name: "",
     favorite: false,
@@ -31,7 +30,7 @@ const emptyElement: PlaceholderCreateContract = {
     visibility: "Project",
     kind: "Text",
     source: "Static"
-};
+}));
 
 const placeholderCreated = (id: string) => {
     isDialogOpen.value = false;
