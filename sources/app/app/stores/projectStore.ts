@@ -40,7 +40,7 @@ export const useProjectStore = defineStore("project", () => {
 
         const projectsResult = await commands.projectGetAll();
 
-        isLoading.value = false;
+        isLoadingAll.value = false;
 
         if (projectsResult.status == "error") {
             notify.error(t("project.load.failed"), { error: projectsResult.error });

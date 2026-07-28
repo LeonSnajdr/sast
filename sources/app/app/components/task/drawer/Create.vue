@@ -24,7 +24,7 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const emptyElement: TaskCreateContract = {
+const emptyElement = computed<TaskCreateContract>(() => ({
     projectId: selectedProject.value.id,
     name: "",
     favorite: false,
@@ -34,7 +34,7 @@ const emptyElement: TaskCreateContract = {
     historyPersistence: "OnError",
     workingDirTiles: [] as PlaceholderInsertTileContract[],
     commandTiles: [] as PlaceholderInsertTileContract[]
-};
+}));
 
 const taskCreated = (task: TaskContract) => {
     isDrawerOpen.value = false;

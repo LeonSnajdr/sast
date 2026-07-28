@@ -1,8 +1,6 @@
 <template>
-    <template v-if="selectedProject.id">
-        <ProjectDrawer />
-        <NuxtPage />
-    </template>
+    <ProjectDrawer />
+    <NuxtPage />
 </template>
 
 <script setup lang="ts">
@@ -16,11 +14,9 @@ const taskStore = useTaskStore();
 const taskSetStore = useTaskSetStore();
 const taskSetSessionStore = useTaskSetSessionStore();
 
-const { selectedProject } = storeToRefs(projectStore);
-
-let unlistenTaskSetSessionStartedEvent: UnlistenFn;
-let unlistenTaskSetSessionFinishedEvent: UnlistenFn;
-let unlistenTaskSetSessionTaskUpdatedEvent: UnlistenFn;
+let unlistenTaskSetSessionStartedEvent: UnlistenFn | undefined;
+let unlistenTaskSetSessionFinishedEvent: UnlistenFn | undefined;
+let unlistenTaskSetSessionTaskUpdatedEvent: UnlistenFn | undefined;
 
 definePageMeta({
     redirect(to) {
@@ -29,20 +25,10 @@ definePageMeta({
     }
 });
 
-onBeforeMount(async () => {
-    await projectStore.openProject(route.params.id);
-    await placeholderStore.loadAll();
-    await taskStore.loadAll();
-    await taskSetStore.loadAll();
-
-    // NOTE: TaskSet logic is required globaly in the project to show indicators and status in many places
-    await loadTaskSetSessions();
-});
-
 onBeforeUnmount(() => {
-    unlistenTaskSetSessionStartedEvent();
-    unlistenTaskSetSessionFinishedEvent();
-    unlistenTaskSetSessionTaskUpdatedEvent();
+    unlistenTaskSetSessionStartedEvent?.();
+    unlistenTaskSetSessionFinishedEvent?.();
+    unlistenTaskSetSessionTaskUpdatedEvent?.();
 });
 
 const loadTaskSetSessions = async () => {
@@ -60,4 +46,7 @@ const loadTaskSetSessions = async () => {
         taskSetSessionStore.updated(eventData.payload);
     });
 };
+
+await projectStore.openProject(route.params.id);
+await Promise.all([placeholderStore.loadAll(), taskStore.loadAll(), taskSetStore.loadAll(), loadTaskSetSessions()]);
 </script>

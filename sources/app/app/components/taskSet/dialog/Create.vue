@@ -25,11 +25,11 @@ const projectStore = useProjectStore();
 
 const { selectedProject } = storeToRefs(projectStore);
 
-const emptyElement: TaskSetCreateContract = {
+const emptyElement = computed<TaskSetCreateContract>(() => ({
     projectId: selectedProject.value.id,
     name: "",
     favorite: false
-};
+}));
 
 const taskSetCreated = async (id: string) => {
     await navigateTo({ name: "index-project-id-taskSet-taskSetId", params: { id: selectedProject.value.id, taskSetId: id } });
