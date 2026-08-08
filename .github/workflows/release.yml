@@ -46,10 +46,16 @@ jobs:
           - name: Rust setup
             uses: dtolnay/rust-toolchain@stable
 
-          - name: Install node & yarn
+          - name: Setup mise
+            uses: jdx/mise-action@v4
+            with:
+              working_directory: sources/app
+
+          - name: Verify tool versions
             run: |
-              curl https://mise.run | sh
-              mise install
+              node --version
+              yarn --version
+              mise --version
 
           - name: Node cache
             uses: actions/cache@v6
@@ -61,8 +67,6 @@ jobs:
 
           - name: Install dependencies and lint
             run: |
-              node --version
-              yarn --version
               yarn install --immutable
               yarn build:nuxt
               yarn lint
