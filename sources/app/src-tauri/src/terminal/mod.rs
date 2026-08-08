@@ -145,7 +145,7 @@ impl Terminal {
 
 		let meta = TerminalMeta {
 			// TODO do not hardcode it here since it also used in restart
-			name: RwLock::new(spawn_contract.name.unwrap_or("PowerShell".to_string())),
+			name: RwLock::new(spawn_contract.name.unwrap_or("Terminal".to_string())),
 			project_id: spawn_contract.project_id,
 			task_id: spawn_contract.task_id,
 			task_set_id: RwLock::new(spawn_contract.task_set_id),
@@ -179,7 +179,7 @@ impl Terminal {
 	}
 
 	pub async fn update(&self, restart_contract: TerminalRestartContract) -> Result<()> {
-		let name = restart_contract.name.unwrap_or("PowerShell".to_string());
+		let name = restart_contract.name.unwrap_or("Terminal".to_string());
 
 		*self.meta.name.write().await = name.clone();
 		*self.behavior.history_persistence.write().await = restart_contract.history_persistence;
