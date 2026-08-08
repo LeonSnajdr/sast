@@ -46,10 +46,8 @@ jobs:
           - name: Rust setup
             uses: dtolnay/rust-toolchain@stable
 
-          - name: Install node & yarn
-            run: |
-              curl https://mise.run | sh
-              mise install
+          - name: Setup mise
+            uses: jdx/mise-action@v4
 
           - name: Node cache
             uses: actions/cache@v6
