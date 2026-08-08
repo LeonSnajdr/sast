@@ -177,18 +177,44 @@ impl Shell {
 	}
 
 	fn build_command(spawn_contract: &ShellSpawnContract) -> CommandBuilder {
-		let mut cmd = CommandBuilder::new("pwsh.exe");
+		let mut cmd;
 
-		if let Some(working_dir) = &spawn_contract.working_dir {
-			cmd.args(["-WorkingDirectory", working_dir.as_str()]);
+		#[cfg(target_os = "windows")]
+		{
+			cmd = CommandBuilder::new("pwsh.exe");
+
+			if let Some(working_dir) = &spawn_contract.working_dir {
+				cmd.args(["-WorkingDirectory", working_dir.as_str()]);
+			}
+
+			if spawn_contract.no_exit {
+				cmd.args(["-NoExit"]);
+			}
+
+			if let Some(command) = &spawn_contract.command {
+				cmd.args(["-Command", command.as_str()]);
+			}
 		}
 
-		if spawn_contract.no_exit {
-			cmd.args(["-NoExit"]);
-		}
+		#[cfg(not(target_os = "windows"))]
+		{
+			cmd = CommandBuilder::new("zsh");
 
-		if let Some(command) = &spawn_contract.command {
-			cmd.args(["-Command", command.as_str()]);
+			if let Some(working_dir) = &spawn_contract.working_dir {
+				cmd.cwd(working_dir);
+			}
+
+			match (&spawn_contract.command, spawn_contract.no_exit) {
+				(Some(command), true) => {
+					cmd.args(["-c", &format!("{}; exec zsh -i", command)]);
+				}
+				(Some(command), false) => {
+					cmd.args(["-c", command.as_str()]);
+				}
+				(None, _) => {
+					cmd.args(["-i"]);
+				}
+			}
 		}
 
 		cmd

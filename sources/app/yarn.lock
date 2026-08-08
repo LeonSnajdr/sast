@@ -3678,6 +3678,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tauri-apps/api@npm:^2.8.0":
+  version: 2.11.1
+  resolution: "@tauri-apps/api@npm:2.11.1"
+  checksum: 10c0/78a08a64ee7eab9d34bd4ba1bdc3a2440c7e9cc5737b3f1d77bd80fa38b0cb5e9601efe04da40c947c5da2ca38dc702bec21b4ae96b18ee5f3e82980d1f0b325
+  languageName: node
+  linkType: hard
+
 "@tauri-apps/cli-darwin-arm64@npm:2.7.1":
   version: 2.7.1
   resolution: "@tauri-apps/cli-darwin-arm64@npm:2.7.1"
@@ -3805,6 +3812,15 @@ __metadata:
   dependencies:
     "@tauri-apps/api": "npm:^2.6.0"
   checksum: 10c0/8ebcd8f0b64bb31ebaac0ac96d98b877781756948035868a1398236a208cf94265340cff0c60b3b60bb38a52ae1f82f6a5a636a9d134bcb75afc8ee5d72bf038
+  languageName: node
+  linkType: hard
+
+"@tauri-apps/plugin-os@npm:^2.3.2":
+  version: 2.3.2
+  resolution: "@tauri-apps/plugin-os@npm:2.3.2"
+  dependencies:
+    "@tauri-apps/api": "npm:^2.8.0"
+  checksum: 10c0/cd8529de1e920d5689f2ce1e27da1f7eede40211df897b5460bba28d6bb80eed39ecac3584492e4e03035790f40cd31fdd9171678d7846db0bce089e8c86aab5
   languageName: node
   linkType: hard
 
@@ -9264,6 +9280,7 @@ __metadata:
     "@tauri-apps/api": "npm:^2.7.0"
     "@tauri-apps/cli": "npm:^2.7.1"
     "@tauri-apps/plugin-opener": "npm:^2.4.0"
+    "@tauri-apps/plugin-os": "npm:^2.3.2"
     "@tauri-apps/plugin-process": "npm:^2.3.0"
     "@tauri-apps/plugin-updater": "npm:^2.9.0"
     "@types/lodash": "npm:^4.17.20"

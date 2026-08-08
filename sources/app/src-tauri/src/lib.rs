@@ -9,6 +9,7 @@ mod task_set;
 mod terminal;
 
 use tauri::Manager;
+use tauri::TitleBarStyle;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
 use crate::placeholder::placeholder_commands::*;
@@ -103,9 +104,24 @@ pub fn run() {
 		}))
 		.plugin(tauri_plugin_process::init())
 		.plugin(tauri_plugin_opener::init())
+		.plugin(tauri_plugin_os::init())
 		.invoke_handler(builder.invoke_handler())
 		.setup(move |app| {
 			builder.mount_events(app);
+
+			if let Some(window) = app.get_webview_window("main") {
+				#[cfg(target_os = "windows")]
+				{
+					window.set_decorations(false).ok();
+				}
+
+				#[cfg(target_os = "macos")]
+				{
+					window.set_decorations(true).ok();
+					window.set_title_bar_style(TitleBarStyle::Overlay).ok();
+					window.set_title("").ok();
+				}
+			}
 
 			app.handle().plugin(db::init_sqlx())?;
 			Ok(())
