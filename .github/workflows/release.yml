@@ -14,7 +14,7 @@ jobs:
       date_created: ${{ steps.version.outputs.date_created }}
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Generate app_version
       id: version
@@ -41,16 +41,18 @@ jobs:
           working-directory: sources/app
       steps:
           - name: Checkout repository
-            uses: actions/checkout@v4
+            uses: actions/checkout@v7
 
           - name: Rust setup
             uses: dtolnay/rust-toolchain@stable
 
           - name: Install node & yarn
-            uses: volta-cli/action@v5
+            run: |
+              curl https://mise.run | sh
+              mise install
 
           - name: Node cache
-            uses: actions/cache@v4
+            uses: actions/cache@v6
             id: node_modules_cache
             with:
               path: sources/app/node_modules

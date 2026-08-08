@@ -22,7 +22,7 @@ Before you begin, ensure you have the following installed:
 
 1. [Rust](https://www.rust-lang.org/learn/get-started)
 2. [sqlx-cli](https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md)
-3. [Volta](https://volta.sh/)
+3. [Mise](https://mise.jdx.dev)
 
 ---
 
@@ -63,6 +63,12 @@ To get your development environment set up, follow these steps:
 
     ```bash
     cd sources/app
+    ```
+
+    Install required tools
+
+    ```bash
+    mise install
     ```
 
     Install node packages
