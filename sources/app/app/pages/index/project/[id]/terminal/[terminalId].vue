@@ -28,6 +28,7 @@ import { FitAddon } from "@xterm/addon-fit";
 import { SerializeAddon } from "@xterm/addon-serialize";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { openUrl } from "@tauri-apps/plugin-opener";
+import { platform } from "@tauri-apps/plugin-os";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { SearchAddon } from "@xterm/addon-search";
 
@@ -36,6 +37,7 @@ const route = useRoute("index-project-id-terminal-terminalId");
 const theme = useTheme();
 const notify = useNotify();
 const { t } = useI18n();
+const isWindows = platform() === "windows";
 
 const termElement = ref<HTMLDivElement>();
 
@@ -89,7 +91,7 @@ onMounted(async () => {
         },
         cols: openContract.size.cols,
         rows: openContract.size.rows,
-        windowsPty: { backend: "conpty" },
+        windowsPty: isWindows ? { backend: "conpty" } : undefined,
         scrollback: 30000
     });
 
