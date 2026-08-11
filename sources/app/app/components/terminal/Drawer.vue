@@ -1,4 +1,20 @@
 <template>
+    <DefineFavoriteFilter v-slot="{ active, visible, update }">
+        <VExpandXTransition>
+            <span v-if="visible" @click.stop class="d-inline-flex overflow-hidden">
+                <BaseBtnToggle
+                    @update:modelValue="update"
+                    :class="active ? 'opacity-100' : 'opacity-40'"
+                    :color="active ? 'warning' : ''"
+                    :icon="active ? 'mdi-star' : 'mdi-star-outline'"
+                    :modelValue="active"
+                    class="ml-1"
+                    size="20"
+                />
+            </span>
+        </VExpandXTransition>
+    </DefineFavoriteFilter>
+
     <BaseDrawer v-model="isDrawerOpen">
         <template #title>
             {{ $t("terminal.plural") }}
@@ -26,27 +42,21 @@
                         <VChip density="comfortable" value="task">
                             {{ $t("task.plural") }}
                             <template #append>
-                                <span @click.stop>
-                                    <BaseBtnToggle
-                                        v-model="taskFavoritesOnly"
-                                        :color="taskFavoritesOnly ? 'warning' : 'secondary'"
-                                        :icon="taskFavoritesOnly ? 'mdi-star' : 'mdi-star-outline'"
-                                        size="25"
-                                    />
-                                </span>
+                                <FavoriteFilter
+                                    :active="taskFavoritesOnly"
+                                    :update="(value) => (taskFavoritesOnly = value)"
+                                    :visible="includesType('task')"
+                                />
                             </template>
                         </VChip>
                         <VChip density="comfortable" value="taskSet">
                             {{ $t("taskSet.plural") }}
                             <template #append>
-                                <span @click.stop>
-                                    <BaseBtnToggle
-                                        v-model="taskSetFavoritesOnly"
-                                        :color="taskSetFavoritesOnly ? 'warning' : 'secondary'"
-                                        :icon="taskSetFavoritesOnly ? 'mdi-star' : 'mdi-star-outline'"
-                                        size="25"
-                                    />
-                                </span>
+                                <FavoriteFilter
+                                    :active="taskSetFavoritesOnly"
+                                    :update="(value) => (taskSetFavoritesOnly = value)"
+                                    :visible="includesType('taskSet')"
+                                />
                             </template>
                         </VChip>
                     </VChipGroup>
@@ -65,6 +75,12 @@
 
 <script setup lang="ts">
 type VisibleType = "task" | "taskSet";
+
+const [DefineFavoriteFilter, FavoriteFilter] = createReusableTemplate<{
+    active: boolean;
+    visible: boolean;
+    update: (value: boolean) => void;
+}>();
 
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
