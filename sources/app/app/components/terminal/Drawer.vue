@@ -25,16 +25,30 @@
                     <VChipGroup v-model="visibleTypes" filter multiple>
                         <VChip density="comfortable" value="task">
                             {{ $t("task.plural") }}
+                            <template #append>
+                                <span @click.stop>
+                                    <BaseBtnToggle
+                                        v-model="taskFavoritesOnly"
+                                        :color="taskFavoritesOnly ? 'warning' : 'secondary'"
+                                        :icon="taskFavoritesOnly ? 'mdi-star' : 'mdi-star-outline'"
+                                        size="25"
+                                    />
+                                </span>
+                            </template>
                         </VChip>
                         <VChip density="comfortable" value="taskSet">
                             {{ $t("taskSet.plural") }}
+                            <template #append>
+                                <span @click.stop>
+                                    <BaseBtnToggle
+                                        v-model="taskSetFavoritesOnly"
+                                        :color="taskSetFavoritesOnly ? 'warning' : 'secondary'"
+                                        :icon="taskSetFavoritesOnly ? 'mdi-star' : 'mdi-star-outline'"
+                                        size="25"
+                                    />
+                                </span>
+                            </template>
                         </VChip>
-                        <BaseBtnToggle
-                            v-model="favoritesOnly"
-                            :color="favoritesOnly ? 'warning' : 'secondary'"
-                            :icon="favoritesOnly ? 'mdi-star' : 'mdi-star-outline'"
-                            size="25"
-                        />
                     </VChipGroup>
                 </div>
                 <div>
@@ -60,7 +74,7 @@ const terminalDrawerStore = useTerminalDrawerStore();
 const { placeholders } = storeToRefs(placeholderStore);
 const { tasks } = storeToRefs(taskStore);
 const { taskSets } = storeToRefs(taskSetStore);
-const { isDrawerOpen, query, favoritesOnly, visibleTypes } = storeToRefs(terminalDrawerStore);
+const { isDrawerOpen, query, taskFavoritesOnly, taskSetFavoritesOnly, visibleTypes } = storeToRefs(terminalDrawerStore);
 
 const { results: taskResults } = useFuse(query, tasks, {
     fuseOptions: {
@@ -82,12 +96,6 @@ const includesType = (type: VisibleType) => {
     return visibleTypes.value.includes(type);
 };
 
-const matchesFilters = (item: { favorite: boolean }) => {
-    const hasMatchingFavorite = !favoritesOnly.value || item.favorite;
-
-    return hasMatchingFavorite;
-};
-
 const favoritePlaceholders = computed(() => {
     return placeholders.value.filter((placeholder) => placeholder.favorite);
 });
@@ -95,13 +103,13 @@ const favoritePlaceholders = computed(() => {
 const filteredTasks = computed(() => {
     if (!includesType("task")) return [];
 
-    return taskResults.value.map((x) => x.item).filter(matchesFilters);
+    return taskResults.value.map((x) => x.item).filter((task) => !taskFavoritesOnly.value || task.favorite);
 });
 
 const filteredTaskSets = computed(() => {
     if (!includesType("taskSet")) return [];
 
-    return taskSetResults.value.map((x) => x.item).filter(matchesFilters);
+    return taskSetResults.value.map((x) => x.item).filter((taskSet) => !taskSetFavoritesOnly.value || taskSet.favorite);
 });
 
 const showTasks = computed(() => {
