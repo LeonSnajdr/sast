@@ -1,20 +1,4 @@
 <template>
-    <DefineFavoriteFilter v-slot="{ active, visible, update }">
-        <VExpandXTransition>
-            <span v-if="visible" @click.stop class="d-inline-flex overflow-hidden">
-                <BaseBtnToggle
-                    @update:modelValue="update"
-                    :class="active ? 'opacity-100' : 'opacity-40'"
-                    :color="active ? 'warning' : ''"
-                    :icon="active ? 'mdi-star' : 'mdi-star-outline'"
-                    :modelValue="active"
-                    class="ml-1"
-                    size="20"
-                />
-            </span>
-        </VExpandXTransition>
-    </DefineFavoriteFilter>
-
     <BaseDrawer v-model="isDrawerOpen">
         <template #title>
             {{ $t("terminal.plural") }}
@@ -38,28 +22,12 @@
                 </VRow>
                 <div class="d-flex flex-wrap ga-2 align-center">
                     <VTextField v-model="query" :placeholder="$t('search.filter')" density="compact" variant="plain" clearable />
-                    <VChipGroup v-model="visibleTypes" filter multiple>
-                        <VChip density="comfortable" value="task">
-                            {{ $t("task.plural") }}
-                            <template #append>
-                                <FavoriteFilter
-                                    :active="taskFavoritesOnly"
-                                    :update="(value) => (taskFavoritesOnly = value)"
-                                    :visible="includesType('task')"
-                                />
-                            </template>
-                        </VChip>
-                        <VChip density="comfortable" value="taskSet">
-                            {{ $t("taskSet.plural") }}
-                            <template #append>
-                                <FavoriteFilter
-                                    :active="taskSetFavoritesOnly"
-                                    :update="(value) => (taskSetFavoritesOnly = value)"
-                                    :visible="includesType('taskSet')"
-                                />
-                            </template>
-                        </VChip>
-                    </VChipGroup>
+                    <BaseChipCycle v-model="taskFilter" :states="filterStates" color="" density="comfortable" variant="tonal">
+                        {{ $t("task.plural") }}
+                    </BaseChipCycle>
+                    <BaseChipCycle v-model="taskSetFilter" :states="filterStates" color="" density="comfortable" variant="tonal">
+                        {{ $t("taskSet.plural") }}
+                    </BaseChipCycle>
                 </div>
                 <div>
                     <TaskSetTable v-if="showTaskSets" :taskSets="filteredTaskSets" inline />
@@ -74,13 +42,13 @@
 </template>
 
 <script setup lang="ts">
-type VisibleType = "task" | "taskSet";
+import type { ChipCycleState } from "../base/chip/Cycle.vue";
 
-const [DefineFavoriteFilter, FavoriteFilter] = createReusableTemplate<{
-    active: boolean;
-    visible: boolean;
-    update: (value: boolean) => void;
-}>();
+const filterStates: ChipCycleState<DrawerFilter>[] = [
+    { value: "all", icon: "mdi-check" },
+    { value: "favorites", icon: "mdi-star", color: "warning" },
+    { value: "none" }
+];
 
 const placeholderStore = usePlaceholderStore();
 const taskStore = useTaskStore();
@@ -90,7 +58,7 @@ const terminalDrawerStore = useTerminalDrawerStore();
 const { placeholders } = storeToRefs(placeholderStore);
 const { tasks } = storeToRefs(taskStore);
 const { taskSets } = storeToRefs(taskSetStore);
-const { isDrawerOpen, query, taskFavoritesOnly, taskSetFavoritesOnly, visibleTypes } = storeToRefs(terminalDrawerStore);
+const { isDrawerOpen, query, taskFilter, taskSetFilter } = storeToRefs(terminalDrawerStore);
 
 const { results: taskResults } = useFuse(query, tasks, {
     fuseOptions: {
@@ -108,32 +76,28 @@ const { results: taskSetResults } = useFuse(query, taskSets, {
     matchAllWhenSearchEmpty: true
 });
 
-const includesType = (type: VisibleType) => {
-    return visibleTypes.value.includes(type);
-};
-
 const favoritePlaceholders = computed(() => {
     return placeholders.value.filter((placeholder) => placeholder.favorite);
 });
 
 const filteredTasks = computed(() => {
-    if (!includesType("task")) return [];
+    if (taskFilter.value === "none") return [];
 
-    return taskResults.value.map((x) => x.item).filter((task) => !taskFavoritesOnly.value || task.favorite);
+    return taskResults.value.map((x) => x.item).filter((task) => taskFilter.value !== "favorites" || task.favorite);
 });
 
 const filteredTaskSets = computed(() => {
-    if (!includesType("taskSet")) return [];
+    if (taskSetFilter.value === "none") return [];
 
-    return taskSetResults.value.map((x) => x.item).filter((taskSet) => !taskSetFavoritesOnly.value || taskSet.favorite);
+    return taskSetResults.value.map((x) => x.item).filter((taskSet) => taskSetFilter.value !== "favorites" || taskSet.favorite);
 });
 
 const showTasks = computed(() => {
-    return includesType("task") && filteredTasks.value.length > 0;
+    return filteredTasks.value.length > 0;
 });
 
 const showTaskSets = computed(() => {
-    return includesType("taskSet") && filteredTaskSets.value.length > 0;
+    return filteredTaskSets.value.length > 0;
 });
 
 const hasResults = computed(() => {
