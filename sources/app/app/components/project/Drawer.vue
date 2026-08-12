@@ -7,7 +7,7 @@
                     <span class="text-body-1 text-truncate" style="max-width: 150px">{{ selectedProject.name }}</span>
                 </VListItemTitle>
             </VListItem>
-            <VDivider />
+            <VDivider opacity="40%" />
             <VListItem v-for="page in subPages" :key="page.name" :title="page.name" :to="page.to" link>
                 <template #prepend="{ isActive }">
                     <VIcon :icon="isActive ? page.iconActive : page.icon" size="small" />
