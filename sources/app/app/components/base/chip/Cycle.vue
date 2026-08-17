@@ -1,7 +1,11 @@
 <template>
     <VChip @click="cycle">
-        <template v-if="currentState.icon" #prepend>
-            <VIcon :color="currentState.color" :icon="currentState.icon" class="mr-1 ml-n1" />
+        <template #prepend>
+            <VExpandXTransition>
+                <span v-if="currentState.icon" class="d-inline-flex overflow-hidden mr-1 ml-n1">
+                    <VIcon :color="currentState.color" :icon="currentState.icon" />
+                </span>
+            </VExpandXTransition>
         </template>
         <slot />
     </VChip>
