@@ -1,14 +1,14 @@
-type VisibleType = "task" | "taskSet";
+export type DrawerFilter = "all" | "favorites" | "none";
 
 export const useTerminalDrawerStore = defineStore(
     "terminalDrawer",
     () => {
         const isDrawerOpen = ref(false);
         const query = ref("");
-        const favoritesOnly = ref(false);
-        const visibleTypes = ref<VisibleType[]>(["taskSet"]);
+        const taskFilter = ref<DrawerFilter>("none");
+        const taskSetFilter = ref<DrawerFilter>("all");
 
-        return { isDrawerOpen, query, favoritesOnly, visibleTypes };
+        return { isDrawerOpen, query, taskFilter, taskSetFilter };
     },
     {
         persist: true

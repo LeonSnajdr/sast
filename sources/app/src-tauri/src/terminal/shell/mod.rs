@@ -199,6 +199,7 @@ impl Shell {
 		#[cfg(not(target_os = "windows"))]
 		{
 			cmd = CommandBuilder::new("zsh");
+			cmd.env("TERM", "xterm-256color");
 
 			if let Some(working_dir) = &spawn_contract.working_dir {
 				cmd.cwd(working_dir);
@@ -206,13 +207,13 @@ impl Shell {
 
 			match (&spawn_contract.command, spawn_contract.no_exit) {
 				(Some(command), true) => {
-					cmd.args(["-c", &format!("{}; exec zsh -i", command)]);
+					cmd.args(["-lic", &format!("{}; exec zsh -il", command)]);
 				}
 				(Some(command), false) => {
-					cmd.args(["-c", command.as_str()]);
+					cmd.args(["-lic", command.as_str()]);
 				}
 				(None, _) => {
-					cmd.args(["-i"]);
+					cmd.args(["-il"]);
 				}
 			}
 		}
