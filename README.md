@@ -2,10 +2,13 @@
 
 Start Applications Seamlessly Timed (sast) is a project that helps you easily launch tasks, organize them into sets, and provides interactive terminals to manage and interact with them. This README will guide you through the setup process for development.
 
-> [!WARNING]
-> **PowerShell 7 Required**  
-> This application requires PowerShell 7 to run correctly. If you don't have it installed, please install it from:  
-> [Installing PowerShell on Windows](https://learn.microsoft.com/de-de/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.5)
+sast uses the following shells to run tasks and interactive terminals:
+
+| Platform | Required shell |
+| --- | --- |
+| Windows | [PowerShell 7](https://learn.microsoft.com/powershell/scripting/install/installing-powershell-on-windows) (`pwsh.exe`) |
+| macOS | Zsh (`zsh`, included with macOS) |
+| Linux | Bash (`bash`, available on `PATH`) |
 
 ## Table of Contents
 
@@ -21,7 +24,7 @@ Start Applications Seamlessly Timed (sast) is a project that helps you easily la
 Before you begin, ensure you have the following installed:
 
 1. [Rust](https://www.rust-lang.org/learn/get-started)
-2. [sqlx-cli](https://github.com/launchbadge/sqlx/blob/main/sqlx-cli/README.md)
+2. [Tauri system dependencies](https://v2.tauri.app/start/prerequisites/#system-dependencies) for your platform
 3. [Mise](https://mise.jdx.dev)
 
 ---
@@ -31,50 +34,30 @@ Before you begin, ensure you have the following installed:
 To get your development environment set up, follow these steps:
 
 1. **Clone the repository**  
-   Clone the sast repository to your local machine:
+   Clone the repository and enter the app directory:
 
     ```bash
     git clone https://github.com/LeonSnajdr/sast.git
+    cd sast/sources/app
     ```
 
-2. **Setup backend**
-   Navigate to tauri directory
-
-    ```bash
-    cd sources/app/src-tauri
-    ```
-
-    Create dev database and execute migrations
-
-    ```bash
-    cargo sqlx database create
-    ```
-
-    ```bash
-    cargo sqlx migrate run
-    ```
-
-    ```bash
-    cargo sqlx prepare
-    ```
-
-3. **Setup frontend**  
-   Navigate to frontend directory
-
-    ```bash
-    cd sources/app
-    ```
-
-    Install required tools
+2. **Install dependencies**
+   Install the development tools and frontend packages:
 
     ```bash
     mise install
+    yarn install
     ```
 
-    Install node packages
+3. **Setup backend**
+   Create the development database, run migrations, and prepare query metadata:
 
     ```bash
-    yarn install
+    cd src-tauri
+    cargo sqlx database create
+    cargo sqlx migrate run
+    cargo sqlx prepare
+    cd ..
     ```
 
 4. **Run sast**

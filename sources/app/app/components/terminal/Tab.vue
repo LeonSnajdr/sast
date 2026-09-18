@@ -3,7 +3,7 @@
         <template #prepend>
             <div class="d-flex ga-1">
                 <TerminalShellStatusBadge :shellStatus="terminal.shellStatus" offsetX="-2" offsetY="-2">
-                    <VIcon color="info" icon="mdi-powershell" />
+                    <VIcon :icon="shellIcon" color="info" />
                 </TerminalShellStatusBadge>
 
                 <VBtn v-if="terminal.task" @click.prevent.stop size="20" variant="plain">
@@ -28,9 +28,13 @@
 </template>
 
 <script setup lang="ts">
+import { platform } from "@tauri-apps/plugin-os";
+
 defineProps<{
     terminal: TerminalInfoContract;
 }>();
+
+const shellIcon = platform() === "windows" ? "mdi-powershell" : "mdi-console";
 
 const route = useRoute("index-project-id-terminal-terminalId");
 </script>
