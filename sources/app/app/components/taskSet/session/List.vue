@@ -53,6 +53,9 @@
             <SessionTask v-if="sessionTask.status === 'Skipped'" :sessionTask color="secondary" icon="mdi-arrow-right-thin-circle-outline">
                 {{ $t("taskSetSession.task.status.skipped") }}
             </SessionTask>
+            <SessionTask v-if="sessionTask.status === 'Reused'" :sessionTask color="success" icon="mdi-check-circle-outline">
+                {{ $t("taskSetSession.task.status.reused") }}
+            </SessionTask>
         </template>
 
         <VListItem v-if="!selectedSession">

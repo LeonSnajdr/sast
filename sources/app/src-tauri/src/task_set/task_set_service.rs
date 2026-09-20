@@ -102,6 +102,35 @@ pub async fn start_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uui
 pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
 	let task_set_task_infos = task_set_task_repository::get_all_info(task_set_id).await?;
 
+	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::Restart).await?;
+
+	restart_tasks(&app_handle, &project_id, &session_id, &task_set_task_infos).await?;
+
+	Ok(())
+}
+
+pub async fn restart_one_failed(app_handle: AppHandle, project_id: Uuid, task_set_id: Uuid) -> Result<()> {
+	let task_set_task_infos = task_set_task_repository::get_all_info(task_set_id).await?;
+
+	let failed_task_id = task_set_session_service::get_failed_task_id(&task_set_id).await?.ok_or(Error::NotExists)?;
+
+	let resume_index = task_set_task_infos
+		.iter()
+		.position(|task_set_task| task_set_task.task_id == failed_task_id)
+		.ok_or(Error::NotExists)?;
+
+	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::RestartFailed).await?;
+
+	for task_set_task_info in task_set_task_infos[..resume_index].iter() {
+		task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Reused).await?;
+	}
+
+	restart_tasks(&app_handle, &project_id, &session_id, &task_set_task_infos[resume_index..]).await?;
+
+	Ok(())
+}
+
+async fn restart_tasks(app_handle: &AppHandle, project_id: &Uuid, session_id: &Uuid, task_set_task_infos: &[TaskSetTaskInfoModel]) -> Result<()> {
 	let task_ids = task_set_task_infos.iter().map(|task_set_task| task_set_task.task_id).collect::<Vec<Uuid>>();
 
 	let filter = TerminalFilter {
@@ -111,30 +140,28 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 
 	terminal_service::restart_schedule(&filter).await?;
 
-	let session_id = task_set_session_service::start(&app_handle, &project_id, &task_set_id, &task_set_task_infos, TaskSetSessionKind::Restart).await?;
-
 	for task_set_task_info in task_set_task_infos.iter() {
-		task_set_session_service::start_task(&app_handle, &session_id, &task_set_task_info.task_id).await?;
+		task_set_session_service::start_task(app_handle, session_id, &task_set_task_info.task_id).await?;
 
-		let filter = TerminalFilter {
+		let task_filter = TerminalFilter {
 			task_ids: Some(vec![task_set_task_info.task_id]),
 			..TerminalFilter::default()
 		};
 
-		let is_terminal_existing = terminal_service::get_is_existing(&filter).await;
+		let is_terminal_existing = terminal_service::get_is_existing(&task_filter).await;
 
 		let successful = if is_terminal_existing {
-			restart_task_set_task(&filter, task_set_task_info).await?
+			restart_task_set_task(&task_filter, task_set_task_info).await?
 		} else {
-			start_task_set_task(&app_handle, &project_id, &task_set_task_info).await?
+			start_task_set_task(app_handle, project_id, task_set_task_info).await?
 		};
 
 		if !successful {
-			task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Failed).await?;
+			task_set_session_service::finish_task(app_handle, session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Failed).await?;
 			break;
 		}
 
-		task_set_session_service::finish_task(&app_handle, &session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Completed).await?;
+		task_set_session_service::finish_task(app_handle, session_id, &task_set_task_info.task_id, TaskSetSessionTaskStatus::Completed).await?;
 	}
 
 	let restarting_filter = TerminalFilter {
@@ -143,7 +170,7 @@ pub async fn restart_one(app_handle: AppHandle, project_id: Uuid, task_set_id: U
 	};
 
 	terminal_service::close_many(&restarting_filter).await?;
-	task_set_session_service::finish(&app_handle, &session_id).await?;
+	task_set_session_service::finish(app_handle, session_id).await?;
 
 	Ok(())
 }

@@ -325,6 +325,14 @@ async taskSetRestartOne(projectId: string, taskSetId: string) : Promise<Result<n
     else return { status: "error", error: e  as any };
 }
 },
+async taskSetRestartOneFailed(projectId: string, taskSetId: string) : Promise<Result<null, Error>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("task_set_restart_one_failed", { projectId, taskSetId }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async taskSetStopOne(taskSetId: string) : Promise<Result<null, Error>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("task_set_stop_one", { taskSetId }) };
@@ -408,11 +416,11 @@ export type TaskSetInfoContract = { id: string; projectId: string; name: string;
 export type TaskSetSessionContract = { id: string; projectId: string; taskSetId: string; kind: TaskSetSessionKind; dateStarted: string; dateFinished: string | null; status: TaskSetSessionStatus; tasks: TaskSetSessionTaskContract[] }
 export type TaskSetSessionFilter = { id: string | null; projectId: string | null; taskSetId: string | null }
 export type TaskSetSessionFinishedEvent = string
-export type TaskSetSessionKind = "Start" | "Restart"
+export type TaskSetSessionKind = "Start" | "Restart" | "RestartFailed"
 export type TaskSetSessionStartedEvent = string
 export type TaskSetSessionStatus = "Running" | "Failed" | "Completed"
 export type TaskSetSessionTaskContract = { taskId: string; taskName: string; dateStarted: string | null; dateFinished: string | null; status: TaskSetSessionTaskStatus }
-export type TaskSetSessionTaskStatus = "NotStarted" | "Running" | "Skipped" | "Failed" | "Completed"
+export type TaskSetSessionTaskStatus = "NotStarted" | "Running" | "Skipped" | "Reused" | "Failed" | "Completed"
 export type TaskSetSessionUpdatedEvent = string
 export type TaskSetTaskInfoContract = { taskId: string; taskName: string; taskDateCreated: string; taskDateLastUpdated: string; blocking: boolean; jumpInto: boolean }
 export type TaskSetUpdateContract = { id: string; name: string; favorite: boolean; tasks: TaskSetTaskInfoContract[] }
