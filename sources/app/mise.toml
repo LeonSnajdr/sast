@@ -1,3 +1,7 @@
 [tools]
 node = "24.19.0"
 yarn = "4.14.1"
+
+"cargo:sqlx-cli" = { version = "0.9.0", default-features = false, features = [
+    "sqlite",
+] }

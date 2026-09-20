@@ -9,6 +9,7 @@ mod task_set;
 mod terminal;
 
 use tauri::Manager;
+#[cfg(target_os = "macos")]
 use tauri::TitleBarStyle;
 use tauri_specta::{collect_commands, collect_events, Builder};
 
@@ -111,7 +112,7 @@ pub fn run() {
 			builder.mount_events(app);
 
 			if let Some(window) = app.get_webview_window("main") {
-				#[cfg(target_os = "windows")]
+				#[cfg(any(target_os = "windows", target_os = "linux"))]
 				{
 					window.set_decorations(false).ok();
 				}

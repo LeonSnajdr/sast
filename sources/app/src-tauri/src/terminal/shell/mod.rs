@@ -198,7 +198,12 @@ impl Shell {
 
 		#[cfg(not(target_os = "windows"))]
 		{
-			cmd = CommandBuilder::new("zsh");
+			#[cfg(target_os = "linux")]
+			let shell = "bash";
+			#[cfg(not(target_os = "linux"))]
+			let shell = "zsh";
+
+			cmd = CommandBuilder::new(shell);
 			cmd.env("TERM", "xterm-256color");
 
 			if let Some(working_dir) = &spawn_contract.working_dir {
@@ -207,7 +212,7 @@ impl Shell {
 
 			match (&spawn_contract.command, spawn_contract.no_exit) {
 				(Some(command), true) => {
-					cmd.args(["-lic", &format!("{}; exec zsh -il", command)]);
+					cmd.args(["-lic", &format!("{}\nexec {} -il", command, shell)]);
 				}
 				(Some(command), false) => {
 					cmd.args(["-lic", command.as_str()]);
