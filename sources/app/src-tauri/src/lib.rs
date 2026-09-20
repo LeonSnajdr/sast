@@ -67,6 +67,7 @@ pub fn run() {
 			task_set_delete_one,
 			task_set_start_one,
 			task_set_restart_one,
+			task_set_restart_one_failed,
 			task_set_stop_one,
 			task_set_session_get_many,
 			task_set_session_get_one

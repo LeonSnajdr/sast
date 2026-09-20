@@ -16,7 +16,15 @@
                 <p v-if="!hasRunningTerminal">- {{ $t("taskSet.action.restart.disabled.hasNoRunningTerminal") }}</p>
                 <p v-if="hasRunningTaskSetSession">- {{ $t("taskSet.action.start.disabled.hasRunningTaskSetSession") }}</p>
             </VTooltip>
-            <VIconBtn @click="restart()" :disabled="!isRestartable" :loading="isRestarting" color="info" icon="mdi-autorenew" />
+            <VIconBtn @click="!hasFailedSession && restart()" :disabled="!isRestartable" :loading="isRestarting" color="info">
+                <VIcon icon="mdi-restart" />
+                <VMenu v-if="hasFailedSession" activator="parent">
+                    <VList>
+                        <VListItem @click="restart()" :title="$t('action.restart.all')" prependIcon="mdi-restart" />
+                        <VListItem @click="restartFailed()" :title="$t('action.restart.failed')" prependIcon="mdi-restart-alert" />
+                    </VList>
+                </VMenu>
+            </VIconBtn>
         </div>
         <VIconBtn @click="stop()" :disabled="!hasRunningTerminal" :loading="isStopping" color="error" icon="mdi-stop" />
     </div>
@@ -89,8 +97,29 @@ const restart = async () => {
 };
 
 const isRestarting = computed(() => {
-    return sessions.value.some((session) => session.taskSetId === props.taskSet.id && session.status === "Running" && session.kind == "Restart");
+    return sessions.value.some(
+        (session) => session.taskSetId === props.taskSet.id && session.status === "Running" && ["Restart", "RestartFailed"].includes(session.kind)
+    );
 });
+
+const hasFailedSession = computed(() => {
+    const taskSetSessions = sessions.value.filter((session) => session.taskSetId === props.taskSet.id);
+
+    return taskSetSessions[taskSetSessions.length - 1]?.status === "Failed";
+});
+
+const restartFailed = async () => {
+    const restartPromise = commands.taskSetRestartOneFailed(props.taskSet.projectId, props.taskSet.id);
+
+    notify.success(t("action.restart.success", { type: t("taskSet.singular"), name: props.taskSet.name }));
+
+    const restartResult = await restartPromise;
+
+    if (restartResult.status === "error") {
+        notify.error(t("action.restart.error", { type: t("taskSet.singular"), name: props.taskSet.name }), { error: restartResult.error });
+        return;
+    }
+};
 
 const stop = async () => {
     isStopping.value = true;

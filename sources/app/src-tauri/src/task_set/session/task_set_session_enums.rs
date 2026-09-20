@@ -5,6 +5,7 @@ use specta::Type;
 pub enum TaskSetSessionKind {
 	Start,
 	Restart,
+	RestartFailed,
 }
 
 #[derive(Debug, PartialEq, Eq, Clone, Type, Serialize, Deserialize)]
@@ -19,6 +20,7 @@ pub enum TaskSetSessionTaskStatus {
 	NotStarted,
 	Running,
 	Skipped,
+	Reused,
 	Failed,
 	Completed,
 }

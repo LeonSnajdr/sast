@@ -24,6 +24,13 @@ pub async fn get_one(id: &Uuid) -> Result<Arc<TaskSetSessionModel>> {
 	Ok(session)
 }
 
+pub async fn get_last(task_set_id: &Uuid) -> Result<Option<Arc<TaskSetSessionModel>>> {
+	let sessions = STATE.read().await;
+	let session = sessions.iter().rev().find(|&s| s.task_set_id == *task_set_id).cloned();
+
+	Ok(session)
+}
+
 pub async fn get_many_info(filter: &TaskSetSessionFilter) -> Result<Vec<TaskSetSessionInfoModel>> {
 	let sessions = STATE.read().await;
 

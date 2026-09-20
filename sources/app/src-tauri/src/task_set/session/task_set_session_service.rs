@@ -30,6 +30,20 @@ pub async fn get_one(id: &Uuid) -> Result<TaskSetSessionContract> {
 	Ok(contract)
 }
 
+pub async fn get_failed_task_id(task_set_id: &Uuid) -> Result<Option<Uuid>> {
+	let Some(session) = task_set_session_repository::get_last(task_set_id).await? else {
+		return Ok(None);
+	};
+
+	for task in session.tasks.read().await.iter() {
+		if *task.status.read().await == TaskSetSessionTaskStatus::Failed {
+			return Ok(Some(task.task_id));
+		}
+	}
+
+	Ok(None)
+}
+
 pub async fn start(
 	app_handle: &AppHandle,
 	project_id: &Uuid,
