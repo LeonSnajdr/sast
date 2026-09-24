@@ -1,1 +1,5 @@
 * text=auto eol=lf
+
+# sqlx stores a checksum of each migration file. Existing Windows databases were migrated with CRLF files,
+# so migrations must keep the platform native line endings or the migration check fails on startup.
+sources/app/src-tauri/migrations/*.sql text !eol
