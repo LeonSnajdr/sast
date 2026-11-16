@@ -55,6 +55,7 @@ const searchQuery = ref("");
 
 let cleanup = () => {};
 let isTerminalBeingClosed = false;
+let isHistoryBeingRestored = true;
 
 onMounted(async () => {
     const openContract = await loadOpenContract();
@@ -112,11 +113,16 @@ onMounted(async () => {
         return !isCopyAction && !isNewTabAction && !isCloseTabAction && !isFindAction;
     });
 
-    terminal.write(openContract.history);
+    const historyRestored = new Promise<void>((resolve) => terminal.write(openContract.history, resolve));
 
     terminal.open(termElement.value!);
 
-    terminal.onData((data) => writeToTerminal(data));
+    terminal.onData((data) => {
+        // The history contains queries the shell already got answered, answering them again would end up as input
+        if (isHistoryBeingRestored) return;
+
+        writeToTerminal(data);
+    });
 
     const unlistenResize = await getCurrentWindow().onResized(
         lodDebounce(() => {
@@ -146,6 +152,10 @@ onMounted(async () => {
     };
 
     terminal.focus();
+
+    // The history was written for the size of the shell, it has to be restored completely before the size changes
+    await historyRestored;
+    isHistoryBeingRestored = false;
 
     const dims = fitAddon.proposeDimensions();
     const sizeChanged = dims?.cols != openContract.size.cols || dims.rows != openContract.size.rows;
@@ -180,7 +190,9 @@ const writeToTerminal = async (data: string) => {
 const resizeTerminal = lodDebounce(async () => {
     const dims = fitAddon.proposeDimensions();
 
-    terminal.resize(terminal.cols, dims!.rows);
+    if (!dims) return;
+
+    terminal.resize(dims.cols, dims.rows);
 
     const resizeResult = await commands.terminalShellResize(route.params.terminalId, {
         cols: terminal.cols,

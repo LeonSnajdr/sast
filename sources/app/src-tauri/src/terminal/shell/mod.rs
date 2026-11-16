@@ -1,3 +1,5 @@
+#[cfg(target_os = "windows")]
+pub mod shell_conpty;
 pub mod shell_contracts;
 pub mod shell_enums;
 pub mod shell_events;
@@ -52,6 +54,16 @@ impl Shell {
 		let reader = Arc::new(std::sync::Mutex::new(pair.master.try_clone_reader().unwrap()));
 		let mut writer = pair.master.take_writer().unwrap();
 
+		let (shell_sender, mut shell_receiver) = channel::<ShellInputEvent>(32);
+
+		// Weak, the reader must not keep the channel open, it only ends once the writing thread dropped the pty
+		#[cfg(target_os = "windows")]
+		let reply_sender = shell_sender.downgrade();
+		#[cfg(target_os = "windows")]
+		let mut startup_queries = shell_conpty::ConptyStartupQueries::new();
+
+		*self.shell_sender.lock().await = Some(shell_sender);
+
 		let id_clone = self.id.clone();
 		let terminal_sender = Arc::clone(&self.terminal_sender);
 		tokio::spawn(async move {
@@ -72,7 +84,22 @@ impl Shell {
 
 				match result {
 					Some(output) => {
-						Self::send_output_event(&terminal_sender, ShellOutputEventData::Data(output)).await;
+						#[cfg(target_os = "windows")]
+						let output = {
+							let mut output = output;
+
+							if let Some(reply) = startup_queries.answer(&mut output) {
+								if let Some(reply_sender) = reply_sender.upgrade() {
+									let _ = reply_sender.send(ShellInputEvent::Write(reply)).await;
+								}
+							}
+
+							output
+						};
+
+						if !output.is_empty() {
+							Self::send_output_event(&terminal_sender, ShellOutputEventData::Data(output)).await;
+						}
 					}
 					None => break,
 				}
@@ -80,9 +107,6 @@ impl Shell {
 
 			log::info!("Shell {} read thread closed", id_clone);
 		});
-
-		let (shell_sender, mut shell_receiver) = channel::<ShellInputEvent>(32);
-		*self.shell_sender.lock().await = Some(shell_sender);
 
 		let id_clone = self.id.clone();
 		let force_kill = spawn_contract.force_kill;
@@ -96,17 +120,10 @@ impl Shell {
 						}
 					}
 					ShellInputEvent::Resize(resize_contract) => {
-						/*	NOTE: This is a workaround required for ConPTY on Windows.
-							We handle column resizing only on the client side; the backend always assumes the column count remains constant.
-							This is necessary because ConPTY handles column resizing differently; instead of bringing parts of the scrollback
-							back into the viewport, new lines are inserted at the bottom (ie. the same behavior as if there was no scrollback).
-						*/
-						let current_cols = pair.master.get_size().unwrap().cols;
-
 						pair.master
 							.resize(PtySize {
 								rows: resize_contract.rows,
-								cols: current_cols,
+								cols: resize_contract.cols,
 								..PtySize::default()
 							})
 							.unwrap();
